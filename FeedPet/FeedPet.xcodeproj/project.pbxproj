@@ -7,11 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14035C171FF24E95005ABAE0 /* AlarmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C061FF24E95005ABAE0 /* AlarmService.swift */; };
+		14035C181FF24E95005ABAE0 /* AlarmSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C071FF24E95005ABAE0 /* AlarmSettingViewController.swift */; };
+		14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */; };
+		14035C1A1FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */; };
+		14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C0D1FF24E95005ABAE0 /* EditInfoViewController.swift */; };
+		14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C0E1FF24E95005ABAE0 /* MyInfoCell.swift */; };
+		14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C0F1FF24E95005ABAE0 /* PetInfoCell.swift */; };
+		14035C1F1FF24E95005ABAE0 /* MyPage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14035C101FF24E95005ABAE0 /* MyPage.storyboard */; };
+		14035C201FF24E95005ABAE0 /* MyMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C121FF24E95005ABAE0 /* MyMenuCell.swift */; };
+		14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C131FF24E95005ABAE0 /* MyPageViewController.swift */; };
+		14035C221FF24E95005ABAE0 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C141FF24E95005ABAE0 /* ProfileCell.swift */; };
+		14035C231FF24E95005ABAE0 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C151FF24E95005ABAE0 /* SettingCell.swift */; };
+		14035C241FF24E95005ABAE0 /* SettingHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C161FF24E95005ABAE0 /* SettingHeaderCell.swift */; };
 		4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C01C85D1FEB886B0016E674 /* AppDelegate.swift */; };
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
 		4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8641FEB886B0016E674 /* Assets.xcassets */; };
 		4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8661FEB886B0016E674 /* LaunchScreen.storyboard */; };
-		4CAD76741FED129F00EDE859 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD76731FED129F00EDE859 /* MyPageViewController.swift */; };
 		4CAD76791FED131700EDE859 /* PageControllerBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD76781FED131700EDE859 /* PageControllerBaseController.swift */; };
 		4CAD767B1FED133B00EDE859 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD767A1FED133B00EDE859 /* MainViewController.swift */; };
 		4CAD767E1FED13BF00EDE859 /* loginVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = 4CAD767D1FED13BF00EDE859 /* loginVideo.mov */; };
@@ -22,6 +34,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		14035C061FF24E95005ABAE0 /* AlarmService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmService.swift; sourceTree = "<group>"; };
+		14035C071FF24E95005ABAE0 /* AlarmSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSettingViewController.swift; sourceTree = "<group>"; };
+		14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSwitchCell.swift; sourceTree = "<group>"; };
+		14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalAlarmSwitchCell.swift; sourceTree = "<group>"; };
+		14035C0D1FF24E95005ABAE0 /* EditInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditInfoViewController.swift; sourceTree = "<group>"; };
+		14035C0E1FF24E95005ABAE0 /* MyInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyInfoCell.swift; sourceTree = "<group>"; };
+		14035C0F1FF24E95005ABAE0 /* PetInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetInfoCell.swift; sourceTree = "<group>"; };
+		14035C101FF24E95005ABAE0 /* MyPage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyPage.storyboard; sourceTree = "<group>"; };
+		14035C121FF24E95005ABAE0 /* MyMenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMenuCell.swift; sourceTree = "<group>"; };
+		14035C131FF24E95005ABAE0 /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		14035C141FF24E95005ABAE0 /* ProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
+		14035C151FF24E95005ABAE0 /* SettingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
+		14035C161FF24E95005ABAE0 /* SettingHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingHeaderCell.swift; sourceTree = "<group>"; };
 		155F8EE9A3FF90944F5A4F83 /* Pods-FeedPet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedPet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet.debug.xcconfig"; sourceTree = "<group>"; };
 		3219B4369B3766416839B81B /* Pods_FeedPet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FeedPet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A3C22C8F7964B2242907916 /* Pods-FeedPet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedPet.release.xcconfig"; path = "Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet.release.xcconfig"; sourceTree = "<group>"; };
@@ -31,7 +56,6 @@
 		4C01C8641FEB886B0016E674 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C01C8671FEB886B0016E674 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C01C8691FEB886B0016E674 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4CAD76731FED129F00EDE859 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		4CAD76781FED131700EDE859 /* PageControllerBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PageControllerBaseController.swift; path = Main/PageControllerBaseController.swift; sourceTree = "<group>"; };
 		4CAD767A1FED133B00EDE859 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Main/MainViewController.swift; sourceTree = "<group>"; };
 		4CAD767D1FED13BF00EDE859 /* loginVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = loginVideo.mov; sourceTree = "<group>"; };
@@ -52,6 +76,50 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		14035C041FF24E95005ABAE0 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				14035C101FF24E95005ABAE0 /* MyPage.storyboard */,
+				14035C111FF24E95005ABAE0 /* MyPageView */,
+				14035C0C1FF24E95005ABAE0 /* EditInfoView */,
+				14035C051FF24E95005ABAE0 /* AlarmSettingView */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		14035C051FF24E95005ABAE0 /* AlarmSettingView */ = {
+			isa = PBXGroup;
+			children = (
+				14035C061FF24E95005ABAE0 /* AlarmService.swift */,
+				14035C071FF24E95005ABAE0 /* AlarmSettingViewController.swift */,
+				14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */,
+				14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */,
+			);
+			path = AlarmSettingView;
+			sourceTree = "<group>";
+		};
+		14035C0C1FF24E95005ABAE0 /* EditInfoView */ = {
+			isa = PBXGroup;
+			children = (
+				14035C0D1FF24E95005ABAE0 /* EditInfoViewController.swift */,
+				14035C0E1FF24E95005ABAE0 /* MyInfoCell.swift */,
+				14035C0F1FF24E95005ABAE0 /* PetInfoCell.swift */,
+			);
+			path = EditInfoView;
+			sourceTree = "<group>";
+		};
+		14035C111FF24E95005ABAE0 /* MyPageView */ = {
+			isa = PBXGroup;
+			children = (
+				14035C121FF24E95005ABAE0 /* MyMenuCell.swift */,
+				14035C131FF24E95005ABAE0 /* MyPageViewController.swift */,
+				14035C141FF24E95005ABAE0 /* ProfileCell.swift */,
+				14035C151FF24E95005ABAE0 /* SettingCell.swift */,
+				14035C161FF24E95005ABAE0 /* SettingHeaderCell.swift */,
+			);
+			path = MyPageView;
+			sourceTree = "<group>";
+		};
 		4004771B0EC50C50DB0E50C7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,7 +164,7 @@
 				4CAD767F1FED142E00EDE859 /* LoginViewController.swift */,
 				4CAD76811FED3B8D00EDE859 /* DataCenter.swift */,
 				4CAD766E1FED11D700EDE859 /* Main */,
-				4CAD76771FED12F200EDE859 /* MyPage */,
+				14035C041FF24E95005ABAE0 /* MyPage */,
 				4CAD767C1FED138600EDE859 /* Design */,
 				4C01C8641FEB886B0016E674 /* Assets.xcassets */,
 				4C01C8691FEB886B0016E674 /* Info.plist */,
@@ -112,14 +180,6 @@
 				4CAD767A1FED133B00EDE859 /* MainViewController.swift */,
 			);
 			name = Main;
-			sourceTree = "<group>";
-		};
-		4CAD76771FED12F200EDE859 /* MyPage */ = {
-			isa = PBXGroup;
-			children = (
-				4CAD76731FED129F00EDE859 /* MyPageViewController.swift */,
-			);
-			path = MyPage;
 			sourceTree = "<group>";
 		};
 		4CAD767C1FED138600EDE859 /* Design */ = {
@@ -195,6 +255,7 @@
 				4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */,
 				4CBD557D1FED043300D37FE8 /* GoogleService-Info.plist in Resources */,
 				4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */,
+				14035C1F1FF24E95005ABAE0 /* MyPage.storyboard in Resources */,
 				4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */,
 				4CAD767E1FED13BF00EDE859 /* loginVideo.mov in Resources */,
 			);
@@ -258,7 +319,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		FBDD9431A842B556A4FBDA99 /* [CP] Copy Pods Resources */ = {
@@ -287,11 +348,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CAD76821FED3B8D00EDE859 /* DataCenter.swift in Sources */,
+				14035C1A1FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift in Sources */,
+				14035C181FF24E95005ABAE0 /* AlarmSettingViewController.swift in Sources */,
+				14035C171FF24E95005ABAE0 /* AlarmService.swift in Sources */,
 				4CAD76791FED131700EDE859 /* PageControllerBaseController.swift in Sources */,
-				4CAD76741FED129F00EDE859 /* MyPageViewController.swift in Sources */,
 				4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */,
+				14035C201FF24E95005ABAE0 /* MyMenuCell.swift in Sources */,
 				4CAD76801FED142E00EDE859 /* LoginViewController.swift in Sources */,
+				14035C241FF24E95005ABAE0 /* SettingHeaderCell.swift in Sources */,
 				4CAD767B1FED133B00EDE859 /* MainViewController.swift in Sources */,
+				14035C221FF24E95005ABAE0 /* ProfileCell.swift in Sources */,
+				14035C231FF24E95005ABAE0 /* SettingCell.swift in Sources */,
+				14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */,
+				14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */,
+				14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */,
+				14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */,
+				14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,8 +502,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PV38XQ6LPC;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FeedPet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gisuhwang.FeedPet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -446,8 +519,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PV38XQ6LPC;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FeedPet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gisuhwang.FeedPet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
