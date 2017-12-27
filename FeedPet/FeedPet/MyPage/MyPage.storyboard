@@ -14,7 +14,7 @@
         <!--My Page View Controller-->
         <scene sceneID="WQD-Fk-g0Y">
             <objects>
-                <viewController id="5uH-Uq-Wmp" customClass="MyPageViewController" customModule="FeedPet2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="5uH-Uq-Wmp" customClass="MyPageViewController" customModule="FeedPet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="naH-fm-1c7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -35,11 +35,11 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ProfileCell" rowHeight="116" id="Yn1-oF-EI8" customClass="ProfileCell" customModule="FeedPet2" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ProfileCell" rowHeight="116" id="Yn1-oF-EI8" customClass="ProfileCell" customModule="FeedPet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="116"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Yn1-oF-EI8" id="YO0-9U-fYS">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="116"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="115.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eCf-K5-eSa">
@@ -122,11 +122,11 @@
                                             <outlet property="userIdLb" destination="uIE-oB-Kdl" id="i1o-54-TQs"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="MyMenuCell" rowHeight="113" id="5WQ-UL-gWC" customClass="MyMenuCell" customModule="FeedPet2" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="MyMenuCell" rowHeight="113" id="5WQ-UL-gWC" customClass="MyMenuCell" customModule="FeedPet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="144" width="375" height="113"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5WQ-UL-gWC" id="Old-Ir-cmK">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="112.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="내 메뉴" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPq-WX-DKx">
@@ -236,11 +236,11 @@
                                             <outlet property="myReviewsNumLb" destination="3qb-F7-k3H" id="qp6-hX-Uds"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingHeaderCell" id="tnd-gD-37c" customClass="SettingHeaderCell" customModule="FeedPet2" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingHeaderCell" id="tnd-gD-37c" customClass="SettingHeaderCell" customModule="FeedPet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="257" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tnd-gD-37c" id="0kA-FX-E1W">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="설정" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xla-Pw-caa">
@@ -259,11 +259,11 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="SettingCell" rowHeight="71" id="2qM-pI-h5m" customClass="SettingCell" customModule="FeedPet2" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="SettingCell" rowHeight="71" id="2qM-pI-h5m" customClass="SettingCell" customModule="FeedPet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="301" width="375" height="71"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2qM-pI-h5m" id="UkY-WC-75B">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="71"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="70.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KjO-SY-MIY">
@@ -366,7 +366,7 @@
         <!--Alarm Setting View Controller-->
         <scene sceneID="vSH-dO-BWb">
             <objects>
-                <viewController storyboardIdentifier="AlarmSettingViewController" id="ORq-LN-7Jl" customClass="AlarmSettingViewController" customModule="FeedPet2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AlarmSettingViewController" id="ORq-LN-7Jl" customClass="AlarmSettingViewController" customModule="FeedPet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sKQ-S2-R0H">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -397,7 +397,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TotalAlarmSwitchCell" rowHeight="114" id="lFr-1c-gUO" customClass="TotalAlarmSwitchCell" customModule="FeedPet2" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TotalAlarmSwitchCell" rowHeight="114" id="lFr-1c-gUO" customClass="TotalAlarmSwitchCell" customModule="FeedPet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="114"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lFr-1c-gUO" id="Yem-TY-7b7">
@@ -447,7 +447,7 @@
                                             <outlet property="totalAlarmSwitchOut" destination="qoi-fm-mTp" id="TAY-Ix-K3u"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AlarmSwitchCell" rowHeight="96" id="pOc-Xi-J3h" customClass="AlarmSwitchCell" customModule="FeedPet2" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AlarmSwitchCell" rowHeight="96" id="pOc-Xi-J3h" customClass="AlarmSwitchCell" customModule="FeedPet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="142" width="375" height="96"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pOc-Xi-J3h" id="u9z-Qj-zMN">
@@ -555,6 +555,160 @@
             <point key="canvasLocation" x="1400.8" y="732.68365817091455"/>
         </scene>
         <!--View Controller-->
+        <scene sceneID="TMt-oh-4wM">
+            <objects>
+                <viewController storyboardIdentifier="FAQViewController" id="tV8-F3-Xgv" customClass="FAQViewController" customModule="FeedPet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Y7U-C7-Jsq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uk6-k2-F3O">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <color key="barTintColor" red="0.92447072269999997" green="0.38109046219999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="FAQ" id="MIM-3t-He2">
+                                        <barButtonItem key="leftBarButtonItem" title="Item" id="enN-4S-qiF">
+                                            <connections>
+                                                <action selector="backBtnAction:" destination="tV8-F3-Xgv" id="B2h-iT-CZh"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0fs-Jm-nuJ">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="FAQCell" id="A4m-We-8Ee">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="A4m-We-8Ee" id="Gqz-VC-bLo">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="tV8-F3-Xgv" id="Fiz-XQ-CO5"/>
+                                    <outlet property="delegate" destination="tV8-F3-Xgv" id="nMg-Fo-XEq"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="0fs-Jm-nuJ" firstAttribute="leading" secondItem="LNK-VN-MNS" secondAttribute="leading" id="Hzw-sS-yvi"/>
+                            <constraint firstItem="LNK-VN-MNS" firstAttribute="trailing" secondItem="0fs-Jm-nuJ" secondAttribute="trailing" id="Ivd-xi-0NR"/>
+                            <constraint firstItem="LNK-VN-MNS" firstAttribute="bottom" secondItem="0fs-Jm-nuJ" secondAttribute="bottom" id="SMs-Sf-KSq"/>
+                            <constraint firstItem="uk6-k2-F3O" firstAttribute="leading" secondItem="LNK-VN-MNS" secondAttribute="leading" id="STF-zS-rK2"/>
+                            <constraint firstItem="uk6-k2-F3O" firstAttribute="trailing" secondItem="LNK-VN-MNS" secondAttribute="trailing" id="X79-Qh-ke3"/>
+                            <constraint firstItem="uk6-k2-F3O" firstAttribute="top" secondItem="LNK-VN-MNS" secondAttribute="top" id="huZ-Nx-umH"/>
+                            <constraint firstItem="0fs-Jm-nuJ" firstAttribute="top" secondItem="uk6-k2-F3O" secondAttribute="bottom" id="pRF-ng-vKL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="LNK-VN-MNS"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MKJ-F6-vHa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1401" y="1511"/>
+        </scene>
+        <!--Terms Of Use View Controller-->
+        <scene sceneID="UUW-Rf-16r">
+            <objects>
+                <viewController storyboardIdentifier="TermsOfUseViewController" id="hCw-cc-7bd" customClass="TermsOfUseViewController" customModule="FeedPet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RSf-4R-BSd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f65-Qy-Ndx">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <color key="barTintColor" red="0.92447072269999997" green="0.38109046219999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="이용 약관" id="4VJ-5N-ePA">
+                                        <barButtonItem key="leftBarButtonItem" title="Item" id="6iT-u8-RVd">
+                                            <connections>
+                                                <action selector="backBtnAction:" destination="hCw-cc-7bd" id="dhf-7h-dTZ"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TUC-5u-TfU">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="f65-Qy-Ndx" secondAttribute="trailing" id="0Oi-we-v0U"/>
+                            <constraint firstItem="TUC-5u-TfU" firstAttribute="top" secondItem="f65-Qy-Ndx" secondAttribute="bottom" id="9C9-TP-7d1"/>
+                            <constraint firstItem="TUC-5u-TfU" firstAttribute="leading" secondItem="wsg-rS-mOV" secondAttribute="leading" id="SWr-Qk-uls"/>
+                            <constraint firstItem="f65-Qy-Ndx" firstAttribute="leading" secondItem="wsg-rS-mOV" secondAttribute="leading" id="c4s-XA-nwK"/>
+                            <constraint firstItem="wsg-rS-mOV" firstAttribute="bottom" secondItem="TUC-5u-TfU" secondAttribute="bottom" id="qQj-8u-U9y"/>
+                            <constraint firstItem="f65-Qy-Ndx" firstAttribute="top" secondItem="wsg-rS-mOV" secondAttribute="top" id="wCZ-9v-umR"/>
+                            <constraint firstItem="wsg-rS-mOV" firstAttribute="trailing" secondItem="TUC-5u-TfU" secondAttribute="trailing" id="yvK-js-0KN"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="wsg-rS-mOV"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MmR-mF-cmb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1401" y="2207"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="vpt-Xq-HYL">
+            <objects>
+                <viewController storyboardIdentifier="FAQDetailViewController" id="TW4-0k-BDg" customClass="FAQDetailViewController" customModule="FeedPet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RBQ-KP-J8p">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ai-qa-WDf">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <color key="barTintColor" red="0.92447072269999997" green="0.38109046219999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem id="Dpx-zS-j5O">
+                                        <barButtonItem key="leftBarButtonItem" title="Item" id="0xn-Z7-Bnn">
+                                            <connections>
+                                                <action selector="backBtnAction:" destination="TW4-0k-BDg" id="SHB-GO-RFq"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e1e-wo-9f8">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="zXs-mh-DT0" firstAttribute="trailing" secondItem="e1e-wo-9f8" secondAttribute="trailing" id="dpL-v7-Z6P"/>
+                            <constraint firstItem="e1e-wo-9f8" firstAttribute="top" secondItem="6ai-qa-WDf" secondAttribute="bottom" id="i2o-9E-6dw"/>
+                            <constraint firstItem="zXs-mh-DT0" firstAttribute="bottom" secondItem="e1e-wo-9f8" secondAttribute="bottom" id="j47-ad-7V6"/>
+                            <constraint firstItem="zXs-mh-DT0" firstAttribute="trailing" secondItem="6ai-qa-WDf" secondAttribute="trailing" id="kbe-wZ-d5O"/>
+                            <constraint firstItem="6ai-qa-WDf" firstAttribute="leading" secondItem="RBQ-KP-J8p" secondAttribute="leading" id="oBT-FG-tbc"/>
+                            <constraint firstItem="e1e-wo-9f8" firstAttribute="leading" secondItem="zXs-mh-DT0" secondAttribute="leading" id="p2M-OF-FHi"/>
+                            <constraint firstItem="6ai-qa-WDf" firstAttribute="top" secondItem="zXs-mh-DT0" secondAttribute="top" id="pcN-gT-Caz"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="zXs-mh-DT0"/>
+                    </view>
+                    <connections>
+                        <outlet property="FAQImgView" destination="e1e-wo-9f8" id="uFU-lq-tO5"/>
+                        <outlet property="FAQNaviItem" destination="Dpx-zS-j5O" id="IQP-5u-zj7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zMa-5U-9Hk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2158" y="1511"/>
+        </scene>
+        <!--View Controller-->
         <scene sceneID="ae0-mm-vHf">
             <objects>
                 <viewController id="i51-5c-gnW" sceneMemberID="viewController">
@@ -591,7 +745,7 @@
         <!--Edit Info View Controller-->
         <scene sceneID="zoz-ZL-UDs">
             <objects>
-                <viewController storyboardIdentifier="EditInfoViewController" id="S6R-KH-MOp" customClass="EditInfoViewController" customModule="FeedPet2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditInfoViewController" id="S6R-KH-MOp" customClass="EditInfoViewController" customModule="FeedPet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Mpq-Pp-e2T">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -622,11 +776,11 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyInfoCell" rowHeight="139" id="FTa-sc-i9x" customClass="MyInfoCell" customModule="FeedPet2" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyInfoCell" rowHeight="139" id="FTa-sc-i9x" customClass="MyInfoCell" customModule="FeedPet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="139"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FTa-sc-i9x" id="PuX-9v-dVt">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="139"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="138.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="내정보" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBq-eh-m9B">
@@ -725,11 +879,11 @@
                                             <outlet property="nickNameTextField" destination="fXJ-xn-4TZ" id="kdV-RG-O3L"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PetInfoCell" rowHeight="432" id="Mjq-5N-121" customClass="PetInfoCell" customModule="FeedPet2" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PetInfoCell" rowHeight="432" id="Mjq-5N-121" customClass="PetInfoCell" customModule="FeedPet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="167" width="375" height="432"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mjq-5N-121" id="J0o-Xr-Q4P">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="432"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="431.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="반려동물" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XRx-ya-tHt">

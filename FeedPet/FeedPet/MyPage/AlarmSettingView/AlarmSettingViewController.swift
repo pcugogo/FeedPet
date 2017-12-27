@@ -152,7 +152,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             timePickerViewOut.isHidden = false
             timePickConfirmBtnOut.isHidden = false
             
-             print("dinner",AlarmService.shared.mealTime["dinner"]!)
+            print("dinner",AlarmService.shared.mealTime["dinner"]!)
         }
     }
     
@@ -166,8 +166,8 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         }
     }
     
-     func setMealTimeAlarmNotification() {
-         
+    func setMealTimeAlarmNotification() {
+        
         
         dateFormatterHour.dateFormat = "HH"
         
@@ -175,73 +175,116 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         
         var notificationDateComponents = DateComponents()
         
-       
-        
-        // 01. UNMutableNotificationContent
-        let notificationContent = UNMutableNotificationContent()
-        
-        notificationContent.sound = UNNotificationSound.default()
-        
-        if AlarmService.shared.switchOnOff["morning"] == true{
+        if #available(iOS 10.0, *) {
             
-            notificationDateComponents.hour = AlarmService.shared.mealTimeHour["morning"]
-            notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["morning"]
+            // 01. UNMutableNotificationContent
+            let notificationContent = UNMutableNotificationContent()
             
-            notificationContent.body = "아침 식사 시간입니다!"
+            notificationContent.sound = UNNotificationSound.default()
             
-            // 02. UNTimeIntervalNotificationTrigger
-            let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: notificationDateComponents, repeats: true)
-            
-            // 03. UNNotificationRequest
-            let morningRequest: UNNotificationRequest = UNNotificationRequest(identifier: "morningAlarm", content: notificationContent, trigger: notificationTrigger)
-            
-            // 04. UNUserNotificationCenter
-            UNUserNotificationCenter.current().add(morningRequest, withCompletionHandler: { [unowned self](_) in
-                self.dismiss(animated: true, completion: nil)
+            if AlarmService.shared.switchOnOff["morning"] == true{
                 
+                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["morning"]
+                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["morning"]
+                
+                notificationContent.body = "아침 식사 시간입니다!"
+                
+                // 02. UNTimeIntervalNotificationTrigger
+                let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: notificationDateComponents, repeats: true)
+                
+                // 03. UNNotificationRequest
+                let morningRequest: UNNotificationRequest = UNNotificationRequest(identifier: "morningAlarm", content: notificationContent, trigger: notificationTrigger)
+                
+                // 04. UNUserNotificationCenter
+                UNUserNotificationCenter.current().add(morningRequest, withCompletionHandler: { [unowned self](_) in
+                    self.dismiss(animated: true, completion: nil)
+                    
+                    
+                })
+                
+            }
+            if AlarmService.shared.switchOnOff["lunch"] == true{
+                
+                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["lunch"]
+                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["lunch"]
+                
+                notificationContent.body = "점심 식사 시간입니다!"
+                
+                // 02. UNTimeIntervalNotificationTrigger
+                let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: notificationDateComponents, repeats: true)
+                
+                // 03. UNNotificationRequest
+                let lunchRequest: UNNotificationRequest = UNNotificationRequest(identifier: "lunchAlarm", content: notificationContent, trigger: notificationTrigger)
+                
+                // 04. UNUserNotificationCenter
+                UNUserNotificationCenter.current().add(lunchRequest, withCompletionHandler: { [unowned self](_) in
+                    self.dismiss(animated: true, completion: nil)
+                    
+                })
+                
+            }
+            if AlarmService.shared.switchOnOff["dinner"] == true{
+                notificationContent.body = "저녁 식사 시간입니다!"
+                
+                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["dinner"]
+                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["dinner"]
+                
+                // 02. UNTimeIntervalNotificationTrigger
+                let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: notificationDateComponents, repeats: true)
+                
+                // 03. UNNotificationRequest
+                let dinnerRequest: UNNotificationRequest = UNNotificationRequest(identifier: "dinnerAlarm", content: notificationContent, trigger: notificationTrigger)
+                
+                // 04. UNUserNotificationCenter
+                UNUserNotificationCenter.current().add(dinnerRequest, withCompletionHandler: { [unowned self](_) in
+                    self.dismiss(animated: true, completion: nil)
+                    
+                })
+                
+            }
+        }else{
+            if AlarmService.shared.switchOnOff["morning"] == true{
                
-            })
-            
-        }
-        if AlarmService.shared.switchOnOff["lunch"] == true{
-            
-            notificationDateComponents.hour = AlarmService.shared.mealTimeHour["lunch"]
-            notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["lunch"]
-            
-            notificationContent.body = "점심 식사 시간입니다!"
-            
-            // 02. UNTimeIntervalNotificationTrigger
-            let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: notificationDateComponents, repeats: true)
-            
-            // 03. UNNotificationRequest
-            let lunchRequest: UNNotificationRequest = UNNotificationRequest(identifier: "lunchAlarm", content: notificationContent, trigger: notificationTrigger)
-            
-            // 04. UNUserNotificationCenter
-            UNUserNotificationCenter.current().add(lunchRequest, withCompletionHandler: { [unowned self](_) in
-                self.dismiss(animated: true, completion: nil)
+                let notification = UILocalNotification()
                 
-            })
-            
-        }
-        if AlarmService.shared.switchOnOff["dinner"] == true{
-            notificationContent.body = "저녁 식사 시간입니다!"
-            
-            notificationDateComponents.hour = AlarmService.shared.mealTimeHour["dinner"]
-            notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["dinner"]
-            
-            // 02. UNTimeIntervalNotificationTrigger
-            let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: notificationDateComponents, repeats: true)
-            
-            // 03. UNNotificationRequest
-            let dinnerRequest: UNNotificationRequest = UNNotificationRequest(identifier: "dinnerAlarm", content: notificationContent, trigger: notificationTrigger)
-            
-            // 04. UNUserNotificationCenter
-            UNUserNotificationCenter.current().add(dinnerRequest, withCompletionHandler: { [unowned self](_) in
-                self.dismiss(animated: true, completion: nil)
+                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["morning"]
+                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["morning"]
                 
-            })
-            
+                notification.fireDate = notificationDateComponents.date
+                notification.alertBody = "아침 식사 시간입니다!"
+                notification.alertAction = "아침"
+                notification.soundName = UILocalNotificationDefaultSoundName
+                
+                UIApplication.shared.scheduleLocalNotification(notification)
+            }
+            if AlarmService.shared.switchOnOff["lunch"] == true{
+                let notification = UILocalNotification()
+                
+                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["lunch"]
+                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["lunch"]
+                
+                notification.fireDate = notificationDateComponents.date
+                notification.alertBody = "점심 식사 시간입니다!"
+                notification.alertAction = "점심"
+                notification.soundName = UILocalNotificationDefaultSoundName
+                
+                UIApplication.shared.scheduleLocalNotification(notification)
+            }
+            if AlarmService.shared.switchOnOff["dinner"] == true{
+                let notification = UILocalNotification()
+                
+                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["dinner"]
+                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["dinner"]
+                
+                notification.fireDate = notificationDateComponents.date
+                notification.alertBody = "저녁 식사 시간입니다!"
+                notification.alertAction = "저녁"
+                notification.soundName = UILocalNotificationDefaultSoundName
+                
+                UIApplication.shared.scheduleLocalNotification(notification)
+            }
         }
+        
         
         // 기존 알림 확인
         UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in

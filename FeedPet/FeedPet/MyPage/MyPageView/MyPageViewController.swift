@@ -103,6 +103,8 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let alarmSettingView:AlarmSettingViewController = self.storyboard?.instantiateViewController(withIdentifier: "AlarmSettingViewController") as! AlarmSettingViewController
 
+        let fAQView:FAQViewController = storyboard?.instantiateViewController(withIdentifier: "FAQViewController") as! FAQViewController
+        
         if indexPath.section == 0 && indexPath.row == 0{
             
             self.navigationController?.pushViewController(editInfoView, animated: true)
@@ -121,7 +123,9 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.navigationController?.pushViewController(alarmSettingView, animated: true)
             
         }else if indexPath.section == 2 && indexPath.row == 3{
-            print("FAQ")
+            
+            self.navigationController?.pushViewController(fAQView, animated: true)
+            
         }else if indexPath.section == 2 && indexPath.row == 4 {
             print("이용약관")
         }else if indexPath.section == 2 && indexPath.row == 5 {
