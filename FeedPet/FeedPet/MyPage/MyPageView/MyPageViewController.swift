@@ -136,7 +136,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if MFMailComposeViewController.canSendMail() {
                 let mail = MFMailComposeViewController()
                 mail.mailComposeDelegate = self
-                mail.setCcRecipients(["pcu17@naver.com"])
+                mail.setToRecipients(["kisu9830@gmail.com"])
                 mail.setSubject("문의합니다")
                 
                 guard let AppVersion = userAppVersion else{
