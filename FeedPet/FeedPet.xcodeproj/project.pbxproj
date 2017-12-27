@@ -23,6 +23,7 @@
 		14417CB11FF2DC5D00EA77B3 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14417CB01FF2DC5D00EA77B3 /* FAQViewController.swift */; };
 		14417CB31FF2DF7200EA77B3 /* FAQDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14417CB21FF2DF7200EA77B3 /* FAQDetailViewController.swift */; };
 		14417CB61FF2F06500EA77B3 /* TermsOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14417CB51FF2F06500EA77B3 /* TermsOfUseViewController.swift */; };
+		14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BF2FD21FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift */; };
 		14C19B441FF3DB43001B8229 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14C19B431FF3DB38001B8229 /* MessageUI.framework */; };
 		4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C01C85D1FEB886B0016E674 /* AppDelegate.swift */; };
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
@@ -54,6 +55,7 @@
 		14417CB01FF2DC5D00EA77B3 /* FAQViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
 		14417CB21FF2DF7200EA77B3 /* FAQDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQDetailViewController.swift; sourceTree = "<group>"; };
 		14417CB51FF2F06500EA77B3 /* TermsOfUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUseViewController.swift; sourceTree = "<group>"; };
+		14BF2FD21FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmMealTimePickerViewController.swift; sourceTree = "<group>"; };
 		14C19B431FF3DB38001B8229 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		155F8EE9A3FF90944F5A4F83 /* Pods-FeedPet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedPet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet.debug.xcconfig"; sourceTree = "<group>"; };
 		3219B4369B3766416839B81B /* Pods_FeedPet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FeedPet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,6 +107,7 @@
 				14035C071FF24E95005ABAE0 /* AlarmSettingViewController.swift */,
 				14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */,
 				14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */,
+				14BF2FD21FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift */,
 			);
 			path = AlarmSettingView;
 			sourceTree = "<group>";
@@ -392,6 +395,7 @@
 				14035C231FF24E95005ABAE0 /* SettingCell.swift in Sources */,
 				14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */,
 				14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */,
+				14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */,
 				14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */,
 				14417CB11FF2DC5D00EA77B3 /* FAQViewController.swift in Sources */,
 				14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */,
