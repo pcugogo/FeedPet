@@ -23,6 +23,7 @@
 		14417CB11FF2DC5D00EA77B3 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14417CB01FF2DC5D00EA77B3 /* FAQViewController.swift */; };
 		14417CB31FF2DF7200EA77B3 /* FAQDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14417CB21FF2DF7200EA77B3 /* FAQDetailViewController.swift */; };
 		14417CB61FF2F06500EA77B3 /* TermsOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14417CB51FF2F06500EA77B3 /* TermsOfUseViewController.swift */; };
+		14C19B441FF3DB43001B8229 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14C19B431FF3DB38001B8229 /* MessageUI.framework */; };
 		4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C01C85D1FEB886B0016E674 /* AppDelegate.swift */; };
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
 		4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8641FEB886B0016E674 /* Assets.xcassets */; };
@@ -53,6 +54,7 @@
 		14417CB01FF2DC5D00EA77B3 /* FAQViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
 		14417CB21FF2DF7200EA77B3 /* FAQDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQDetailViewController.swift; sourceTree = "<group>"; };
 		14417CB51FF2F06500EA77B3 /* TermsOfUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUseViewController.swift; sourceTree = "<group>"; };
+		14C19B431FF3DB38001B8229 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		155F8EE9A3FF90944F5A4F83 /* Pods-FeedPet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedPet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet.debug.xcconfig"; sourceTree = "<group>"; };
 		3219B4369B3766416839B81B /* Pods_FeedPet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FeedPet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A3C22C8F7964B2242907916 /* Pods-FeedPet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedPet.release.xcconfig"; path = "Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet.release.xcconfig"; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14C19B441FF3DB43001B8229 /* MessageUI.framework in Frameworks */,
 				6ACED27F2266C806A26F1AEA /* Pods_FeedPet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,8 +103,8 @@
 			children = (
 				14035C061FF24E95005ABAE0 /* AlarmService.swift */,
 				14035C071FF24E95005ABAE0 /* AlarmSettingViewController.swift */,
-				14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */,
 				14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */,
+				14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */,
 			);
 			path = AlarmSettingView;
 			sourceTree = "<group>";
@@ -148,6 +151,7 @@
 		4004771B0EC50C50DB0E50C7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				14C19B431FF3DB38001B8229 /* MessageUI.framework */,
 				3219B4369B3766416839B81B /* Pods_FeedPet.framework */,
 			);
 			name = Frameworks;

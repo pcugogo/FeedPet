@@ -47,8 +47,9 @@ class TotalAlarmSwitchCell: UITableViewCell {
         if sender.isOn == false{
             AlarmService.shared.switchOnOff = ["total":false,"morning":false,"lunch":false,"dinner":false]
 
-            UserDefaults.standard.set(AlarmService.shared.switchOnOff, forKey: "AlarmOnOff")
+            UserDefaults.standard.set(AlarmService.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
             
+            //removeAllPendingNotificationRequests() 토탈스위치가 off일때 모든 알람을 지워줍니다.
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             
             // 기존 알림 확인
@@ -62,18 +63,18 @@ class TotalAlarmSwitchCell: UITableViewCell {
         }else{
             AlarmService.shared.switchOnOff = ["total":true,"morning":true,"lunch":true,"dinner":true]
             
-            UserDefaults.standard.set(AlarmService.shared.switchOnOff, forKey: "AlarmOnOff")
+            UserDefaults.standard.set(AlarmService.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
             
-            setMealTimeAlarmNotification()
+            setMealTimeAlarmNotification() //토탈스위치가 on일때 모든 알람을 켜줍니다.
             
             tvReload()
         }
 
         print(AlarmService.shared.switchOnOff)
         
-        UserDefaults.standard.setValue(AlarmService.shared.switchOnOff, forKey: "AlarmOnOff")
+        UserDefaults.standard.setValue(AlarmService.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
         
-        print(UserDefaults.standard.dictionary(forKey: "AlarmOnOff") ?? "알람OnOff값이 없음")
+        print(UserDefaults.standard.dictionary(forKey: userDefaultsName.alarmOnOff) ?? "알람OnOff값이 없음")
     }
     
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MessageUI
 
 enum enumSettingSection:Int { //섹션 이름
     case Profile = 0
@@ -15,19 +16,19 @@ enum enumSettingSection:Int { //섹션 이름
 }
 
 
-class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,MFMailComposeViewControllerDelegate {
 
     let settingMenuName = [ "버전정보","알람설정","FAQ","이용약관","문의하기","팀소개","로그아웃","탈퇴하기" ]
     //설정 메뉴 이름들
+    
+    let userSystemVersion = UIDevice.current.systemVersion // 현재 사용자 iOS 버전
+    let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-       
-        
         
     }
 
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -104,6 +105,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let alarmSettingView:AlarmSettingViewController = self.storyboard?.instantiateViewController(withIdentifier: "AlarmSettingViewController") as! AlarmSettingViewController
 
         let fAQView:FAQViewController = storyboard?.instantiateViewController(withIdentifier: "FAQViewController") as! FAQViewController
+        let termsOfUseView:TermsOfUseViewController = storyboard?.instantiateViewController(withIdentifier: "TermsOfUseViewController") as! TermsOfUseViewController
         
         if indexPath.section == 0 && indexPath.row == 0{
             
@@ -127,9 +129,30 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.navigationController?.pushViewController(fAQView, animated: true)
             
         }else if indexPath.section == 2 && indexPath.row == 4 {
-            print("이용약관")
+            
+            self.navigationController?.pushViewController(termsOfUseView, animated: true)
+            
         }else if indexPath.section == 2 && indexPath.row == 5 {
-            print("문의하기")
+            if MFMailComposeViewController.canSendMail() {
+                let mail = MFMailComposeViewController()
+                mail.mailComposeDelegate = self
+                mail.setCcRecipients(["pcu17@naver.com"])
+                mail.setSubject("문의합니다")
+                
+                guard let AppVersion = userAppVersion else{
+                    return
+                }
+                
+                mail.setMessageBody("* iOS Version: \(userSystemVersion) / App Version: \(String(describing: AppVersion))\n\n문의 내용을 입력해주세요", isHTML: false)
+                present(mail, animated: true)
+            } else {
+                let mailSendFail:UIAlertController = UIAlertController(title: "문의하기", message: "기기에서 메일을 설정해주세요", preferredStyle: .alert) //문구 어떻게?
+                let okBtn:UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                mailSendFail.addAction(okBtn)
+                
+                self.present(mailSendFail, animated: true, completion: nil)
+                print("메일 보내기 실패")
+            }
         }else if indexPath.section == 2 && indexPath.row == 6 {
             print("팀소개")
         }else if indexPath.section == 2 && indexPath.row == 7 {
@@ -166,7 +189,27 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
             return 20
         }
     }
-
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        switch result {
+        case .cancelled:
+            print("취소")
+        case .saved:
+            print("임시저장")
+        case .sent:
+            let mailSendSuccessfulAlert:UIAlertController = UIAlertController(title: "문의하기", message: "메일 보내기 성공", preferredStyle: .alert) //문구 어떻게?
+            
+            let okBtn:UIAlertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            mailSendSuccessfulAlert.addAction(okBtn)
+            
+            self.present(mailSendSuccessfulAlert, animated: true, completion: nil)
+            print("전송완료")
+        default:
+            print("전송실패")
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
 }
 
 
