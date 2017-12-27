@@ -73,7 +73,7 @@ class TotalAlarmSwitchCell: UITableViewCell {
         
         UserDefaults.standard.setValue(AlarmService.shared.switchOnOff, forKey: "AlarmOnOff")
         
-        print(UserDefaults.standard.setValue(AlarmService.shared.switchOnOff, forKey: "AlarmOnOff"))
+        print(UserDefaults.standard.dictionary(forKey: "AlarmOnOff") ?? "알람OnOff값이 없음")
     }
     
 }

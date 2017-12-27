@@ -111,8 +111,8 @@
 		14035C111FF24E95005ABAE0 /* MyPageView */ = {
 			isa = PBXGroup;
 			children = (
-				14035C121FF24E95005ABAE0 /* MyMenuCell.swift */,
 				14035C131FF24E95005ABAE0 /* MyPageViewController.swift */,
+				14035C121FF24E95005ABAE0 /* MyMenuCell.swift */,
 				14035C141FF24E95005ABAE0 /* ProfileCell.swift */,
 				14035C151FF24E95005ABAE0 /* SettingCell.swift */,
 				14035C161FF24E95005ABAE0 /* SettingHeaderCell.swift */,
@@ -504,7 +504,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FeedPet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gisuhwang.FeedPet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -521,7 +521,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FeedPet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gisuhwang.FeedPet;
 				PRODUCT_NAME = "$(TARGET_NAME)";

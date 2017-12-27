@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum enumSettingSection:Int {
+enum enumSettingSection:Int { //섹션 이름
     case Profile = 0
     case MyMenu = 1
     case Setting = 2

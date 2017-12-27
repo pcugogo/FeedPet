@@ -45,6 +45,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             AlarmService.shared.mealTimeMinute = mealTimeMinuteDate as! [String:Int]
         }
         
+        
         formatter.locale = locKo
         timePickerViewOut.locale = locKo
         
@@ -179,6 +180,8 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         // 01. UNMutableNotificationContent
         let notificationContent = UNMutableNotificationContent()
         
+        notificationContent.sound = UNNotificationSound.default()
+        
         if AlarmService.shared.switchOnOff["morning"] == true{
             
             notificationDateComponents.hour = AlarmService.shared.mealTimeHour["morning"]
@@ -246,9 +249,6 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             print("///// notificationRequests detail- 7892: \n", notificationRequests)
         }
         
-        notificationContent.sound = UNNotificationSound.default()
-        
-       
     }
     
     
@@ -267,7 +267,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         self.navigationController?.popViewController(animated: true)
     }
     @IBAction func saveBtnAction(_ sender: UIBarButtonItem) {
-        UserDefaults.standard.set(AlarmService.shared.switchOnOff, forKey: "AlarmOnOff")
+      
     
     }
     
@@ -328,13 +328,15 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         
         UserDefaults.standard.setValue(AlarmService.shared.switchOnOff, forKey: "AlarmOnOff")
         
-        print(UserDefaults.standard.setValue(AlarmService.shared.switchOnOff, forKey: "AlarmOnOff"))
+        print(UserDefaults.standard.dictionary(forKey: "AlarmOnOff") ?? "알람OnOff값이 없음")
         setMealTimeAlarmNotification()
         
         
         
         timePickerViewOut.isHidden = true
         timePickConfirmBtnOut.isHidden = true
+        
+       
     }
     
 }

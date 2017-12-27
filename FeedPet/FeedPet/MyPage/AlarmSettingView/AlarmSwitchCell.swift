@@ -101,7 +101,7 @@ class AlarmSwitchCell: UITableViewCell {
         }
         
         UserDefaults.standard.setValue(AlarmService.shared.switchOnOff, forKey: "AlarmOnOff")
-        print("=====================UserDefaults Set=====================",UserDefaults.standard.setValue(AlarmService.shared.switchOnOff, forKey: "AlarmOnOff"))
+        print("=====================UserDefaults Set=====================",UserDefaults.standard.dictionary(forKey: "AlarmOnOff") ?? "알람OnOff값이 없음")
         
     }
     //토탈 스위치는 모든 스위치를 끄고 켤 수 있다 일반 스위치는 하나가 켜지면 토탈 스위치도 켜지고 일반스위치가 다꺼지면 토탈 스위치도 꺼진다
