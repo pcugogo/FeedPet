@@ -105,9 +105,9 @@
 			children = (
 				14035C061FF24E95005ABAE0 /* AlarmService.swift */,
 				14035C071FF24E95005ABAE0 /* AlarmSettingViewController.swift */,
+				14BF2FD21FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift */,
 				14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */,
 				14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */,
-				14BF2FD21FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift */,
 			);
 			path = AlarmSettingView;
 			sourceTree = "<group>";

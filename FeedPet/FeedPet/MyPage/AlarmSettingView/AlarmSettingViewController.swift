@@ -23,7 +23,8 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        //전에 입력한 정보들을 불러온다
         if let alarmOnOffData = UserDefaults.standard.dictionary(forKey: userDefaultsName.alarmOnOff){
             AlarmService.shared.switchOnOff = alarmOnOffData as! [String : Bool]
         }
@@ -46,9 +47,6 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         
         
         
-        
-//        let center = UNUserNotificationCenter.current() // 로컬 및 원격 Notification에 대한 권한 요청
-//        center.delegate = self
         UNUserNotificationCenter.current().requestAuthorization(
             options: [.alert,.sound,.badge],
             completionHandler: { (granted,error) in
@@ -56,13 +54,11 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 if !granted{
                     
                     // 사용자가 직접 iOS 설정에서 알림을 off 하는 케이스 예외처리
-                    //                    if !(granted) {
-                    //                        // 아래의 세팅을 하지 않으면, notification들이 쌓여 있다가, 알림을 on 할 때, 터질 가능성이 있는 케이스의 예외처리입니다.
+                    // 아래의 세팅을 하지 않으면, notification들이 쌓여 있다가, 알림을 on 할 때, 터질 가능성이 있는 케이스의 예외처리입니다.
                     UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
                     AlarmService.shared.switchOnOff = ["total":false,"morning":false,"lunch":false,"dinner":false]
                     UserDefaults.standard.set(AlarmService.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
-                    
-                    //                    }
+
                 }
         })
     }
@@ -129,7 +125,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             cellIdentificationNumber = 1
             alarmMealTimePickerView.cellIdentificationNumber = 1
             
-            alarmMealTimePickerView.delegate = self
+            alarmMealTimePickerView.delegate = self //델리게이트 권한 위임
             
             print("morning",AlarmService.shared.mealTime["morning"]!)
             self.present(alarmMealTimePickerView, animated: true, completion: nil)
@@ -174,6 +170,8 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             //알람 제목,내용,뱃지,알람사운드 등 세팅들을 설정할 수 있습니다.
             notificationContent.sound = UNNotificationSound.default() // 사운드를 기본으로 설정
             
+            
+            //각각 아침,점심,저녁 각각 알람마다 세팅
             if AlarmService.shared.switchOnOff["morning"] == true{
                 
                 notificationDateComponents.hour = AlarmService.shared.mealTimeHour["morning"]
@@ -288,144 +286,16 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         }
         
     }
-    
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        self.view.endEditing(true)
-//        timePickerViewOut.isHidden = true
-//        timePickConfirmBtnOut.isHidden = true
-//    }
 
     
-    
-    
-    
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
-        UserDefaults.standard.set(AlarmService.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
+        
         self.navigationController?.popViewController(animated: true)
     }
     
     
 
     
-    @IBAction func timePickConfirmBtnAction(_ sender: UIButton) {
-        
-//        tableView.isHidden = false
-//
-//        formatter.locale = locKo // 포메터 지역을 한국(Ko)으로 설정
-//        formatter.dateFormat = "aa hh:mm" //ex) 오전 11:00
-//
-//        dateFormatterAMPM.dateFormat = "aa"
-//        dateFormatterHour.dateFormat = "hh"
-//        dateFormatterMinute.dateFormat = "mm"
-//
-//        let dateString = formatter.string(from: timePickerViewOut.date)
-//        let hourString = dateFormatterHour.string(from: timePickerViewOut.date)
-//        let minuteStr = dateFormatterMinute.string(from: timePickerViewOut.date)
-//        let AMPMStr = dateFormatterAMPM.string(from: timePickerViewOut.date)
-//        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",hourString)
-//        if cellIdentificationNumber == 1{
-//
-//            AlarmService.shared.mealTime["morning"] = dateString          //셀의 레이블에 담을 피커뷰의 시간을 담습니다
-//
-//            AlarmService.shared.mealTimeAMPM["morning"] = AMPMStr
-//
-//            if AlarmService.shared.mealTimeAMPM["morning"] == "AM" || AlarmService.shared.mealTimeAMPM["morning"] == "오전" {
-//                if hourString == "12"{
-//                    AlarmService.shared.mealTimeHour["morning"] = 0 //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
-//                }else{
-//                AlarmService.shared.mealTimeHour["morning"] = Int(hourString)
-//                }
-//            }else if AlarmService.shared.mealTimeAMPM["morning"] == "PM" || AlarmService.shared.mealTimeAMPM["morning"] == "오후"{
-//                if hourString == "12"{
-//                    AlarmService.shared.mealTimeHour["morning"] = Int(hourString)
-//                }else{
-//                    AlarmService.shared.mealTimeHour["morning"] = Int(hourString)! + 12 //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
-//                }
-//
-//            }
-//
-//            AlarmService.shared.mealTimeMinute["morning"] = Int(minuteStr) //피커뷰의 분을 담습니다
-//
-//            AlarmService.shared.switchOnOff["total"] = true
-//            AlarmService.shared.switchOnOff["morning"] = true
-//
-//            tableView.reloadData()
-//
-//        }else if cellIdentificationNumber == 2{
-//
-//            AlarmService.shared.mealTime["lunch"] = dateString
-//
-//
-//            AlarmService.shared.mealTimeAMPM["lunch"] = AMPMStr
-//
-//            if AlarmService.shared.mealTimeAMPM["lunch"] == "AM" || AlarmService.shared.mealTimeAMPM["lunch"] == "오전" {
-//                if hourString == "12"{
-//                    AlarmService.shared.mealTimeHour["lunch"] = 0 //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
-//                }else{
-//                    AlarmService.shared.mealTimeHour["lunch"] = Int(hourString)
-//                }
-//            }else if AlarmService.shared.mealTimeAMPM["lunch"] == "PM" || AlarmService.shared.mealTimeAMPM["lunch"] == "오후"{
-//                if hourString == "12"{
-//                    AlarmService.shared.mealTimeHour["lunch"] = Int(hourString)
-//                }else{
-//                    AlarmService.shared.mealTimeHour["lunch"] = Int(hourString)! + 12 //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
-//                }
-//
-//            }
-//
-//            AlarmService.shared.mealTimeMinute["lunch"] = Int(minuteStr)
-//
-//            AlarmService.shared.switchOnOff["total"] = true
-//            AlarmService.shared.switchOnOff["lunch"] = true
-//
-//            tableView.reloadData()
-//
-//        }else if cellIdentificationNumber == 3{
-//
-//            AlarmService.shared.mealTime["dinner"] = dateString
-//
-//            AlarmService.shared.mealTimeAMPM["dinner"] = AMPMStr
-//
-//            if AlarmService.shared.mealTimeAMPM["dinner"] == "AM" || AlarmService.shared.mealTimeAMPM["dinner"] == "오전" {
-//                if hourString == "12"{
-//                    AlarmService.shared.mealTimeHour["dinner"] = 0 //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
-//                }else{
-//                    AlarmService.shared.mealTimeHour["dinner"] = Int(hourString)
-//                }
-//            }else if AlarmService.shared.mealTimeAMPM["dinner"] == "PM" || AlarmService.shared.mealTimeAMPM["dinner"] == "오후"{
-//                if hourString == "12"{
-//                    AlarmService.shared.mealTimeHour["dinner"] = Int(hourString)
-//                }else{
-//                    AlarmService.shared.mealTimeHour["dinner"] = Int(hourString)! + 12 //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
-//                }
-//
-//            }
-//
-//            AlarmService.shared.mealTimeMinute["dinner"] = Int(minuteStr)
-//
-//            AlarmService.shared.switchOnOff["total"] = true
-//            AlarmService.shared.switchOnOff["dinner"] = true
-//
-//            tableView.reloadData()
-//
-//        }
-//
-//        UserDefaults.standard.setValue(AlarmService.shared.mealTime, forKey: userDefaultsName.mealTime)
-//        UserDefaults.standard.setValue(AlarmService.shared.mealTimeHour, forKey: userDefaultsName.mealTimeHour)
-//        UserDefaults.standard.setValue(AlarmService.shared.mealTimeMinute, forKey: userDefaultsName.mealTimeMinute)
-//        UserDefaults.standard.setValue(AlarmService.shared.mealTimeAMPM, forKey: userDefaultsName.mealTimeAMPM)
-//        UserDefaults.standard.setValue(AlarmService.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
-//
-//        print(UserDefaults.standard.dictionary(forKey: userDefaultsName.alarmOnOff) ?? "알람OnOff값이 없음")
-//        print(AlarmService.shared.mealTimeAMPM)
-//
-//        setMealTimeAlarmNotification()
-//
-//        timePickerViewOut.isHidden = true
-//        timePickConfirmBtnOut.isHidden = true
-//
-//
-    }
+
     
 }
