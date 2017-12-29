@@ -26,41 +26,44 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         
         //전에 입력한 정보들을 불러온다
         if let alarmOnOffData = UserDefaults.standard.dictionary(forKey: userDefaultsName.alarmOnOff){
-            AlarmService.shared.switchOnOff = alarmOnOffData as! [String : Bool]
+            MyPageDataCenter.shared.switchOnOff = alarmOnOffData as! [String : Bool]
         }
         
         if let mealTimeData = UserDefaults.standard.dictionary(forKey: userDefaultsName.mealTime){
-            AlarmService.shared.mealTime = mealTimeData as! [String:String]
+            MyPageDataCenter.shared.mealTime = mealTimeData as! [String:String]
         }
      
         if let mealTimeAMPM = UserDefaults.standard.dictionary(forKey: userDefaultsName.mealTimeAMPM){
-            AlarmService.shared.mealTimeAMPM = mealTimeAMPM as! [String:String]
+            MyPageDataCenter.shared.mealTimeAMPM = mealTimeAMPM as! [String:String]
         }
         
         if let mealTimeHourDate = UserDefaults.standard.dictionary(forKey: userDefaultsName.mealTimeHour){
-            AlarmService.shared.mealTimeHour = mealTimeHourDate as! [String:Int]
+            MyPageDataCenter.shared.mealTimeHour = mealTimeHourDate as! [String:Int]
         }
         
         if let mealTimeMinuteDate = UserDefaults.standard.dictionary(forKey: userDefaultsName.mealTimeMinute){
-            AlarmService.shared.mealTimeMinute = mealTimeMinuteDate as! [String:Int]
+            MyPageDataCenter.shared.mealTimeMinute = mealTimeMinuteDate as! [String:Int]
         }
         
         
-        
-        UNUserNotificationCenter.current().requestAuthorization(
-            options: [.alert,.sound,.badge],
-            completionHandler: { (granted,error) in
-                self.isGrantedNotificationAccess = granted
-                if !granted{
-                    
-                    // 사용자가 직접 iOS 설정에서 알림을 off 하는 케이스 예외처리
-                    // 아래의 세팅을 하지 않으면, notification들이 쌓여 있다가, 알림을 on 할 때, 터질 가능성이 있는 케이스의 예외처리입니다.
-                    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                    AlarmService.shared.switchOnOff = ["total":false,"morning":false,"lunch":false,"dinner":false]
-                    UserDefaults.standard.set(AlarmService.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
-
-                }
-        })
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: [.alert,.sound,.badge],
+                completionHandler: { (granted,error) in
+                    self.isGrantedNotificationAccess = granted
+                    if !granted{
+                        
+                        // 사용자가 직접 iOS 설정에서 알림을 off 하는 케이스 예외처리
+                        // 아래의 세팅을 하지 않으면, notification들이 쌓여 있다가, 알림을 on 할 때, 터질 가능성이 있는 케이스의 예외처리입니다.
+                        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                        MyPageDataCenter.shared.switchOnOff = ["total":false,"morning":false,"lunch":false,"dinner":false]
+                        UserDefaults.standard.set(MyPageDataCenter.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
+                        
+                    }
+            })
+        }else{
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -89,7 +92,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         if indexPath.row == 0 {
            
             let totalSwitchCell:TotalAlarmSwitchCell = tableView.dequeueReusableCell(withIdentifier: "TotalAlarmSwitchCell", for: indexPath) as! TotalAlarmSwitchCell
-                totalSwitchCell.totalAlarmSwitchOut.isOn = AlarmService.shared.switchOnOff["total"]!
+                totalSwitchCell.totalAlarmSwitchOut.isOn = MyPageDataCenter.shared.switchOnOff["total"]!
                 totalSwitchCell.delegate = self 
             
             return totalSwitchCell
@@ -100,17 +103,17 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             switchCell.delegate = self
             
             if indexPath.row == 1{
-                switchCell.mealTimeLb.text = AlarmService.shared.mealTime["morning"]!
+                switchCell.mealTimeLb.text = MyPageDataCenter.shared.mealTime["morning"]!
                 switchCell.indexPath = indexPath.row
-                switchCell.alarmSwitchOut.isOn = AlarmService.shared.switchOnOff["morning"]!
+                switchCell.alarmSwitchOut.isOn = MyPageDataCenter.shared.switchOnOff["morning"]!
             }else if indexPath.row == 2{
-                switchCell.mealTimeLb.text = AlarmService.shared.mealTime["lunch"]!
+                switchCell.mealTimeLb.text = MyPageDataCenter.shared.mealTime["lunch"]!
                 switchCell.indexPath = indexPath.row
-                switchCell.alarmSwitchOut.isOn = AlarmService.shared.switchOnOff["lunch"]!
+                switchCell.alarmSwitchOut.isOn = MyPageDataCenter.shared.switchOnOff["lunch"]!
             }else if indexPath.row == 3{
-                switchCell.mealTimeLb.text = AlarmService.shared.mealTime["dinner"]!
+                switchCell.mealTimeLb.text = MyPageDataCenter.shared.mealTime["dinner"]!
                 switchCell.indexPath = indexPath.row
-                switchCell.alarmSwitchOut.isOn = AlarmService.shared.switchOnOff["dinner"]!
+                switchCell.alarmSwitchOut.isOn = MyPageDataCenter.shared.switchOnOff["dinner"]!
             }
             
             return switchCell
@@ -127,7 +130,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             
             alarmMealTimePickerView.delegate = self //델리게이트 권한 위임
             
-            print("morning",AlarmService.shared.mealTime["morning"]!)
+            print("morning",MyPageDataCenter.shared.mealTime["morning"]!)
             self.present(alarmMealTimePickerView, animated: true, completion: nil)
         }else if indexPath.row == 2{
             cellIdentificationNumber = 2
@@ -135,7 +138,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             
             alarmMealTimePickerView.delegate = self
             
-            print("lunch",AlarmService.shared.mealTime["lunch"]!)
+            print("lunch",MyPageDataCenter.shared.mealTime["lunch"]!)
             self.present(alarmMealTimePickerView, animated: true, completion: nil)
         }else if indexPath.row == 3{
             cellIdentificationNumber = 3
@@ -143,7 +146,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             
             alarmMealTimePickerView.delegate = self
             
-            print("dinner",AlarmService.shared.mealTime["dinner"]!)
+            print("dinner",MyPageDataCenter.shared.mealTime["dinner"]!)
             self.present(alarmMealTimePickerView, animated: true, completion: nil)
         }
     }
@@ -172,19 +175,19 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             
             
             //각각 아침,점심,저녁 각각 알람마다 세팅
-            if AlarmService.shared.switchOnOff["morning"] == true{
+            if MyPageDataCenter.shared.switchOnOff["morning"] == true{
                 
-                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["morning"]
+                notificationDateComponents.hour = MyPageDataCenter.shared.mealTimeHour["morning"]
                 //시간 세팅해준 포메터에 피커뷰에서 받은 시간을 세팅
                 
-                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["morning"]
+                notificationDateComponents.minute = MyPageDataCenter.shared.mealTimeMinute["morning"]
                 //분 세팅해준 포메터에 피커뷰에서 받은 분을 세팅
                 notificationContent.body = "아침 식사 시간입니다!"
                 
                 // 02. UNTimeIntervalNotificationTrigger
                 //여기서 시간과 매칭하는 트리거를 사용할 수도 있고 TimeIntervald을 체크하는 트리거를 사용할 수도 있습니다 반복여부도 설정가능
                 let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: notificationDateComponents, repeats: true)
-               
+                
                 // 03. UNNotificationRequest 알림 요청 객체 생성
                 let morningRequest: UNNotificationRequest = UNNotificationRequest(identifier: "morningAlarm", content: notificationContent, trigger: notificationTrigger)
                 
@@ -196,10 +199,10 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 })
                 
             }
-            if AlarmService.shared.switchOnOff["lunch"] == true{
+            if MyPageDataCenter.shared.switchOnOff["lunch"] == true{
                 
-                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["lunch"]
-                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["lunch"]
+                notificationDateComponents.hour = MyPageDataCenter.shared.mealTimeHour["lunch"]
+                notificationDateComponents.minute = MyPageDataCenter.shared.mealTimeMinute["lunch"]
                 
                 notificationContent.body = "점심 식사 시간입니다!"
                 
@@ -216,11 +219,11 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 })
                 
             }
-            if AlarmService.shared.switchOnOff["dinner"] == true{
+            if MyPageDataCenter.shared.switchOnOff["dinner"] == true{
                 notificationContent.body = "저녁 식사 시간입니다!"
                 
-                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["dinner"]
-                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["dinner"]
+                notificationDateComponents.hour = MyPageDataCenter.shared.mealTimeHour["dinner"]
+                notificationDateComponents.minute = MyPageDataCenter.shared.mealTimeMinute["dinner"]
                 
                 // 02. UNTimeIntervalNotificationTrigger
                 let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: notificationDateComponents, repeats: true)
@@ -236,12 +239,12 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 
             }
         }else{ // 10.0버전 미만 버전
-            if AlarmService.shared.switchOnOff["morning"] == true{
-               
+            if MyPageDataCenter.shared.switchOnOff["morning"] == true{
+                
                 let notification = UILocalNotification()
                 
-                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["morning"]
-                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["morning"]
+                notificationDateComponents.hour = MyPageDataCenter.shared.mealTimeHour["morning"]
+                notificationDateComponents.minute = MyPageDataCenter.shared.mealTimeMinute["morning"]
                 
                 notification.fireDate = notificationDateComponents.date
                 notification.alertBody = "아침 식사 시간입니다!"
@@ -250,11 +253,11 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 
                 UIApplication.shared.scheduleLocalNotification(notification)
             }
-            if AlarmService.shared.switchOnOff["lunch"] == true{
+            if MyPageDataCenter.shared.switchOnOff["lunch"] == true{
                 let notification = UILocalNotification()
                 
-                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["lunch"]
-                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["lunch"]
+                notificationDateComponents.hour = MyPageDataCenter.shared.mealTimeHour["lunch"]
+                notificationDateComponents.minute = MyPageDataCenter.shared.mealTimeMinute["lunch"]
                 
                 notification.fireDate = notificationDateComponents.date
                 notification.alertBody = "점심 식사 시간입니다!"
@@ -263,11 +266,11 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 
                 UIApplication.shared.scheduleLocalNotification(notification)
             }
-            if AlarmService.shared.switchOnOff["dinner"] == true{
+            if MyPageDataCenter.shared.switchOnOff["dinner"] == true{
                 let notification = UILocalNotification()
                 
-                notificationDateComponents.hour = AlarmService.shared.mealTimeHour["dinner"]
-                notificationDateComponents.minute = AlarmService.shared.mealTimeMinute["dinner"]
+                notificationDateComponents.hour = MyPageDataCenter.shared.mealTimeHour["dinner"]
+                notificationDateComponents.minute = MyPageDataCenter.shared.mealTimeMinute["dinner"]
                 
                 notification.fireDate = notificationDateComponents.date
                 notification.alertBody = "저녁 식사 시간입니다!"
@@ -278,13 +281,16 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             }
         }
         
-        
-        // 기존 알림 확인
-        UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in
-            print("///// notificationRequests.count- 7892: \n", notificationRequests.count)
-            print("///// notificationRequests detail- 7892: \n", notificationRequests)
+        if #available(iOS 10.0, *) {
+            // 기존 알림 확인
+            UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in
+                print("///// notificationRequests.count- 7892: \n", notificationRequests.count)
+                print("///// notificationRequests detail- 7892: \n", notificationRequests)
+            }
+            
+        }else{
+            
         }
-        
     }
 
     

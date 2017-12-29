@@ -10,7 +10,7 @@ import UIKit
 import UserNotifications
 
 class AlarmSwitchCell: UITableViewCell {
-
+    
     var delegate: CustomCellUpdater?
     var indexPath:Int = 0
     
@@ -21,14 +21,14 @@ class AlarmSwitchCell: UITableViewCell {
         super.awakeFromNib()
         
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
     }
     
-    func tvReload() {
+    func tableViewReload() {
         delegate?.updateTableView()
     }
     
@@ -40,68 +40,74 @@ class AlarmSwitchCell: UITableViewCell {
         
         
         if indexPath == 1{
-            AlarmService.shared.switchOnOff["morning"] = sender.isOn
+            MyPageDataCenter.shared.switchOnOff["morning"] = sender.isOn
             if sender.isOn == true{
-                AlarmService.shared.switchOnOff["total"] = true
+                MyPageDataCenter.shared.switchOnOff["total"] = true
                 
                 setMealTimeAlarmNotification()
                 
             }else if sender.isOn == false{
-                
-                //removePendingNotificationRequests(withIdentifiers: [""]) 스위치가 off일때 알람이름을 선택하여 해당 알람을 지웁니다.
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["morningAlarm"])
-                
-                if AlarmService.shared.switchOnOff["morning"] == false &&  AlarmService.shared.switchOnOff["lunch"] == false && AlarmService.shared.switchOnOff["dinner"] == false {
-                    AlarmService.shared.switchOnOff["total"] = false
-                    tvReload()
-                }
-            }
-            tvReload()
-            print(AlarmService.shared.switchOnOff)
-        }else if indexPath == 2{
-            AlarmService.shared.switchOnOff["lunch"] = sender.isOn
-            if sender.isOn == true{
-                
-                AlarmService.shared.switchOnOff["total"] = true
-                
-                setMealTimeAlarmNotification()
-                
-            }else if sender.isOn == false{
-                
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["lunchAlarm"])
-                
-                if AlarmService.shared.switchOnOff["morning"] == false &&  AlarmService.shared.switchOnOff["lunch"] == false && AlarmService.shared.switchOnOff["dinner"] == false {
+                if #available(iOS 10.0, *) {
+                    //removePendingNotificationRequests(withIdentifiers: [""]) 스위치가 off일때 알람이름을 선택하여 해당 알람을 지웁니다.
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["morningAlarm"])
+                }else{
                     
-                    AlarmService.shared.switchOnOff["total"] = false
-                    tvReload()
+                }
+                if MyPageDataCenter.shared.switchOnOff["morning"] == false &&  MyPageDataCenter.shared.switchOnOff["lunch"] == false && MyPageDataCenter.shared.switchOnOff["dinner"] == false {
+                    MyPageDataCenter.shared.switchOnOff["total"] = false
+                    tableViewReload()
                 }
             }
-            tvReload()
-            print(AlarmService.shared.switchOnOff)
-        }else if indexPath == 3{
-            AlarmService.shared.switchOnOff["dinner"] = sender.isOn
+            tableViewReload()
+            print(MyPageDataCenter.shared.switchOnOff)
+        }else if indexPath == 2{
+            MyPageDataCenter.shared.switchOnOff["lunch"] = sender.isOn
             if sender.isOn == true{
                 
-                AlarmService.shared.switchOnOff["total"] = true
+                MyPageDataCenter.shared.switchOnOff["total"] = true
                 
                 setMealTimeAlarmNotification()
                 
             }else if sender.isOn == false{
+                if #available(iOS 10.0, *) {
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["lunchAlarm"])
+                }else{
+                    
+                }
+                if MyPageDataCenter.shared.switchOnOff["morning"] == false &&  MyPageDataCenter.shared.switchOnOff["lunch"] == false && MyPageDataCenter.shared.switchOnOff["dinner"] == false {
+                    
+                    MyPageDataCenter.shared.switchOnOff["total"] = false
+                    tableViewReload()
+                }
+            }
+            tableViewReload()
+            print(MyPageDataCenter.shared.switchOnOff)
+        }else if indexPath == 3{
+            MyPageDataCenter.shared.switchOnOff["dinner"] = sender.isOn
+            if sender.isOn == true{
                 
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dinnerAlarm"])
+                MyPageDataCenter.shared.switchOnOff["total"] = true
                 
-                if AlarmService.shared.switchOnOff["morning"] == false &&  AlarmService.shared.switchOnOff["lunch"] == false && AlarmService.shared.switchOnOff["dinner"] == false {
-                    AlarmService.shared.switchOnOff["total"] = false
-                    tvReload()
+                setMealTimeAlarmNotification()
+                
+            }else if sender.isOn == false{
+                if #available(iOS 10.0, *) {
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dinnerAlarm"])
+                }else{
+                    
+                }
+                if MyPageDataCenter.shared.switchOnOff["morning"] == false &&  MyPageDataCenter.shared.switchOnOff["lunch"] == false && MyPageDataCenter.shared.switchOnOff["dinner"] == false {
+                    MyPageDataCenter.shared.switchOnOff["total"] = false
+                    tableViewReload()
                 }
             }
             
-            tvReload()
-            print(AlarmService.shared.switchOnOff)
+            tableViewReload()
+            print(MyPageDataCenter.shared.switchOnOff)
             
         }
         
-        UserDefaults.standard.setValue(AlarmService.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
+        UserDefaults.standard.setValue(MyPageDataCenter.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
         print("=====================UserDefaults Set=====================",UserDefaults.standard.dictionary(forKey: userDefaultsName.alarmOnOff) ?? "알람OnOff값이 없음")
         
     }

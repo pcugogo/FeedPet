@@ -63,99 +63,99 @@ class AlarmMealTimePickerViewController: UIViewController {
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",hourString)
         if cellIdentificationNumber == 1{
             
-            AlarmService.shared.mealTime["morning"] = dateString          //셀의 레이블에 담을 피커뷰의 시간을 담습니다
+            MyPageDataCenter.shared.mealTime["morning"] = dateString          //셀의 레이블에 담을 피커뷰의 시간을 담습니다
             
-            AlarmService.shared.mealTimeAMPM["morning"] = AMPMStr
+            MyPageDataCenter.shared.mealTimeAMPM["morning"] = AMPMStr
             
-            if AlarmService.shared.mealTimeAMPM["morning"] == "AM" || AlarmService.shared.mealTimeAMPM["morning"] == "오전" {
+            if MyPageDataCenter.shared.mealTimeAMPM["morning"] == "AM" || MyPageDataCenter.shared.mealTimeAMPM["morning"] == "오전" {
                 if hourString == "12"{
-                    AlarmService.shared.mealTimeHour["morning"] = 0 //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
+                    MyPageDataCenter.shared.mealTimeHour["morning"] = 0 //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
                 }else{
-                    AlarmService.shared.mealTimeHour["morning"] = Int(hourString)
+                    MyPageDataCenter.shared.mealTimeHour["morning"] = Int(hourString)
                 }
-            }else if AlarmService.shared.mealTimeAMPM["morning"] == "PM" || AlarmService.shared.mealTimeAMPM["morning"] == "오후"{
+            }else if MyPageDataCenter.shared.mealTimeAMPM["morning"] == "PM" || MyPageDataCenter.shared.mealTimeAMPM["morning"] == "오후"{
                 if hourString == "12"{
-                    AlarmService.shared.mealTimeHour["morning"] = Int(hourString)
+                    MyPageDataCenter.shared.mealTimeHour["morning"] = Int(hourString)
                 }else{
-                    AlarmService.shared.mealTimeHour["morning"] = Int(hourString)! + 12 //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
+                    MyPageDataCenter.shared.mealTimeHour["morning"] = Int(hourString)! + 12 //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
                 }
                 
             }
             
-            AlarmService.shared.mealTimeMinute["morning"] = Int(minuteStr) //피커뷰의 분을 담습니다
+            MyPageDataCenter.shared.mealTimeMinute["morning"] = Int(minuteStr) //피커뷰의 분을 담습니다
             
-            AlarmService.shared.switchOnOff["total"] = true
-            AlarmService.shared.switchOnOff["morning"] = true
+            MyPageDataCenter.shared.switchOnOff["total"] = true
+            MyPageDataCenter.shared.switchOnOff["morning"] = true
             
            
             
         }else if cellIdentificationNumber == 2{
             
-            AlarmService.shared.mealTime["lunch"] = dateString
+            MyPageDataCenter.shared.mealTime["lunch"] = dateString
             
             
-            AlarmService.shared.mealTimeAMPM["lunch"] = AMPMStr
+            MyPageDataCenter.shared.mealTimeAMPM["lunch"] = AMPMStr
             
-            if AlarmService.shared.mealTimeAMPM["lunch"] == "AM" || AlarmService.shared.mealTimeAMPM["lunch"] == "오전" {
+            if MyPageDataCenter.shared.mealTimeAMPM["lunch"] == "AM" || MyPageDataCenter.shared.mealTimeAMPM["lunch"] == "오전" {
                 if hourString == "12"{
-                    AlarmService.shared.mealTimeHour["lunch"] = 0 //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
+                    MyPageDataCenter.shared.mealTimeHour["lunch"] = 0 //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
                 }else{
-                    AlarmService.shared.mealTimeHour["lunch"] = Int(hourString)
+                    MyPageDataCenter.shared.mealTimeHour["lunch"] = Int(hourString)
                 }
-            }else if AlarmService.shared.mealTimeAMPM["lunch"] == "PM" || AlarmService.shared.mealTimeAMPM["lunch"] == "오후"{
+            }else if MyPageDataCenter.shared.mealTimeAMPM["lunch"] == "PM" || MyPageDataCenter.shared.mealTimeAMPM["lunch"] == "오후"{
                 if hourString == "12"{
-                    AlarmService.shared.mealTimeHour["lunch"] = Int(hourString)
+                    MyPageDataCenter.shared.mealTimeHour["lunch"] = Int(hourString)
                 }else{
-                    AlarmService.shared.mealTimeHour["lunch"] = Int(hourString)! + 12 //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
+                    MyPageDataCenter.shared.mealTimeHour["lunch"] = Int(hourString)! + 12 //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
                 }
                 
             }
             
-            AlarmService.shared.mealTimeMinute["lunch"] = Int(minuteStr)
+            MyPageDataCenter.shared.mealTimeMinute["lunch"] = Int(minuteStr)
             
-            AlarmService.shared.switchOnOff["total"] = true
-            AlarmService.shared.switchOnOff["lunch"] = true
+            MyPageDataCenter.shared.switchOnOff["total"] = true
+            MyPageDataCenter.shared.switchOnOff["lunch"] = true
             
          
             
         }else if cellIdentificationNumber == 3{
             
-            AlarmService.shared.mealTime["dinner"] = dateString
+            MyPageDataCenter.shared.mealTime["dinner"] = dateString
             
-            AlarmService.shared.mealTimeAMPM["dinner"] = AMPMStr
+            MyPageDataCenter.shared.mealTimeAMPM["dinner"] = AMPMStr
             
-            if AlarmService.shared.mealTimeAMPM["dinner"] == "AM" || AlarmService.shared.mealTimeAMPM["dinner"] == "오전" {
+            if MyPageDataCenter.shared.mealTimeAMPM["dinner"] == "AM" || MyPageDataCenter.shared.mealTimeAMPM["dinner"] == "오전" {
                 if hourString == "12"{
-                    AlarmService.shared.mealTimeHour["dinner"] = 0 //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
+                    MyPageDataCenter.shared.mealTimeHour["dinner"] = 0 //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
                 }else{
-                    AlarmService.shared.mealTimeHour["dinner"] = Int(hourString)
+                    MyPageDataCenter.shared.mealTimeHour["dinner"] = Int(hourString)
                 }
-            }else if AlarmService.shared.mealTimeAMPM["dinner"] == "PM" || AlarmService.shared.mealTimeAMPM["dinner"] == "오후"{
+            }else if MyPageDataCenter.shared.mealTimeAMPM["dinner"] == "PM" || MyPageDataCenter.shared.mealTimeAMPM["dinner"] == "오후"{
                 if hourString == "12"{
-                    AlarmService.shared.mealTimeHour["dinner"] = Int(hourString)
+                    MyPageDataCenter.shared.mealTimeHour["dinner"] = Int(hourString)
                 }else{
-                    AlarmService.shared.mealTimeHour["dinner"] = Int(hourString)! + 12 //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
+                    MyPageDataCenter.shared.mealTimeHour["dinner"] = Int(hourString)! + 12 //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
                 }
                 
             }
             
-            AlarmService.shared.mealTimeMinute["dinner"] = Int(minuteStr)
+            MyPageDataCenter.shared.mealTimeMinute["dinner"] = Int(minuteStr)
             
-            AlarmService.shared.switchOnOff["total"] = true
-            AlarmService.shared.switchOnOff["dinner"] = true
+            MyPageDataCenter.shared.switchOnOff["total"] = true
+            MyPageDataCenter.shared.switchOnOff["dinner"] = true
             
             
             
         }
         
-        UserDefaults.standard.setValue(AlarmService.shared.mealTime, forKey: userDefaultsName.mealTime)
-        UserDefaults.standard.setValue(AlarmService.shared.mealTimeHour, forKey: userDefaultsName.mealTimeHour)
-        UserDefaults.standard.setValue(AlarmService.shared.mealTimeMinute, forKey: userDefaultsName.mealTimeMinute)
-        UserDefaults.standard.setValue(AlarmService.shared.mealTimeAMPM, forKey: userDefaultsName.mealTimeAMPM)
-        UserDefaults.standard.setValue(AlarmService.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
+        UserDefaults.standard.setValue(MyPageDataCenter.shared.mealTime, forKey: userDefaultsName.mealTime)
+        UserDefaults.standard.setValue(MyPageDataCenter.shared.mealTimeHour, forKey: userDefaultsName.mealTimeHour)
+        UserDefaults.standard.setValue(MyPageDataCenter.shared.mealTimeMinute, forKey: userDefaultsName.mealTimeMinute)
+        UserDefaults.standard.setValue(MyPageDataCenter.shared.mealTimeAMPM, forKey: userDefaultsName.mealTimeAMPM)
+        UserDefaults.standard.setValue(MyPageDataCenter.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
         
         print(UserDefaults.standard.dictionary(forKey: userDefaultsName.alarmOnOff) ?? "알람OnOff값이 없음")
-        print(AlarmService.shared.mealTimeAMPM)
+        print(MyPageDataCenter.shared.mealTimeAMPM)
        
         tvReload()
         

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		14035C171FF24E95005ABAE0 /* AlarmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C061FF24E95005ABAE0 /* AlarmService.swift */; };
 		14035C181FF24E95005ABAE0 /* AlarmSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C071FF24E95005ABAE0 /* AlarmSettingViewController.swift */; };
 		14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */; };
 		14035C1A1FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */; };
@@ -23,8 +22,16 @@
 		14417CB11FF2DC5D00EA77B3 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14417CB01FF2DC5D00EA77B3 /* FAQViewController.swift */; };
 		14417CB31FF2DF7200EA77B3 /* FAQDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14417CB21FF2DF7200EA77B3 /* FAQDetailViewController.swift */; };
 		14417CB61FF2F06500EA77B3 /* TermsOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14417CB51FF2F06500EA77B3 /* TermsOfUseViewController.swift */; };
+		148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148F3F771FF51BB500E83B6B /* TeamIntroductionViewController.swift */; };
 		14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BF2FD21FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift */; };
 		14C19B441FF3DB43001B8229 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14C19B431FF3DB38001B8229 /* MessageUI.framework */; };
+		14DA008C1FF58C4700819A96 /* TeamMemberIntroductionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA008B1FF58C4700819A96 /* TeamMemberIntroductionCell.swift */; };
+		14DA008E1FF598D700819A96 /* IntroductionImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA008D1FF598D700819A96 /* IntroductionImageCell.swift */; };
+		14DA00901FF598E700819A96 /* TeamLbCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA008F1FF598E700819A96 /* TeamLbCell.swift */; };
+		14DA00951FF6570E00819A96 /* LeaveMembershipHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA00941FF6570E00819A96 /* LeaveMembershipHeaderCell.swift */; };
+		14DA00971FF6572A00819A96 /* LeaveMembershipReasonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA00961FF6572A00819A96 /* LeaveMembershipReasonCell.swift */; };
+		14DA00991FF6573D00819A96 /* LeaveMembershipBtnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA00981FF6573D00819A96 /* LeaveMembershipBtnCell.swift */; };
+		14DA009D1FF671D200819A96 /* MyPageDataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA009C1FF671D200819A96 /* MyPageDataCenter.swift */; };
 		4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C01C85D1FEB886B0016E674 /* AppDelegate.swift */; };
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
 		4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8641FEB886B0016E674 /* Assets.xcassets */; };
@@ -39,7 +46,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		14035C061FF24E95005ABAE0 /* AlarmService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmService.swift; sourceTree = "<group>"; };
 		14035C071FF24E95005ABAE0 /* AlarmSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSettingViewController.swift; sourceTree = "<group>"; };
 		14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSwitchCell.swift; sourceTree = "<group>"; };
 		14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalAlarmSwitchCell.swift; sourceTree = "<group>"; };
@@ -55,8 +61,16 @@
 		14417CB01FF2DC5D00EA77B3 /* FAQViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
 		14417CB21FF2DF7200EA77B3 /* FAQDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQDetailViewController.swift; sourceTree = "<group>"; };
 		14417CB51FF2F06500EA77B3 /* TermsOfUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUseViewController.swift; sourceTree = "<group>"; };
+		148F3F771FF51BB500E83B6B /* TeamIntroductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamIntroductionViewController.swift; sourceTree = "<group>"; };
 		14BF2FD21FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmMealTimePickerViewController.swift; sourceTree = "<group>"; };
 		14C19B431FF3DB38001B8229 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		14DA008B1FF58C4700819A96 /* TeamMemberIntroductionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamMemberIntroductionCell.swift; sourceTree = "<group>"; };
+		14DA008D1FF598D700819A96 /* IntroductionImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionImageCell.swift; sourceTree = "<group>"; };
+		14DA008F1FF598E700819A96 /* TeamLbCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamLbCell.swift; sourceTree = "<group>"; };
+		14DA00941FF6570E00819A96 /* LeaveMembershipHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveMembershipHeaderCell.swift; sourceTree = "<group>"; };
+		14DA00961FF6572A00819A96 /* LeaveMembershipReasonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveMembershipReasonCell.swift; sourceTree = "<group>"; };
+		14DA00981FF6573D00819A96 /* LeaveMembershipBtnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveMembershipBtnCell.swift; sourceTree = "<group>"; };
+		14DA009C1FF671D200819A96 /* MyPageDataCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDataCenter.swift; sourceTree = "<group>"; };
 		155F8EE9A3FF90944F5A4F83 /* Pods-FeedPet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedPet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet.debug.xcconfig"; sourceTree = "<group>"; };
 		3219B4369B3766416839B81B /* Pods_FeedPet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FeedPet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A3C22C8F7964B2242907916 /* Pods-FeedPet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedPet.release.xcconfig"; path = "Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet.release.xcconfig"; sourceTree = "<group>"; };
@@ -91,11 +105,13 @@
 			isa = PBXGroup;
 			children = (
 				14035C101FF24E95005ABAE0 /* MyPage.storyboard */,
+				14DA009C1FF671D200819A96 /* MyPageDataCenter.swift */,
 				14035C111FF24E95005ABAE0 /* MyPageView */,
 				14035C0C1FF24E95005ABAE0 /* EditInfoView */,
 				14035C051FF24E95005ABAE0 /* AlarmSettingView */,
 				14417CAF1FF2DC2100EA77B3 /* FAQView */,
 				14417CB41FF2F02000EA77B3 /* TermsOfUseView */,
+				148F3F761FF51B4600E83B6B /* TeamIntroductionView */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -103,7 +119,6 @@
 		14035C051FF24E95005ABAE0 /* AlarmSettingView */ = {
 			isa = PBXGroup;
 			children = (
-				14035C061FF24E95005ABAE0 /* AlarmService.swift */,
 				14035C071FF24E95005ABAE0 /* AlarmSettingViewController.swift */,
 				14BF2FD21FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift */,
 				14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */,
@@ -130,6 +145,9 @@
 				14035C141FF24E95005ABAE0 /* ProfileCell.swift */,
 				14035C151FF24E95005ABAE0 /* SettingCell.swift */,
 				14035C161FF24E95005ABAE0 /* SettingHeaderCell.swift */,
+				14DA00941FF6570E00819A96 /* LeaveMembershipHeaderCell.swift */,
+				14DA00961FF6572A00819A96 /* LeaveMembershipReasonCell.swift */,
+				14DA00981FF6573D00819A96 /* LeaveMembershipBtnCell.swift */,
 			);
 			path = MyPageView;
 			sourceTree = "<group>";
@@ -149,6 +167,17 @@
 				14417CB51FF2F06500EA77B3 /* TermsOfUseViewController.swift */,
 			);
 			path = TermsOfUseView;
+			sourceTree = "<group>";
+		};
+		148F3F761FF51B4600E83B6B /* TeamIntroductionView */ = {
+			isa = PBXGroup;
+			children = (
+				148F3F771FF51BB500E83B6B /* TeamIntroductionViewController.swift */,
+				14DA008D1FF598D700819A96 /* IntroductionImageCell.swift */,
+				14DA008F1FF598E700819A96 /* TeamLbCell.swift */,
+				14DA008B1FF58C4700819A96 /* TeamMemberIntroductionCell.swift */,
+			);
+			path = TeamIntroductionView;
 			sourceTree = "<group>";
 		};
 		4004771B0EC50C50DB0E50C7 /* Frameworks */ = {
@@ -381,12 +410,15 @@
 			files = (
 				4CAD76821FED3B8D00EDE859 /* DataCenter.swift in Sources */,
 				14417CB31FF2DF7200EA77B3 /* FAQDetailViewController.swift in Sources */,
+				14DA008C1FF58C4700819A96 /* TeamMemberIntroductionCell.swift in Sources */,
+				14DA008E1FF598D700819A96 /* IntroductionImageCell.swift in Sources */,
+				14DA00991FF6573D00819A96 /* LeaveMembershipBtnCell.swift in Sources */,
 				14035C1A1FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift in Sources */,
 				14035C181FF24E95005ABAE0 /* AlarmSettingViewController.swift in Sources */,
-				14035C171FF24E95005ABAE0 /* AlarmService.swift in Sources */,
 				14417CB61FF2F06500EA77B3 /* TermsOfUseViewController.swift in Sources */,
 				4CAD76791FED131700EDE859 /* PageControllerBaseController.swift in Sources */,
 				4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */,
+				14DA00901FF598E700819A96 /* TeamLbCell.swift in Sources */,
 				14035C201FF24E95005ABAE0 /* MyMenuCell.swift in Sources */,
 				4CAD76801FED142E00EDE859 /* LoginViewController.swift in Sources */,
 				14035C241FF24E95005ABAE0 /* SettingHeaderCell.swift in Sources */,
@@ -394,9 +426,13 @@
 				14035C221FF24E95005ABAE0 /* ProfileCell.swift in Sources */,
 				14035C231FF24E95005ABAE0 /* SettingCell.swift in Sources */,
 				14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */,
+				14DA009D1FF671D200819A96 /* MyPageDataCenter.swift in Sources */,
 				14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */,
 				14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */,
+				148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */,
 				14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */,
+				14DA00951FF6570E00819A96 /* LeaveMembershipHeaderCell.swift in Sources */,
+				14DA00971FF6572A00819A96 /* LeaveMembershipReasonCell.swift in Sources */,
 				14417CB11FF2DC5D00EA77B3 /* FAQViewController.swift in Sources */,
 				14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */,
 				14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */,
