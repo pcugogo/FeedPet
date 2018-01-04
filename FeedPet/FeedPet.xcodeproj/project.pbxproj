@@ -38,12 +38,21 @@
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
 		4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8641FEB886B0016E674 /* Assets.xcassets */; };
 		4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8661FEB886B0016E674 /* LaunchScreen.storyboard */; };
-		4CAD76791FED131700EDE859 /* PageControllerBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD76781FED131700EDE859 /* PageControllerBaseController.swift */; };
-		4CAD767B1FED133B00EDE859 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD767A1FED133B00EDE859 /* MainViewController.swift */; };
 		4CAD767E1FED13BF00EDE859 /* loginVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = 4CAD767D1FED13BF00EDE859 /* loginVideo.mov */; };
 		4CAD76801FED142E00EDE859 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD767F1FED142E00EDE859 /* LoginViewController.swift */; };
 		4CAD76821FED3B8D00EDE859 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD76811FED3B8D00EDE859 /* DataCenter.swift */; };
 		4CBD557D1FED043300D37FE8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4CBD557C1FED043300D37FE8 /* GoogleService-Info.plist */; };
+		4CE4F5C41FFEAB290047E9F9 /* DogMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5C31FFEAB290047E9F9 /* DogMainViewController.swift */; };
+		4CE4F5C71FFEAB370047E9F9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5C51FFEAB370047E9F9 /* MainViewController.swift */; };
+		4CE4F5C81FFEAB370047E9F9 /* PageControllerBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5C61FFEAB370047E9F9 /* PageControllerBaseController.swift */; };
+		4CE4F5CC1FFEAB610047E9F9 /* CatMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5CB1FFEAB610047E9F9 /* CatMainViewController.swift */; };
+		4CE4F5D31FFEABFD0047E9F9 /* MainMenuIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5D11FFEABFD0047E9F9 /* MainMenuIconCollectionViewCell.swift */; };
+		4CE4F5D41FFEABFD0047E9F9 /* MainMenuIconCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CE4F5D21FFEABFD0047E9F9 /* MainMenuIconCollectionViewCell.xib */; };
+		4CE4F5D71FFEAC410047E9F9 /* AddPetInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5D51FFEAC410047E9F9 /* AddPetInformationViewController.swift */; };
+		4CE4F5D81FFEAC410047E9F9 /* AddUserInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5D61FFEAC410047E9F9 /* AddUserInformationViewController.swift */; };
+		4CE4F5DA1FFEAD2B0047E9F9 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */; };
+		4CE4F5DD1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5DB1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift */; };
+		4CE4F5DE1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5DC1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift */; };
 		6ACED27F2266C806A26F1AEA /* Pods_FeedPet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219B4369B3766416839B81B /* Pods_FeedPet.framework */; };
 /* End PBXBuildFile section */
 
@@ -84,12 +93,21 @@
 		4C01C8641FEB886B0016E674 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C01C8671FEB886B0016E674 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C01C8691FEB886B0016E674 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4CAD76781FED131700EDE859 /* PageControllerBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PageControllerBaseController.swift; path = Main/PageControllerBaseController.swift; sourceTree = "<group>"; };
-		4CAD767A1FED133B00EDE859 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Main/MainViewController.swift; sourceTree = "<group>"; };
 		4CAD767D1FED13BF00EDE859 /* loginVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = loginVideo.mov; sourceTree = "<group>"; };
 		4CAD767F1FED142E00EDE859 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4CAD76811FED3B8D00EDE859 /* DataCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
 		4CBD557C1FED043300D37FE8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4CE4F5C31FFEAB290047E9F9 /* DogMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DogMainViewController.swift; path = FeedPet/Main/DogMain/DogMainViewController.swift; sourceTree = SOURCE_ROOT; };
+		4CE4F5C51FFEAB370047E9F9 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = FeedPet/Main/MainViewController.swift; sourceTree = SOURCE_ROOT; };
+		4CE4F5C61FFEAB370047E9F9 /* PageControllerBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PageControllerBaseController.swift; path = FeedPet/Main/PageControllerBaseController.swift; sourceTree = SOURCE_ROOT; };
+		4CE4F5CB1FFEAB610047E9F9 /* CatMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CatMainViewController.swift; path = FeedPet/Main/CatMain/CatMainViewController.swift; sourceTree = SOURCE_ROOT; };
+		4CE4F5D11FFEABFD0047E9F9 /* MainMenuIconCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainMenuIconCollectionViewCell.swift; path = FeedPet/Main/MainMenuIconCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
+		4CE4F5D21FFEABFD0047E9F9 /* MainMenuIconCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainMenuIconCollectionViewCell.xib; path = FeedPet/Main/MainMenuIconCollectionViewCell.xib; sourceTree = SOURCE_ROOT; };
+		4CE4F5D51FFEAC410047E9F9 /* AddPetInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPetInformationViewController.swift; sourceTree = "<group>"; };
+		4CE4F5D61FFEAC410047E9F9 /* AddUserInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddUserInformationViewController.swift; sourceTree = "<group>"; };
+		4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		4CE4F5DB1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetAgeCollectionViewCell.swift; sourceTree = "<group>"; };
+		4CE4F5DC1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetFunctionalCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,8 +255,13 @@
 				4C01C8611FEB886B0016E674 /* Main.storyboard */,
 				4C01C85D1FEB886B0016E674 /* AppDelegate.swift */,
 				4CAD767F1FED142E00EDE859 /* LoginViewController.swift */,
+				4CE4F5D51FFEAC410047E9F9 /* AddPetInformationViewController.swift */,
+				4CE4F5D61FFEAC410047E9F9 /* AddUserInformationViewController.swift */,
 				4CAD76811FED3B8D00EDE859 /* DataCenter.swift */,
-				4CAD766E1FED11D700EDE859 /* Main */,
+				4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */,
+				4CE4F5DB1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift */,
+				4CE4F5DC1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift */,
+				4CE4F5BF1FFEAAD70047E9F9 /* Main */,
 				14035C041FF24E95005ABAE0 /* MyPage */,
 				4CAD767C1FED138600EDE859 /* Design */,
 				4C01C8641FEB886B0016E674 /* Assets.xcassets */,
@@ -248,21 +271,42 @@
 			path = FeedPet;
 			sourceTree = "<group>";
 		};
-		4CAD766E1FED11D700EDE859 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				4CAD76781FED131700EDE859 /* PageControllerBaseController.swift */,
-				4CAD767A1FED133B00EDE859 /* MainViewController.swift */,
-			);
-			name = Main;
-			sourceTree = "<group>";
-		};
 		4CAD767C1FED138600EDE859 /* Design */ = {
 			isa = PBXGroup;
 			children = (
 				4CAD767D1FED13BF00EDE859 /* loginVideo.mov */,
 			);
 			path = Design;
+			sourceTree = "<group>";
+		};
+		4CE4F5BF1FFEAAD70047E9F9 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				4CE4F5C51FFEAB370047E9F9 /* MainViewController.swift */,
+				4CE4F5C61FFEAB370047E9F9 /* PageControllerBaseController.swift */,
+				4CE4F5D11FFEABFD0047E9F9 /* MainMenuIconCollectionViewCell.swift */,
+				4CE4F5D21FFEABFD0047E9F9 /* MainMenuIconCollectionViewCell.xib */,
+				4CE4F5CA1FFEAB4A0047E9F9 /* CatMain */,
+				4CE4F5C21FFEAB1A0047E9F9 /* DogMain */,
+			);
+			name = Main;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		4CE4F5C21FFEAB1A0047E9F9 /* DogMain */ = {
+			isa = PBXGroup;
+			children = (
+				4CE4F5C31FFEAB290047E9F9 /* DogMainViewController.swift */,
+			);
+			path = DogMain;
+			sourceTree = "<group>";
+		};
+		4CE4F5CA1FFEAB4A0047E9F9 /* CatMain */ = {
+			isa = PBXGroup;
+			children = (
+				4CE4F5CB1FFEAB610047E9F9 /* CatMainViewController.swift */,
+			);
+			path = CatMain;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -329,6 +373,7 @@
 			files = (
 				4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */,
 				4CBD557D1FED043300D37FE8 /* GoogleService-Info.plist in Resources */,
+				4CE4F5D41FFEABFD0047E9F9 /* MainMenuIconCollectionViewCell.xib in Resources */,
 				4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */,
 				14035C1F1FF24E95005ABAE0 /* MyPage.storyboard in Resources */,
 				4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */,
@@ -356,6 +401,8 @@
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/XLPagerTabStrip/XLPagerTabStrip.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -371,6 +418,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLPagerTabStrip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -394,7 +443,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FBDD9431A842B556A4FBDA99 /* [CP] Copy Pods Resources */ = {
@@ -425,25 +474,33 @@
 				4CAD76821FED3B8D00EDE859 /* DataCenter.swift in Sources */,
 				14417CB31FF2DF7200EA77B3 /* FAQDetailViewController.swift in Sources */,
 				14DA008C1FF58C4700819A96 /* TeamMemberIntroductionCell.swift in Sources */,
+				4CE4F5DE1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift in Sources */,
 				14DA008E1FF598D700819A96 /* IntroductionImageCell.swift in Sources */,
 				14DA00991FF6573D00819A96 /* LeaveMembershipBtnCell.swift in Sources */,
+				4CE4F5C41FFEAB290047E9F9 /* DogMainViewController.swift in Sources */,
+				4CE4F5DD1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift in Sources */,
 				14035C1A1FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift in Sources */,
 				14035C181FF24E95005ABAE0 /* AlarmSettingViewController.swift in Sources */,
 				14417CB61FF2F06500EA77B3 /* TermsOfUseViewController.swift in Sources */,
-				4CAD76791FED131700EDE859 /* PageControllerBaseController.swift in Sources */,
+				4CE4F5C71FFEAB370047E9F9 /* MainViewController.swift in Sources */,
 				4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */,
 				14DA00901FF598E700819A96 /* TeamLbCell.swift in Sources */,
 				14035C201FF24E95005ABAE0 /* MyMenuCell.swift in Sources */,
 				4CAD76801FED142E00EDE859 /* LoginViewController.swift in Sources */,
 				14035C241FF24E95005ABAE0 /* SettingHeaderCell.swift in Sources */,
-				4CAD767B1FED133B00EDE859 /* MainViewController.swift in Sources */,
 				14035C221FF24E95005ABAE0 /* ProfileCell.swift in Sources */,
 				14DC31B01FFD687800C046F4 /* LeaveMembershipViewController.swift in Sources */,
+				4CE4F5D81FFEAC410047E9F9 /* AddUserInformationViewController.swift in Sources */,
 				14035C231FF24E95005ABAE0 /* SettingCell.swift in Sources */,
+				4CE4F5CC1FFEAB610047E9F9 /* CatMainViewController.swift in Sources */,
 				14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */,
+				4CE4F5D31FFEABFD0047E9F9 /* MainMenuIconCollectionViewCell.swift in Sources */,
+				4CE4F5D71FFEAC410047E9F9 /* AddPetInformationViewController.swift in Sources */,
+				4CE4F5C81FFEAB370047E9F9 /* PageControllerBaseController.swift in Sources */,
 				14DA009D1FF671D200819A96 /* MyPageDataCenter.swift in Sources */,
 				14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */,
 				14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */,
+				4CE4F5DA1FFEAD2B0047E9F9 /* Extension.swift in Sources */,
 				14E193711FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift in Sources */,
 				148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */,
 				14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */,
@@ -590,7 +647,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PV38XQ6LPC;
 				INFOPLIST_FILE = FeedPet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -607,7 +664,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PV38XQ6LPC;
 				INFOPLIST_FILE = FeedPet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
