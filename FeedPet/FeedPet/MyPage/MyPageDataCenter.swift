@@ -20,7 +20,7 @@ class MyPageDataCenter {
     
     //탈퇴하기 내용
     var leaveMembershipReason = ""
-    
+    var leaveMembarshipEtcReasonContent = ""
 }
 
 

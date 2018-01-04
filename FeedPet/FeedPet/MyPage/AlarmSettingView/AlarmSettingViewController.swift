@@ -11,7 +11,7 @@ import UserNotifications
 
 
 
-class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,CustomCellUpdater {
+class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,AlarmCustomCellUpdater {
     
     var isGrantedNotificationAccess = false
         
@@ -125,13 +125,18 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         let alarmMealTimePickerView:AlarmMealTimePickerViewController = storyboard?.instantiateViewController(withIdentifier: "AlarmMealTimePickerViewController") as! AlarmMealTimePickerViewController
         
         if indexPath.row == 1{
+            
             cellIdentificationNumber = 1
             alarmMealTimePickerView.cellIdentificationNumber = 1
             
             alarmMealTimePickerView.delegate = self //델리게이트 권한 위임
             
             print("morning",MyPageDataCenter.shared.mealTime["morning"]!)
-            self.present(alarmMealTimePickerView, animated: true, completion: nil)
+            
+            self.addChildViewController(alarmMealTimePickerView) //alarmMealTimePickerView에 있는 피커뷰를 addsubview
+            alarmMealTimePickerView.view.frame = self.view.frame //참고 사이트 https://www.youtube.com/watch?v=FgCIRMz_3dE
+            self.view.addSubview(alarmMealTimePickerView.view)
+            alarmMealTimePickerView.didMove(toParentViewController: self)
         }else if indexPath.row == 2{
             cellIdentificationNumber = 2
             alarmMealTimePickerView.cellIdentificationNumber = 2
@@ -139,7 +144,12 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             alarmMealTimePickerView.delegate = self
             
             print("lunch",MyPageDataCenter.shared.mealTime["lunch"]!)
-            self.present(alarmMealTimePickerView, animated: true, completion: nil)
+            
+            self.addChildViewController(alarmMealTimePickerView)
+            alarmMealTimePickerView.view.frame = self.view.frame
+            self.view.addSubview(alarmMealTimePickerView.view)
+            alarmMealTimePickerView.didMove(toParentViewController: self)
+            
         }else if indexPath.row == 3{
             cellIdentificationNumber = 3
             alarmMealTimePickerView.cellIdentificationNumber = 3
@@ -147,7 +157,12 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             alarmMealTimePickerView.delegate = self
             
             print("dinner",MyPageDataCenter.shared.mealTime["dinner"]!)
-            self.present(alarmMealTimePickerView, animated: true, completion: nil)
+            
+            self.addChildViewController(alarmMealTimePickerView)
+            alarmMealTimePickerView.view.frame = self.view.frame
+            self.view.addSubview(alarmMealTimePickerView.view)
+            alarmMealTimePickerView.didMove(toParentViewController: self)
+            
         }
     }
     

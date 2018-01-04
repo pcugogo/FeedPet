@@ -11,7 +11,7 @@ import UserNotifications
 
 class AlarmSwitchCell: UITableViewCell {
     
-    var delegate: CustomCellUpdater?
+    var delegate: AlarmCustomCellUpdater?
     var indexPath:Int = 0
     
     @IBOutlet weak var alarmSwitchOut: UISwitch!

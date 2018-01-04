@@ -32,6 +32,8 @@
 		14DA00971FF6572A00819A96 /* LeaveMembershipReasonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA00961FF6572A00819A96 /* LeaveMembershipReasonCell.swift */; };
 		14DA00991FF6573D00819A96 /* LeaveMembershipBtnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA00981FF6573D00819A96 /* LeaveMembershipBtnCell.swift */; };
 		14DA009D1FF671D200819A96 /* MyPageDataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DA009C1FF671D200819A96 /* MyPageDataCenter.swift */; };
+		14DC31B01FFD687800C046F4 /* LeaveMembershipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DC31AF1FFD687800C046F4 /* LeaveMembershipViewController.swift */; };
+		14E193711FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E193701FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift */; };
 		4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C01C85D1FEB886B0016E674 /* AppDelegate.swift */; };
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
 		4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8641FEB886B0016E674 /* Assets.xcassets */; };
@@ -71,6 +73,8 @@
 		14DA00961FF6572A00819A96 /* LeaveMembershipReasonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveMembershipReasonCell.swift; sourceTree = "<group>"; };
 		14DA00981FF6573D00819A96 /* LeaveMembershipBtnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveMembershipBtnCell.swift; sourceTree = "<group>"; };
 		14DA009C1FF671D200819A96 /* MyPageDataCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDataCenter.swift; sourceTree = "<group>"; };
+		14DC31AF1FFD687800C046F4 /* LeaveMembershipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveMembershipViewController.swift; sourceTree = "<group>"; };
+		14E193701FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveMembershipEtcReasonCell.swift; sourceTree = "<group>"; };
 		155F8EE9A3FF90944F5A4F83 /* Pods-FeedPet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedPet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet.debug.xcconfig"; sourceTree = "<group>"; };
 		3219B4369B3766416839B81B /* Pods_FeedPet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FeedPet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A3C22C8F7964B2242907916 /* Pods-FeedPet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedPet.release.xcconfig"; path = "Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet.release.xcconfig"; sourceTree = "<group>"; };
@@ -140,14 +144,12 @@
 		14035C111FF24E95005ABAE0 /* MyPageView */ = {
 			isa = PBXGroup;
 			children = (
+				14DC31AC1FFD5F4500C046F4 /* LeaveMembershipView */,
 				14035C131FF24E95005ABAE0 /* MyPageViewController.swift */,
-				14035C121FF24E95005ABAE0 /* MyMenuCell.swift */,
 				14035C141FF24E95005ABAE0 /* ProfileCell.swift */,
+				14035C121FF24E95005ABAE0 /* MyMenuCell.swift */,
 				14035C151FF24E95005ABAE0 /* SettingCell.swift */,
 				14035C161FF24E95005ABAE0 /* SettingHeaderCell.swift */,
-				14DA00941FF6570E00819A96 /* LeaveMembershipHeaderCell.swift */,
-				14DA00961FF6572A00819A96 /* LeaveMembershipReasonCell.swift */,
-				14DA00981FF6573D00819A96 /* LeaveMembershipBtnCell.swift */,
 			);
 			path = MyPageView;
 			sourceTree = "<group>";
@@ -178,6 +180,18 @@
 				14DA008B1FF58C4700819A96 /* TeamMemberIntroductionCell.swift */,
 			);
 			path = TeamIntroductionView;
+			sourceTree = "<group>";
+		};
+		14DC31AC1FFD5F4500C046F4 /* LeaveMembershipView */ = {
+			isa = PBXGroup;
+			children = (
+				14DC31AF1FFD687800C046F4 /* LeaveMembershipViewController.swift */,
+				14DA00941FF6570E00819A96 /* LeaveMembershipHeaderCell.swift */,
+				14DA00961FF6572A00819A96 /* LeaveMembershipReasonCell.swift */,
+				14E193701FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift */,
+				14DA00981FF6573D00819A96 /* LeaveMembershipBtnCell.swift */,
+			);
+			path = LeaveMembershipView;
 			sourceTree = "<group>";
 		};
 		4004771B0EC50C50DB0E50C7 /* Frameworks */ = {
@@ -424,11 +438,13 @@
 				14035C241FF24E95005ABAE0 /* SettingHeaderCell.swift in Sources */,
 				4CAD767B1FED133B00EDE859 /* MainViewController.swift in Sources */,
 				14035C221FF24E95005ABAE0 /* ProfileCell.swift in Sources */,
+				14DC31B01FFD687800C046F4 /* LeaveMembershipViewController.swift in Sources */,
 				14035C231FF24E95005ABAE0 /* SettingCell.swift in Sources */,
 				14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */,
 				14DA009D1FF671D200819A96 /* MyPageDataCenter.swift in Sources */,
 				14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */,
 				14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */,
+				14E193711FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift in Sources */,
 				148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */,
 				14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */,
 				14DA00951FF6570E00819A96 /* LeaveMembershipHeaderCell.swift in Sources */,

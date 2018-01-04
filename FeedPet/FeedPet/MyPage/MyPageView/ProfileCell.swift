@@ -11,7 +11,6 @@ import UIKit
 class ProfileCell: UITableViewCell {
 
     @IBOutlet weak var profileImg: UIImageView!
-    @IBOutlet weak var genderImg: UIImageView!
     @IBOutlet weak var nickNameLb: UILabel!
     @IBOutlet weak var userIdLb: UILabel!
     @IBOutlet weak var petTypeLb: UILabel!

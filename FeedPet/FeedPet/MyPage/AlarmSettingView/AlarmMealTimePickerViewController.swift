@@ -10,7 +10,7 @@ import UIKit
 
 class AlarmMealTimePickerViewController: UIViewController {
 
-    var delegate: CustomCellUpdater?
+    var delegate: AlarmCustomCellUpdater?
     var cellIdentificationNumber = 0 //몇번째셀의 알람인지 didSelectRowAt에서 보내준다
     
     let formatter:DateFormatter = DateFormatter() // "aa hh:mm"
@@ -21,11 +21,16 @@ class AlarmMealTimePickerViewController: UIViewController {
     
     @IBOutlet weak var timePickerViewOut: UIDatePicker!
     @IBOutlet weak var timePickConfirmBtnOut: UIButton!
+    @IBOutlet weak var contentView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-       timePickerViewOut.locale = locKo
+        
+        pickerViewUp()
+        
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        
+        timePickerViewOut.locale = locKo
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,7 +39,7 @@ class AlarmMealTimePickerViewController: UIViewController {
     }
     
     
-    func tvReload() {
+    func tableViewReload() {
         delegate?.updateTableView()
     }
     
@@ -42,11 +47,9 @@ class AlarmMealTimePickerViewController: UIViewController {
         delegate?.UpdateMealTimeAlarmNotification()
     }
     
-    
-    
-    @IBAction func timePickConfirmBtnAction(_ sender: UIButton) {
+    func mealTimeSetting(){
+        //피커뷰의 시간 데이터를 저장하고 시간데이터로 노티피케이션을 등록()하는 함수 
         
-//        tableView.isHidden = false
         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",cellIdentificationNumber)
         
         formatter.locale = locKo // 포메터 지역을 한국(Ko)으로 설정
@@ -87,7 +90,7 @@ class AlarmMealTimePickerViewController: UIViewController {
             MyPageDataCenter.shared.switchOnOff["total"] = true
             MyPageDataCenter.shared.switchOnOff["morning"] = true
             
-           
+            
             
         }else if cellIdentificationNumber == 2{
             
@@ -116,7 +119,7 @@ class AlarmMealTimePickerViewController: UIViewController {
             MyPageDataCenter.shared.switchOnOff["total"] = true
             MyPageDataCenter.shared.switchOnOff["lunch"] = true
             
-         
+            
             
         }else if cellIdentificationNumber == 3{
             
@@ -156,14 +159,50 @@ class AlarmMealTimePickerViewController: UIViewController {
         
         print(UserDefaults.standard.dictionary(forKey: userDefaultsName.alarmOnOff) ?? "알람OnOff값이 없음")
         print(MyPageDataCenter.shared.mealTimeAMPM)
-       
-        tvReload()
         
-        setMealTimeAlarmNotification()
+        tableViewReload()
         
-        self.dismiss(animated: true, completion: nil)
+        setMealTimeAlarmNotification() //위에 세팅된 시간으로 노티피케이션 등록하는 함수
+        
+        
+    } //여기까지가 mealTimeSetting()
+    
+    func pickerViewUp(){  // 피커뷰가 올라옴
+        UIView.animate(withDuration: 0.3, animations: {
+            self.contentView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 245.0)
+        }){ (finished) in
+            if finished {
+                
+            }
+        }
+    }
+    
+    func pickerViewDown(){ //피커뷰가 내려감
+        UIView.animate(withDuration: 0.3, animations: {  //contentView의 y축이 self.view의 y축 끝으로 가게하기
+            self.contentView.frame = CGRect(x: 0, y: self.view.frame.maxY, width: self.view.bounds.width, height: 245.0)
+        }){ (finished) in
+            if finished {
+                self.view.removeFromSuperview()
+                
+            }
+        }
         
     }
+    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        mealTimeSetting() //피커뷰의 시간 데이터를 저장하고 시간데이터로 노티피케이션을 등록하는 함수
+//        removeAnimate()
+//    }
+    
+    @IBAction func timePickConfirmBtnAction(_ sender: UIButton) {
+        mealTimeSetting()   //피커뷰의 시간 데이터를 저장하고 시간데이터로 노티피케이션을 등록하는 함수
+        pickerViewDown()
+    }
+    
+    @IBAction func pickerCancelBtnAction(_ sender: UIButton) {
+        pickerViewDown()
+    }
+    
     /*
     // MARK: - Navigation
 
