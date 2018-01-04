@@ -134,6 +134,7 @@
 				14417CAF1FF2DC2100EA77B3 /* FAQView */,
 				14417CB41FF2F02000EA77B3 /* TermsOfUseView */,
 				148F3F761FF51B4600E83B6B /* TeamIntroductionView */,
+				14DC31AC1FFD5F4500C046F4 /* LeaveMembershipView */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -162,7 +163,6 @@
 		14035C111FF24E95005ABAE0 /* MyPageView */ = {
 			isa = PBXGroup;
 			children = (
-				14DC31AC1FFD5F4500C046F4 /* LeaveMembershipView */,
 				14035C131FF24E95005ABAE0 /* MyPageViewController.swift */,
 				14035C141FF24E95005ABAE0 /* ProfileCell.swift */,
 				14035C121FF24E95005ABAE0 /* MyMenuCell.swift */,
