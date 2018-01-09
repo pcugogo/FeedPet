@@ -19,12 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        // 네비게이션 컨트롤러
         let navigationBarAppearance = UINavigationBar.appearance()
-        
+
         navigationBarAppearance.barTintColor = UIColor.init(hexString: "#FF6600")
         navigationBarAppearance.tintColor = .white
         navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
-        
+
         let _ = PageControllerBaseController(nibName: nil, bundle: nil)
         // Firebase 초기화 코드
         FirebaseApp.configure()
@@ -63,6 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
          self.window?.makeKeyAndVisible()
          */
         
+//        UIApplication.shared.statusBarView?.backgroundColor = UIColor.init(hexString: "#FF6600")
         
         return true
     }
