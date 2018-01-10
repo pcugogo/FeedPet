@@ -52,7 +52,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
             leaveMembershipEtcReasonCell.delegate = self
             
             if MyPageDataCenter.shared.leaveMembershipReason == leaveMembershipReasonText.last{ //이유가 "기타"일 경우
-                leaveMembershipEtcReasonCell.backgroundColor = UIColor(displayP3Red: 217/255, green: 217/255, blue: 217/255, alpha: 1.0)
+                leaveMembershipEtcReasonCell.backgroundColor = UIColor(red: 217/255, green: 217/255, blue: 217/255, alpha: 1.0)
             }else{
                 leaveMembershipEtcReasonCell.backgroundColor = UIColor.white
             }
@@ -78,7 +78,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
             leaveMembershipReasonCell.textLabel?.text = leaveMembershipReasonText[indexPath.row - 1]
             
             if MyPageDataCenter.shared.leaveMembershipReason == leaveMembershipReasonText[indexPath.row - 1]{
-                leaveMembershipReasonCell.backgroundColor = UIColor(displayP3Red: 217/255, green: 217/255, blue: 217/255, alpha: 1.0)
+                leaveMembershipReasonCell.backgroundColor = UIColor(red: 217/255, green: 217/255, blue: 217/255, alpha: 1.0)
             }else{
                 leaveMembershipReasonCell.backgroundColor = UIColor.white
             }

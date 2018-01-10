@@ -10,7 +10,7 @@ import UIKit
 
 class AlarmMealTimePickerViewController: UIViewController {
 
-    var delegate: AlarmCustomCellUpdater?
+    var delegate: AlarmCustomCellDelegate?
     var cellIdentificationNumber = 0 //몇번째셀의 알람인지 didSelectRowAt에서 보내준다
     
     let formatter:DateFormatter = DateFormatter() // "aa hh:mm"

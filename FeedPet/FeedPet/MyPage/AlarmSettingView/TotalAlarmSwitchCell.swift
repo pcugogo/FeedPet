@@ -9,14 +9,14 @@
 import UIKit
 import UserNotifications
 
-protocol AlarmCustomCellUpdater {
+protocol AlarmCustomCellDelegate {
     func updateTableView()
     func UpdateMealTimeAlarmNotification()
 }
 
 class TotalAlarmSwitchCell: UITableViewCell {
     
-    var delegate: AlarmCustomCellUpdater?
+    var delegate: AlarmCustomCellDelegate?
     
     @IBOutlet weak var totalAlarmSwitchOut: UISwitch!
     override func awakeFromNib() {
