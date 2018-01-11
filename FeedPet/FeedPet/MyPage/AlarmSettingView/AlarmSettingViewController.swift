@@ -11,7 +11,7 @@ import UserNotifications
 
 
 
-class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,AlarmCustomCellUpdater {
+class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,AlarmCustomCellDelegate {
     
     var isGrantedNotificationAccess = false
         
