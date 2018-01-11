@@ -23,6 +23,7 @@
 #import "BFCancellationTokenRegistration.h"
 #import "BFCancellationTokenSource.h"
 #import "BFExecutor.h"
+#import "BFGeneric.h"
 #import "BFTask.h"
 #import "BFTaskCompletionSource.h"
 #import "Bolts.h"
