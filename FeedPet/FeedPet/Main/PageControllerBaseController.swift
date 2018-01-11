@@ -88,11 +88,14 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     
     // MARK: - PagerTabStripDataSource
     override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
-        let child_1 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DogMainViewController") as! DogMainViewController
+//        let child_1 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DogMainViewController") as! DogMainViewController
         
-        let child_2 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CatMainViewController") as! CatMainViewController
-       
+//        let child_2 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CatMainViewController") as! CatMainViewController
+        let child_1 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainPageViewController") as! MainPageViewController
+        child_1.indicatorTitle = "멍"
         
+        let child_2 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainPageViewController") as! MainPageViewController
+        child_2.indicatorTitle = "냥"
         
         
         return [child_1, child_2]

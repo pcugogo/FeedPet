@@ -19,12 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        // 네비게이션 컨트롤러
         let navigationBarAppearance = UINavigationBar.appearance()
-        
+
         navigationBarAppearance.barTintColor = UIColor.init(hexString: "#FF6600")
         navigationBarAppearance.tintColor = .white
         navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
-        
+
         let _ = PageControllerBaseController(nibName: nil, bundle: nil)
         // Firebase 초기화 코드
         FirebaseApp.configure()
@@ -63,6 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
          self.window?.makeKeyAndVisible()
          */
         
+        // Status bar 부분의 색변경을 위한 코드-UIApplication을 extension하여 코드 구현
+        UIApplication.shared.statusBarView?.backgroundColor = UIColor.init(hexString: "#FF6600")
         
         return true
     }
@@ -103,4 +106,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         print("Appdelegate SignIn Button")
     }
 }
-
+// 좋지 못한 코드인것 같다..좀더찾아보자.
+extension UIApplication {
+    var statusBarView: UIView? {
+        return value(forKey: "statusBar") as? UIView
+    }
+}

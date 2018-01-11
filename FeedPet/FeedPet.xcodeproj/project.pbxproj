@@ -43,6 +43,7 @@
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
 		4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8641FEB886B0016E674 /* Assets.xcassets */; };
 		4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8661FEB886B0016E674 /* LaunchScreen.storyboard */; };
+		4C5DB82D20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5DB82C20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift */; };
 		4C5FBD651FFEB351004C66EE /* DogMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD641FFEB351004C66EE /* DogMainViewController.swift */; };
 		4C5FBD671FFEB357004C66EE /* CatMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD661FFEB357004C66EE /* CatMainViewController.swift */; };
 		4C5FBD6C1FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD681FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift */; };
@@ -58,6 +59,11 @@
 		4CE4F5DA1FFEAD2B0047E9F9 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */; };
 		4CE4F5DD1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5DB1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift */; };
 		4CE4F5DE1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5DC1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift */; };
+		4CF7C44B2003A57100AF8E35 /* MainCustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C44A2003A57100AF8E35 /* MainCustomNavigationBar.swift */; };
+		4CF7C4512003FA7A00AF8E35 /* DogFunctionalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C4502003FA7A00AF8E35 /* DogFunctionalViewController.swift */; };
+		4CF7C4532003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C4522003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift */; };
+		4CF7C45520040DE400AF8E35 /* FunctionalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */; };
+		4CF7C45720040EA100AF8E35 /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C45620040EA100AF8E35 /* MainPageViewController.swift */; };
 		6ACED27F2266C806A26F1AEA /* Pods_FeedPet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219B4369B3766416839B81B /* Pods_FeedPet.framework */; };
 /* End PBXBuildFile section */
 
@@ -103,6 +109,7 @@
 		4C01C8641FEB886B0016E674 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C01C8671FEB886B0016E674 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C01C8691FEB886B0016E674 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C5DB82C20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMainInfoTableViewCell.swift; sourceTree = "<group>"; };
 		4C5FBD641FFEB351004C66EE /* DogMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DogMainViewController.swift; sourceTree = "<group>"; };
 		4C5FBD661FFEB357004C66EE /* CatMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatMainViewController.swift; sourceTree = "<group>"; };
 		4C5FBD681FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuIconCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -118,6 +125,11 @@
 		4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		4CE4F5DB1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetAgeCollectionViewCell.swift; sourceTree = "<group>"; };
 		4CE4F5DC1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetFunctionalCollectionViewCell.swift; sourceTree = "<group>"; };
+		4CF7C44A2003A57100AF8E35 /* MainCustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCustomNavigationBar.swift; sourceTree = "<group>"; };
+		4CF7C4502003FA7A00AF8E35 /* DogFunctionalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogFunctionalViewController.swift; sourceTree = "<group>"; };
+		4CF7C4522003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionalCollectionViewCell.swift; sourceTree = "<group>"; };
+		4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionalViewController.swift; sourceTree = "<group>"; };
+		4CF7C45620040EA100AF8E35 /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,6 +287,7 @@
 				4CAD76811FED3B8D00EDE859 /* DataCenter.swift */,
 				4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */,
 				4CE4F5DB1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift */,
+				4CF7C44A2003A57100AF8E35 /* MainCustomNavigationBar.swift */,
 				4CE4F5DC1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift */,
 				4C5FBD611FFEB2CA004C66EE /* Main */,
 				14035C041FF24E95005ABAE0 /* MyPage */,
@@ -290,9 +303,13 @@
 			isa = PBXGroup;
 			children = (
 				4C5FBD681FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift */,
+				4C5DB82C20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift */,
 				4C5FBD691FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib */,
 				4C5FBD6A1FFEB35F004C66EE /* MainViewController.swift */,
 				4C5FBD6B1FFEB35F004C66EE /* PageControllerBaseController.swift */,
+				4CF7C45620040EA100AF8E35 /* MainPageViewController.swift */,
+				4CF7C4522003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift */,
+				4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */,
 				4C5FBD631FFEB2E3004C66EE /* CatMain */,
 				4C5FBD621FFEB2DC004C66EE /* DogMain */,
 			);
@@ -303,6 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				4C5FBD641FFEB351004C66EE /* DogMainViewController.swift */,
+				4CF7C4502003FA7A00AF8E35 /* DogFunctionalViewController.swift */,
 			);
 			path = DogMain;
 			sourceTree = "<group>";
@@ -512,9 +530,11 @@
 				4CE4F5D81FFEAC410047E9F9 /* AddUserInformationViewController.swift in Sources */,
 				14035C231FF24E95005ABAE0 /* SettingCell.swift in Sources */,
 				4C5FBD6E1FFEB35F004C66EE /* MainViewController.swift in Sources */,
+				4C5DB82D20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift in Sources */,
 				14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */,
 				4C5FBD6F1FFEB35F004C66EE /* PageControllerBaseController.swift in Sources */,
 				4CE4F5D71FFEAC410047E9F9 /* AddPetInformationViewController.swift in Sources */,
+				4CF7C45720040EA100AF8E35 /* MainPageViewController.swift in Sources */,
 				14DA009D1FF671D200819A96 /* MyPageDataCenter.swift in Sources */,
 				14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */,
 				14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */,
@@ -523,9 +543,13 @@
 				148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */,
 				14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */,
 				4C5FBD651FFEB351004C66EE /* DogMainViewController.swift in Sources */,
+				4CF7C4512003FA7A00AF8E35 /* DogFunctionalViewController.swift in Sources */,
 				14DA00951FF6570E00819A96 /* LeaveMembershipHeaderCell.swift in Sources */,
+				4CF7C45520040DE400AF8E35 /* FunctionalViewController.swift in Sources */,
 				14DA00971FF6572A00819A96 /* LeaveMembershipReasonCell.swift in Sources */,
 				14417CB11FF2DC5D00EA77B3 /* FAQViewController.swift in Sources */,
+				4CF7C44B2003A57100AF8E35 /* MainCustomNavigationBar.swift in Sources */,
+				4CF7C4532003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift in Sources */,
 				14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */,
 				14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */,
 			);
