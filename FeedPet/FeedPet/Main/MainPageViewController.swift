@@ -12,10 +12,13 @@ import XLPagerTabStrip
 class MainPageViewController: UIViewController,IndicatorInfoProvider {
 
     var indicatorTitle: String = ""
+   
+    @IBOutlet weak var feedInfoTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        feedInfoTableView.dataSource = self
+        feedInfoTableView.delegate = self
         // Do any additional setup after loading the view.
     }
 
@@ -50,4 +53,17 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         return indicator
         
     }
+}
+extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let feeCell = tableView.dequeueReusableCell(withIdentifier: "FeedMainInfoCell", for: indexPath) as! FeedMainInfoTableViewCell
+        
+        return feeCell
+    }
+    
+    
 }

@@ -38,6 +38,7 @@
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
 		4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8641FEB886B0016E674 /* Assets.xcassets */; };
 		4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8661FEB886B0016E674 /* LaunchScreen.storyboard */; };
+		4C5DB82D20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5DB82C20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift */; };
 		4C5FBD651FFEB351004C66EE /* DogMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD641FFEB351004C66EE /* DogMainViewController.swift */; };
 		4C5FBD671FFEB357004C66EE /* CatMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD661FFEB357004C66EE /* CatMainViewController.swift */; };
 		4C5FBD6C1FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD681FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift */; };
@@ -98,6 +99,7 @@
 		4C01C8641FEB886B0016E674 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C01C8671FEB886B0016E674 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C01C8691FEB886B0016E674 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C5DB82C20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMainInfoTableViewCell.swift; sourceTree = "<group>"; };
 		4C5FBD641FFEB351004C66EE /* DogMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DogMainViewController.swift; sourceTree = "<group>"; };
 		4C5FBD661FFEB357004C66EE /* CatMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatMainViewController.swift; sourceTree = "<group>"; };
 		4C5FBD681FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuIconCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				4C5FBD681FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift */,
+				4C5DB82C20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift */,
 				4C5FBD691FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib */,
 				4C5FBD6A1FFEB35F004C66EE /* MainViewController.swift */,
 				4C5FBD6B1FFEB35F004C66EE /* PageControllerBaseController.swift */,
@@ -507,6 +510,7 @@
 				4CE4F5D81FFEAC410047E9F9 /* AddUserInformationViewController.swift in Sources */,
 				14035C231FF24E95005ABAE0 /* SettingCell.swift in Sources */,
 				4C5FBD6E1FFEB35F004C66EE /* MainViewController.swift in Sources */,
+				4C5DB82D20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift in Sources */,
 				14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */,
 				4C5FBD6F1FFEB35F004C66EE /* PageControllerBaseController.swift in Sources */,
 				4CE4F5D71FFEAC410047E9F9 /* AddPetInformationViewController.swift in Sources */,

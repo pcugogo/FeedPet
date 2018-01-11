@@ -64,7 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
          self.window?.makeKeyAndVisible()
          */
         
-//        UIApplication.shared.statusBarView?.backgroundColor = UIColor.init(hexString: "#FF6600")
+        // Status bar 부분의 색변경을 위한 코드-UIApplication을 extension하여 코드 구현
+        UIApplication.shared.statusBarView?.backgroundColor = UIColor.init(hexString: "#FF6600")
         
         return true
     }
@@ -105,4 +106,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         print("Appdelegate SignIn Button")
     }
 }
-
+// 좋지 못한 코드인것 같다..좀더찾아보자.
+extension UIApplication {
+    var statusBarView: UIView? {
+        return value(forKey: "statusBar") as? UIView
+    }
+}

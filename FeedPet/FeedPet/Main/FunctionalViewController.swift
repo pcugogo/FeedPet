@@ -9,6 +9,9 @@
 import UIKit
 
 class FunctionalViewController: UIViewController {
+    
+    
+    
     // 강아지일때-MainPageViewController에서 강아지,고야잉 구분하여데이터 할당예정
     var testData: [[String:String]] = [
                                     ["functional":"피부","functionalImg":"dogFunctional-Skin"],
@@ -32,7 +35,30 @@ class FunctionalViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    
+//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        super.viewWillTransition(to: size, with: coordinator)
+//        collectionViewSizeChanged = true
+//    }
+//
+//
+//    override func viewWillLayoutSubviews() {
+//        super.viewWillLayoutSubviews()
+//
+//        if collectionViewSizeChanged {
+//            functionalCollectionView.collectionViewLayout.invalidateLayout()
+//        }
+//    }
+//
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//
+//        if collectionViewSizeChanged {
+//            collectionViewSizeChanged = false
+//            functionalCollectionView.performBatchUpdates({}, completion: nil)
+//        }
+//    }
+    
     /*
     // MARK: - Navigation
 
@@ -46,6 +72,17 @@ class FunctionalViewController: UIViewController {
 }
 extension FunctionalViewController: UICollectionViewDelegateFlowLayout{
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let height: CGFloat = collectionView.frame.size.height/3 - 10
+        let width: CGFloat = collectionView.frame.size.width/3 - 10
+
+        // 디바이스가 패드일경우
+//        if traitCollection.userInterfaceIdiom == .pad {
+//            width = collectionView.frame.size.width/3 - 10
+//        }
+
+        return CGSize(width: width, height: height)
+    }
 }
 extension FunctionalViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     

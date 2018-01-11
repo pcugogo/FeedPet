@@ -19,5 +19,6 @@ target 'FeedPet' do
     pod 'SwiftyJSON'
     pod 'XLPagerTabStrip', '~> 8.0'
     
+    
 end
 
