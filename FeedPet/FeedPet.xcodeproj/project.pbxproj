@@ -43,6 +43,10 @@
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
 		4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8641FEB886B0016E674 /* Assets.xcassets */; };
 		4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8661FEB886B0016E674 /* LaunchScreen.storyboard */; };
+		4C229C82200B9E50004FFD07 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C81200B9E50004FFD07 /* FilterViewController.swift */; };
+		4C229C88200CB21B004FFD07 /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C87200CB21B004FFD07 /* FilterTableViewCell.swift */; };
+		4C229C8A200CB22F004FFD07 /* FilterDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C89200CB22F004FFD07 /* FilterDetailTableViewCell.swift */; };
+		4C229C8E200CB2DF004FFD07 /* FilterDetailGradeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C8D200CB2DF004FFD07 /* FilterDetailGradeTableViewCell.swift */; };
 		4C5DB82D20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5DB82C20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift */; };
 		4C5FBD651FFEB351004C66EE /* DogMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD641FFEB351004C66EE /* DogMainViewController.swift */; };
 		4C5FBD671FFEB357004C66EE /* CatMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD661FFEB357004C66EE /* CatMainViewController.swift */; };
@@ -50,6 +54,10 @@
 		4C5FBD6D1FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C5FBD691FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib */; };
 		4C5FBD6E1FFEB35F004C66EE /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD6A1FFEB35F004C66EE /* MainViewController.swift */; };
 		4C5FBD6F1FFEB35F004C66EE /* PageControllerBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD6B1FFEB35F004C66EE /* PageControllerBaseController.swift */; };
+		4C8DFB84200E297200331A5B /* FilterMenuSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8DFB83200E297200331A5B /* FilterMenuSection.swift */; };
+		4C8DFB86200E355400331A5B /* FilterHeaderMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8DFB85200E355400331A5B /* FilterHeaderMenuTableViewCell.swift */; };
+		4C8DFB8A200E3A4300331A5B /* FilterMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8DFB89200E3A4300331A5B /* FilterMenuHeaderView.swift */; };
+		4C8DFB8C200E3ACF00331A5B /* FilterMenuHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C8DFB8B200E3ACF00331A5B /* FilterMenuHeaderView.xib */; };
 		4CAD767E1FED13BF00EDE859 /* loginVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = 4CAD767D1FED13BF00EDE859 /* loginVideo.mov */; };
 		4CAD76801FED142E00EDE859 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD767F1FED142E00EDE859 /* LoginViewController.swift */; };
 		4CAD76821FED3B8D00EDE859 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD76811FED3B8D00EDE859 /* DataCenter.swift */; };
@@ -109,6 +117,10 @@
 		4C01C8641FEB886B0016E674 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C01C8671FEB886B0016E674 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C01C8691FEB886B0016E674 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C229C81200B9E50004FFD07 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		4C229C87200CB21B004FFD07 /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
+		4C229C89200CB22F004FFD07 /* FilterDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterDetailTableViewCell.swift; sourceTree = "<group>"; };
+		4C229C8D200CB2DF004FFD07 /* FilterDetailGradeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterDetailGradeTableViewCell.swift; sourceTree = "<group>"; };
 		4C5DB82C20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMainInfoTableViewCell.swift; sourceTree = "<group>"; };
 		4C5FBD641FFEB351004C66EE /* DogMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DogMainViewController.swift; sourceTree = "<group>"; };
 		4C5FBD661FFEB357004C66EE /* CatMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatMainViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +128,10 @@
 		4C5FBD691FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenuIconCollectionViewCell.xib; sourceTree = "<group>"; };
 		4C5FBD6A1FFEB35F004C66EE /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4C5FBD6B1FFEB35F004C66EE /* PageControllerBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageControllerBaseController.swift; sourceTree = "<group>"; };
+		4C8DFB83200E297200331A5B /* FilterMenuSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuSection.swift; sourceTree = "<group>"; };
+		4C8DFB85200E355400331A5B /* FilterHeaderMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHeaderMenuTableViewCell.swift; sourceTree = "<group>"; };
+		4C8DFB89200E3A4300331A5B /* FilterMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuHeaderView.swift; sourceTree = "<group>"; };
+		4C8DFB8B200E3ACF00331A5B /* FilterMenuHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterMenuHeaderView.xib; sourceTree = "<group>"; };
 		4CAD767D1FED13BF00EDE859 /* loginVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = loginVideo.mov; sourceTree = "<group>"; };
 		4CAD767F1FED142E00EDE859 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4CAD76811FED3B8D00EDE859 /* DataCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
@@ -299,6 +315,21 @@
 			path = FeedPet;
 			sourceTree = "<group>";
 		};
+		4C229C86200CB20A004FFD07 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				4C229C81200B9E50004FFD07 /* FilterViewController.swift */,
+				4C8DFB83200E297200331A5B /* FilterMenuSection.swift */,
+				4C229C87200CB21B004FFD07 /* FilterTableViewCell.swift */,
+				4C8DFB89200E3A4300331A5B /* FilterMenuHeaderView.swift */,
+				4C8DFB8B200E3ACF00331A5B /* FilterMenuHeaderView.xib */,
+				4C8DFB85200E355400331A5B /* FilterHeaderMenuTableViewCell.swift */,
+				4C229C89200CB22F004FFD07 /* FilterDetailTableViewCell.swift */,
+				4C229C8D200CB2DF004FFD07 /* FilterDetailGradeTableViewCell.swift */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
 		4C5FBD611FFEB2CA004C66EE /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -310,6 +341,7 @@
 				4CF7C45620040EA100AF8E35 /* MainPageViewController.swift */,
 				4CF7C4522003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift */,
 				4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */,
+				4C229C86200CB20A004FFD07 /* Filter */,
 				4C5FBD631FFEB2E3004C66EE /* CatMain */,
 				4C5FBD621FFEB2DC004C66EE /* DogMain */,
 			);
@@ -403,6 +435,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C8DFB8C200E3ACF00331A5B /* FilterMenuHeaderView.xib in Resources */,
 				4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */,
 				4CBD557D1FED043300D37FE8 /* GoogleService-Info.plist in Resources */,
 				4C5FBD6D1FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib in Resources */,
@@ -505,12 +538,15 @@
 				4CE4F5DE1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift in Sources */,
 				14DA008E1FF598D700819A96 /* IntroductionImageCell.swift in Sources */,
 				14DA00991FF6573D00819A96 /* LeaveMembershipBtnCell.swift in Sources */,
+				4C229C8E200CB2DF004FFD07 /* FilterDetailGradeTableViewCell.swift in Sources */,
 				4CE4F5DD1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift in Sources */,
 				14E5C195200539A7007E936A /* WriteReviewVCTextViewCell.swift in Sources */,
 				14E5C1932005398E007E936A /* WriteReviewVCFeedImgCell.swift in Sources */,
+				4C8DFB8A200E3A4300331A5B /* FilterMenuHeaderView.swift in Sources */,
 				14035C1A1FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift in Sources */,
 				14035C181FF24E95005ABAE0 /* AlarmSettingViewController.swift in Sources */,
 				14417CB61FF2F06500EA77B3 /* TermsOfUseViewController.swift in Sources */,
+				4C229C8A200CB22F004FFD07 /* FilterDetailTableViewCell.swift in Sources */,
 				4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */,
 				14DA00901FF598E700819A96 /* TeamLbCell.swift in Sources */,
 				14035C201FF24E95005ABAE0 /* MyMenuCell.swift in Sources */,
@@ -540,12 +576,16 @@
 				4CF7C4512003FA7A00AF8E35 /* DogFunctionalViewController.swift in Sources */,
 				14DA00951FF6570E00819A96 /* LeaveMembershipHeaderCell.swift in Sources */,
 				4CF7C45520040DE400AF8E35 /* FunctionalViewController.swift in Sources */,
+				4C8DFB86200E355400331A5B /* FilterHeaderMenuTableViewCell.swift in Sources */,
 				14DA00971FF6572A00819A96 /* LeaveMembershipReasonCell.swift in Sources */,
+				4C229C82200B9E50004FFD07 /* FilterViewController.swift in Sources */,
 				14417CB11FF2DC5D00EA77B3 /* FAQViewController.swift in Sources */,
 				4CF7C44B2003A57100AF8E35 /* MainCustomNavigationBar.swift in Sources */,
 				4CF7C4532003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift in Sources */,
+				4C229C88200CB21B004FFD07 /* FilterTableViewCell.swift in Sources */,
 				14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */,
 				14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */,
+				4C8DFB84200E297200331A5B /* FilterMenuSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

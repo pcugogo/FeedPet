@@ -19,7 +19,10 @@ class FunctionalViewController: UIViewController {
                                     ["functional":"관절","functionalImg":"dogFunctional-Joint"],
                                     ["functional":"다이어트","functionalImg":"dogFunctional-Diet"],
                                     ["functional":"인도어","functionalImg":"dogFunctional-Indoor"],
-                                    ["functional":"장&면역","functionalImg":"dogFunctional-Immune"]
+                                    ["functional":"장&면역","functionalImg":"dogFunctional-Immune"],
+                                    ["functional":"퍼포먼스","functionalImg":"dogFunctional-Performance"],
+                                    ["functional":"비뇨기","functionalImg":"dogFunctional-Urinary"],
+                                    ["functional":"전체","functionalImg":"dogFunctional-All"]
     ]
     @IBOutlet weak var functionalCollectionView: UICollectionView!
     
@@ -35,7 +38,12 @@ class FunctionalViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
+    @IBAction func filterBtnTouched(_ sender: UIButton){
+        let filterView: FilterViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FilterView") as! FilterViewController
+        
+        self.present(filterView, animated: true, completion: nil)
+        
+    }
 //    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 //        super.viewWillTransition(to: size, with: coordinator)
 //        collectionViewSizeChanged = true
