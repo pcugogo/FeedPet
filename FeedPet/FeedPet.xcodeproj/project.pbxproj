@@ -58,6 +58,8 @@
 		4C8DFB86200E355400331A5B /* FilterHeaderMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8DFB85200E355400331A5B /* FilterHeaderMenuTableViewCell.swift */; };
 		4C8DFB8A200E3A4300331A5B /* FilterMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8DFB89200E3A4300331A5B /* FilterMenuHeaderView.swift */; };
 		4C8DFB8C200E3ACF00331A5B /* FilterMenuHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C8DFB8B200E3ACF00331A5B /* FilterMenuHeaderView.xib */; };
+		4C8DFB8E200F55A700331A5B /* FeedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8DFB8D200F55A700331A5B /* FeedDetailViewController.swift */; };
+		4C8DFB90200F580900331A5B /* FeedDetailITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8DFB8F200F580900331A5B /* FeedDetailITableViewCell.swift */; };
 		4CAD767E1FED13BF00EDE859 /* loginVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = 4CAD767D1FED13BF00EDE859 /* loginVideo.mov */; };
 		4CAD76801FED142E00EDE859 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD767F1FED142E00EDE859 /* LoginViewController.swift */; };
 		4CAD76821FED3B8D00EDE859 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD76811FED3B8D00EDE859 /* DataCenter.swift */; };
@@ -132,6 +134,8 @@
 		4C8DFB85200E355400331A5B /* FilterHeaderMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHeaderMenuTableViewCell.swift; sourceTree = "<group>"; };
 		4C8DFB89200E3A4300331A5B /* FilterMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuHeaderView.swift; sourceTree = "<group>"; };
 		4C8DFB8B200E3ACF00331A5B /* FilterMenuHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterMenuHeaderView.xib; sourceTree = "<group>"; };
+		4C8DFB8D200F55A700331A5B /* FeedDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailViewController.swift; sourceTree = "<group>"; };
+		4C8DFB8F200F580900331A5B /* FeedDetailITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailITableViewCell.swift; sourceTree = "<group>"; };
 		4CAD767D1FED13BF00EDE859 /* loginVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = loginVideo.mov; sourceTree = "<group>"; };
 		4CAD767F1FED142E00EDE859 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4CAD76811FED3B8D00EDE859 /* DataCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
@@ -341,6 +345,8 @@
 				4CF7C45620040EA100AF8E35 /* MainPageViewController.swift */,
 				4CF7C4522003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift */,
 				4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */,
+				4C8DFB8D200F55A700331A5B /* FeedDetailViewController.swift */,
+				4C8DFB8F200F580900331A5B /* FeedDetailITableViewCell.swift */,
 				4C229C86200CB20A004FFD07 /* Filter */,
 				4C5FBD631FFEB2E3004C66EE /* CatMain */,
 				4C5FBD621FFEB2DC004C66EE /* DogMain */,
@@ -561,6 +567,7 @@
 				14035C231FF24E95005ABAE0 /* SettingCell.swift in Sources */,
 				4C5FBD6E1FFEB35F004C66EE /* MainViewController.swift in Sources */,
 				4C5DB82D20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift in Sources */,
+				4C8DFB8E200F55A700331A5B /* FeedDetailViewController.swift in Sources */,
 				14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */,
 				4C5FBD6F1FFEB35F004C66EE /* PageControllerBaseController.swift in Sources */,
 				4CE4F5D71FFEAC410047E9F9 /* AddPetInformationViewController.swift in Sources */,
@@ -581,6 +588,7 @@
 				4C229C82200B9E50004FFD07 /* FilterViewController.swift in Sources */,
 				14417CB11FF2DC5D00EA77B3 /* FAQViewController.swift in Sources */,
 				4CF7C44B2003A57100AF8E35 /* MainCustomNavigationBar.swift in Sources */,
+				4C8DFB90200F580900331A5B /* FeedDetailITableViewCell.swift in Sources */,
 				4CF7C4532003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift in Sources */,
 				4C229C88200CB21B004FFD07 /* FilterTableViewCell.swift in Sources */,
 				14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */,
