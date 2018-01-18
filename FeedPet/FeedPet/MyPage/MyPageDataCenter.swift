@@ -44,6 +44,9 @@ struct userDefaultsName {   //알림 서비스에서 이용하는 유저디폴�
     static var mealTimeHour = "mealTimeHour"
     static var mealTimeMinute = "mealTimeMinute"
     static var alarmOnOff = "alarmOnOff"
+    
+    static var favoritesDatasCount = "favoritesDatasCount"
+    static var reviewDatasCount = "reviewDatasCount"
 }
 
 struct FireBaseData{
@@ -89,17 +92,13 @@ struct FireBaseData{
                         
                         let favorites = FavoritesData(feedKey: feedKey, feedData: favoritesDic)
                         MyPageDataCenter.shared.favorites.append(favorites)
-                       
-                        
                         
                     }
-                    print("favoritesConut",MyPageDataCenter.shared.favorites.count)
-                   
                 }
             }
         })
         
-        print("DataCenter",MyPageDataCenter.shared.favorites)
+        
     }
     
     func fireBaseReviewsDataLoad(){
@@ -126,13 +125,10 @@ struct FireBaseData{
                         MyPageDataCenter.shared.reviews.append(reviews)
                         
                     }
-                    print("reviewsCount",MyPageDataCenter.shared.reviews.count)
-                    
                 }
             }
         })
         
-        print("DataCenter",MyPageDataCenter.shared.favorites)
     }
     
 }

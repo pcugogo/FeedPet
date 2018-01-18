@@ -24,6 +24,10 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let userSystemVersion = UIDevice.current.systemVersion // 현재 사용자 iOS 버전
     let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
     
+    var favoritesCountStr = "0개"
+    var reviewsCountStr = "0개"
+    
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -31,8 +35,17 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         FireBaseData.shared.fireBaseFavoritesDataLoad()
         FireBaseData.shared.fireBaseReviewsDataLoad()
+        //마이페이지 전에 있는 뷰의 뷰디드로드에서 데이터를 로드해야 MyMenuCell의 즐겨찾기 수랑 리뷰 수가 없데이트 된다
+        
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+
+        favoritesCountStr = "\(MyPageDataCenter.shared.favorites.count)개"
+        reviewsCountStr = "\(MyPageDataCenter.shared.reviews.count)개"
+        
+        tableView.reloadData()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -84,6 +97,8 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let myMenuCell = tableView.dequeueReusableCell(withIdentifier: "MyMenuCell", for: indexPath) as! MyMenuCell
 
             myMenuCell.delegate = self
+            myMenuCell.favoritesNumLb.text = favoritesCountStr
+            myMenuCell.myReviewsNumLb.text = reviewsCountStr
             
             return myMenuCell
             
