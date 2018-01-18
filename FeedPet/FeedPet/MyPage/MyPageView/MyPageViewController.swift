@@ -8,6 +8,7 @@
 
 import UIKit
 import MessageUI
+import Firebase
 
 enum enumSettingSection:Int { //섹션 이름
     case Profile = 0
@@ -15,7 +16,7 @@ enum enumSettingSection:Int { //섹션 이름
     case Setting = 2
 }
 
-class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,MFMailComposeViewControllerDelegate {
+class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,MFMailComposeViewControllerDelegate,MyMenuCellDelegate {
     
     let settingMenuName = [ "버전정보","알람설정","FAQ","이용약관","문의하기","팀소개","로그아웃","탈퇴하기" ]
     //설정 메뉴 이름들
@@ -23,12 +24,15 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let userSystemVersion = UIDevice.current.systemVersion // 현재 사용자 iOS 버전
     let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
     
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        FireBaseData.shared.fireBaseFavoritesDataLoad()
+        FireBaseData.shared.fireBaseReviewsDataLoad()
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -65,13 +69,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
             return 0
         }
         
-        //        if section == 0{
-        //            return 1
-        //        }else if section == 1{
-        //            return 1
-        //        }else{
-        //            return settingMenuName.count + 1
-        //        }
+       
         
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -84,6 +82,9 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }else if indexPath.section == 1 && indexPath.row == 0 {
             
             let myMenuCell = tableView.dequeueReusableCell(withIdentifier: "MyMenuCell", for: indexPath) as! MyMenuCell
+
+            myMenuCell.delegate = self
+            
             return myMenuCell
             
         }else if indexPath.section == 2 && indexPath.row == 0 {
@@ -136,6 +137,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let mail = MFMailComposeViewController()
                 mail.mailComposeDelegate = self
                 mail.setToRecipients(["feedpet2018@gmail.com"])
+                mail.navigationBar.isTranslucent = false
                 mail.setSubject("문의합니다")
                 
                 guard let AppVersion = userAppVersion else{
@@ -227,6 +229,17 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     
+    func toFavoritesView() {
+        let myPageFavoritesView:MyPageFavoritesViewController = storyboard?.instantiateViewController(withIdentifier: "MyPageFavoritesViewController") as! MyPageFavoritesViewController
+        navigationController?.pushViewController(myPageFavoritesView, animated: true)
+    }
+    
+    func toMyReviewView() {
+        let myPageMyReviewsView:MyPageMyReviewsViewController = storyboard?.instantiateViewController(withIdentifier: "MyPageMyReviewsViewController") as! MyPageMyReviewsViewController
+        navigationController?.pushViewController(myPageMyReviewsView, animated: true)
+    }
+    
+   
     
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
         //디스미스

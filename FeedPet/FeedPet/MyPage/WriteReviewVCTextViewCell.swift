@@ -24,7 +24,6 @@ class WriteReviewVCTextViewCell: UITableViewCell,UITextViewDelegate {
     @IBOutlet weak var secondStarBtnOut: UIButton!
     @IBOutlet weak var thirdStarBtnOut:UIButton!
     @IBOutlet weak var fourthStarBtnOut:UIButton!
-    
     @IBOutlet weak var fifthStarBtnOut:UIButton!
     
     
@@ -49,70 +48,57 @@ class WriteReviewVCTextViewCell: UITableViewCell,UITextViewDelegate {
         
     }
     
-    @IBAction func firstStarBtnAction(_ sender: UIButton) {
-        ratingNumberOfStars = 1 // 서버에 넘겨질 평점
+    @IBAction func starBtnAction(_ sender: UIButton) {
         
-        DispatchQueue.main.async{
-            sender.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            self.secondStarBtnOut.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
-            self.thirdStarBtnOut.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
-            self.fourthStarBtnOut.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
-            self.fifthStarBtnOut.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
-        }
-        
-    }
-    @IBAction func secondStarBtnAction(_ sender: UIButton) {
-        ratingNumberOfStars = 2
-        
-        DispatchQueue.main.async{
-            self.firstStarBtnOut.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            sender.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            self.thirdStarBtnOut.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
-            self.fourthStarBtnOut.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
-            self.fifthStarBtnOut.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
+        switch sender.tag{
+        case 1 :
+            ratingNumberOfStars = 1 // 서버에 넘겨질 평점
+            
+            firstStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            secondStarBtnOut.setImage(#imageLiteral(resourceName: "normalStar"), for: .normal)
+            thirdStarBtnOut.setImage(#imageLiteral(resourceName: "normalStar"), for: .normal)
+            fourthStarBtnOut.setImage(#imageLiteral(resourceName: "normalStar"), for: .normal)
+            fifthStarBtnOut.setImage(#imageLiteral(resourceName: "normalStar"), for: .normal)
+        case 2:
+            ratingNumberOfStars = 2 // 서버에 넘겨질 평점
+            
+            firstStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            secondStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            thirdStarBtnOut.setImage(#imageLiteral(resourceName: "normalStar"), for: .normal)
+            fourthStarBtnOut.setImage(#imageLiteral(resourceName: "normalStar"), for: .normal)
+            fifthStarBtnOut.setImage(#imageLiteral(resourceName: "normalStar"), for: .normal)
+        case 3:
+            ratingNumberOfStars = 3 // 서버에 넘겨질 평점
+            
+            firstStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            secondStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            thirdStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            fourthStarBtnOut.setImage(#imageLiteral(resourceName: "normalStar"), for: .normal)
+            fifthStarBtnOut.setImage(#imageLiteral(resourceName: "normalStar"), for: .normal)
+        case 4:
+            ratingNumberOfStars = 4 // 서버에 넘겨질 평점
+            
+            firstStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            secondStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            thirdStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            fourthStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            fifthStarBtnOut.setImage(#imageLiteral(resourceName: "normalStar"), for: .normal)
+        case 5:
+            ratingNumberOfStars = 5 // 서버에 넘겨질 평점
+            
+            firstStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            secondStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            thirdStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            fourthStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+            fifthStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
+        default:
+            print("error")
         }
         
     }
     
-    @IBAction func thirdStarBtnAction(_ sender: UIButton) {
-        ratingNumberOfStars = 3
-        
-        DispatchQueue.main.async{
-            self.firstStarBtnOut.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            self.secondStarBtnOut.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            sender.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            self.fourthStarBtnOut.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
-            self.fifthStarBtnOut.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
-        }
-        
-    }
     
     
-    @IBAction func fourthStarBtnAction(_ sender: UIButton) {
-        ratingNumberOfStars = 4
-        
-        DispatchQueue.main.async{
-            self.firstStarBtnOut.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            self.secondStarBtnOut.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            self.thirdStarBtnOut.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            sender.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            self.fifthStarBtnOut.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
-        }
-        
-    }
-    
-    @IBAction func fifthStarBtnAction(_ sender: UIButton) {
-        ratingNumberOfStars = 5
-        
-        DispatchQueue.main.async{
-            self.firstStarBtnOut.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            self.secondStarBtnOut.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            self.thirdStarBtnOut.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            self.fourthStarBtnOut.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-            sender.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-        }
-        
-    }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         if writeReviewContentsTextView.text == textViewPlaceHolderText{
