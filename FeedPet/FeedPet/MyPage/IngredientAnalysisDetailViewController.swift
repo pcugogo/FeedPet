@@ -15,6 +15,7 @@ class IngredientAnalysisDetailViewController: UIViewController {
     
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var ingredientNameLb: UILabel!
+    @IBOutlet weak var asteriskLb: UILabel!
     
     @IBOutlet weak var ingredientDetailLb: UILabel!
     
@@ -22,12 +23,14 @@ class IngredientAnalysisDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ingredientNameLb.text = "*" + testData
+        ingredientNameLb.text = testData
         
         if selectedSegmentIndex == 0{
             ingredientNameLb.textColor = UIColor(red: 52/255, green: 152/255, blue: 219/255, alpha: 1.0)
+            asteriskLb.textColor = UIColor(red: 52/255, green: 152/255, blue: 219/255, alpha: 1.0)
         }else{
             ingredientNameLb.textColor = UIColor(red: 188/255, green: 55/255, blue: 41/255, alpha: 1.0)
+            asteriskLb.textColor = UIColor(red: 188/255, green: 55/255, blue: 41/255, alpha: 1.0)
         }
         
         
