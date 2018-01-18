@@ -16,12 +16,19 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+  
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
         if MyPageDataCenter.shared.favorites.isEmpty{
-            tableView.separatorStyle = UITableViewCellSeparatorStyle.none
+            tableView.isHidden = true
         }else{
-            tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
+            tableView.isHidden = false
         }
+        
+        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,13 +58,8 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+       
         
-        if MyPageDataCenter.shared.favorites.isEmpty{
-            let favoritesEmptyCell = tableView.dequeueReusableCell(withIdentifier: "FavoritesEmptyCell", for: indexPath)
-            
-            return favoritesEmptyCell
-        }else{
-            let favorites = MyPageDataCenter.shared.favorites[indexPath.row]
             
             let myPageFeedContentsCell = tableView.dequeueReusableCell(withIdentifier: "MyPageFeedContentsCell", for: indexPath) as! MyPageFeedContentsCell
             
@@ -65,10 +67,14 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
             
             myPageFeedContentsCell.likeBtnOut.tag = indexPath.row
             
+        
+        
+        if MyPageDataCenter.shared.favorites.isEmpty == false{
+            let favorites = MyPageDataCenter.shared.favorites[indexPath.row] //reviews가 옵셔널이 아니므로 옵셔널 바인딩 안된다
             myPageFeedContentsCell.configureCell(favorites: favorites)
-            
-            return myPageFeedContentsCell
         }
+        
+            return myPageFeedContentsCell
         
     }
     
@@ -92,14 +98,18 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
                 MyPageDataCenter.shared.favorites.remove(at: index)
                 self.tableView.reloadData()
                 FireBaseData.shared.refFavoritesReturn.child(MyPageDataCenter.shared.testUUID).child(removeFeedKey).removeValue() //remove시에 지운 값이 있던 자리가 닐로 되있는건지 아예 없어진건지 아직 모르겠다
-
-//                FireBaseData.shared.fireBaseFavoritesDataLoad() 서버에 있는 데이터를 불러오는 메서드인데
-//                MyPageDataCenter.shared.favorites.remove(at: index)이런식으로 최신화를 해줘서 데이터를 불러오지않아도 최신화가 되있다
+                
+                //                FireBaseData.shared.fireBaseFavoritesDataLoad() 서버에 있는 데이터를 불러오는 메서드인데
+                //                MyPageDataCenter.shared.favorites.remove(at: index)이런식으로 최신화를 해줘서 데이터를 불러오지않아도 최신화가 되있다
                 
                 print("LikeBtnCancelDidData",MyPageDataCenter.shared.favorites)
                 
             }
-            
+            if MyPageDataCenter.shared.reviewsFeedKeys.isEmpty == true{
+                self.tableView.isHidden = true
+            }else{
+                self.tableView.isHidden = false
+            }
         }
         let noBtn:UIAlertAction = UIAlertAction(title: "아니오", style: .cancel, handler: nil)
         

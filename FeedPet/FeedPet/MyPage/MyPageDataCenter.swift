@@ -34,7 +34,8 @@ struct MyPageDataCenter {
     //내 리뷰 데이터
     var reviews = [ReviewsData]()
     var reviewsFeedKeys = [String]()
-    
+    var myPageMyReviewsCellEditBtnTagValue:Int!
+    var myPageMyReviewsCellRemoveBtnTagValue:Int!
 }
 
 struct userDefaultsName {   //알림 서비스에서 이용하는 유저디폴트 이름들
@@ -43,13 +44,9 @@ struct userDefaultsName {   //알림 서비스에서 이용하는 유저디폴�
     static var mealTimeHour = "mealTimeHour"
     static var mealTimeMinute = "mealTimeMinute"
     static var alarmOnOff = "alarmOnOff"
-    
 }
 
-
-
-
-class FireBaseData{
+struct FireBaseData{
     
     static let shared = FireBaseData()
     
@@ -81,6 +78,7 @@ class FireBaseData{
             if MyPageDataCenter.shared.favoritesFeedKeys.isEmpty == false{  //서버에서 데이터를 불러오기전 데이터를 초기화
                 MyPageDataCenter.shared.favoritesFeedKeys.removeAll()
             }
+            //초기화 후 다시 데이터를 담는다
             if let snapShot = snapshot.children.allObjects as? [DataSnapshot]{
                 
                 for snap in snapShot{
@@ -109,6 +107,13 @@ class FireBaseData{
         //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
         FireBaseData.shared.refReviewsReturn.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in
            
+            if MyPageDataCenter.shared.reviews.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
+                MyPageDataCenter.shared.reviews.removeAll()
+            }
+            if MyPageDataCenter.shared.reviewsFeedKeys.isEmpty == false{  //서버에서 데이터를 불러오기전 데이터를 초기화
+                MyPageDataCenter.shared.reviewsFeedKeys.removeAll()
+            }
+            //초기화 후 다시 데이터를 담는다
             if let snapShot = snapshot.children.allObjects as? [DataSnapshot]{
                 
                 for snap in snapShot{
@@ -132,7 +137,7 @@ class FireBaseData{
     
 }
 
-class FavoritesData {
+struct FavoritesData {
     
     private var feedKey:String!
     private var feedBrand:String!
@@ -217,7 +222,7 @@ class FavoritesData {
 }
 
 
-class ReviewsData {
+struct ReviewsData {
     private var feedKey:String!
     private var feedBrand:String!
     private var feedName:String!
@@ -256,6 +261,10 @@ class ReviewsData {
         return rating
     }
 
+    mutating func reviewContentUpdeter(newContent:String){
+        self.reviewContent = newContent
+    }
+    
     init(feedBrand:String,feedName:String,feedImg:String,writeDate:String,reviewContent:String,reviewGoods:Int,reviewNotGoods:Int,rating:Int){
         
         self.feedBrand = feedBrand

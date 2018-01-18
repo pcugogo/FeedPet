@@ -242,8 +242,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
    
     
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
-        //디스미스
-        
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

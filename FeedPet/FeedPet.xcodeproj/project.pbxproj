@@ -65,7 +65,7 @@
 		4CF7C45520040DE400AF8E35 /* FunctionalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */; };
 		4CF7C45720040EA100AF8E35 /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C45620040EA100AF8E35 /* MainPageViewController.swift */; };
 		6ACED27F2266C806A26F1AEA /* Pods_FeedPet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219B4369B3766416839B81B /* Pods_FeedPet.framework */; };
-		FC598EB62010D7AE008914EB /* FavoritesEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EB32010D7AD008914EB /* FavoritesEmptyCell.swift */; };
+		FC3DE8602010EADB003AFBF1 /* MyPageReviewEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3DE85F2010EADB003AFBF1 /* MyPageReviewEditViewController.swift */; };
 		FC598EB72010D7AE008914EB /* MyPageFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EB42010D7AD008914EB /* MyPageFavoritesViewController.swift */; };
 		FC598EB82010D7AE008914EB /* MyPageFeedContentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EB52010D7AD008914EB /* MyPageFeedContentsCell.swift */; };
 		FC598EBC2010D7ED008914EB /* MyPageMyReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EBA2010D7ED008914EB /* MyPageMyReviewsCell.swift */; };
@@ -135,7 +135,7 @@
 		4CF7C4522003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionalCollectionViewCell.swift; sourceTree = "<group>"; };
 		4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionalViewController.swift; sourceTree = "<group>"; };
 		4CF7C45620040EA100AF8E35 /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
-		FC598EB32010D7AD008914EB /* FavoritesEmptyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesEmptyCell.swift; sourceTree = "<group>"; };
+		FC3DE85F2010EADB003AFBF1 /* MyPageReviewEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageReviewEditViewController.swift; sourceTree = "<group>"; };
 		FC598EB42010D7AD008914EB /* MyPageFavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageFavoritesViewController.swift; sourceTree = "<group>"; };
 		FC598EB52010D7AD008914EB /* MyPageFeedContentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageFeedContentsCell.swift; sourceTree = "<group>"; };
 		FC598EBA2010D7ED008914EB /* MyPageMyReviewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageMyReviewsCell.swift; sourceTree = "<group>"; };
@@ -356,7 +356,6 @@
 		FC598EB22010D7AD008914EB /* MyPageFavoritesView */ = {
 			isa = PBXGroup;
 			children = (
-				FC598EB32010D7AD008914EB /* FavoritesEmptyCell.swift */,
 				FC598EB42010D7AD008914EB /* MyPageFavoritesViewController.swift */,
 				FC598EB52010D7AD008914EB /* MyPageFeedContentsCell.swift */,
 			);
@@ -366,8 +365,9 @@
 		FC598EB92010D7ED008914EB /* MyReviewsView */ = {
 			isa = PBXGroup;
 			children = (
-				FC598EBA2010D7ED008914EB /* MyPageMyReviewsCell.swift */,
 				FC598EBB2010D7ED008914EB /* MyPageMyReviewsViewController.swift */,
+				FC598EBA2010D7ED008914EB /* MyPageMyReviewsCell.swift */,
+				FC3DE85F2010EADB003AFBF1 /* MyPageReviewEditViewController.swift */,
 			);
 			name = MyReviewsView;
 			path = "../../../../FeedPet 백업/FeedPet 복사본/FeedPet/FeedPet/MyPage/MyReviewsView";
@@ -551,6 +551,7 @@
 				14035C241FF24E95005ABAE0 /* SettingHeaderCell.swift in Sources */,
 				FC598EB82010D7AE008914EB /* MyPageFeedContentsCell.swift in Sources */,
 				14035C221FF24E95005ABAE0 /* ProfileCell.swift in Sources */,
+				FC3DE8602010EADB003AFBF1 /* MyPageReviewEditViewController.swift in Sources */,
 				4C5FBD6C1FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift in Sources */,
 				14DC31B01FFD687800C046F4 /* LeaveMembershipViewController.swift in Sources */,
 				148F920B20062026005200F9 /* IngredientAnalysisDetailViewController.swift in Sources */,
@@ -571,7 +572,6 @@
 				FC598EBD2010D7ED008914EB /* MyPageMyReviewsViewController.swift in Sources */,
 				148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */,
 				14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */,
-				FC598EB62010D7AE008914EB /* FavoritesEmptyCell.swift in Sources */,
 				4C5FBD651FFEB351004C66EE /* DogMainViewController.swift in Sources */,
 				4CF7C4512003FA7A00AF8E35 /* DogFunctionalViewController.swift in Sources */,
 				14DA00951FF6570E00819A96 /* LeaveMembershipHeaderCell.swift in Sources */,
