@@ -11,7 +11,7 @@ import UIKit
 
 
 class LeaveMembershipEtcReasonCell: UITableViewCell,UITextFieldDelegate {
-   
+    
     
     var delegate:LeaveMembershipCustomCellDelegate?
     
@@ -20,7 +20,7 @@ class LeaveMembershipEtcReasonCell: UITableViewCell,UITextFieldDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-       
+        etcReasonContentTextField.delegate = self
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -38,7 +38,6 @@ class LeaveMembershipEtcReasonCell: UITableViewCell,UITextFieldDelegate {
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-       
         leaveMembershipTableViewLocationUp()
     }
     
@@ -63,6 +62,6 @@ class LeaveMembershipEtcReasonCell: UITableViewCell,UITextFieldDelegate {
         return true
     }
     
-   
+    
     
 }

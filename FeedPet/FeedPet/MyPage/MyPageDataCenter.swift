@@ -22,20 +22,26 @@ struct MyPageDataCenter {
     //테스트용 유저 아이디
     let testUUID = "fUUID7aSMmPmv0nhu530oTt3434515"
     
-    //탈퇴하기 내용
-    var leaveMembershipReason = ""
-    var leaveMembarshipEtcReasonContent = ""
+    //유저 데이터
+    
+   
     
     //즐겨찾기 데이터
     var favorites = [FavoritesData]()
     var favoritesFeedKeys = [String]()
+     var favoritesCount = 0
     var myPageFeedContentsCellLikeBtnTagValue:Int! //몇번 셀의 좋아요 버튼을 터치한건지 체크하기 위한 버튼태그
     
     //내 리뷰 데이터
     var reviews = [ReviewsData]()
     var reviewsFeedKeys = [String]()
+    var reviewsCount = 0
     var myPageMyReviewsCellEditBtnTagValue:Int!
     var myPageMyReviewsCellRemoveBtnTagValue:Int!
+    
+    //탈퇴하기 내용
+    var leaveMembershipReason = ""
+    var leaveMembarshipEtcReasonContent = ""
 }
 
 struct userDefaultsName {   //알림 서비스에서 이용하는 유저디폴트 이름들
@@ -54,12 +60,17 @@ struct FireBaseData{
     static let shared = FireBaseData()
     
     private var refBase = Database.database().reference()
+    private var refUserData = Database.database().reference().child("user_data")
     private var refFeed = Database.database().reference().child("feed")
     private var refFavorites = Database.database().reference().child("favorites")
     private var refReviews = Database.database().reference().child("reviews")
+   
     
     var refBaseReturn:DatabaseReference{
         return refBase
+    }
+    var refUserDataReturn:DatabaseReference{
+        return refUserData
     }
     var refFeedReturn:DatabaseReference{
         return refFeed
@@ -81,13 +92,16 @@ struct FireBaseData{
             if MyPageDataCenter.shared.favoritesFeedKeys.isEmpty == false{  //서버에서 데이터를 불러오기전 데이터를 초기화
                 MyPageDataCenter.shared.favoritesFeedKeys.removeAll()
             }
+            MyPageDataCenter.shared.favoritesCount = Int(snapshot.childrenCount)
+                
+            
             //초기화 후 다시 데이터를 담는다
             if let snapShot = snapshot.children.allObjects as? [DataSnapshot]{
-                
-                for snap in snapShot{
+                print(snapShot)
+                for snap in snapShot{ //snap = 피드키:{피드정보키:피드정보값}
                     
-                    if let favoritesDic = snap.value as? [String:AnyObject]{
-                        let feedKey = (snap.key)
+                    if let favoritesDic = snap.value as? [String:AnyObject]{ //"feed_name" : "오가닉스",
+                        let feedKey = (snap.key) //"피드키"
                         MyPageDataCenter.shared.favoritesFeedKeys.append(feedKey)
                         
                         let favorites = FavoritesData(feedKey: feedKey, feedData: favoritesDic)
@@ -112,6 +126,7 @@ struct FireBaseData{
             if MyPageDataCenter.shared.reviewsFeedKeys.isEmpty == false{  //서버에서 데이터를 불러오기전 데이터를 초기화
                 MyPageDataCenter.shared.reviewsFeedKeys.removeAll()
             }
+            MyPageDataCenter.shared.reviewsCount = Int(snapshot.childrenCount)
             //초기화 후 다시 데이터를 담는다
             if let snapShot = snapshot.children.allObjects as? [DataSnapshot]{
                 
@@ -130,11 +145,14 @@ struct FireBaseData{
         })
         
     }
+
     
 }
 
+
+
+
 struct FavoritesData {
-    
     private var feedKey:String!
     private var feedBrand:String!
     private var feedName:String!
@@ -182,6 +200,7 @@ struct FavoritesData {
         self.feedGrade = feedGrade
         self.feedpackingMethod = feedpackingMethod
         self.rating = rating
+        
     }
     init(feedKey:String, feedData:[String:AnyObject]){
         self.feedKey = feedKey

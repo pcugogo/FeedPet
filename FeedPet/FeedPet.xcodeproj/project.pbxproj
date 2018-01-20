@@ -70,6 +70,7 @@
 		FC598EB82010D7AE008914EB /* MyPageFeedContentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EB52010D7AD008914EB /* MyPageFeedContentsCell.swift */; };
 		FC598EBC2010D7ED008914EB /* MyPageMyReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EBA2010D7ED008914EB /* MyPageMyReviewsCell.swift */; };
 		FC598EBD2010D7ED008914EB /* MyPageMyReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EBB2010D7ED008914EB /* MyPageMyReviewsViewController.swift */; };
+		FCA26EE420139BC5000D8BAF /* MyPageTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA26EE320139BC5000D8BAF /* MyPageTestViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -140,6 +141,7 @@
 		FC598EB52010D7AD008914EB /* MyPageFeedContentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageFeedContentsCell.swift; sourceTree = "<group>"; };
 		FC598EBA2010D7ED008914EB /* MyPageMyReviewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageMyReviewsCell.swift; sourceTree = "<group>"; };
 		FC598EBB2010D7ED008914EB /* MyPageMyReviewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageMyReviewsViewController.swift; sourceTree = "<group>"; };
+		FCA26EE320139BC5000D8BAF /* MyPageTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 			children = (
 				14035C101FF24E95005ABAE0 /* MyPage.storyboard */,
 				14DA009C1FF671D200819A96 /* MyPageDataCenter.swift */,
+				FCA26EE320139BC5000D8BAF /* MyPageTestViewController.swift */,
 				14035C111FF24E95005ABAE0 /* MyPageView */,
 				14035C0C1FF24E95005ABAE0 /* EditInfoView */,
 				FC598EB22010D7AD008914EB /* MyPageFavoritesView */,
@@ -582,6 +585,7 @@
 				4CF7C4532003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift in Sources */,
 				FC598EBC2010D7ED008914EB /* MyPageMyReviewsCell.swift in Sources */,
 				14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */,
+				FCA26EE420139BC5000D8BAF /* MyPageTestViewController.swift in Sources */,
 				14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
