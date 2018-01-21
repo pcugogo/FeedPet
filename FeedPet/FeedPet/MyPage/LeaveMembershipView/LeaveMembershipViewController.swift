@@ -147,7 +147,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
     }
     
     func leaveMembershipTableViewLocationChange() { //프로토콜 메서드
-        self.tableView.frame = CGRect(x: self.tableView.frame.minX, y: 200, width: self.tableView.frame.width, height: 350)
+        self.tableView.frame = CGRect(x: self.tableView.frame.minX, y: 130, width: self.tableView.frame.width, height: 350)
     }
     
     func leaveMembershipTableViewReloadData(){

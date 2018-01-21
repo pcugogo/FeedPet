@@ -13,10 +13,9 @@ class MyPageTestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        DispatchQueue.main.async {
-            FireBaseData.shared.fireBaseFavoritesDataLoad()
-            FireBaseData.shared.fireBaseReviewsDataLoad()
-        }
+        FireBaseData.shared.fireBaseFavoritesDataLoad()
+        FireBaseData.shared.fireBaseReviewsDataLoad()
+//        FireBaseData.shared.firebaseFavoritesAndReviewsDataCount()
         
     }
 

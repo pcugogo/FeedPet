@@ -85,6 +85,7 @@ struct FireBaseData{
     func fireBaseFavoritesDataLoad(){
         
         //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
+           
         FireBaseData.shared.refFavoritesReturn.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in  //페이보릿안의 유저아이디키 작성해서 들어가는데 아예 페이보릿 값이 없거나 현재로그인 유저키값이 없으면 어떻게 될까? 시뮬레이터테스트는 이상 없었다 파이어베이스에서 닐값처리 해주나보다
             if MyPageDataCenter.shared.favorites.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
                 MyPageDataCenter.shared.favorites.removeAll()

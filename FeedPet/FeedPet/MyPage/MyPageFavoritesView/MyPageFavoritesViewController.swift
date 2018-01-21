@@ -41,7 +41,7 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
         if MyPageDataCenter.shared.favorites.isEmpty{
             return ""
         }else{
-            return "총 \(MyPageDataCenter.shared.favorites.count)개 상품"
+            return "총 \(MyPageDataCenter.shared.favoritesCount)개 상품"
         }
         
     }
@@ -100,8 +100,7 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
                 self.tableView.reloadData()
                 FireBaseData.shared.refFavoritesReturn.child(MyPageDataCenter.shared.testUUID).child(removeFeedKey).removeValue() //remove시에 지운 값이 있던 자리가 닐로 되있는건지 아예 없어진건지 아직 모르겠다
                 
-                //                FireBaseData.shared.fireBaseFavoritesDataLoad() 서버에 있는 데이터를 불러오는 메서드인데
-                //                MyPageDataCenter.shared.favorites.remove(at: index)이런식으로 최신화를 해줘서 데이터를 불러오지않아도 최신화가 되있다
+              
                 
                 print("LikeBtnCancelDidData",MyPageDataCenter.shared.favorites)
                 
@@ -120,7 +119,7 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
         self.present(cancelLikeAlert, animated: true, completion: nil)
     }
     
-    
+
     
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
         navigationController?.popViewController(animated: true)

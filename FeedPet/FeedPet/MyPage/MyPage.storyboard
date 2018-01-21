@@ -765,7 +765,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bUM-zU-38X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1400.8" y="732.68365817091455"/>
+            <point key="canvasLocation" x="1740" y="746"/>
         </scene>
         <!--Alarm Meal Time Picker View Controller-->
         <scene sceneID="Er8-za-dwV">
@@ -854,7 +854,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ckY-Ys-LbS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2214" y="733"/>
+            <point key="canvasLocation" x="2553" y="746"/>
         </scene>
         <!--Ingredient Analysis View Controller-->
         <scene sceneID="rGg-u9-h5N">
@@ -932,7 +932,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bo7-4G-NeP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4150" y="814"/>
+            <point key="canvasLocation" x="4388" y="779"/>
         </scene>
         <!--Ingredient Analysis Detail View Controller-->
         <scene sceneID="7d4-9z-VH4">
@@ -1017,7 +1017,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3xs-sA-5W0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4149.6000000000004" y="1552.1739130434785"/>
+            <point key="canvasLocation" x="5145" y="779"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="TMt-oh-4wM">
@@ -1077,7 +1077,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MKJ-F6-vHa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1418" y="1430"/>
+            <point key="canvasLocation" x="1756" y="1443"/>
         </scene>
         <!--Terms Of Use View Controller-->
         <scene sceneID="UUW-Rf-16r">
@@ -1122,7 +1122,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MmR-mF-cmb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1401" y="2207"/>
+            <point key="canvasLocation" x="1740" y="2220"/>
         </scene>
         <!--Team Introduction View Controller-->
         <scene sceneID="GCL-Ue-zbF">
@@ -1276,7 +1276,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mcc-EY-04R" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1400.8" y="2980.6596701649178"/>
+            <point key="canvasLocation" x="1740" y="2994"/>
         </scene>
         <!--Leave Membership View Controller-->
         <scene sceneID="2hY-YD-Ws1">
@@ -1431,7 +1431,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CoX-9O-B9d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="414" y="779"/>
+            <point key="canvasLocation" x="682" y="745"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="vpt-Xq-HYL">
@@ -1480,7 +1480,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zMa-5U-9Hk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2190" y="1430"/>
+            <point key="canvasLocation" x="2529" y="1443"/>
         </scene>
         <!--My Page My Reviews View Controller-->
         <scene sceneID="ae0-mm-vHf">
@@ -1842,17 +1842,17 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="86q-hf-wuH">
-                                <rect key="frame" x="0.0" y="164" width="375" height="10"/>
+                                <rect key="frame" x="0.0" y="164" width="375" height="5"/>
                                 <color key="backgroundColor" red="0.74562054872512817" green="0.74619406461715698" blue="0.74570947885513306" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="10" id="Zsz-zg-Ha6"/>
+                                    <constraint firstAttribute="height" constant="5" id="Zsz-zg-Ha6"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Vt-Zy-NWH">
-                                <rect key="frame" x="0.0" y="174" width="375" height="493"/>
+                                <rect key="frame" x="0.0" y="169" width="375" height="498"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="리뷰 수정은 내용만 가능합니다 :)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PjK-aj-K3X">
                                         <rect key="frame" x="103" y="10" width="169.5" height="20"/>
@@ -1864,8 +1864,11 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="GSu-HX-YJh">
-                                        <rect key="frame" x="10" y="40" width="355" height="438"/>
+                                        <rect key="frame" x="10" y="40" width="355" height="200"/>
                                         <color key="backgroundColor" red="0.85192281010000004" green="0.85257238150000003" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="200" id="QIt-6q-GcM"/>
+                                        </constraints>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -1874,7 +1877,6 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="GSu-HX-YJh" firstAttribute="top" secondItem="PjK-aj-K3X" secondAttribute="bottom" constant="10" id="W36-CV-vkt"/>
-                                    <constraint firstAttribute="bottom" secondItem="GSu-HX-YJh" secondAttribute="bottom" constant="15" id="e79-76-j6c"/>
                                     <constraint firstItem="PjK-aj-K3X" firstAttribute="centerX" secondItem="7Vt-Zy-NWH" secondAttribute="centerX" id="iD0-4P-4Gx"/>
                                     <constraint firstItem="GSu-HX-YJh" firstAttribute="leading" secondItem="7Vt-Zy-NWH" secondAttribute="leading" constant="10" id="iuB-TG-FGx"/>
                                     <constraint firstItem="PjK-aj-K3X" firstAttribute="top" secondItem="7Vt-Zy-NWH" secondAttribute="top" constant="10" id="qgt-Qw-Tyb"/>

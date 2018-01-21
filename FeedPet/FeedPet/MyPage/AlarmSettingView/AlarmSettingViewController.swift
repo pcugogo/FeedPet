@@ -9,8 +9,6 @@
 import UIKit
 import UserNotifications
 
-
-
 class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,AlarmCustomCellDelegate {
     
     var isGrantedNotificationAccess = false
@@ -207,12 +205,8 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 let morningRequest: UNNotificationRequest = UNNotificationRequest(identifier: "morningAlarm", content: notificationContent, trigger: notificationTrigger)
                 
                 // 04. UNUserNotificationCenter 스케줄러, add(_:)를 통해 알림 요청 객체 추가로 알림 등록 과정 완료.
-                UNUserNotificationCenter.current().add(morningRequest, withCompletionHandler: { [unowned self](_) in
-                    self.dismiss(animated: true, completion: nil)
-                    
-                    
-                })
                 
+                UNUserNotificationCenter.current().add(morningRequest, withCompletionHandler: nil)
             }
             if MyPageDataCenter.shared.switchOnOff["lunch"] == true{
                 
@@ -228,11 +222,8 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 let lunchRequest: UNNotificationRequest = UNNotificationRequest(identifier: "lunchAlarm", content: notificationContent, trigger: notificationTrigger)
                 
                 // 04. UNUserNotificationCenter
-                UNUserNotificationCenter.current().add(lunchRequest, withCompletionHandler: { [unowned self](_) in
-                    self.dismiss(animated: true, completion: nil)
-                    
-                })
-                
+               
+                UNUserNotificationCenter.current().add(lunchRequest, withCompletionHandler: nil)
             }
             if MyPageDataCenter.shared.switchOnOff["dinner"] == true{
                 notificationContent.body = "저녁 식사 시간입니다!"
@@ -247,10 +238,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 let dinnerRequest: UNNotificationRequest = UNNotificationRequest(identifier: "dinnerAlarm", content: notificationContent, trigger: notificationTrigger)
                 
                 // 04. UNUserNotificationCenter
-                UNUserNotificationCenter.current().add(dinnerRequest, withCompletionHandler: { [unowned self](_) in
-                    self.dismiss(animated: true, completion: nil)
-                    
-                })
+                UNUserNotificationCenter.current().add(dinnerRequest, withCompletionHandler: nil)
                 
             }
         }else{ // 10.0버전 미만 버전
