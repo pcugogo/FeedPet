@@ -11,26 +11,30 @@ import UIKit
 class FilterViewController: UIViewController {
     
     @IBOutlet weak var filterMenuTableView: UITableView!
-
+    
     var testFilterMenuSection = [
                 FilterMenuSections(menu: "등급",
                                    filterMenuKind: [
                                                     FilterMenuInner(cellType: "GradeDetail",
                                                                     checkState: false,
-                                                                    gradeImg: "dogAble",
-                                                                    textLabel: "1등급"),
+                                                                    gradeImg: "ratingOrganic",
+                                                                    textLabel: "1:유기농"),
                                                     FilterMenuInner(cellType: "GradeDetail",
                                                                     checkState: false,
-                                                                    gradeImg: "dogAble",
-                                                                    textLabel: "2등급"),
+                                                                    gradeImg: "ratingHolistic",
+                                                                    textLabel: "2:홀리스틱"),
                                                     FilterMenuInner(cellType: "GradeDetail",
                                                                     checkState: false,
-                                                                    gradeImg: "dogAble",
-                                                                    textLabel: "3등급"),
+                                                                    gradeImg: "ratingSuperPremium",
+                                                                    textLabel: "3:슈퍼프리미엄"),
                                                     FilterMenuInner(cellType: "GradeDetail",
                                                                     checkState: false,
-                                                                    gradeImg: "dogAble",
-                                                                    textLabel: "4등급")
+                                                                    gradeImg: "ratingPremium",
+                                                                    textLabel: "4:프리미엄"),
+                                                    FilterMenuInner(cellType: "GradeDetail",
+                                                                    checkState: false,
+                                                                    gradeImg: "ratingGroceryBrand",
+                                                                    textLabel: "5:마트용")
                                                     ],
                                    expanded: false),
                 FilterMenuSections(menu: "연령대",
@@ -148,18 +152,19 @@ extension FilterViewController: UITableViewDataSource, UITableViewDelegate, Filt
 //        let header = FilterMenuHeaderView()
 //        header.customInint(title: testFilterMenuSection[section].menu, section: section, delegate: self)
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "filterMenuHeaderView") as! FilterMenuHeaderView
+        print(testFilterMenuSection[section].menu)
         header.customInint(title: testFilterMenuSection[section].menu, section: section, delegate: self)
         if testFilterMenuSection[section].expanded {
-            header.expendedImg.image = UIImage(imageLiteralResourceName: "dogAble")
+            header.expendedImg.image = UIImage(imageLiteralResourceName: "foldBtn")
         }else{
-            header.expendedImg.image = UIImage(imageLiteralResourceName: "dogDisable")
+            header.expendedImg.image = UIImage(imageLiteralResourceName: "unfoldBtn")
         }
         return header
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if testFilterMenuSection[indexPath.section].filterMenuKind[indexPath.row].cellType == "GradeDetail"{
             let gradeDetailCell = tableView.dequeueReusableCell(withIdentifier: "FilterDetailGradeTableViewCell", for: indexPath) as! FilterDetailGradeTableViewCell
-            let graerImgString = testFilterMenuSection[indexPath.section].filterMenuKind[indexPath.row].gradeImg ?? "dogDiable"
+            let graerImgString = testFilterMenuSection[indexPath.section].filterMenuKind[indexPath.row].gradeImg ?? "dogDisable"
             gradeDetailCell.gradeImgView.image = UIImage(imageLiteralResourceName: graerImgString)
             gradeDetailCell.detailGradeLabel.text = testFilterMenuSection[indexPath.section].filterMenuKind[indexPath.row].textLabel
             

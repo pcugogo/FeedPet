@@ -41,8 +41,14 @@
 		14E5C195200539A7007E936A /* WriteReviewVCTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E5C194200539A7007E936A /* WriteReviewVCTextViewCell.swift */; };
 		4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C01C85D1FEB886B0016E674 /* AppDelegate.swift */; };
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
-		4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8641FEB886B0016E674 /* Assets.xcassets */; };
 		4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8661FEB886B0016E674 /* LaunchScreen.storyboard */; };
+		4C1E6DDB2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDA2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift */; };
+		4C1E6DDD20130DD500C7EDFC /* FeedReviewListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDC20130DD500C7EDFC /* FeedReviewListTableViewCell.swift */; };
+		4C1E6DDF20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDE20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift */; };
+		4C1E6DE22013152D00C7EDFC /* MyPageMyReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DE02013152C00C7EDFC /* MyPageMyReviewsCell.swift */; };
+		4C1E6DE32013152D00C7EDFC /* MyPageMyReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DE12013152D00C7EDFC /* MyPageMyReviewsViewController.swift */; };
+		4C1E6DE92014C07E00C7EDFC /* FeedIngredientChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DE82014C07E00C7EDFC /* FeedIngredientChartTableViewCell.swift */; };
+		4C1E6DED20151F4800C7EDFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C1E6DEC20151F4800C7EDFC /* Assets.xcassets */; };
 		4C229C82200B9E50004FFD07 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C81200B9E50004FFD07 /* FilterViewController.swift */; };
 		4C229C88200CB21B004FFD07 /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C87200CB21B004FFD07 /* FilterTableViewCell.swift */; };
 		4C229C8A200CB22F004FFD07 /* FilterDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C89200CB22F004FFD07 /* FilterDetailTableViewCell.swift */; };
@@ -78,8 +84,6 @@
 		FC598EB62010D7AE008914EB /* FavoritesEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EB32010D7AD008914EB /* FavoritesEmptyCell.swift */; };
 		FC598EB72010D7AE008914EB /* MyPageFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EB42010D7AD008914EB /* MyPageFavoritesViewController.swift */; };
 		FC598EB82010D7AE008914EB /* MyPageFeedContentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EB52010D7AD008914EB /* MyPageFeedContentsCell.swift */; };
-		FC598EBC2010D7ED008914EB /* MyPageMyReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EBA2010D7ED008914EB /* MyPageMyReviewsCell.swift */; };
-		FC598EBD2010D7ED008914EB /* MyPageMyReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EBB2010D7ED008914EB /* MyPageMyReviewsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -121,9 +125,15 @@
 		4C01C85A1FEB886B0016E674 /* FeedPet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FeedPet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C01C85D1FEB886B0016E674 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C01C8621FEB886B0016E674 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		4C01C8641FEB886B0016E674 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C01C8671FEB886B0016E674 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C01C8691FEB886B0016E674 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C1E6DDA2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedIngredientTableViewCell.swift; sourceTree = "<group>"; };
+		4C1E6DDC20130DD500C7EDFC /* FeedReviewListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReviewListTableViewCell.swift; sourceTree = "<group>"; };
+		4C1E6DDE20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReviewInfoTableViewCell.swift; sourceTree = "<group>"; };
+		4C1E6DE02013152C00C7EDFC /* MyPageMyReviewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageMyReviewsCell.swift; sourceTree = "<group>"; };
+		4C1E6DE12013152D00C7EDFC /* MyPageMyReviewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageMyReviewsViewController.swift; sourceTree = "<group>"; };
+		4C1E6DE82014C07E00C7EDFC /* FeedIngredientChartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedIngredientChartTableViewCell.swift; sourceTree = "<group>"; };
+		4C1E6DEC20151F4800C7EDFC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C229C81200B9E50004FFD07 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		4C229C87200CB21B004FFD07 /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
 		4C229C89200CB22F004FFD07 /* FilterDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterDetailTableViewCell.swift; sourceTree = "<group>"; };
@@ -158,8 +168,6 @@
 		FC598EB32010D7AD008914EB /* FavoritesEmptyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesEmptyCell.swift; sourceTree = "<group>"; };
 		FC598EB42010D7AD008914EB /* MyPageFavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageFavoritesViewController.swift; sourceTree = "<group>"; };
 		FC598EB52010D7AD008914EB /* MyPageFeedContentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageFeedContentsCell.swift; sourceTree = "<group>"; };
-		FC598EBA2010D7ED008914EB /* MyPageMyReviewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageMyReviewsCell.swift; sourceTree = "<group>"; };
-		FC598EBB2010D7ED008914EB /* MyPageMyReviewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageMyReviewsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,6 +300,7 @@
 		4C01C8511FEB886B0016E674 = {
 			isa = PBXGroup;
 			children = (
+				4C1E6DEC20151F4800C7EDFC /* Assets.xcassets */,
 				4C01C85C1FEB886B0016E674 /* FeedPet */,
 				4C01C85B1FEB886B0016E674 /* Products */,
 				4BCC8761E3849E5028AC561E /* Pods */,
@@ -324,7 +333,6 @@
 				4C5FBD611FFEB2CA004C66EE /* Main */,
 				14035C041FF24E95005ABAE0 /* MyPage */,
 				4CAD767C1FED138600EDE859 /* Design */,
-				4C01C8641FEB886B0016E674 /* Assets.xcassets */,
 				4C01C8691FEB886B0016E674 /* Info.plist */,
 				4CBD557C1FED043300D37FE8 /* GoogleService-Info.plist */,
 			);
@@ -354,11 +362,15 @@
 				4C5FBD691FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib */,
 				4C5FBD6A1FFEB35F004C66EE /* MainViewController.swift */,
 				4C5FBD6B1FFEB35F004C66EE /* PageControllerBaseController.swift */,
+				4C1E6DE82014C07E00C7EDFC /* FeedIngredientChartTableViewCell.swift */,
 				4CF7C45620040EA100AF8E35 /* MainPageViewController.swift */,
 				4CF7C4522003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift */,
 				4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */,
 				4C8DFB8D200F55A700331A5B /* FeedDetailViewController.swift */,
 				4C8DFB8F200F580900331A5B /* FeedDetailITableViewCell.swift */,
+				4C1E6DDA2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift */,
+				4C1E6DDC20130DD500C7EDFC /* FeedReviewListTableViewCell.swift */,
+				4C1E6DDE20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift */,
 				4C229C86200CB20A004FFD07 /* Filter */,
 				4C5FBD631FFEB2E3004C66EE /* CatMain */,
 				4C5FBD621FFEB2DC004C66EE /* DogMain */,
@@ -404,8 +416,8 @@
 		FC598EB92010D7ED008914EB /* MyReviewsView */ = {
 			isa = PBXGroup;
 			children = (
-				FC598EBA2010D7ED008914EB /* MyPageMyReviewsCell.swift */,
-				FC598EBB2010D7ED008914EB /* MyPageMyReviewsViewController.swift */,
+				4C1E6DE02013152C00C7EDFC /* MyPageMyReviewsCell.swift */,
+				4C1E6DE12013152D00C7EDFC /* MyPageMyReviewsViewController.swift */,
 			);
 			name = MyReviewsView;
 			path = "../../../../FeedPet 백업/FeedPet 복사본/FeedPet/FeedPet/MyPage/MyReviewsView";
@@ -477,9 +489,9 @@
 				4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */,
 				4CBD557D1FED043300D37FE8 /* GoogleService-Info.plist in Resources */,
 				4C5FBD6D1FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib in Resources */,
-				4C01C8651FEB886B0016E674 /* Assets.xcassets in Resources */,
 				14035C1F1FF24E95005ABAE0 /* MyPage.storyboard in Resources */,
 				4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */,
+				4C1E6DED20151F4800C7EDFC /* Assets.xcassets in Resources */,
 				4CAD767E1FED13BF00EDE859 /* loginVideo.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -495,12 +507,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/ChartProgressBar/ChartProgressBar.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftSVG/SwiftSVG.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/XLPagerTabStrip/XLPagerTabStrip.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
@@ -509,12 +523,14 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChartProgressBar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSVG.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLPagerTabStrip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
@@ -580,6 +596,7 @@
 				4CE4F5DD1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift in Sources */,
 				14E5C195200539A7007E936A /* WriteReviewVCTextViewCell.swift in Sources */,
 				14E5C1932005398E007E936A /* WriteReviewVCFeedImgCell.swift in Sources */,
+				4C1E6DE22013152D00C7EDFC /* MyPageMyReviewsCell.swift in Sources */,
 				4C8DFB8A200E3A4300331A5B /* FilterMenuHeaderView.swift in Sources */,
 				14035C1A1FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift in Sources */,
 				14035C181FF24E95005ABAE0 /* AlarmSettingViewController.swift in Sources */,
@@ -587,6 +604,7 @@
 				4C229C8A200CB22F004FFD07 /* FilterDetailTableViewCell.swift in Sources */,
 				4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */,
 				14DA00901FF598E700819A96 /* TeamLbCell.swift in Sources */,
+				4C1E6DDD20130DD500C7EDFC /* FeedReviewListTableViewCell.swift in Sources */,
 				14035C201FF24E95005ABAE0 /* MyMenuCell.swift in Sources */,
 				14E5C19120053910007E936A /* WriteReviewViewController.swift in Sources */,
 				4CAD76801FED142E00EDE859 /* LoginViewController.swift in Sources */,
@@ -605,13 +623,15 @@
 				14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */,
 				4C5FBD6F1FFEB35F004C66EE /* PageControllerBaseController.swift in Sources */,
 				4CE4F5D71FFEAC410047E9F9 /* AddPetInformationViewController.swift in Sources */,
+				4C1E6DE92014C07E00C7EDFC /* FeedIngredientChartTableViewCell.swift in Sources */,
 				4CF7C45720040EA100AF8E35 /* MainPageViewController.swift in Sources */,
 				14DA009D1FF671D200819A96 /* MyPageDataCenter.swift in Sources */,
 				14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */,
 				14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */,
 				4CE4F5DA1FFEAD2B0047E9F9 /* Extension.swift in Sources */,
 				14E193711FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift in Sources */,
-				FC598EBD2010D7ED008914EB /* MyPageMyReviewsViewController.swift in Sources */,
+				4C1E6DDF20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift in Sources */,
+				4C1E6DE32013152D00C7EDFC /* MyPageMyReviewsViewController.swift in Sources */,
 				148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */,
 				14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */,
 				FC598EB62010D7AE008914EB /* FavoritesEmptyCell.swift in Sources */,
@@ -620,6 +640,7 @@
 				14DA00951FF6570E00819A96 /* LeaveMembershipHeaderCell.swift in Sources */,
 				4CF7C45520040DE400AF8E35 /* FunctionalViewController.swift in Sources */,
 				4C8DFB86200E355400331A5B /* FilterHeaderMenuTableViewCell.swift in Sources */,
+				4C1E6DDB2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift in Sources */,
 				14DA00971FF6572A00819A96 /* LeaveMembershipReasonCell.swift in Sources */,
 				4C229C82200B9E50004FFD07 /* FilterViewController.swift in Sources */,
 				14417CB11FF2DC5D00EA77B3 /* FAQViewController.swift in Sources */,
@@ -627,7 +648,6 @@
 				4C8DFB90200F580900331A5B /* FeedDetailITableViewCell.swift in Sources */,
 				4CF7C4532003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift in Sources */,
 				4C229C88200CB21B004FFD07 /* FilterTableViewCell.swift in Sources */,
-				FC598EBC2010D7ED008914EB /* MyPageMyReviewsCell.swift in Sources */,
 				14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */,
 				14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */,
 				4C8DFB84200E297200331A5B /* FilterMenuSection.swift in Sources */,

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 import Firebase
 
 class DataCenter {
@@ -68,6 +69,9 @@ class DataCenter {
         })
     }
     
+    func getFeedData(){
+        
+    }
     
 }
 
@@ -103,6 +107,44 @@ struct User {
         
     }
     
+    
+}
+
+
+// 사료 정보 데이터구조
+struct FeedInfo{
+    var feedKey: String!
+    var feedBrand: String!
+    var feedName: String!
+    var feedIngredient: String!
+    var feedAge: Int!
+    var feedWeight: [Int]!
+    var feedFunctional: [String]!
+    var feedImg: [String]!
+    var feedMouth: Int!
+    var feedGrade: Int!
+    var feedCountry: String!
+    var feedPackageFlag: Bool!
+    var feedGrainfreeFlag: Bool!
+    var feedOrganicFlag: Bool!
+    var feedLidFlag: Bool!
+    var feedBigFlag: Bool!
+    
+    init(feedJsonData: JSON) {
+        self.feedKey = feedJsonData["feed_key"].stringValue
+        self.feedBrand = feedJsonData["feed_brand"].stringValue
+        self.feedName = feedJsonData["feed_name"].stringValue
+        self.feedIngredient = feedJsonData["feed_ingredient"].stringValue
+        self.feedAge = feedJsonData["feed_age"].intValue
+        self.feedWeight = feedJsonData["feed_weight"].arrayObject as! [Int]
+        self.feedFunctional = feedJsonData["feed_functional"].arrayObject as! [String]
+        self.feedImg = feedJsonData["feed_img"].arrayObject as! [String]
+        self.feedMouth = feedJsonData["feed_mouth"].intValue
+        self.feedGrade = feedJsonData["feed_grade"].intValue
+        self.feedCountry = feedJsonData["feed_country"].stringValue
+        
+        
+    }
     
 }
 

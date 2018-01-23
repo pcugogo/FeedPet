@@ -10,7 +10,7 @@ import UIKit
 
 class FunctionalViewController: UIViewController {
     
-    
+    var delegate: TableViewScrollDelegate?
     
     // 강아지일때-MainPageViewController에서 강아지,고야잉 구분하여데이터 할당예정
     var testData: [[String:String]] = [
@@ -25,11 +25,13 @@ class FunctionalViewController: UIViewController {
                                     ["functional":"전체","functionalImg":"dogFunctional-All"]
     ]
     @IBOutlet weak var functionalCollectionView: UICollectionView!
+    @IBOutlet weak var filterMenuView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         functionalCollectionView.delegate = self
         functionalCollectionView.dataSource = self
+        
         // Do any additional setup after loading the view.
     }
 
@@ -44,6 +46,11 @@ class FunctionalViewController: UIViewController {
         self.present(filterView, animated: true, completion: nil)
         
     }
+    
+    
+//    func tableViewScroll() {
+//        filterMenuView.frame.offsetBy(dx: self.view.layer.frame.maxX, dy: 0)
+//    }
 //    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 //        super.viewWillTransition(to: size, with: coordinator)
 //        collectionViewSizeChanged = true
@@ -108,4 +115,7 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
     }
     
     
+}
+protocol TableViewScrollDelegate {
+    func tableViewScroll()
 }

@@ -20,21 +20,25 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IFI-ki-JjG">
-                            <rect key="frame" x="18" y="15" width="42" height="21"/>
+                            <rect key="frame" x="18" y="15" width="42" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dogDisable" translatesAutoresizingMaskIntoConstraints="NO" id="4vP-7V-nSW">
-                            <rect key="frame" x="308" y="4" width="50" height="50"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unfoldBtn" translatesAutoresizingMaskIntoConstraints="NO" id="4vP-7V-nSW">
+                            <rect key="frame" x="340" y="15.5" width="20" height="20"/>
+                        </imageView>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="unfoldBtn" translatesAutoresizingMaskIntoConstraints="NO" id="fI1-PV-yRb">
+                            <rect key="frame" x="84" y="15" width="20" height="20"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                     </subviews>
-                    <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="IFI-ki-JjG" firstAttribute="top" secondItem="OQT-jc-rkh" secondAttribute="top" constant="15" id="Hx1-Dv-gbD"/>
-                        <constraint firstAttribute="trailing" secondItem="4vP-7V-nSW" secondAttribute="trailing" constant="17" id="Mci-Uh-0rr"/>
+                        <constraint firstItem="4vP-7V-nSW" firstAttribute="centerY" secondItem="OQT-jc-rkh" secondAttribute="centerY" id="Mqi-jL-RRh"/>
                         <constraint firstItem="IFI-ki-JjG" firstAttribute="leading" secondItem="OQT-jc-rkh" secondAttribute="leading" constant="18" id="Tcn-eV-deb"/>
-                        <constraint firstItem="4vP-7V-nSW" firstAttribute="top" secondItem="OQT-jc-rkh" secondAttribute="top" constant="4" id="v6s-sL-Cci"/>
+                        <constraint firstAttribute="trailing" secondItem="4vP-7V-nSW" secondAttribute="trailing" constant="15" id="Zkp-LP-VOm"/>
                     </constraints>
                 </view>
             </subviews>
@@ -54,6 +58,6 @@
         </view>
     </objects>
     <resources>
-        <image name="dogDisable" width="50" height="50"/>
+        <image name="unfoldBtn" width="20" height="20"/>
     </resources>
 </document>

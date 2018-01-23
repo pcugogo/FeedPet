@@ -10,8 +10,28 @@ import UIKit
 
 class FeedDetailITableViewCell: UITableViewCell {
 
+    @IBOutlet weak var feedImgScrollView: UIScrollView!
+    @IBOutlet weak var feedImgScrollPageControl: UIPageControl!
+    
+    @IBOutlet weak var feedBrandNameLabel: UILabel!
+    
+    @IBOutlet weak var feedNameLabel: UILabel!
+    
+    @IBOutlet weak var feedTargetLabel: UILabel!
+    
+    
+    @IBOutlet weak var feedAgeLabel: UILabel!
+    
+    @IBOutlet weak var feedCountryOriginLabel: UILabel!
+    
+    @IBOutlet weak var feedMainMaterialLabel: UILabel!
+    @IBOutlet weak var feedPetEvaluationRatingImgView: UIImageView!
+    
+    @IBOutlet weak var feedEvaluationRatingHelpBtn: UIButton!
+    
     // 슬라이드 들어갈 이미지 컨텐츠뷰의 넓이 제약사항
     @IBOutlet weak var feedImgContentVIewWidthConstraints: NSLayoutConstraint!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

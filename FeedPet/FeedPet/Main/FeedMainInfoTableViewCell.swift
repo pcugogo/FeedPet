@@ -19,6 +19,11 @@ class FeedMainInfoTableViewCell: UITableViewCell {
     @IBOutlet weak var feedWrapTypeLabel: UILabel!
     
     @IBOutlet weak var feedRatingScoreLabel: UILabel!
+    @IBOutlet weak var firstStarImg: UIImageView!
+    @IBOutlet weak var secontdStarImg: UIImageView!
+    @IBOutlet weak var thirdStarImg: UIImageView!
+    @IBOutlet weak var fourthStarImg: UIImageView!
+    @IBOutlet weak var FifthStarImg: UIImageView!
     
     
     override func awakeFromNib() {
