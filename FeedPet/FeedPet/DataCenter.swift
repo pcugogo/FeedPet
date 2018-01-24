@@ -118,33 +118,90 @@ struct FeedInfo{
     var feedName: String!
     var feedIngredient: String!
     var feedAge: Int!
-    var feedWeight: [Int]!
-    var feedFunctional: [String]!
-    var feedImg: [String]!
+    var feedWeight: [JSON]!
+    var feedFunctional: [JSON]!
+    var feedImg: [JSON]!
     var feedMouth: Int!
     var feedGrade: Int!
     var feedCountry: String!
     var feedPackageFlag: Bool!
-    var feedGrainfreeFlag: Bool!
-    var feedOrganicFlag: Bool!
-    var feedLidFlag: Bool!
-    var feedBigFlag: Bool!
+    var grainfreeFlag: Bool!
+    var organicFlag: Bool!
+    var lidFlag: Bool!
+    var bigFlag: Bool!
     
-    init(feedJsonData: JSON) {
-        self.feedKey = feedJsonData["feed_key"].stringValue
-        self.feedBrand = feedJsonData["feed_brand"].stringValue
-        self.feedName = feedJsonData["feed_name"].stringValue
-        self.feedIngredient = feedJsonData["feed_ingredient"].stringValue
-        self.feedAge = feedJsonData["feed_age"].intValue
-        self.feedWeight = feedJsonData["feed_weight"].arrayObject as! [Int]
-        self.feedFunctional = feedJsonData["feed_functional"].arrayObject as! [String]
-        self.feedImg = feedJsonData["feed_img"].arrayObject as! [String]
-        self.feedMouth = feedJsonData["feed_mouth"].intValue
-        self.feedGrade = feedJsonData["feed_grade"].intValue
-        self.feedCountry = feedJsonData["feed_country"].stringValue
+    init(feedJsonData: (String,JSON)) {
+        self.feedKey = feedJsonData.0
+        self.feedBrand = feedJsonData.1["feed_brand"].stringValue
+        self.feedName = feedJsonData.1["feed_name"].stringValue
+        self.feedIngredient = feedJsonData.1["feed_ingredient"].stringValue
+        self.feedAge = feedJsonData.1["feed_age"].intValue
+        self.feedWeight = feedJsonData.1["feed_weight"].arrayValue
+        self.feedFunctional = feedJsonData.1["feed_functional"].arrayValue
+        self.feedImg = feedJsonData.1["feed_img"].arrayValue
+        self.feedMouth = feedJsonData.1["feed_mouth"].intValue
+        self.feedGrade = feedJsonData.1["feed_grade"].intValue
+        self.feedCountry = feedJsonData.1["feed_country"].stringValue
+        self.feedPackageFlag = feedJsonData.1["feed_package_flag"].boolValue
+        self.grainfreeFlag = feedJsonData.1["grainfree_flag"].boolValue
+        self.organicFlag = feedJsonData.1["organic_flag"].boolValue
+        self.lidFlag = feedJsonData.1["lid_flag"].boolValue
+        self.bigFlag = feedJsonData.1["big_flag"].boolValue
+        
+        
+        
+    }
+    
+    init(feedJsonDataTest: JSON) {
+        self.feedKey = feedJsonDataTest["feed_key"].stringValue
+        self.feedBrand = feedJsonDataTest["feed_brand"].stringValue
+        self.feedName = feedJsonDataTest["feed_name"].stringValue
+        self.feedIngredient = feedJsonDataTest["feed_ingredient"].stringValue
+        self.feedAge = feedJsonDataTest["feed_age"].intValue
+        self.feedWeight = feedJsonDataTest["feed_weight"].arrayValue
+        self.feedFunctional = feedJsonDataTest["feed_functional"].arrayValue
+        self.feedImg = feedJsonDataTest["feed_img"].arrayValue
+        self.feedMouth = feedJsonDataTest["feed_mouth"].intValue
+        self.feedGrade = feedJsonDataTest["feed_grade"].intValue
+        self.feedCountry = feedJsonDataTest["feed_country"].stringValue
+        self.feedPackageFlag = feedJsonDataTest["feed_package_flag"].boolValue
+        self.grainfreeFlag = feedJsonDataTest["grainfree_flag"].boolValue
+        self.organicFlag = feedJsonDataTest["organic_flag"].boolValue
+        self.lidFlag = feedJsonDataTest["lid_flag"].boolValue
+        self.bigFlag = feedJsonDataTest["big_flag"].boolValue
+        
         
         
     }
     
 }
-
+// 사료 리스트
+struct FeedInfoList {
+    
+    let feed: [FeedInfo]
+    
+    init(feedsJsonTest: [JSON]) {
+        var feedList: [FeedInfo] = []
+        print("=feedsJsonTest=",feedsJsonTest)
+        for feed in feedsJsonTest{
+            let feedOne = FeedInfo(feedJsonDataTest: feed)
+            feedList.append(feedOne)
+            
+        }
+        
+        print(feedList)
+        
+        self.feed = feedList
+    }
+    init(feedsJson: JSON) {
+        var feedList: [FeedInfo] = []
+        for feed in feedsJson{
+            let feedOne = FeedInfo(feedJsonData: feed)
+            feedList.append(feedOne)
+            
+        }
+        
+        
+        self.feed = feedList
+    }
+}

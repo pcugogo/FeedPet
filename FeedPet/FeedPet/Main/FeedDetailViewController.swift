@@ -12,11 +12,13 @@ class FeedDetailViewController: UIViewController {
 
     @IBOutlet weak var feedDetailTableView: UITableView!
     
-
+    var feedDetailInfo: FeedInfo?
    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        feedDetailTableView.delegate = self
+        feedDetailTableView.dataSource = self
+        self.navigationController?.isNavigationBarHidden = false
         // Do any additional setup after loading the view.
     }
 
@@ -36,4 +38,30 @@ class FeedDetailViewController: UIViewController {
     }
     */
 
+}
+extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if section == 0{
+            return 1
+        }else{
+            return 2
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            
+            let detailCell = tableView.dequeueReusableCell(withIdentifier: "FeedDetailCell", for: indexPath) as! FeedDetailITableViewCell
+            
+            return detailCell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FeedIngredientCell", for: indexPath) as! FeedIngredientTableViewCell
+            
+            return cell
+        }
+    }
 }

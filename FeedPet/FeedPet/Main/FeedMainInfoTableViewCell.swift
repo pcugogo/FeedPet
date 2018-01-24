@@ -14,9 +14,9 @@ class FeedMainInfoTableViewCell: UITableViewCell {
     @IBOutlet weak var feedBrandLabel: UILabel!
     @IBOutlet weak var feedNameLabel: UILabel!
     @IBOutlet weak var feedPetEvaluationRatingImgView: UIImageView!
-    @IBOutlet weak var feedMainMaterialLabel: UILabel!
+    @IBOutlet weak var feedIngredientLabel: UILabel!
     @IBOutlet weak var feedGradeLabel: UILabel!
-    @IBOutlet weak var feedWrapTypeLabel: UILabel!
+    @IBOutlet weak var feedPackageLabel: UILabel!
     
     @IBOutlet weak var feedRatingScoreLabel: UILabel!
     @IBOutlet weak var firstStarImg: UIImageView!
