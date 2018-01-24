@@ -30,6 +30,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        FireBaseData.shared.fireBaseMyReviewDataLoad()
         
 //        FireBaseData.shared.fireBaseFavoritesDataLoad()
 //        FireBaseData.shared.fireBaseReviewsDataLoad()
@@ -149,13 +150,13 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 mail.mailComposeDelegate = self
                 mail.setToRecipients(["feedpet2018@gmail.com"])
                 mail.navigationBar.isTranslucent = false
-                mail.setSubject("문의합니다")
+                mail.setSubject("Feedpet Support")
                 
                 guard let AppVersion = userAppVersion else{
                     return
                 }
-                
-                mail.setMessageBody("* iOS Version: \(userSystemVersion) / App Version: \(String(describing: AppVersion))\n\n문의 내용을 입력해주세요", isHTML: false)
+                //Please type your feedback above the line./ 앱버전/ 디바이스:아이폰 /프로세서/ os: /langauge
+                mail.setMessageBody("Please type your feedback above the line./nFeedPet v\(userSystemVersion) / App Version: \(String(describing: AppVersion))\n\n문의 내용을 입력해주세요", isHTML: false)
                 present(mail, animated: true)
                 print("메일 보내기 성공")
             } else {

@@ -14,8 +14,6 @@ class MyPageTestViewController: UIViewController {
         super.viewDidLoad()
         
         FireBaseData.shared.fireBaseFavoritesDataLoad()
-        FireBaseData.shared.fireBaseReviewsDataLoad()
-//        FireBaseData.shared.firebaseFavoritesAndReviewsDataCount()
         
     }
 

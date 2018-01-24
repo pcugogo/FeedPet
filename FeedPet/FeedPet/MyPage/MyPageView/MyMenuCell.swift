@@ -43,7 +43,7 @@ class MyMenuCell: UITableViewCell {
     func pushFavoriteView(){
         delegate?.toFavoritesView()
     }
-    func pushtoMyReviewView(){
+    func pushToMyReviewView(){
         delegate?.toMyReviewView()
     }
     
@@ -51,7 +51,7 @@ class MyMenuCell: UITableViewCell {
         pushFavoriteView()
     }
     @IBAction func myReviewBtnAction(_ sender: UIButton) {
-        pushtoMyReviewView()
+        pushToMyReviewView()
     }
     
     

@@ -105,7 +105,7 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
                 print("LikeBtnCancelDidData",MyPageDataCenter.shared.favorites)
                 
             }
-            if MyPageDataCenter.shared.reviewsFeedKeys.isEmpty == true{
+            if MyPageDataCenter.shared.myReviewKeyDatas.isEmpty == true{
                 self.tableView.isHidden = true
             }else{
                 self.tableView.isHidden = false
