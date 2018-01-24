@@ -10,7 +10,7 @@ import UIKit
 
 class FunctionalViewController: UIViewController {
     
-    
+    var delegate: TableViewScrollDelegate?
     
     // 강아지일때-MainPageViewController에서 강아지,고야잉 구분하여데이터 할당예정
     var testData: [[String:String]] = [
@@ -19,14 +19,19 @@ class FunctionalViewController: UIViewController {
                                     ["functional":"관절","functionalImg":"dogFunctional-Joint"],
                                     ["functional":"다이어트","functionalImg":"dogFunctional-Diet"],
                                     ["functional":"인도어","functionalImg":"dogFunctional-Indoor"],
-                                    ["functional":"장&면역","functionalImg":"dogFunctional-Immune"]
+                                    ["functional":"장&면역","functionalImg":"dogFunctional-Immune"],
+                                    ["functional":"퍼포먼스","functionalImg":"dogFunctional-Performance"],
+                                    ["functional":"비뇨기","functionalImg":"dogFunctional-Urinary"],
+                                    ["functional":"전체","functionalImg":"dogFunctional-All"]
     ]
     @IBOutlet weak var functionalCollectionView: UICollectionView!
+    @IBOutlet weak var filterMenuView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         functionalCollectionView.delegate = self
         functionalCollectionView.dataSource = self
+        
         // Do any additional setup after loading the view.
     }
 
@@ -35,7 +40,17 @@ class FunctionalViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func filterBtnTouched(_ sender: UIButton){
+        let filterView: FilterViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FilterView") as! FilterViewController
+        
+        self.present(filterView, animated: true, completion: nil)
+        
+    }
     
+    
+//    func tableViewScroll() {
+//        filterMenuView.frame.offsetBy(dx: self.view.layer.frame.maxX, dy: 0)
+//    }
 //    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 //        super.viewWillTransition(to: size, with: coordinator)
 //        collectionViewSizeChanged = true
@@ -100,4 +115,7 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
     }
     
     
+}
+protocol TableViewScrollDelegate {
+    func tableViewScroll()
 }
