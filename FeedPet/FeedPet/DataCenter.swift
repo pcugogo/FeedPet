@@ -121,7 +121,7 @@ struct FeedInfo{
     var feedWeight: [JSON]!
     var feedFunctional: [JSON]!
     var feedImg: [JSON]!
-    var feedMouth: Int!
+    var feedMouth: String!
     var feedGrade: Int!
     var feedCountry: String!
     var feedPackageFlag: Bool!
@@ -139,7 +139,7 @@ struct FeedInfo{
         self.feedWeight = feedJsonData.1["feed_weight"].arrayValue
         self.feedFunctional = feedJsonData.1["feed_functional"].arrayValue
         self.feedImg = feedJsonData.1["feed_img"].arrayValue
-        self.feedMouth = feedJsonData.1["feed_mouth"].intValue
+        self.feedMouth = feedJsonData.1["feed_mouth"].stringValue
         self.feedGrade = feedJsonData.1["feed_grade"].intValue
         self.feedCountry = feedJsonData.1["feed_country"].stringValue
         self.feedPackageFlag = feedJsonData.1["feed_package_flag"].boolValue
@@ -161,7 +161,7 @@ struct FeedInfo{
         self.feedWeight = feedJsonDataTest["feed_weight"].arrayValue
         self.feedFunctional = feedJsonDataTest["feed_functional"].arrayValue
         self.feedImg = feedJsonDataTest["feed_img"].arrayValue
-        self.feedMouth = feedJsonDataTest["feed_mouth"].intValue
+        self.feedMouth = feedJsonDataTest["feed_mouth"].stringValue
         self.feedGrade = feedJsonDataTest["feed_grade"].intValue
         self.feedCountry = feedJsonDataTest["feed_country"].stringValue
         self.feedPackageFlag = feedJsonDataTest["feed_package_flag"].boolValue
@@ -205,3 +205,69 @@ struct FeedInfoList {
         self.feed = feedList
     }
 }
+
+// 성분 데이터 모델
+struct FeedDetailIngredient {
+    // 좋은 성분 고유키 배열
+    var feedIngredientGood: [JSON]!
+    // 주의 성분 고유키 배열
+    var feedIngredientWarning: [JSON]!
+    // 조단백
+    var crudeProtein: Int!
+    // 조지방
+    var crudeFat: Int!
+    // 조섬유
+    var crudeFibre: Int!
+    // 조회분
+    var crudeAsh: Int!
+    // 칼슘
+    var calcium: Int!
+    // 인
+    var phosphorus: Int!
+    
+    init(ingredientData: JSON) {
+        self.feedIngredientGood = ingredientData["feed_ingredient_good"].arrayValue
+        self.feedIngredientWarning = ingredientData["feed_ingredient_warning"].arrayValue
+        self.crudeProtein = ingredientData["crude_protein"].intValue
+        self.crudeFat = ingredientData["crude_fat"].intValue
+        self.crudeAsh = ingredientData["crude_ash"].intValue
+        self.crudeFibre = ingredientData["crude_figre"].intValue
+        self.calcium = ingredientData["calcium"].intValue
+        self.phosphorus = ingredientData["phosphorus"].intValue
+    }
+    
+}
+// 성분 데이터 모델-TEST
+struct FeedDetailIngredientTest {
+    // 좋은 성분 고유키 배열
+    var feedIngredientGood: [String]!
+    // 주의 성분 고유키 배열
+    var feedIngredientWarning: [String]!
+    // 조단백
+    var crudeProtein: Float!
+    // 조지방
+    var crudeFat: Float!
+    // 조섬유
+    var crudeFibre: Float!
+
+    // 조회분
+    var crudeAsh: Float!
+    // 칼슘
+    var calcium: Float!
+    // 인
+    var phosphorus: Float!
+    
+    init(ingredientData: [String:Any]) {
+        self.feedIngredientGood = ingredientData["feed_ingredient_good"] as! [String]
+        self.feedIngredientWarning = ingredientData["feed_ingredient_warning"] as! [String]
+        self.crudeProtein = ingredientData["crude_protein"] as! Float
+        self.crudeFat = ingredientData["crude_fat"] as! Float
+        self.crudeFibre = ingredientData["crude_fibre"] as! Float
+        self.crudeAsh = ingredientData["crude_ash"] as! Float
+        self.calcium = ingredientData["calcium"] as! Float
+        self.phosphorus = ingredientData["phosphorus"] as! Float
+    }
+    
+}
+
+

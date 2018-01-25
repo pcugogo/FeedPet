@@ -109,7 +109,17 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         let feedCell = tableView.dequeueReusableCell(withIdentifier: "FeedMainInfoCell", for: indexPath) as! FeedMainInfoTableViewCell
         feedCell.feedBrandLabel.text = self.feedData[indexPath.row].feedBrand
         feedCell.feedNameLabel.text = self.feedData[indexPath.row].feedName
-        feedCell.feedGradeLabel.text = self.feedData[indexPath.row].feedGrade.description
+
+        let gradeInt: Int = self.feedData[indexPath.row].feedGrade
+//        let gradeText: String = FeedGrade.init(rawValue: gradeInt)?.gardeText() ?? "no-data"
+//        feedCell.feedGradeLabel.text = gradeText
+        
+        // Enum을 통해 해당 셀의 레이블의 값 할당 과 텍스트 컬러 변경 => 좋은방법일지 생각해보고 좋지않다면 함수로 분리하여 호출하자
+        FeedGrade.init(rawValue: gradeInt)?.gardeText(label: feedCell.feedGradeLabel)
+        // Enum을 통한 입소문 이미지 할당 위에 코드와 동일 한 구조
+        FeedMouth.init(rawValue: self.feedData[indexPath.row].feedMouth)?.mouthImgSetting(mouthImgView: feedCell.feedMouthImgView)
+        
+        // 포장방식 분기처리
         if self.feedData[indexPath.row].feedPackageFlag {
             feedCell.feedPackageLabel.text = "소분포장"
         }else{
@@ -117,9 +127,7 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         }
         feedCell.feedIngredientLabel.text = self.feedData[indexPath.row].feedIngredient
         
-        let test =  self.feedData[indexPath.row].feedImg.first?.stringValue
-
-        print("사료 데이터 : ..",self.feedData[indexPath.row].feedName,"/",test)
+    
         if let urlStr = self.feedData[indexPath.row].feedImg.first?.stringValue, let url = URL(string: urlStr){
 
             feedCell.feedImgView.kf.setImage(with: url)
@@ -127,10 +135,11 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
 //
 //            }
 
-
         }
+        
         return feedCell
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
@@ -162,8 +171,82 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         
     }
     
+    
+        
+    
+    
+}
+enum FeedGrade: Int{
+    case ratingOrganic = 0
+    case ratingHolistic = 1
+    case ratingSuperPremium = 2
+    case ratingPremium = 3
+    case ratingGroceryBrand = 4
+    case ratingNo = 5
+    
+    func gardeText(label: UILabel){
+        switch self {
+        case .ratingOrganic:
+            label.textColor = UIColor.init(hexString: "338FCB")
+            label.text = "오가닉"
+        case .ratingHolistic:
+            label.textColor = UIColor.init(hexString: "2EA55E")
+            label.text = "홀리스틱"
+        case .ratingSuperPremium:
+            label.textColor = UIColor.init(hexString: "FFE200")
+            label.text = "슈퍼프리미엄"
+        case .ratingPremium:
+            label.textColor = UIColor.init(hexString: "F39800")
+            label.text = "프리미엄"
+        case .ratingGroceryBrand:
+            label.textColor = UIColor.init(hexString: "C30D23")
+            label.text = "마트용"
+        case .ratingNo:
+            label.textColor = UIColor.init(hexString: "bebebe")
+            label.text = "측정불가"
+        }
+        //case .ratingOrganic:
+        //label.textColor = UIColor.init(hexString: "")
+        //label.text = "오가닉"
+        //return "오가닉"
+        //case .ratingHolistic:
+        //return "홀리스틱"
+        //case .ratingSuperPremium:
+        //return "슈퍼프리미엄"
+        //case .ratingPremium:
+        //return "프리미엄"
+        //case .ratingGroceryBrand:
+        //return "마트용"
+        //default:
+        //return "측정 불가"
+        //}
+
+    
+    }
 }
 
+
+// 현재는 테스트로 작성
+// 입소문 부분 이부분은 에셋이미지 명을 변경하여 구현가능 찬욱이와 상의후 제거 할수있음
+enum FeedMouth: String{
+    case Good = "mouth_g"
+    case Soso = "mouth_s"
+    case Bad = "mouth_b"
+
+    
+    func mouthImgSetting(mouthImgView: UIImageView!){
+        switch self {
+        case .Good:
+            mouthImgView.image = #imageLiteral(resourceName: "good")
+        case .Soso:
+            mouthImgView.image = #imageLiteral(resourceName: "soso")
+        case .Bad:
+            mouthImgView.image = #imageLiteral(resourceName: "bad")
+        
+        }
+        
+    }
+}
 
 
 

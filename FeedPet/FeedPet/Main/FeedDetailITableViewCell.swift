@@ -24,9 +24,9 @@ class FeedDetailITableViewCell: UITableViewCell {
     
     @IBOutlet weak var feedCountryOriginLabel: UILabel!
     
-    @IBOutlet weak var feedMainMaterialLabel: UILabel!
+    @IBOutlet weak var feedIngredientLabel: UILabel!
     @IBOutlet weak var feedPetEvaluationRatingImgView: UIImageView!
-    
+    @IBOutlet weak var feedGradeLabel: UILabel!
     @IBOutlet weak var feedEvaluationRatingHelpBtn: UIButton!
     
     // 슬라이드 들어갈 이미지 컨텐츠뷰의 넓이 제약사항

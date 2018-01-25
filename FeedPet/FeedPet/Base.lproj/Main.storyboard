@@ -454,9 +454,9 @@
                                                     <outlet property="feedGradeLabel" destination="8tb-5p-fb3" id="wS5-RW-kVW"/>
                                                     <outlet property="feedImgView" destination="P9N-u1-0sO" id="bA1-2D-EBB"/>
                                                     <outlet property="feedIngredientLabel" destination="fL9-8Q-aQU" id="p4n-tu-rFl"/>
+                                                    <outlet property="feedMouthImgView" destination="t88-Ni-oDB" id="uEA-sc-rEG"/>
                                                     <outlet property="feedNameLabel" destination="FXR-dI-KHW" id="Zyv-L0-3dz"/>
                                                     <outlet property="feedPackageLabel" destination="Cgt-zN-wWv" id="SZD-JS-9rt"/>
-                                                    <outlet property="feedPetEvaluationRatingImgView" destination="t88-Ni-oDB" id="woW-iC-JwB"/>
                                                     <outlet property="feedRatingScoreLabel" destination="WWc-lR-cBH" id="15G-Cr-jKT"/>
                                                     <outlet property="firstStarImg" destination="gO7-hb-4oP" id="Bdd-Sm-oyN"/>
                                                     <outlet property="fourthStarImg" destination="c5c-oY-SEG" id="Dmu-yR-kA4"/>
@@ -1693,10 +1693,11 @@
                                             <outlet property="feedBrandNameLabel" destination="sTf-Cl-3Ej" id="JgW-BP-Vb7"/>
                                             <outlet property="feedCountryOriginLabel" destination="xqM-bh-2lM" id="I33-w1-nmS"/>
                                             <outlet property="feedEvaluationRatingHelpBtn" destination="wvP-PP-vmM" id="S19-QX-niT"/>
+                                            <outlet property="feedGradeLabel" destination="gh9-2x-Rdf" id="IuM-Xp-CJQ"/>
                                             <outlet property="feedImgContentVIewWidthConstraints" destination="jX9-qA-BC1" id="npj-IF-H1H"/>
                                             <outlet property="feedImgScrollPageControl" destination="pSC-VR-Mbg" id="Bvm-oy-hR3"/>
                                             <outlet property="feedImgScrollView" destination="ApT-IV-JZC" id="1d4-oY-GQZ"/>
-                                            <outlet property="feedMainMaterialLabel" destination="ioh-bV-aCS" id="SFN-Pt-jda"/>
+                                            <outlet property="feedIngredientLabel" destination="ioh-bV-aCS" id="NpG-zg-5U2"/>
                                             <outlet property="feedNameLabel" destination="gD3-CG-DX2" id="SkS-9d-3hr"/>
                                             <outlet property="feedPetEvaluationRatingImgView" destination="icg-5I-RuI" id="nO6-Cm-A81"/>
                                             <outlet property="feedTargetLabel" destination="py4-mz-PHF" id="4ek-7M-yD3"/>
@@ -1773,6 +1774,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="QTw-bU-Af2" secondAttribute="trailing" constant="306" id="3xn-V3-o2D"/>
                                                 <constraint firstItem="CCZ-dK-4AB" firstAttribute="width" secondItem="QqG-QO-iX6" secondAttribute="width" multiplier="0.45" id="Bal-oC-tqi"/>
                                                 <constraint firstItem="tSI-n8-trL" firstAttribute="centerX" secondItem="QqG-QO-iX6" secondAttribute="centerX" id="GXd-cb-Ua3"/>
+                                                <constraint firstAttribute="bottom" secondItem="tSI-n8-trL" secondAttribute="bottom" constant="23.5" id="GhF-D8-Jwj"/>
                                                 <constraint firstItem="QTw-bU-Af2" firstAttribute="leading" secondItem="QqG-QO-iX6" secondAttribute="leading" constant="10" id="Irt-Qa-wXJ"/>
                                                 <constraint firstItem="tSI-n8-trL" firstAttribute="top" secondItem="QqG-QO-iX6" secondAttribute="top" constant="40" id="QF3-h0-bqq"/>
                                                 <constraint firstItem="QTw-bU-Af2" firstAttribute="top" secondItem="QqG-QO-iX6" secondAttribute="top" constant="10" id="mif-dI-DSW"/>
@@ -1783,11 +1785,11 @@
                                             <outlet property="goodIngredientCountLabel" destination="g8p-h5-01y" id="jit-50-zbX"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="154" id="mB2-9v-KAF" customClass="FeedIngredientChartTableViewCell" customModule="FeedPet" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="332" width="375" height="154"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedIngredientChartCell" rowHeight="201" id="mB2-9v-KAF" customClass="FeedIngredientChartTableViewCell" customModule="FeedPet" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="332" width="375" height="201"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mB2-9v-KAF" id="hah-iF-tZw">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="153.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="200.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="성분비율" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B91-XG-Mxm">
@@ -1797,16 +1799,17 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s9E-hk-yQd" customClass="ChartProgressBar" customModule="ChartProgressBar">
-                                                    <rect key="frame" x="15" y="31" width="345" height="112"/>
+                                                    <rect key="frame" x="15" y="31" width="345" height="149"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="B91-XG-Mxm" firstAttribute="top" secondItem="hah-iF-tZw" secondAttribute="top" constant="10" id="7hg-SC-wPc"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="s9E-hk-yQd" secondAttribute="bottom" id="FWc-Ma-ycj"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="s9E-hk-yQd" secondAttribute="bottom" constant="10" id="FWc-Ma-ycj"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="s9E-hk-yQd" secondAttribute="trailing" id="XAS-FS-k4O"/>
                                                 <constraint firstItem="B91-XG-Mxm" firstAttribute="leading" secondItem="hah-iF-tZw" secondAttribute="leading" constant="10" id="cd9-Zb-s8o"/>
                                                 <constraint firstItem="s9E-hk-yQd" firstAttribute="top" secondItem="B91-XG-Mxm" secondAttribute="bottom" id="fic-yb-nfm"/>
+                                                <constraint firstAttribute="bottom" secondItem="B91-XG-Mxm" secondAttribute="bottom" constant="170" id="oCH-7b-UDZ"/>
                                                 <constraint firstItem="s9E-hk-yQd" firstAttribute="leading" secondItem="hah-iF-tZw" secondAttribute="leadingMargin" id="xMo-m4-3Ee"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -1815,7 +1818,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="67" id="TiU-xs-kPC" customClass="FeedReviewInfoTableViewCell" customModule="FeedPet" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="486" width="375" height="67"/>
+                                        <rect key="frame" x="0.0" y="533" width="375" height="67"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TiU-xs-kPC" id="OXR-py-aCe">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="66.5"/>
@@ -1920,7 +1923,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="126" id="RRX-cy-znK" customClass="FeedReviewListTableViewCell" customModule="FeedPet" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="553" width="375" height="126"/>
+                                        <rect key="frame" x="0.0" y="600" width="375" height="126"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RRX-cy-znK" id="OCa-oJ-Huj">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="125.5"/>
@@ -2029,7 +2032,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="fad-lX-DWS">
-                                        <rect key="frame" x="0.0" y="679" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="726" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fad-lX-DWS" id="UJa-cK-Tl9">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
