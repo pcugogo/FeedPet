@@ -67,6 +67,7 @@ struct FireBaseData{
     private var refFavorites = Database.database().reference().child("favorites")
     private var refFeedReviews = Database.database().reference().child("feed_review")
     private var refMyReviews = Database.database().reference().child("my_review")
+    private var refFeedInfo = Database.database().reference().child("feed_info")
     
     var refBaseReturn:DatabaseReference{
         return refBase
@@ -86,6 +87,10 @@ struct FireBaseData{
     var refMyReviewsReturn:DatabaseReference{
         return refMyReviews
     }
+    var refFeedInfoReturn:DatabaseReference{
+        return refFeedInfo
+    }
+    
     func fireBaseFavoritesDataLoad(){
         
         //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
@@ -168,7 +173,7 @@ struct FireBaseData{
                             print("forin",snap)
                             let feedKey = myReviewData.feedKeyReturn
                             let reviewKey = snap.key
-                            //피드 불러온다
+                            FireBaseData.shared.refFeedInfo.child("feed_petkey_c").child(feedKey)
                             if let reviewInfoDic = snap.value as? [String:AnyObject]{
                                 let reviewData = MyReview(feedKey: feedKey, reviewKey: reviewKey, reviewData: reviewInfoDic) //피드 담는다
                                 

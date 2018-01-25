@@ -8,9 +8,16 @@
 
 import UIKit
 
-class MyPageMyReviewsCell: UITableViewCell {
+protocol MyPageMyReviewsCellDelegate{
+    func toEditView()
+    func reviewRemoveAlertController()
+}
 
-    var reviews:ReviewsData!
+class MyPageMyReviewsCell: UITableViewCell {
+    
+    var delegate:MyPageMyReviewsCellDelegate?
+    
+    var myReview:MyReview!
     
     @IBOutlet weak var feedImgView: UIImageView!
     @IBOutlet weak var reviewWriteDateLb: UILabel!
@@ -22,28 +29,28 @@ class MyPageMyReviewsCell: UITableViewCell {
     @IBOutlet weak var fourthStarImgView: UIImageView!
     @IBOutlet weak var fifthStarImgView: UIImageView!
     @IBOutlet weak var reviewContentLb: UILabel!
-    
     @IBOutlet weak var reviewNumberOfGoodLb: UILabel!
     @IBOutlet weak var reviewNumberOfNotGoodLb: UILabel!
     
-    
+    @IBOutlet weak var editBtnOut: UIButton!
+    @IBOutlet weak var removeBtnOut: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
-    func configureCell(reviews:ReviewsData){
-        self.reviews = reviews
+    func configureCell(review:MyReview){
+        self.myReview = review
         
         
         //평점 1부터 시작
-        switch reviews.ratingReturn{
+        switch myReview.feedRatingReturn{
         case 1 :
             firstStarImgView.image = #imageLiteral(resourceName: "selectStar")
             secondStarImgView.image = #imageLiteral(resourceName: "normalStar")
@@ -81,22 +88,35 @@ class MyPageMyReviewsCell: UITableViewCell {
         }
         
         
-        feedBrandLb.text = reviews.feedBrandReturn
-        feedNameLb.text = reviews.feedNameReturn
-        reviewContentLb.text = reviews.reviewContentReturn
-        feedImgView.image = UIImage(named:reviews.feedImgReturn)
-        reviewWriteDateLb.text = reviews.writeDateReturn
-        reviewNumberOfGoodLb.text = String(reviews.reviewGoodsReturn)
-        reviewNumberOfNotGoodLb.text = String(reviews.reviewNotGoodsReturn)
+        //        feedBrandLb.text = review.feedBrandReturn
+        //        feedNameLb.text = review.feedNameReturn
+        reviewContentLb.text = myReview.feedReviewReturn
+        //        feedImgView.image = UIImage(named:review.feedImgReturn)
+        reviewWriteDateLb.text = myReview.feedDateReturn
+        //        reviewNumberOfGoodLb.text = String(review.reviewGoodsReturn)
+        //        reviewNumberOfNotGoodLb.text = String(review.reviewNotGoodsReturn)
         
     }
     
+    func editViewPresentModally(){
+        delegate?.toEditView()
+    }
+    
+    func removeAlertAction(){
+        delegate?.reviewRemoveAlertController()
+    }
+    
     @IBAction func editBtnAction(_ sender: UIButton) {
+        MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue = sender.tag
+        editViewPresentModally()
     }
     @IBAction func removeBtnAction(_ sender: UIButton) {
+        MyPageDataCenter.shared.myPageMyReviewsCellRemoveBtnTagValue = sender.tag
+        removeAlertAction()
     }
     
     
     
     
 }
+

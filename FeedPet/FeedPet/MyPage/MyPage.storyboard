@@ -143,15 +143,15 @@
                                                         <action selector="myReviewBtnAction:" destination="5WQ-UL-gWC" eventType="touchUpInside" id="w9T-Me-vZU"/>
                                                     </connections>
                                                 </button>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="스크린샷 2017-12-22 오후 7.00.36.png" translatesAutoresizingMaskIntoConstraints="NO" id="eIS-Ui-ncG">
-                                                    <rect key="frame" x="205" y="51" width="40" height="40"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="selectStar" translatesAutoresizingMaskIntoConstraints="NO" id="eIS-Ui-ncG">
+                                                    <rect key="frame" x="205" y="53.5" width="35" height="35"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="RpF-U7-rmG"/>
-                                                        <constraint firstAttribute="height" constant="40" id="sB5-4a-xmx"/>
+                                                        <constraint firstAttribute="width" constant="35" id="RpF-U7-rmG"/>
+                                                        <constraint firstAttribute="height" constant="35" id="sB5-4a-xmx"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="내 리뷰" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEX-UT-ULq">
-                                                    <rect key="frame" x="206.5" y="94" width="37.5" height="21"/>
+                                                    <rect key="frame" x="204" y="91.5" width="37.5" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="rJ6-Bo-ePX"/>
                                                     </constraints>
@@ -160,7 +160,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2개" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3qb-F7-k3H">
-                                                    <rect key="frame" x="260" y="49" width="102" height="64"/>
+                                                    <rect key="frame" x="255" y="49" width="107" height="64"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -176,7 +176,7 @@
                                                         <action selector="favoritesBtnAction:" destination="5WQ-UL-gWC" eventType="touchUpInside" id="Osx-1t-H1e"/>
                                                     </connections>
                                                 </button>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="스크린샷 2017-12-22 오후 7.00.36.png" translatesAutoresizingMaskIntoConstraints="NO" id="G6D-Yr-gzG">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookMarkAble" translatesAutoresizingMaskIntoConstraints="NO" id="G6D-Yr-gzG">
                                                     <rect key="frame" x="25" y="51" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="HdU-8o-qWP"/>
@@ -708,7 +708,7 @@
                                                         <action selector="alarmSwitchAction:" destination="pOc-Xi-J3h" eventType="valueChanged" id="QuO-NS-1EN"/>
                                                     </connections>
                                                 </switch>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3gE-3i-EbH">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MyPageAlarmSetting" translatesAutoresizingMaskIntoConstraints="NO" id="3gE-3i-EbH">
                                                     <rect key="frame" x="30" y="26" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="sgZ-2Z-N65"/>
@@ -2680,6 +2680,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="MyPageAlarmSetting" width="20" height="20"/>
+        <image name="bookMarkAble" width="20" height="20"/>
         <image name="catAble" width="50" height="50"/>
         <image name="dogAble" width="50" height="50"/>
         <image name="good" width="15" height="15"/>
@@ -2687,6 +2689,5 @@
         <image name="normalStar" width="20" height="20"/>
         <image name="profile" width="30" height="65"/>
         <image name="selectStar" width="20" height="20"/>
-        <image name="스크린샷 2017-12-22 오후 7.00.36.png" width="38" height="38"/>
     </resources>
 </document>
