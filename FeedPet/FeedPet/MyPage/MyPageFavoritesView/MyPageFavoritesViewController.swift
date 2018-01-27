@@ -90,16 +90,14 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
             
             if let index = MyPageDataCenter.shared.myPageFeedContentsCellLikeBtnTagValue {
                 print("index",index)
-                print("MyPageDataCenter.shared.feedKeys",MyPageDataCenter.shared.favoritesFeedKeys)
+
+                let removeFavoriteKey = MyPageDataCenter.shared.favorites[index]
                 
-                let removeFeedKey = MyPageDataCenter.shared.favoritesFeedKeys[index]
-                print("removeFeedKey",removeFeedKey)
-                MyPageDataCenter.shared.favoritesFeedKeys.remove(at: index)
+                FireBaseData.shared.refFavoritesReturn.child(MyPageDataCenter.shared.testUUID).child(removeFavoriteKey.favoriteKeyReturn).removeValue()
+                
                 MyPageDataCenter.shared.favorites.remove(at: index)
-                MyPageDataCenter.shared.favoritesCount -= 1 //좋아요가 하나 취소 되면서 get해온 즐겨찾기 카운트 데이터에 - 1을 한다 데이터를 지운뒤 최신화된 카운트를 겟해올 수도 있지만 데이터 통신이 느려 메인뷰의 즐겨찾기 갯수가 업데이트 되지 않을수도 있고 꼭 필요하지않은 상황에서 자주 통신을 하는 것도 바람직하지않다고 생각이 들어 이렇게 작업하였다
+                MyPageDataCenter.shared.favoritesCount -= 1
                 self.tableView.reloadData()
-                FireBaseData.shared.refFavoritesReturn.child(MyPageDataCenter.shared.testUUID).child(removeFeedKey).removeValue() //remove시에 지운 값이 있던 자리가 닐로 되있는건지 아예 없어진건지 아직 모르겠다
-                
               
                 
                 print("LikeBtnCancelDidData",MyPageDataCenter.shared.favorites)

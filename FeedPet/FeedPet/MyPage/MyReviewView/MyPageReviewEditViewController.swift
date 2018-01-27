@@ -15,7 +15,6 @@ class MyPageReviewEditViewController: UIViewController {
     
     var myReviews:MyReview!
     let dateFormatter : DateFormatter = DateFormatter()
-    
     let date = Date()
     
     

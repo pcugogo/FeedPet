@@ -121,12 +121,14 @@ class MyPageFeedContentsCell: UITableViewCell {
             print("error")
         }
         
-        switch favorites.feedMouthReturn {
-        case 0:
+        
+       
+        switch favorites.feedMouthReturn {    // MOUTH_G : GOOD / MOUTH_S : SOSO /  MOUTH_B : BAD
+        case "MOUTH_G":
             wordOfMouthImgView.image = #imageLiteral(resourceName: "good")
-        case 1:
+        case "MOUTH_S":
             wordOfMouthImgView.image = #imageLiteral(resourceName: "soso")
-        case 2:
+        case "MOUTH_B":
             wordOfMouthImgView.image = #imageLiteral(resourceName: "bad")
         default:
             print("error")
@@ -135,9 +137,15 @@ class MyPageFeedContentsCell: UITableViewCell {
         feedImgView.image = UIImage(named:favorites.feedImgReturn)
         brandNameLb.text = favorites.feedBrandReturn
         feedNameLb.text = favorites.feedNameReturn
-        mainIngredientNameLb.text = favorites.feedIngredientKeyReturn
-        packingMethodTextLb.text = favorites.feedpackingMethodReturn
+        mainIngredientNameLb.text = favorites.feedIngredientReturn
+        switch favorites.feedPackageFlagReturn {
+        case true :
+            packingMethodTextLb.text = "소분포장"
+        case false:
+            packingMethodTextLb.text = "전체포장"
+        }
         
+        ratingLb.text = String(favorites.numberOfReviewReturn)
         
     }
     
