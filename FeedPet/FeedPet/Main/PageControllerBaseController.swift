@@ -79,7 +79,14 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
 //        }
         
     }
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//                self.navigationController?.isNavigationBarHidden = true
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+//                self.navigationController?.isNavigationBarHidden = false
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -119,6 +126,12 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     }
     */
     
+    @IBAction func feedSearchBtnTouched(_ sender: UIButton) {
+        let nextViewContorller = self.storyboard?.instantiateViewController(withIdentifier: "FeedSearchViewController") as! FeedSearchViewController
+        //        self.present(nextViewContorller, animated: true, completion: nil)
+        self.navigationController?.pushViewController(nextViewContorller, animated: true)
+    }
+   
     // LoginView로 이동
     func showLoginViewController(){
         let nextViewContorller = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController

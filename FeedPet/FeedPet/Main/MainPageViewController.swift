@@ -14,32 +14,63 @@ import Kingfisher
 
 class MainPageViewController: UIViewController,IndicatorInfoProvider {
 
-    var indicatorTitle: String = ""
+    var indicatorTitle: String = ""{
+        didSet{
+            currentPetCheck()
+        }
+    }
    
     
     var scrollDelegate: TableViewScrollDelegate?
-    @IBOutlet weak var feedInfoTableView: UITableView!
-    
-    @IBOutlet weak var feedListCountLabel: UILabel!
-    var feedData: [FeedInfo] = []
+//    var feedData: [FeedInfo] = []
     var testReference: DatabaseReference = Database.database().reference()
-    var dataTest: [[String:Any]] = []
+    var ref: DatabaseReference!
+    
+    
+    
+    var feedPagenationData = [FeedInfo]()
+    var feedInfoStartKey: String!
+    var currentPet = String()
+    
+    @IBOutlet weak var feedInfoTableView: UITableView!
+    @IBOutlet weak var feedListCountLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         feedInfoTableView.dataSource = self
         feedInfoTableView.delegate = self
+        print(self.navigationController?.topViewController)
+        print(self.parent?.navigationController)
+//        기존 테이블 전체 데이터 호출
         getLoadFeedList()
+        
+        // 페이지네이션 데이터
+        feedDataHandlePagination()
+        DispatchQueue.main.async {
+            self.feedListCountLabel.text = self.feedPagenationData.count.description
+        }
+//        ref.database.reference()
 //        scrollDelegate = self
-        self.navigationController?.isNavigationBarHidden = true
+//        self.navigationController?.isNavigationBarHidden = true
         // Do any additional setup after loading the view.
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        self.navigationController?.isNavigationBarHidden = true
+//        setupAnimationForNavigationBar(caseOfFunction: true)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+//        self.navigationController?.isNavigationBarHidden = false
+//        setupAnimationForNavigationBar(caseOfFunction: false)
+    }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
+
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -74,61 +105,155 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     }
     func getLoadFeedList(){
         testReference.child("feed_info").child("feed_petkey_c").observeSingleEvent(of: .value, with: { (dataSnap) in
-            print("-----datsnap----- : " ,dataSnap.value)
-            
-            guard let feedInfoList = dataSnap.value  else {return}
-            let feedInfoJsonList = JSON(feedInfoList)
-            let test = JSON(dataSnap.value as Any)
-            print("-----[feedInfoJsonList]----- : ", feedInfoJsonList)
-            var list = FeedInfoList(feedsJson: feedInfoJsonList)
-            print("-----[list]----- : ", list)
-            
-            
-            
-            var list2 = FeedInfoList(feedsJsonTest: test.arrayValue)
-            print("-----[list2]----- : ", list2)
-            
-            print("-----[test]----- : ", test)
-            
             DispatchQueue.main.async {
-                self.feedData = list.feed
-                self.feedListCountLabel.text = self.feedData.count.description
-                self.feedInfoTableView.reloadData()
+                self.feedListCountLabel.text = dataSnap.childrenCount.description
             }
+//            print("-----datsnap----- : " ,dataSnap.value)
+//            guard let feedInfoList = dataSnap.value  else {return}
+//            let feedInfoJsonList = JSON(feedInfoList)
+//            let test = JSON(dataSnap.value as Any)
+//            print("-----[feedInfoJsonList]----- : ", feedInfoJsonList)
+//            var list = FeedInfoList(feedsJson: feedInfoJsonList)
+//            print("-----[list]----- : ", list)
+//
+//
+//
+//            var list2 = FeedInfoList(feedsJsonTest: test.arrayValue)
+//            print("-----[list2]----- : ", list2)
+//
+//            print("-----[test]----- : ", test)
+//
+//            DispatchQueue.main.async {
+//                self.feedPagenationData = list.feed
+//                self.feedListCountLabel.text = self.feedPagenationData.count.description
+//                self.feedInfoTableView.reloadData()
+//            }
         }) { (error) in
             print(error)
         }
+        
     }
+    
+    // MARK: 사료 정보 페이징 처리를 위한 함수
+    func feedDataHandlePagination(){
+        print(currentPet)
+        // 현재 고양이 데이터만 존재하므로 curretnPet 부분을 "feed_petkey_c"로 임시 작업
+        let reference = Database.database().reference().child("feed_info").child("feed_petkey_c").queryOrderedByKey()
+        if feedInfoStartKey == nil{
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            reference.queryLimited(toFirst: 10).observeSingleEvent(of: .value, with: { (dataSnap) in
+                guard let children = dataSnap.children.allObjects.last as? DataSnapshot else {return}
+                guard let feedInfoListJson = dataSnap.value else {return}
+                let feedJson = JSON(feedInfoListJson)
+                
+                if dataSnap.childrenCount > 0 {
+                    for feed in feedJson{
+                        print(feed.0)
+                        let feedOne = FeedInfo(feedJsonData: feed)
+                        self.feedPagenationData.append(feedOne)
+                    }
+                    self.feedInfoStartKey = children.key
+                    DispatchQueue.main.async {
+                        
+                        self.feedInfoTableView.reloadData()
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    }
+                    print(self.feedInfoStartKey)
+                    print(self.feedPagenationData)
+                }
+            })
+        }else {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            reference.queryStarting(atValue: self.feedInfoStartKey).queryLimited(toFirst: 5).observeSingleEvent(of: .value, with: { (dataSnap) in
+                guard let children = dataSnap.children.allObjects.last as? DataSnapshot else {return}
+                print(children.key)
+                guard let feedInfoListJson = dataSnap.value else {return}
+                let feedJson = JSON(feedInfoListJson)
+                if dataSnap.childrenCount > 0 {
+                    for feed in feedJson{
+
+                        if feed.0 != self.feedInfoStartKey {
+                            let feedOne = FeedInfo(feedJsonData: feed)
+                            self.feedPagenationData.insert(feedOne, at: self.feedPagenationData.count)
+                        }
+                        
+                    }
+                    self.feedInfoStartKey = children.key
+                    DispatchQueue.main.async {
+                        self.feedInfoTableView.reloadData()
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    }
+                    print(self.feedInfoStartKey)
+                    print(self.feedPagenationData)
+                }
+            })
+        }
+        
+//        ref.child("feed_info").child(currentPet).queryOrderedByKey().queryLimited(toLast: 10).observeSingleEvent(of: .value, with: { (dataSnap) in
+//
+//            if dataSnap.childrenCount > 0{
+//                for child in dataSnap.children.allObjects as! [DataSnapshot]{
+//                    let item = child.value as! (String, JSON)
+//                    let feedInfo = FeedInfo(feedJsonData: item)
+//                    self.feedPagenationData.insert(feedInfo, at: 0)
+//                }
+//
+//            }
+//        }) { (error) in
+//            print(error)
+//        }
+    }
+    func currentPetCheck(){
+        if indicatorTitle == "멍" {
+            currentPet = "feed_petkey_d"
+        }else{
+            currentPet = "feed_petkey_c"
+        }
+    }
+    
+    func setupAnimationForNavigationBar(caseOfFunction: Bool) {
+        if caseOfFunction == true {
+            UIView.animate(withDuration: 0.5) {
+                self.navigationController?.navigationBar.transform = CGAffineTransform(translationX: 0, y: -200)
+            }
+        } else {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.navigationController?.navigationBar.transform = CGAffineTransform.identity
+            })
+        }
+        
+    }
+    
 }
 extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return feedData.count
+        return feedPagenationData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let feedCell = tableView.dequeueReusableCell(withIdentifier: "FeedMainInfoCell", for: indexPath) as! FeedMainInfoTableViewCell
-        feedCell.feedBrandLabel.text = self.feedData[indexPath.row].feedBrand
-        feedCell.feedNameLabel.text = self.feedData[indexPath.row].feedName
+        feedCell.feedBrandLabel.text = self.feedPagenationData[indexPath.row].feedBrand
+        feedCell.feedNameLabel.text = self.feedPagenationData[indexPath.row].feedName
 
-        let gradeInt: Int = self.feedData[indexPath.row].feedGrade
+        let gradeInt: Int = self.feedPagenationData[indexPath.row].feedGrade
 //        let gradeText: String = FeedGrade.init(rawValue: gradeInt)?.gardeText() ?? "no-data"
 //        feedCell.feedGradeLabel.text = gradeText
         
         // Enum을 통해 해당 셀의 레이블의 값 할당 과 텍스트 컬러 변경 => 좋은방법일지 생각해보고 좋지않다면 함수로 분리하여 호출하자
         FeedGrade.init(rawValue: gradeInt)?.gardeText(label: feedCell.feedGradeLabel)
         // Enum을 통한 입소문 이미지 할당 위에 코드와 동일 한 구조
-        FeedMouth.init(rawValue: self.feedData[indexPath.row].feedMouth)?.mouthImgSetting(mouthImgView: feedCell.feedMouthImgView)
+        FeedMouth.init(rawValue: self.feedPagenationData[indexPath.row].feedMouth)?.mouthImgSetting(mouthImgView: feedCell.feedMouthImgView)
         
         // 포장방식 분기처리
-        if self.feedData[indexPath.row].feedPackageFlag {
+        if self.feedPagenationData[indexPath.row].feedPackageFlag {
             feedCell.feedPackageLabel.text = "소분포장"
         }else{
             feedCell.feedPackageLabel.text = "전체포장"
         }
-        feedCell.feedIngredientLabel.text = self.feedData[indexPath.row].feedIngredient
+        feedCell.feedIngredientLabel.text = self.feedPagenationData[indexPath.row].feedIngredient
         
     
-        if let urlStr = self.feedData[indexPath.row].feedImg.first?.stringValue, let url = URL(string: urlStr){
+        if let urlStr = self.feedPagenationData[indexPath.row].feedImg.first?.stringValue, let url = URL(string: urlStr){
 
             feedCell.feedImgView.kf.setImage(with: url)
 //            DispatchQueue.main.async {
@@ -143,31 +268,42 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
-        let feedDetailData: FeedInfo = feedData[indexPath.row]
+        let feedDetailData: FeedInfo = feedPagenationData[indexPath.row]
         print("----select FeedData ----",feedDetailData)
         let feedDeatilView: FeedDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "FeedDetailView") as! FeedDetailViewController
         feedDeatilView.feedDetailInfo = feedDetailData
 //        self.parent?.navigationController?.pushViewController(feedDeatilView, animated: true)
-        self.navigationController?.pushViewController(feedDeatilView, animated: true)
+
+        self.parent?.navigationController?.pushViewController(feedDeatilView, animated: true)
 //        self.present(feedDeatilView, animated: true, completion: nil)
     }
+    
     // 테이블뷰 페이지네이션
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == dataTest.count - 1 {
+        if indexPath.row == feedPagenationData.count - 1 {
             // 데이터 호출
-            
+            feedDataHandlePagination()
         }
         
     }
-    func moreData(){
-        for _ in 0...9{
-            
-        }
-    }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print("스크롤")
-        print(scrollView.contentOffset)
+    
+    // 스크롤 뷰가 끝나는 시점 델리게이트 메서드
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+        let currentOffset = scrollView.contentOffset.y
+        print("-- CurrentOffSet --- " , currentOffset)
+        print("-- scrollView.contentSize.height --- " , scrollView.contentSize.height)
+        print("-- scrollView.frame.height --- " , scrollView.frame.height)
+        
+        let maxOffSet = scrollView.contentSize.height - scrollView.frame.height
+        print("-- maxOffSet --- " , maxOffSet)
+        
+        print(maxOffSet - currentOffset)
+        // 수정필요
+        if maxOffSet - currentOffset <= 600 {
+//            self.feedDataHandlePagination()
+        }
         
     }
     

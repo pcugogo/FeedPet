@@ -28,17 +28,39 @@ class FeedDetailViewController: UIViewController {
         super.viewDidLoad()
         feedDetailTableView.delegate = self
         feedDetailTableView.dataSource = self
-        self.navigationController?.isNavigationBarHidden = false
+//        self.navigationController?.isNavigationBarHidden = false
         
         
         // Do any additional setup after loading the view.
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//                self.navigationController?.isNavigationBarHidden = false
+//        setupAnimationForNavigationBar(caseOfFunction: true)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        //        self.navigationController?.isNavigationBarHidden = false
+//        setupAnimationForNavigationBar(caseOfFunction: false)
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    func setupAnimationForNavigationBar(caseOfFunction: Bool) {
+        if caseOfFunction == true {
+            UIView.animate(withDuration: 0.5) {
+                self.navigationController?.navigationBar.transform = CGAffineTransform(translationX: 0, y: -200)
+            }
+        } else {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.navigationController?.navigationBar.transform = CGAffineTransform.identity
+            })
+        }
+        
+    }
 
     /*
     // MARK: - Navigation
