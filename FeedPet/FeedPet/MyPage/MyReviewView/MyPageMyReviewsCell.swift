@@ -93,8 +93,8 @@ class MyPageMyReviewsCell: UITableViewCell {
         reviewContentLb.text = myReview.feedReviewReturn
         feedImgView.image = UIImage(named:myReview.feedImgReturn[0])
         reviewWriteDateLb.text = myReview.feedDateReturn
-        //        reviewNumberOfGoodLb.text = String(review.reviewGoodsReturn)
-        //        reviewNumberOfNotGoodLb.text = String(review.reviewNotGoodsReturn)
+        reviewNumberOfGoodLb.text = String(myReview.reviewLikeReturn)
+        reviewNumberOfNotGoodLb.text = String(myReview.reviewUnLikeReturn)
         
     }
     
