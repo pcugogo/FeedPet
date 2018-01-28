@@ -12,10 +12,10 @@ import Firebase
 class WriteReviewViewController: UIViewController,UITextViewDelegate {
     
     //여기서부터
-    var feedKey:String = "feed_key_c5"
-    var feedBrand:String = "이즈칸"
-    var feedName:String = "이즈칸 캣 그레인 프리 키튼"
-    var feedImg:String = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_c5_1.png"
+    var feedKey:String = "feed_key_c155"
+    var feedBrand:String = "사나벨"
+    var feedName:String = "사나벨 어덜트(타조)"
+    var feedImg:String = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_c155_1.png"
     //여기까지 상세화면에서 받아야 될 데이터
     
     var ratingNumberOfStars = 5 //서버에 넘겨질 평점 초기 별 갯수 5개

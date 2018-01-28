@@ -42,7 +42,7 @@ class MyPageMyReviewsViewController: UIViewController,UITableViewDataSource,UITa
         if MyPageDataCenter.shared.myReviewDatas.isEmpty{
             return ""
         }else{
-            return "총 \(MyPageDataCenter.shared.reviewsCount)개 상품"
+            return " 총 \(MyPageDataCenter.shared.reviewsCount)개 상품"
         }
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -63,7 +63,7 @@ class MyPageMyReviewsViewController: UIViewController,UITableViewDataSource,UITa
         myPageMyReviewsCell.removeBtnOut.tag = indexPath.row
         
         if MyPageDataCenter.shared.myReviewDatas.isEmpty == false{
-            let review = MyPageDataCenter.shared.myReviewDatas[indexPath.row] //reviews가 옵셔널이 아니므로 옵셔널 바인딩 안된다
+            let review = MyPageDataCenter.shared.myReviewDatas[indexPath.row]
             myPageMyReviewsCell.configureCell(review: review)
         }
         
@@ -86,22 +86,24 @@ class MyPageMyReviewsViewController: UIViewController,UITableViewDataSource,UITa
             
             if let index = MyPageDataCenter.shared.myPageMyReviewsCellRemoveBtnTagValue {
                 print("index",index)
-                print("MyPageDataCenter.shared.feedKeys",MyPageDataCenter.shared.myReviewKeyDatas)
+                print("MyPageDataCenter.shared.myReviewDatas",MyPageDataCenter.shared.myReviewDatas)
+                print("keykey",MyPageDataCenter.shared.myReviewKeyDatas)
+                let removeFeedData = MyPageDataCenter.shared.myReviewDatas[index]
                 
-                let removeFeedData = MyPageDataCenter.shared.myReviewKeyDatas[index]
                 print("removeFeedData",removeFeedData)
-                MyPageDataCenter.shared.myReviewKeyDatas.remove(at: index)
                 MyPageDataCenter.shared.myReviewDatas.remove(at: index)
+
                 self.tableView.reloadData()
                 FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(removeFeedData.feedKeyReturn).removeValue()
                 FireBaseData.shared.refFeedReviewsReturn.child(removeFeedData.feedKeyReturn).child("review_info").child(removeFeedData.reviewKeyReturn).removeValue()
                 
+                    FireBaseData.shared.refReviewThumbReturn.child(removeFeedData.reviewKeyReturn).removeValue()
                 
                 MyPageDataCenter.shared.reviewsCount -= 1
                 print("removeReviewDidData",MyPageDataCenter.shared.myReviewDatas)
                 
             }
-            if MyPageDataCenter.shared.myReviewKeyDatas.isEmpty == true{
+            if MyPageDataCenter.shared.myReviewDatas.isEmpty == true{
                 self.tableView.isHidden = true
             }else{
                 self.tableView.isHidden = false

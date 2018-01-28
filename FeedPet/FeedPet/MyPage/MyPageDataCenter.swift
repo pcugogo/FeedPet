@@ -24,11 +24,10 @@ struct MyPageDataCenter {
     
     //유저 데이터
     
-   
+    
     
     //즐겨찾기 데이터
     var favorites = [FavoritesData]()
-//    var favoritesFeedKeys = [String]()
     var favoritesCount = 0
     var myPageFeedContentsCellLikeBtnTagValue:Int! //몇번 셀의 좋아요 버튼을 터치한건지 체크하기 위한 버튼태그
     
@@ -40,6 +39,7 @@ struct MyPageDataCenter {
     var myPageMyReviewsCellEditBtnTagValue:Int!
     var myPageMyReviewsCellRemoveBtnTagValue:Int!
     
+    var reviewThumbDatas = [ReviewThumb]()
     
     //탈퇴하기 내용
     var leaveMembershipReason = ""
@@ -91,7 +91,9 @@ struct FireBaseData{
     var refFeedInfoReturn:DatabaseReference{
         return refFeedInfo
     }
-    
+    var refReviewThumbReturn:DatabaseReference{
+        return refReviewThumb
+    }
     func fireBaseFavoritesDataLoad(){
         
         //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
@@ -99,17 +101,17 @@ struct FireBaseData{
             if MyPageDataCenter.shared.favorites.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
                 MyPageDataCenter.shared.favorites.removeAll()
             }
-//            if MyPageDataCenter.shared.favoritesFeedKeys.isEmpty == false{  //서버에서 데이터를 불러오기전 데이터를 초기화
-//                MyPageDataCenter.shared.favoritesFeedKeys.removeAll()
-//            }
+            //            if MyPageDataCenter.shared.favoritesFeedKeys.isEmpty == false{  //서버에서 데이터를 불러오기전 데이터를 초기화
+            //                MyPageDataCenter.shared.favoritesFeedKeys.removeAll()
+            //            }
             MyPageDataCenter.shared.favoritesCount = Int(snapshot.childrenCount)
- 
+            
             if let snapShot = snapshot.children.allObjects as? [DataSnapshot]{
-               
+                
                 
                 for snap in snapShot{
-                   
-                   
+                    
+                    
                     let favoriteKey = (snap.key)
                     
                     var feedImg:[String]!
@@ -123,7 +125,7 @@ struct FireBaseData{
                     var numberOfReview = 0
                     
                     if let feedKey = snap.value as? String {
-                       
+                        
                         FireBaseData.shared.refFeedInfo.child("feed_petkey_c").child(feedKey).observeSingleEvent(of: .value, with: { (feedInfoSnapshot) in
                             if let feedSnapshot = feedInfoSnapshot.children.allObjects as? [DataSnapshot]{
                                 for feedSnap in feedSnapshot {
@@ -152,8 +154,8 @@ struct FireBaseData{
                                     }
                                 }
                             }
-                           
-                             FireBaseData.shared.refFeedReviews.child(feedKey).observeSingleEvent(of: .value, with: { (reviewSnapshot) in
+                            
+                            FireBaseData.shared.refFeedReviews.child(feedKey).observeSingleEvent(of: .value, with: { (reviewSnapshot) in
                                 if let reviewSnaps = reviewSnapshot.value as? [String:AnyObject]{
                                     for reviewSnap in reviewSnaps{
                                         if reviewSnap.key == "review_rating"{
@@ -163,19 +165,20 @@ struct FireBaseData{
                                         }
                                         if reviewSnap.key == "review_info"{
                                             if let reviewInfo = reviewSnap.value as? [String:AnyObject]{
-                                               numberOfReview = reviewInfo.keys.count
+                                                numberOfReview = reviewInfo.keys.count
                                             }
                                         }
                                     }
                                 }
                                 let favorites = FavoritesData(favoriteKey: favoriteKey, feedKey: feedKey, feedImg: feedImg, feedBrand: feedBrand, feedName: feedName, feedMouth: feedMouth, feedIngredient: feedIngredient, feedGrade: feedGrade, feedPackageFlag: feedPackageFlag, feedRating: feedRating, numberOfReview: numberOfReview)
+                               
                                 MyPageDataCenter.shared.favorites.append(favorites)
-                             })
-
+                            })
+                            
                         })
-  
+                        
                     }
-
+                    
                 }
             }
         })
@@ -188,7 +191,7 @@ struct FireBaseData{
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
         FireBaseData.shared.refMyReviews.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in
-        
+            
             if MyPageDataCenter.shared.myReviewKeyDatas.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
                 MyPageDataCenter.shared.myReviewKeyDatas.removeAll()
             }
@@ -207,39 +210,40 @@ struct FireBaseData{
                     }
                     
                 }
-                self.refFeedReviewsDataLoad()
+                self.fireBaseFeedReviewsDataLoad()
+                self.FireBaseReviewThumbDataLoad()
             }
         })
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
-
     
-    func refFeedReviewsDataLoad(){
+    
+    func fireBaseFeedReviewsDataLoad(){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         if MyPageDataCenter.shared.myReviewDatas.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
             MyPageDataCenter.shared.myReviewDatas.removeAll()
         }
-      
+        
         
         for myReviewData in MyPageDataCenter.shared.myReviewKeyDatas {
-            FireBaseData.shared.refFeedReviews.child(myReviewData.feedKeyReturn).child("review_info").observeSingleEvent(of: .value, with: { (snapshot) in
-            
+             FireBaseData.shared.refFeedReviews.child(myReviewData.feedKeyReturn).child("review_info").observeSingleEvent(of: .value, with: { (snapshot) in
+                
                 
                 if let snapShot = snapshot.children.allObjects as? [DataSnapshot] {
                     
                     for snap in snapShot{
                         if snap.key == myReviewData.reviewKeyReturn{
-                           
+                            
                             let feedKey = myReviewData.feedKeyReturn
                             let reviewKey = snap.key
                             var feedName:String!
                             var feedBrand:String!
                             var feedImg:[String]!
-                            var reviewLike = 0
-                            var reviewUnLike = 0
+                            
                             
                             FireBaseData.shared.refFeedInfo.child("feed_petkey_c").child(feedKey).observeSingleEvent(of: .value, with: { (feedInfoSnapshot) in
                                 if let feedSnapshot = feedInfoSnapshot.children.allObjects as? [DataSnapshot]{
+                                    
                                     for feedSnap in feedSnapshot{
                                         if feedSnap.key == "feed_name"{
                                             feedName = feedSnap.value as! String
@@ -251,43 +255,18 @@ struct FireBaseData{
                                             feedImg = feedSnap.value as? [String]
                                         }
                                     }
-                                }
-                                FireBaseData.shared.refReviewThumb.child(reviewKey).observeSingleEvent(of: .value, with: { (reviewThumbSnapshot) in
-                                    if let reviewThumbSnap = reviewThumbSnapshot.value as? [String:AnyObject]{
-                                        for thumbSnap in reviewThumbSnap{
-                                            if thumbSnap.key == "review_like"{
-                                                if let likeSnap = thumbSnap.value as? [String:AnyObject]{
-                                                    reviewLike = likeSnap.keys.count
-                                                }
-                                            }
-                                            if thumbSnap.key == "review_unlike"{
-                                                if let unLikeSnap = thumbSnap.value as? [String:AnyObject]{
-                                                    reviewUnLike = unLikeSnap.keys.count
-                                                }
-                                            }
-                                        }
-                                        
-                                    }
-                                
-                                    if let reviewInfoDic = snap.value as? [String:AnyObject]{
-                                        let reviewData = MyReview(feedKey: feedKey, reviewKey: reviewKey, feedName: feedName, feedBrand: feedBrand, feedImg: feedImg, reviewData: reviewInfoDic, reviewLike: reviewLike, reviewUnLike: reviewUnLike)
-                                        
-                                        if MyPageDataCenter.shared.myReviewDatas.isEmpty {
-                                            MyPageDataCenter.shared.myReviewDatas.append(reviewData)
-                                        }else{
-                                            for i in MyPageDataCenter.shared.myReviewDatas{
-                                                if feedKey != i.feedKeyReturn {
-                                                    MyPageDataCenter.shared.myReviewDatas.append(reviewData)
-                                                }
-                                            }
-                                        }
-                                    }
                                     
-                                })
+                                }
                               
-                                
+                                if let reviewInfoDic = snap.value as? [String:AnyObject]{
+                                    let reviewData = MyReview(feedKey: feedKey, reviewKey: reviewKey, feedName: feedName, feedBrand: feedBrand, feedImg: feedImg, reviewData: reviewInfoDic)
+                                    print("testTTT")
+                                    
+                                    MyPageDataCenter.shared.myReviewDatas.append(reviewData)
+                                    
+                                }
                             })
-                         
+                            
                             
                             
                         }
@@ -300,6 +279,36 @@ struct FireBaseData{
         
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    
+    func FireBaseReviewThumbDataLoad(){
+        
+        for reviewKeyData in MyPageDataCenter.shared.myReviewKeyDatas{
+            var reviewLike = 0
+            var reviewUnLike = 0
+            FireBaseData.shared.refReviewThumb.child(reviewKeyData.reviewKeyReturn).runTransactionBlock({ (reviewThumbSnapshot) -> TransactionResult in
+                if let reviewThumbSnap = reviewThumbSnapshot.value as? [String:AnyObject]{
+                    for thumbSnap in reviewThumbSnap{
+                        if thumbSnap.key == "review_like"{
+                            if let likeSnap = thumbSnap.value as? [String:AnyObject]{
+                                reviewLike = likeSnap.keys.count
+                            }
+                        }
+                        if thumbSnap.key == "review_unlike"{
+                            if let unLikeSnap = thumbSnap.value as? [String:AnyObject]{
+                                reviewUnLike = unLikeSnap.keys.count
+                            }
+                        }
+                        
+                    }
+                    let thumbData = ReviewThumb(reviewKey: reviewKeyData.reviewKeyReturn, numberOfLike: reviewLike, numberOfUnLike: reviewUnLike)
+                    MyPageDataCenter.shared.reviewThumbDatas.append(thumbData)
+                }
+                
+                
+                return TransactionResult.success(withValue: reviewThumbSnapshot)
+            })
+        }
     }
     
 }
@@ -382,8 +391,8 @@ struct MyReview {
     private var feedName:String!
     private var feedBrand:String!
     private var feedImg:[String]!
-    private var reviewLike:Int!
-    private var reviewUnLike:Int!
+//    private var reviewLike:Int!
+//    private var reviewUnLike:Int!
     
     var feedKeyReturn:String{
         return feedKey
@@ -412,24 +421,24 @@ struct MyReview {
     var feedImgReturn:[String]{
         return feedImg
     }
-    var reviewLikeReturn:Int{
-        return reviewLike
-    }
-    var reviewUnLikeReturn:Int{
-        return reviewUnLike
-    }
-//    mutating func reviewContentUpdeter(newContent:String){
-//        self.feedReview = newContent
+//    var reviewLikeReturn:Int{
+//        return reviewLike
 //    }
+//    var reviewUnLikeReturn:Int{
+//        return reviewUnLike
+//    }
+    //    mutating func reviewContentUpdeter(newContent:String){
+    //        self.feedReview = newContent
+    //    }
     
-    init(feedKey:String, reviewKey:String,feedName:String,feedBrand:String,feedImg:[String], reviewData:[String:AnyObject],reviewLike:Int,reviewUnLike:Int){
+    init(feedKey:String, reviewKey:String,feedName:String,feedBrand:String,feedImg:[String], reviewData:[String:AnyObject]){
         self.feedKey = feedKey
         self.reviewKey = reviewKey
         self.feedName = feedName
         self.feedBrand = feedBrand
         self.feedImg = feedImg
-        self.reviewLike = reviewLike
-        self.reviewUnLike = reviewUnLike
+//        self.reviewLike = reviewLike
+//        self.reviewUnLike = reviewUnLike
         
         if let userKey = reviewData["user_key"]{
             self.userKey = userKey as? String
@@ -444,7 +453,7 @@ struct MyReview {
             self.feedDate = feedDate as? String
         }
         
-       
+        
     }
     
 }
@@ -466,7 +475,27 @@ struct MyReviewKey {
         }
     }
 }
-
+struct ReviewThumb {
+    private var reviewKey:String!
+    private var numberOfLike:Int!
+    private var numberOfUnLike:Int!
+    
+    var reviewKeyReturn:String{
+        return reviewKey
+    }
+    var numberOfLikeReturn:Int{
+        return numberOfLike
+    }
+    
+    var numberOfUnLikeReturn:Int{
+        return numberOfUnLike
+    }
+    init(reviewKey:String,numberOfLike:Int,numberOfUnLike:Int) {
+        self.reviewKey = reviewKey
+        self.numberOfLike = numberOfLike
+        self.numberOfUnLike = numberOfUnLike
+    }
+}
 
 
 

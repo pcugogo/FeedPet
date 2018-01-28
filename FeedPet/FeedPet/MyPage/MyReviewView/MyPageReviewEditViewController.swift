@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 class MyPageReviewEditViewController: UIViewController {
     
     
@@ -28,9 +26,9 @@ class MyPageReviewEditViewController: UIViewController {
         print(MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue)
         myReviews = MyPageDataCenter.shared.myReviewDatas[MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue]
         
-        //        feedImgView.image = UIImage(named:myReviews.feedImgReturn)
-        //        feedBrandLb.text = myReviews.feedBrandReturn
-        //        feedNameLb.text = myReviews.feedNameReturn
+        feedImgView.image = UIImage(named:myReviews.feedImgReturn[0])
+        feedBrandLb.text = myReviews.feedBrandReturn
+        feedNameLb.text = myReviews.feedNameReturn
         feedWriteContentTextView.text = myReviews.feedReviewReturn
         
     }
@@ -52,17 +50,15 @@ class MyPageReviewEditViewController: UIViewController {
             
             if let index = MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue {
                 print("index",index)
-                print("MyPageDataCenter.shared.feedKeys",MyPageDataCenter.shared.myReviewKeyDatas)
+                print("myReviewDatas",MyPageDataCenter.shared.myReviewDatas)
                 
-                let removeFeedData = MyPageDataCenter.shared.myReviewKeyDatas[index]
-                
-                MyPageDataCenter.shared.myReviewKeyDatas.remove(at: index)
-                
+                let removeFeedData = MyPageDataCenter.shared.myReviewDatas[index]
+        
                 MyPageDataCenter.shared.myReviewDatas.remove(at: index)
                 FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(removeFeedData.feedKeyReturn).removeValue()
                 FireBaseData.shared.refFeedReviewsReturn.child(removeFeedData.feedKeyReturn).child("review_info").child(removeFeedData.reviewKeyReturn).removeValue()
                 
-                
+                    FireBaseData.shared.refReviewThumbReturn.child(removeFeedData.reviewKeyReturn).removeValue()
                 
                 MyPageDataCenter.shared.reviewsCount -= 1
                 
@@ -84,14 +80,14 @@ class MyPageReviewEditViewController: UIViewController {
         
         if let index = MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue {
             
-            let editFeedKey = MyPageDataCenter.shared.myReviewKeyDatas[index]
+            let editFeedKey = MyPageDataCenter.shared.myReviewDatas[index]
             
             if let reviewContentText = self.feedWriteContentTextView.text{
                 FireBaseData.shared.refFeedReviewsReturn.child(editFeedKey.feedKeyReturn).child("review_info").child(editFeedKey.reviewKeyReturn).updateChildValues(["feed_review":reviewContentText])
                 
             }
             FireBaseData.shared.refFeedReviewsReturn.child(editFeedKey.feedKeyReturn).child("review_info").child(editFeedKey.reviewKeyReturn).updateChildValues(["feed_date":dateString])
-            FireBaseData.shared.refFeedReviewsDataLoad()
+            FireBaseData.shared.fireBaseFeedReviewsDataLoad()
             print("수정 데이터 통신 완료")
         }
         let editComplateAlert:UIAlertController = UIAlertController(title: "", message: "저장되었습니다!", preferredStyle: .alert)

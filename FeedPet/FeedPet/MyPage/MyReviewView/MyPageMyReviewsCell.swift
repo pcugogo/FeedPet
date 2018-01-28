@@ -93,9 +93,13 @@ class MyPageMyReviewsCell: UITableViewCell {
         reviewContentLb.text = myReview.feedReviewReturn
         feedImgView.image = UIImage(named:myReview.feedImgReturn[0])
         reviewWriteDateLb.text = myReview.feedDateReturn
-        reviewNumberOfGoodLb.text = String(myReview.reviewLikeReturn)
-        reviewNumberOfNotGoodLb.text = String(myReview.reviewUnLikeReturn)
         
+        for reviewThumbData in MyPageDataCenter.shared.reviewThumbDatas{
+            if myReview.reviewKeyReturn == reviewThumbData.reviewKeyReturn{
+                reviewNumberOfGoodLb.text = String(reviewThumbData.numberOfLikeReturn)
+                reviewNumberOfNotGoodLb.text = String(reviewThumbData.numberOfUnLikeReturn)
+            }
+        }
     }
     
     func editViewPresentModally(){
@@ -111,6 +115,7 @@ class MyPageMyReviewsCell: UITableViewCell {
         editViewPresentModally()
     }
     @IBAction func removeBtnAction(_ sender: UIButton) {
+        print("QWE",MyPageDataCenter.shared.myReviewDatas[1],"@$@#$#@%")
         MyPageDataCenter.shared.myPageMyReviewsCellRemoveBtnTagValue = sender.tag
         removeAlertAction()
     }
