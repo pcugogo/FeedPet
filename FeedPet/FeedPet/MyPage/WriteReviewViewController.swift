@@ -12,15 +12,15 @@ import Firebase
 class WriteReviewViewController: UIViewController,UITextViewDelegate {
     
     //여기서부터
-    var feedKey:String = "feed_key_c155"
-    var feedBrand:String = "사나벨"
-    var feedName:String = "사나벨 어덜트(타조)"
-    var feedImg:String = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_c155_1.png"
+    var feedKey:String = "feed_key_c177"
+    var feedBrand:String = "내추럴발란스"
+    var feedName:String = "내추럴발란스 LID 완두&오리 포뮬러"
+    var feedImg:String = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_c177_1.png"
     //여기까지 상세화면에서 받아야 될 데이터
     
     var ratingNumberOfStars = 5 //서버에 넘겨질 평점 초기 별 갯수 5개
     
-    let dateFormatter : DateFormatter = DateFormatter()
+    let reviewWriteDateFormatter : DateFormatter = DateFormatter()
     let date = Date()
     
     let textViewPlaceHolderText = "사용하신 상품의 리뷰를 남겨주세요:)"
@@ -119,9 +119,9 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
     }
     
     @IBAction func saveBtnAction(_ sender: UIBarButtonItem) {
-            
-        self.dateFormatter.dateFormat = "yyyy.MM.dd"
-        let dateString = self.dateFormatter.string(from: self.date)
+        reviewWriteDateFormatter.locale = Locale(identifier: "ko")
+        reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+        let dateString = self.reviewWriteDateFormatter.string(from: self.date)
         //안들어옴
         if reviewContentsTextView.text.isEmpty || reviewContentsTextView.text == textViewPlaceHolderText {
             let blankContents:UIAlertController = UIAlertController(title: "", message: "리뷰 내용을 입력해주세요~^^", preferredStyle: .alert)

@@ -226,16 +226,15 @@ struct FireBaseData{
         
         
         for myReviewData in MyPageDataCenter.shared.myReviewKeyDatas {
-             FireBaseData.shared.refFeedReviews.child(myReviewData.feedKeyReturn).child("review_info").observeSingleEvent(of: .value, with: { (snapshot) in
+            FireBaseData.shared.refFeedReviews.child(myReviewData.feedKeyReturn).child("review_info").child(myReviewData.reviewKeyReturn).queryOrdered(byChild: "feed_date").observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 
-                if let snapShot = snapshot.children.allObjects as? [DataSnapshot] {
-                    
-                    for snap in snapShot{
-                        if snap.key == myReviewData.reviewKeyReturn{
+                if let snapShot = snapshot.value as? [String:AnyObject] {
+                    print(snapShot,"fdsgdfsgsdfg")
+
                             
                             let feedKey = myReviewData.feedKeyReturn
-                            let reviewKey = snap.key
+                            let reviewKey = myReviewData.reviewKeyReturn
                             var feedName:String!
                             var feedBrand:String!
                             var feedImg:[String]!
@@ -257,21 +256,16 @@ struct FireBaseData{
                                     }
                                     
                                 }
-                              
-                                if let reviewInfoDic = snap.value as? [String:AnyObject]{
-                                    let reviewData = MyReview(feedKey: feedKey, reviewKey: reviewKey, feedName: feedName, feedBrand: feedBrand, feedImg: feedImg, reviewData: reviewInfoDic)
-                                    print("testTTT")
+
+                                    let reviewData = MyReview(feedKey: feedKey, reviewKey: reviewKey, feedName: feedName, feedBrand: feedBrand, feedImg: feedImg, reviewData: snapShot)
+                                
                                     
                                     MyPageDataCenter.shared.myReviewDatas.append(reviewData)
+                                    MyPageDataCenter.shared.myReviewDatas.reverse() //배열 반대로 바꾸는 함수 9.3버전 이상
                                     
-                                }
                             })
-                            
-                            
-                            
-                        }
-                        
-                    }
+                    
+        
                 }
             })
             
