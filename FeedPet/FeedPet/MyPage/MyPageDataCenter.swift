@@ -261,8 +261,9 @@ struct FireBaseData{
                                 
                                     
                                     MyPageDataCenter.shared.myReviewDatas.append(reviewData)
+                                    print(MyPageDataCenter.shared.myReviewDatas,"ss")
                                     MyPageDataCenter.shared.myReviewDatas.reverse() //배열 반대로 바꾸는 함수 9.3버전 이상
-                                    
+                                    print(MyPageDataCenter.shared.myReviewDatas,"rr")
                             })
                     
         
