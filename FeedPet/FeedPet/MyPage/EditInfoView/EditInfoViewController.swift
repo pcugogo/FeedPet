@@ -13,7 +13,7 @@ class EditInfoViewController: UIViewController {
     @IBOutlet weak var emailLb: UILabel!
     
     @IBOutlet weak var nickNameTextField: UITextField!
-   
+    @IBOutlet weak var nickDuplicateBtnOut: UIButton!
     @IBOutlet weak var petAgeCollectionView: UICollectionView!
     @IBOutlet weak var petFunctionalCollectionView: UICollectionView!
     
@@ -67,13 +67,15 @@ class EditInfoViewController: UIViewController {
     // ########################################
     override func viewDidLoad() {
         super.viewDidLoad()
+
         petAgeCollectionView.delegate = self
         petAgeCollectionView.dataSource = self
-        
         petFunctionalCollectionView.delegate = self
         petFunctionalCollectionView.dataSource = self
         petFunctionalCollectionView.allowsMultipleSelection = true
         
+        nickDuplicateBtnOut.layer.masksToBounds = true
+        nickDuplicateBtnOut.layer.cornerRadius = 5
         
         print("---뷰 디드로드 - functionlInedxPath 값: ", functionalIndexPath)
         // 최초 선택은 디폴트가 강아지로되어있다.
@@ -93,6 +95,7 @@ class EditInfoViewController: UIViewController {
     // ########################################
    
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func saveBtnAction(_ sender: UIBarButtonItem) {
@@ -124,6 +127,9 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
         }
         return itemCount
     }
+    
+    
+  
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -211,12 +217,7 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
             ageIndexPath = indexPath
             
         }
-        
-        func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-            var width = (self.view.frame.size.width - 12 * 3) / 3 //some width
-            var height = width * 1.5 //ratio
-            return CGSize(width: width, height: height);
-        }
+       
         
     }
     // didDeselectItemAt - 지정한 패스의 항목의 선택이 해제 된 것을 위양에 통지합니다

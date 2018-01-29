@@ -11,8 +11,6 @@
 		14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */; };
 		14035C1A1FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */; };
 		14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C0D1FF24E95005ABAE0 /* EditInfoViewController.swift */; };
-		14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C0E1FF24E95005ABAE0 /* MyInfoCell.swift */; };
-		14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C0F1FF24E95005ABAE0 /* PetInfoCell.swift */; };
 		14035C1F1FF24E95005ABAE0 /* MyPage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14035C101FF24E95005ABAE0 /* MyPage.storyboard */; };
 		14035C201FF24E95005ABAE0 /* MyMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C121FF24E95005ABAE0 /* MyMenuCell.swift */; };
 		14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C131FF24E95005ABAE0 /* MyPageViewController.swift */; };
@@ -91,8 +89,6 @@
 		14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSwitchCell.swift; sourceTree = "<group>"; };
 		14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalAlarmSwitchCell.swift; sourceTree = "<group>"; };
 		14035C0D1FF24E95005ABAE0 /* EditInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditInfoViewController.swift; sourceTree = "<group>"; };
-		14035C0E1FF24E95005ABAE0 /* MyInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyInfoCell.swift; sourceTree = "<group>"; };
-		14035C0F1FF24E95005ABAE0 /* PetInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetInfoCell.swift; sourceTree = "<group>"; };
 		14035C101FF24E95005ABAE0 /* MyPage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyPage.storyboard; sourceTree = "<group>"; };
 		14035C121FF24E95005ABAE0 /* MyMenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMenuCell.swift; sourceTree = "<group>"; };
 		14035C131FF24E95005ABAE0 /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -221,8 +217,6 @@
 			isa = PBXGroup;
 			children = (
 				14035C0D1FF24E95005ABAE0 /* EditInfoViewController.swift */,
-				14035C0E1FF24E95005ABAE0 /* MyInfoCell.swift */,
-				14035C0F1FF24E95005ABAE0 /* PetInfoCell.swift */,
 			);
 			path = EditInfoView;
 			sourceTree = "<group>";
@@ -634,7 +628,6 @@
 				14E193711FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift in Sources */,
 				4C1E6DDF20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift in Sources */,
 				148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */,
-				14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */,
 				4C5FBD651FFEB351004C66EE /* DogMainViewController.swift in Sources */,
 				4CF7C4512003FA7A00AF8E35 /* DogFunctionalViewController.swift in Sources */,
 				14DA00951FF6570E00819A96 /* LeaveMembershipHeaderCell.swift in Sources */,
@@ -648,7 +641,6 @@
 				4C8DFB90200F580900331A5B /* FeedDetailITableViewCell.swift in Sources */,
 				4CF7C4532003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift in Sources */,
 				4C229C88200CB21B004FFD07 /* FilterTableViewCell.swift in Sources */,
-				14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */,
 				FCA26EE420139BC5000D8BAF /* MyPageTestViewController.swift in Sources */,
 				14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */,
 				4C8DFB84200E297200331A5B /* FilterMenuSection.swift in Sources */,

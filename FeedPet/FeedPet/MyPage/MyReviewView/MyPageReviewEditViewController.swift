@@ -15,7 +15,9 @@ class MyPageReviewEditViewController: UIViewController {
     let dateFormatter : DateFormatter = DateFormatter()
     let date = Date()
     
+    var keyboardHeight = 0
     
+    @IBOutlet weak var myReviewScrollView: UIScrollView!
     @IBOutlet weak var feedImgView: UIImageView!
     @IBOutlet weak var feedBrandLb: UILabel!
     @IBOutlet weak var feedNameLb: UILabel!
@@ -31,6 +33,10 @@ class MyPageReviewEditViewController: UIViewController {
         feedNameLb.text = myReviews.feedNameReturn
         feedWriteContentTextView.text = myReviews.feedReviewReturn
         
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil) //키보드 올라오는 것을 옵저브
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil) //키보드 사라지는 것을 옵저브
+        createToolbar(textView: feedWriteContentTextView)
     }
     
     override func didReceiveMemoryWarning() {
@@ -99,6 +105,34 @@ class MyPageReviewEditViewController: UIViewController {
         self.present(editComplateAlert, animated: true, completion: nil)
     }
     
+    func keyboardWasShown(_ notification : Notification) {
+                            self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y + 140)
+    }
+    
+    func keyboardWillHide(_ notification : Notification) {
+                            self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y - 140)
+    }
+//    func keyboardWillShow(notification: NSNotification) {
+//
+//        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+//            keyboardHeight = Int(keyboardSize.height)
+//            print("keyboardHeight",keyboardHeight)
+//        }
+//    }
+    func createToolbar(textView : UITextView) { //텍스트 뷰 키보드 위에 올라갈 툴바
+        let toolbar = UIToolbar()
+        toolbar.barStyle = UIBarStyle.default
+        toolbar.sizeToFit()
+        
+        let flexsibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let complateBtn = UIBarButtonItem(title: "완료", style: UIBarButtonItemStyle.plain, target: self, action: #selector(MyPageReviewEditViewController.keyboardDisappears))
+        
+        toolbar.items = [flexsibleSpace,complateBtn]
+        textView.inputAccessoryView = toolbar
+    }
+    func keyboardDisappears(){
+        self.view.endEditing(true)
+    }
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
         self.navigationController?.popViewController(animated: true)
     }

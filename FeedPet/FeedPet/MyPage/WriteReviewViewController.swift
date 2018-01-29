@@ -18,13 +18,15 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
     var feedImg:String = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_c177_1.png"
     //여기까지 상세화면에서 받아야 될 데이터
     
+    var keyboardHeight = 0
     var ratingNumberOfStars = 5 //서버에 넘겨질 평점 초기 별 갯수 5개
     
     let reviewWriteDateFormatter : DateFormatter = DateFormatter()
     let date = Date()
     
     let textViewPlaceHolderText = "사용하신 상품의 리뷰를 남겨주세요:)"
- 
+    
+    @IBOutlet weak var writeReviewScrollView: UIScrollView!
     @IBOutlet weak var feedImgView: UIImageView!
     
     @IBOutlet weak var feedBrandLb: UILabel!
@@ -54,13 +56,12 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
         createToolbar(textView: reviewContentsTextView)
         
         reviewContentsTextView.delegate = self
-
+        
         reviewContentsTextView.text = textViewPlaceHolderText
         reviewContentsTextView.textColor = UIColor.lightGray
         
-        
-        //        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil) //키보드 올라오는 것을 옵저브
-        //        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil) //키보드 사라지는 것을 옵저브
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil) //키보드 올라오는 것을 옵저브
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil) //키보드 사라지는 것을 옵저브
         
     }
     
@@ -68,7 +69,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
@@ -94,14 +95,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
         self.view.endEditing(true)
     }
     
-    func keyboardWasShown(_ notification : Notification) {
-//        self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 150)
-    }
     
-    func keyboardWillHide(_ notification : Notification)
-    {
-//        self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 150)
-    }
     
     func createToolbar(textView : UITextView) { //텍스트 뷰 키보드 위에 올라갈 툴바
         let toolbar = UIToolbar()
@@ -114,6 +108,15 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
         toolbar.items = [flexsibleSpace,complateBtn]
         textView.inputAccessoryView = toolbar
     }
+    func keyboardWasShown(_ notification : Notification) {
+        
+        self.writeReviewScrollView.contentOffset = CGPoint(x: 0, y: self.writeReviewScrollView.contentOffset.y + 140)
+    }
+    
+    func keyboardWillHide(_ notification : Notification) {
+        self.writeReviewScrollView.contentOffset = CGPoint(x: 0, y: self.writeReviewScrollView.contentOffset.y - 140)
+    }
+    
     
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
     }
@@ -132,19 +135,19 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
             self.present(blankContents, animated: true, completion: nil)
         }else{
             let feedReviewInfoDic = ["feed_date":dateString,"feed_rating":self.ratingNumberOfStars,"feed_review":reviewContentsTextView.text,"user_key":MyPageDataCenter.shared.testUUID] as [String : Any]
-
+            
             //로그인한 계정으로 같은 사료의 리뷰가 이미 있을때 경우는 처리하지않았고 전화면에서 리뷰를 등록했으면 수정하기 화면으로 가는 플로우로 생각했다
-
+            
             let reviewAutoKey = FireBaseData.shared.refFeedReviewsReturn.child(feedKey).child("review_info").childByAutoId()
-
-
+            
+            
             FireBaseData.shared.refFeedReviewsReturn.child(feedKey).child("review_info").child(reviewAutoKey.key).updateChildValues(feedReviewInfoDic)
-                FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
+            FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
             let completedReview:UIAlertController = UIAlertController(title: "리뷰 등록 완료!", message: "소중한 리뷰 감사합니다:)", preferredStyle: .alert)
-
+            
             let okBtn:UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             completedReview.addAction(okBtn)
-
+            
             self.present(completedReview, animated: true, completion: nil)
             //디스미스나 팝뷰해서 전 화면으로
         }

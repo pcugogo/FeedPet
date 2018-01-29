@@ -14,7 +14,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
     
     
     let leaveMembershipReasonText = ["사용하기 불편해요","정보가 부족해요","다른앱을 사용하고 싶어요","기타"] //탈퇴 이유 텍스트들
-    
+    var keyboardHeight = 0
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -24,6 +24,10 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
         MyPageDataCenter.shared.leaveMembarshipEtcReasonContent = ""
         
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+//                NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil) //키보드 올라오는 것을 옵저브
+//                NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil) //키보드 사라지는 것을 옵저브
     }
     
     override func didReceiveMemoryWarning() {
@@ -154,8 +158,22 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
         tableView.reloadData()
     }
     
-    
-    
+//    func keyboardWasShown(_ notification : Notification) {
+//                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 150)
+//    }
+//
+//    func keyboardWillHide(_ notification : Notification)
+//    {
+//                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 150)
+//    }
+    func keyboardWillShow(notification: NSNotification) {
+        
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            keyboardHeight = Int(keyboardSize.height)
+            print("keyboardHeight",keyboardHeight)
+        }
+        
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         leaveMembershipTableViewDisappear()
