@@ -27,8 +27,11 @@ class MyPageReviewEditViewController: UIViewController {
         super.viewDidLoad()
         print(MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue)
         myReviews = MyPageDataCenter.shared.myReviewDatas[MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue]
+       
+        if let url = URL(string:myReviews.feedImgReturn[0]){
+            feedImgView.kf.setImage(with: url)
+        }
         
-        feedImgView.image = UIImage(named:myReviews.feedImgReturn[0])
         feedBrandLb.text = myReviews.feedBrandReturn
         feedNameLb.text = myReviews.feedNameReturn
         feedWriteContentTextView.text = myReviews.feedReviewReturn
@@ -61,10 +64,13 @@ class MyPageReviewEditViewController: UIViewController {
                 let removeFeedData = MyPageDataCenter.shared.myReviewDatas[index]
         
                 MyPageDataCenter.shared.myReviewDatas.remove(at: index)
+               
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
                 FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(removeFeedData.feedKeyReturn).removeValue()
                 FireBaseData.shared.refFeedReviewsReturn.child(removeFeedData.feedKeyReturn).child("review_info").child(removeFeedData.reviewKeyReturn).removeValue()
                 
                     FireBaseData.shared.refReviewThumbReturn.child(removeFeedData.reviewKeyReturn).removeValue()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
                 MyPageDataCenter.shared.reviewsCount -= 1
                 

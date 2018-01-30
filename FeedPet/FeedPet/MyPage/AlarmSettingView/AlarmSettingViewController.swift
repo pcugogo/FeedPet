@@ -15,6 +15,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         
     var cellIdentificationNumber = 0
     
+    let alarmIconImg = [#imageLiteral(resourceName: "morningAlarm"),#imageLiteral(resourceName: "LunchAlarm"),#imageLiteral(resourceName: "DinnerAlarm")]
     
     @IBOutlet weak var tableView: UITableView!
 
@@ -99,7 +100,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             let switchCell:AlarmSwitchCell = tableView.dequeueReusableCell(withIdentifier: "AlarmSwitchCell", for: indexPath) as! AlarmSwitchCell
             
             switchCell.delegate = self
-            
+            switchCell.mealTimeImg.image = alarmIconImg[indexPath.row - 1]
             if indexPath.row == 1{
                 switchCell.mealTimeLb.text = MyPageDataCenter.shared.mealTime["morning"]!
                 switchCell.indexPath = indexPath.row

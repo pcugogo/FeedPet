@@ -18,7 +18,8 @@ enum enumSettingSection:Int { //섹션 이름
 
 class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,MFMailComposeViewControllerDelegate,MyMenuCellDelegate {
     
-    let settingMenuName = [ "버전정보","알람설정","FAQ","이용약관","문의하기","팀소개","로그아웃","탈퇴하기" ]
+    let settingMenuName = ["버전정보","알람설정","FAQ","이용약관","문의하기","팀소개","로그아웃","탈퇴하기" ]
+    let settingMenuImg = [#imageLiteral(resourceName: "MyPageVersionInfo"),#imageLiteral(resourceName: "MyPageAlarmSetting"),#imageLiteral(resourceName: "MyPageFAQ"),#imageLiteral(resourceName: "MyPageTermsOfUse"),#imageLiteral(resourceName: "MyPageContactUs"),#imageLiteral(resourceName: "MyPageTeamIntroduction"),#imageLiteral(resourceName: "MyPageLogOut"),#imageLiteral(resourceName: "MyPageLeaveMembership")]
     //설정 메뉴 이름들
     
     let userSystemVersion = UIDevice.current.systemVersion // 현재 사용자 iOS 버전
@@ -108,6 +109,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }else{
             let settingCell = tableView.dequeueReusableCell(withIdentifier: "SettingCell", for: indexPath) as! SettingCell
             settingCell.settingMenuNameLb.text = settingMenuName[indexPath.row - 1]
+            settingCell.settingIconimg.image = settingMenuImg[indexPath.row - 1]
             return settingCell
         }
         

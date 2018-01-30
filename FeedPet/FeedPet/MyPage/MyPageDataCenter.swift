@@ -21,11 +21,7 @@ struct MyPageDataCenter {
     
     //테스트용 유저 아이디
     let testUUID = "fUUID7aSMmPmv0nhu530oTt3434515"
-    
-    //유저 데이터
-    
-    
-    
+
     //즐겨찾기 데이터
     var favorites = [FavoritesData]()
     var favoritesCount = 0
@@ -95,7 +91,7 @@ struct FireBaseData{
         return refReviewThumb
     }
     func fireBaseFavoritesDataLoad(){
-        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
         FireBaseData.shared.refFavorites.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in
             if MyPageDataCenter.shared.favorites.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
@@ -114,7 +110,7 @@ struct FireBaseData{
                     
                     let favoriteKey = (snap.key)
                     
-                    var feedImg:[URL]!
+                    var feedImg:[String]!
                     var feedBrand:String!
                     var feedName:String!
                     var feedMouth:String!
@@ -132,7 +128,7 @@ struct FireBaseData{
                                     print(feedSnap,"snpaasdsafas")
                                     
                                     if feedSnap.key == "feed_img"{
-                                        feedImg = feedSnap.value as! [URL]
+                                        feedImg = feedSnap.value as! [String]
                                     }
                                     if feedSnap.key == "feed_brand"{
                                         feedBrand = feedSnap.value as! String
@@ -182,7 +178,7 @@ struct FireBaseData{
                 }
             }
         })
-        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
         
     }
@@ -219,13 +215,14 @@ struct FireBaseData{
     
     
     func fireBaseFeedReviewsDataLoad(){
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         if MyPageDataCenter.shared.myReviewDatas.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
             MyPageDataCenter.shared.myReviewDatas.removeAll()
         }
         
         
         for myReviewData in MyPageDataCenter.shared.myReviewKeyDatas {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             FireBaseData.shared.refFeedReviews.child(myReviewData.feedKeyReturn).child("review_info").child(myReviewData.reviewKeyReturn).queryOrdered(byChild: "feed_date").observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 
@@ -237,7 +234,7 @@ struct FireBaseData{
                             let reviewKey = myReviewData.reviewKeyReturn
                             var feedName:String!
                             var feedBrand:String!
-                            var feedImg:[URL]!
+                            var feedImg:[String]!
                             
                             
                             FireBaseData.shared.refFeedInfo.child("feed_petkey_c").child(feedKey).observeSingleEvent(of: .value, with: { (feedInfoSnapshot) in
@@ -251,7 +248,7 @@ struct FireBaseData{
                                             feedBrand = feedSnap.value as! String
                                         }
                                         if feedSnap.key == "feed_img"{
-                                            feedImg = feedSnap.value as? [URL]
+                                            feedImg = feedSnap.value as? [String]
                                         }
                                     }
                                     
@@ -269,11 +266,11 @@ struct FireBaseData{
         
                 }
             })
-            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
         }
         
         
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        
     }
     
     func FireBaseReviewThumbDataLoad(){
@@ -316,7 +313,7 @@ struct FavoritesData {
     private var feedKey:String!
     private var feedBrand:String!
     private var feedName:String!
-    private var feedImg:URL!
+    private var feedImg:String!
     private var feedMouth:String! //MOUTH_G : GOOD / MOUTH_S : SOSO /  MOUTH_B : BAD
     private var feedIngredient:String!
     private var feedGrade:Int! //0:유기농 / 1:홀리스틱 / 2:슈퍼프리미엄 / 3:프리미엄 / 4:마트용
@@ -336,7 +333,7 @@ struct FavoritesData {
     var feedNameReturn:String{
         return feedName
     }
-    var feedImgReturn:URL{
+    var feedImgReturn:String{
         return feedImg
     }
     var feedMouthReturn:String{
@@ -358,7 +355,7 @@ struct FavoritesData {
         return numberOfReview
     }
     
-    init(favoriteKey:String,feedKey:String,feedImg:[URL],feedBrand:String,feedName:String,feedMouth:String,feedIngredient:String,feedGrade:Int,feedPackageFlag:Bool!,feedRating:Int,numberOfReview:Int){
+    init(favoriteKey:String,feedKey:String,feedImg:[String],feedBrand:String,feedName:String,feedMouth:String,feedIngredient:String,feedGrade:Int,feedPackageFlag:Bool!,feedRating:Int,numberOfReview:Int){
         self.favoriteKey = favoriteKey
         self.feedKey = feedKey
         self.feedBrand = feedBrand
@@ -385,7 +382,7 @@ struct MyReview {
     private var feedDate:String!
     private var feedName:String!
     private var feedBrand:String!
-    private var feedImg:[URL]!
+    private var feedImg:[String]!
 //    private var reviewLike:Int!
 //    private var reviewUnLike:Int!
     
@@ -413,7 +410,7 @@ struct MyReview {
     var feedBrandReturn:String{
         return feedBrand
     }
-    var feedImgReturn:[URL]{
+    var feedImgReturn:[String]{
         return feedImg
     }
 //    var reviewLikeReturn:Int{
@@ -426,7 +423,7 @@ struct MyReview {
     //        self.feedReview = newContent
     //    }
     
-    init(feedKey:String, reviewKey:String,feedName:String,feedBrand:String,feedImg:[URL], reviewData:[String:AnyObject]){
+    init(feedKey:String, reviewKey:String,feedName:String,feedBrand:String,feedImg:[String], reviewData:[String:AnyObject]){
         self.feedKey = feedKey
         self.reviewKey = reviewKey
         self.feedName = feedName

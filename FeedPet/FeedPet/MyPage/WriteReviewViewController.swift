@@ -52,7 +52,10 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
         
         feedNameLb.text = feedName
         feedBrandLb.text = feedBrand
-        feedImgView.image = UIImage(named:feedImg)
+        if let url = URL(string:feedImg){
+            feedImgView.kf.setImage(with: url)
+        }
+        
         
         createToolbar(textView: reviewContentsTextView)
         
@@ -138,6 +141,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
         }else{
             let feedReviewInfoDic = ["feed_date":dateString,"feed_rating":self.ratingNumberOfStars,"feed_review":reviewContentsTextView.text,"user_key":MyPageDataCenter.shared.testUUID] as [String : Any]
             
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             FireBaseData.shared.refFeedReviewsReturn.child(feedKey).child("review_rating").observeSingleEvent(of: .value, with: { (snapShot) in
                 if let feedTotalRating = snapShot.value as? Int{
                     self.totalRating = feedTotalRating
@@ -155,7 +159,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
                 FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).updateChildValues(["review_rating":self.totalRating])
                 FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(self.self.feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
             })
-            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
             let completedReview:UIAlertController = UIAlertController(title: "리뷰 등록 완료!", message: "소중한 리뷰 감사합니다:)", preferredStyle: .alert)
             

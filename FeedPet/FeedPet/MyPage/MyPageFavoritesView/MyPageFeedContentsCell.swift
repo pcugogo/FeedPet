@@ -133,8 +133,10 @@ class MyPageFeedContentsCell: UITableViewCell {
         default:
             print("error")
         }
-        
-        feedImgView.image = UIImage(named:favorites.feedImgReturn)
+        if let url = URL(string:favorites.feedImgReturn){
+            feedImgView.kf.setImage(with: url)
+        }
+       
         brandNameLb.text = favorites.feedBrandReturn
         feedNameLb.text = favorites.feedNameReturn
         mainIngredientNameLb.text = favorites.feedIngredientReturn

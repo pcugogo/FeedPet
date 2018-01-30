@@ -94,10 +94,12 @@ class MyPageMyReviewsViewController: UIViewController,UITableViewDataSource,UITa
                 MyPageDataCenter.shared.myReviewDatas.remove(at: index)
 
                 self.tableView.reloadData()
+               UIApplication.shared.isNetworkActivityIndicatorVisible = true
                 FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(removeFeedData.feedKeyReturn).removeValue()
                 FireBaseData.shared.refFeedReviewsReturn.child(removeFeedData.feedKeyReturn).child("review_info").child(removeFeedData.reviewKeyReturn).removeValue()
                 
                 FireBaseData.shared.refReviewThumbReturn.child(removeFeedData.reviewKeyReturn).removeValue()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
                 MyPageDataCenter.shared.reviewsCount -= 1
                 print("removeReviewDidData",MyPageDataCenter.shared.myReviewDatas)

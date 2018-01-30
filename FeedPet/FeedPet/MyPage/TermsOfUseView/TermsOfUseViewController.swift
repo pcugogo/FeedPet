@@ -13,7 +13,9 @@ class TermsOfUseViewController: UIViewController {
     @IBOutlet weak var termsOfUseLinkWebView: UIWebView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         termsOfUseLinkWebView.loadRequest(URLRequest(url: URL(string: "http://feedpet.co.kr/termsofservicetermsofuse/")!))
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         // Do any additional setup after loading the view.
     }
 
