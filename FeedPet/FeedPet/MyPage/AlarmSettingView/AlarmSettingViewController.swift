@@ -87,12 +87,14 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
+        
         if indexPath.row == 0 {
-           
+            
             let totalSwitchCell:TotalAlarmSwitchCell = tableView.dequeueReusableCell(withIdentifier: "TotalAlarmSwitchCell", for: indexPath) as! TotalAlarmSwitchCell
-                totalSwitchCell.totalAlarmSwitchOut.isOn = MyPageDataCenter.shared.switchOnOff["total"]!
-                totalSwitchCell.delegate = self 
+            if let totalSwitch = MyPageDataCenter.shared.switchOnOff["total"]{
+                totalSwitchCell.totalAlarmSwitchOut.isOn = totalSwitch
+            }
+            totalSwitchCell.delegate = self
             
             return totalSwitchCell
             
@@ -101,18 +103,28 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             
             switchCell.delegate = self
             switchCell.mealTimeImg.image = alarmIconImg[indexPath.row - 1]
+            
             if indexPath.row == 1{
-                switchCell.mealTimeLb.text = MyPageDataCenter.shared.mealTime["morning"]!
-                switchCell.indexPath = indexPath.row
-                switchCell.alarmSwitchOut.isOn = MyPageDataCenter.shared.switchOnOff["morning"]!
+                if let morningTime = MyPageDataCenter.shared.mealTime["morning"], let morningSwitchOnOff = MyPageDataCenter.shared.switchOnOff["morning"]{
+                    switchCell.mealTimeLb.text = morningTime
+                    switchCell.indexPath = indexPath.row
+                    switchCell.alarmSwitchOut.isOn = morningSwitchOnOff
+                }
+                
             }else if indexPath.row == 2{
-                switchCell.mealTimeLb.text = MyPageDataCenter.shared.mealTime["lunch"]!
-                switchCell.indexPath = indexPath.row
-                switchCell.alarmSwitchOut.isOn = MyPageDataCenter.shared.switchOnOff["lunch"]!
+                if let lunchTime = MyPageDataCenter.shared.mealTime["lunch"], let lunchSwitchOnOff = MyPageDataCenter.shared.switchOnOff["lunch"]{
+                    switchCell.mealTimeLb.text = lunchTime
+                    switchCell.indexPath = indexPath.row
+                    switchCell.alarmSwitchOut.isOn = lunchSwitchOnOff
+                }
+                
             }else if indexPath.row == 3{
-                switchCell.mealTimeLb.text = MyPageDataCenter.shared.mealTime["dinner"]!
-                switchCell.indexPath = indexPath.row
-                switchCell.alarmSwitchOut.isOn = MyPageDataCenter.shared.switchOnOff["dinner"]!
+                if let dinnerTime = MyPageDataCenter.shared.mealTime["dinner"], let dinnerSwitchOnOff = MyPageDataCenter.shared.switchOnOff["dinner"]{
+                    switchCell.mealTimeLb.text = dinnerTime
+                    switchCell.indexPath = indexPath.row
+                    switchCell.alarmSwitchOut.isOn = dinnerSwitchOnOff
+                }
+                
             }
             
             return switchCell
@@ -130,8 +142,6 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             
             alarmMealTimePickerView.delegate = self //델리게이트 권한 위임
             
-            print("morning",MyPageDataCenter.shared.mealTime["morning"]!)
-            
             self.addChildViewController(alarmMealTimePickerView) //alarmMealTimePickerView에 있는 피커뷰를 addsubview
             alarmMealTimePickerView.view.frame = self.view.frame //참고 사이트 https://www.youtube.com/watch?v=FgCIRMz_3dE
             self.view.addSubview(alarmMealTimePickerView.view)
@@ -141,8 +151,6 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             alarmMealTimePickerView.cellIdentificationNumber = 2
             
             alarmMealTimePickerView.delegate = self
-            
-            print("lunch",MyPageDataCenter.shared.mealTime["lunch"]!)
             
             self.addChildViewController(alarmMealTimePickerView)
             alarmMealTimePickerView.view.frame = self.view.frame
@@ -154,8 +162,6 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             alarmMealTimePickerView.cellIdentificationNumber = 3
             
             alarmMealTimePickerView.delegate = self
-            
-            print("dinner",MyPageDataCenter.shared.mealTime["dinner"]!)
             
             self.addChildViewController(alarmMealTimePickerView)
             alarmMealTimePickerView.view.frame = self.view.frame

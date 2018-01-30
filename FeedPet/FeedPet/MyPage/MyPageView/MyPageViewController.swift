@@ -22,7 +22,8 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let settingMenuImg = [#imageLiteral(resourceName: "MyPageVersionInfo"),#imageLiteral(resourceName: "MyPageAlarmSetting"),#imageLiteral(resourceName: "MyPageFAQ"),#imageLiteral(resourceName: "MyPageTermsOfUse"),#imageLiteral(resourceName: "MyPageContactUs"),#imageLiteral(resourceName: "MyPageTeamIntroduction"),#imageLiteral(resourceName: "MyPageLogOut"),#imageLiteral(resourceName: "MyPageLeaveMembership")]
     //설정 메뉴 이름들
     
-    let userSystemVersion = UIDevice.current.systemVersion // 현재 사용자 iOS 버전
+    let deviceInfo = UIDevice.current.model
+    let userSystemNameAndVersion = "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)" // 현재 사용자 iOS 버전
     let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
     
     
@@ -126,7 +127,11 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         }else if indexPath.section == 2 && indexPath.row == 1{        //버전
             DispatchQueue.main.async{
-                let versionAlert:UIAlertController = UIAlertController(title: "ver 1.1.0", message: "최신 ver 1.2.0", preferredStyle: .alert)
+                guard let appVersion = self.userAppVersion else{
+                    return
+                }
+                
+                let versionAlert:UIAlertController = UIAlertController(title: "ver \(appVersion)", message: "최신 ver 1.1.0", preferredStyle: .alert)
                 
                 let okBtn:UIAlertAction = UIAlertAction(title: "업데이트 하러가기", style: .default, handler: nil)
                 versionAlert.addAction(okBtn)
@@ -150,16 +155,17 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }else if indexPath.section == 2 && indexPath.row == 5 {        //문의하기
             if MFMailComposeViewController.canSendMail() {
                 let mail = MFMailComposeViewController()
+                mail.navigationBar.isTranslucent = false
                 mail.mailComposeDelegate = self
                 mail.setToRecipients(["feedpet2018@gmail.com"])
                 mail.navigationBar.isTranslucent = false
                 mail.setSubject("Feedpet Support")
                 
-                guard let AppVersion = userAppVersion else{
+                guard let appVersion = userAppVersion else{
                     return
                 }
                 //Please type your feedback above the line./ 앱버전/ 디바이스:아이폰 /프로세서/ os: /langauge
-                mail.setMessageBody("Please type your feedback above the line./nFeedPet v\(userSystemVersion) / App Version: \(String(describing: AppVersion))\n\n문의 내용을 입력해주세요", isHTML: false)
+                mail.setMessageBody("\n\n\n\n\n\n\n------------------------------\nPlease type your feedback above the line.\n\nFeedPet v\(appVersion)\nDevice: \(deviceInfo)\nOS: \(userSystemNameAndVersion)", isHTML: false)
                 present(mail, animated: true)
                 print("메일 보내기 성공")
             } else {

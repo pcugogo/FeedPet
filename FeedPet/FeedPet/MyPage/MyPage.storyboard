@@ -703,20 +703,20 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Y5r-r7-oqR">
-                                                    <rect key="frame" x="296" y="30.5" width="51" height="31"/>
+                                                    <rect key="frame" x="296" y="32.5" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="alarmSwitchAction:" destination="pOc-Xi-J3h" eventType="valueChanged" id="QuO-NS-1EN"/>
                                                     </connections>
                                                 </switch>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="morningAlarm" translatesAutoresizingMaskIntoConstraints="NO" id="3gE-3i-EbH">
-                                                    <rect key="frame" x="30" y="26" width="40" height="40"/>
+                                                    <rect key="frame" x="30" y="23" width="50" height="50"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="sgZ-2Z-N65"/>
-                                                        <constraint firstAttribute="width" constant="40" id="wp6-lD-BKI"/>
+                                                        <constraint firstAttribute="height" constant="50" id="sgZ-2Z-N65"/>
+                                                        <constraint firstAttribute="width" constant="50" id="wp6-lD-BKI"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="오전 09:30" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4K5-c0-VDw">
-                                                    <rect key="frame" x="100" y="31" width="99" height="30"/>
+                                                    <rect key="frame" x="110" y="33" width="99" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="tgl-J9-cXT"/>
                                                     </constraints>
@@ -726,7 +726,7 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="3gE-3i-EbH" firstAttribute="top" secondItem="u9z-Qj-zMN" secondAttribute="topMargin" constant="15" id="JtE-b1-oUw"/>
+                                                <constraint firstItem="3gE-3i-EbH" firstAttribute="centerY" secondItem="u9z-Qj-zMN" secondAttribute="centerY" id="8gE-J1-PpL"/>
                                                 <constraint firstItem="4K5-c0-VDw" firstAttribute="leading" secondItem="3gE-3i-EbH" secondAttribute="trailing" constant="30" id="Pal-X9-LCf"/>
                                                 <constraint firstItem="Y5r-r7-oqR" firstAttribute="centerY" secondItem="4K5-c0-VDw" secondAttribute="centerY" id="UEP-6k-Grz"/>
                                                 <constraint firstItem="3gE-3i-EbH" firstAttribute="leading" secondItem="u9z-Qj-zMN" secondAttribute="leadingMargin" constant="15" id="jGV-bY-ybJ"/>
@@ -1244,10 +1244,10 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="asD-8T-Rjn" firstAttribute="centerY" secondItem="uY8-bJ-cux" secondAttribute="centerY" id="16A-7C-7pB"/>
                                                 <constraint firstItem="asD-8T-Rjn" firstAttribute="leading" secondItem="uY8-bJ-cux" secondAttribute="leading" constant="15" id="CdP-et-9YL"/>
                                                 <constraint firstItem="kXw-LT-eFX" firstAttribute="top" secondItem="asD-8T-Rjn" secondAttribute="top" id="OlA-bx-Wh6"/>
                                                 <constraint firstAttribute="trailing" secondItem="qeL-dH-La5" secondAttribute="trailing" constant="15" id="SG4-io-UzX"/>
-                                                <constraint firstItem="asD-8T-Rjn" firstAttribute="centerY" secondItem="uY8-bJ-cux" secondAttribute="centerY" id="kQG-gX-K7A"/>
                                                 <constraint firstItem="qeL-dH-La5" firstAttribute="centerY" secondItem="kXw-LT-eFX" secondAttribute="centerY" id="lZA-3v-YW2"/>
                                                 <constraint firstItem="kXw-LT-eFX" firstAttribute="leading" secondItem="asD-8T-Rjn" secondAttribute="trailing" constant="15" id="uBz-NE-XZU"/>
                                             </constraints>
