@@ -18,6 +18,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
     var feedImg:String = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_c177_1.png"
     //여기까지 상세화면에서 받아야 될 데이터
     
+    var totalRating = 0
     var keyboardHeight = 0
     var ratingNumberOfStars = 5 //서버에 넘겨질 평점 초기 별 갯수 5개
     
@@ -119,13 +120,14 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
     
     
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func saveBtnAction(_ sender: UIBarButtonItem) {
         reviewWriteDateFormatter.locale = Locale(identifier: "ko")
         reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
         let dateString = self.reviewWriteDateFormatter.string(from: self.date)
-        //안들어옴
+        
         if reviewContentsTextView.text.isEmpty || reviewContentsTextView.text == textViewPlaceHolderText {
             let blankContents:UIAlertController = UIAlertController(title: "", message: "리뷰 내용을 입력해주세요~^^", preferredStyle: .alert)
             let okBtn = UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
@@ -136,25 +138,40 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
         }else{
             let feedReviewInfoDic = ["feed_date":dateString,"feed_rating":self.ratingNumberOfStars,"feed_review":reviewContentsTextView.text,"user_key":MyPageDataCenter.shared.testUUID] as [String : Any]
             
-            //로그인한 계정으로 같은 사료의 리뷰가 이미 있을때 경우는 처리하지않았고 전화면에서 리뷰를 등록했으면 수정하기 화면으로 가는 플로우로 생각했다
+            FireBaseData.shared.refFeedReviewsReturn.child(feedKey).child("review_rating").observeSingleEvent(of: .value, with: { (snapShot) in
+                if let feedTotalRating = snapShot.value as? Int{
+                    self.totalRating = feedTotalRating
+                    
+                    self.totalRating += self.ratingNumberOfStars
+                    self.totalRating /= 2
+                    
+                }else{
+                    self.totalRating = self.ratingNumberOfStars
+                }
+                
+                //나중에 피드키 부분 옵셔널 되면 옵셔널바인딩 해줘야된다
+                let reviewAutoKey = FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).child("review_info").childByAutoId()
+                FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).child("review_info").child(reviewAutoKey.key).updateChildValues(feedReviewInfoDic)
+                FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).updateChildValues(["review_rating":self.totalRating])
+                FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(self.self.feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
+            })
             
-            let reviewAutoKey = FireBaseData.shared.refFeedReviewsReturn.child(feedKey).child("review_info").childByAutoId()
             
-            
-            FireBaseData.shared.refFeedReviewsReturn.child(feedKey).child("review_info").child(reviewAutoKey.key).updateChildValues(feedReviewInfoDic)
-            FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
             let completedReview:UIAlertController = UIAlertController(title: "리뷰 등록 완료!", message: "소중한 리뷰 감사합니다:)", preferredStyle: .alert)
             
-            let okBtn:UIAlertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            let okBtn:UIAlertAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                self.navigationController?.popViewController(animated: true)
+            })
             completedReview.addAction(okBtn)
             
             self.present(completedReview, animated: true, completion: nil)
             //디스미스나 팝뷰해서 전 화면으로
+            
         }
         
         
         
-    }
+    }//여기까지 saveBtnAction
     
     @IBAction func ratingBtnAction(_ sender: UIButton) {
         switch sender.tag{

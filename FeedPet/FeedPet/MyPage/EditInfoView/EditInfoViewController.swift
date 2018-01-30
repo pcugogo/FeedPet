@@ -118,6 +118,7 @@ class EditInfoViewController: UIViewController {
 // MARK: Extension -
 // ########################################
 extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var itemCount = 0
         if collectionView == petAgeCollectionView {
@@ -127,9 +128,7 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
         }
         return itemCount
     }
-    
-    
-  
+
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         

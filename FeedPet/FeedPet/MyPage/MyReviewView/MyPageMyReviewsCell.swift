@@ -91,7 +91,7 @@ class MyPageMyReviewsCell: UITableViewCell {
         feedBrandLb.text = myReview.feedBrandReturn
         feedNameLb.text = myReview.feedNameReturn
         reviewContentLb.text = myReview.feedReviewReturn
-        feedImgView.image = UIImage(named:myReview.feedImgReturn[0])
+        feedImgView.image = UIImage(Data:myReview.feedImgReturn[0])  //(named:myReview.feedImgReturn[0])
         reviewWriteDateLb.text = myReview.feedDateReturn
         
         for reviewThumbData in MyPageDataCenter.shared.reviewThumbDatas{

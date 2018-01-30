@@ -12,7 +12,7 @@ import UIKit
 protocol LeaveMembershipCustomCellDelegate {
     func leaveMembershipTableViewReloadData()
     func leaveMembershipTableViewDisappear()
-    func leaveMembershipTableViewLocationChange()
+    func keyboardEndEditing()
 }
 
 
@@ -65,6 +65,7 @@ class LeaveMembershipBtnCell: UITableViewCell {
         
         MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
         
+        //탈퇴완료 확인 취소 알럿 후 회원가입 페이지로 이동
     }
     
     

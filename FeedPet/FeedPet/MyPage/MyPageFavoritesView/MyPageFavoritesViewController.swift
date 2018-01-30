@@ -66,8 +66,6 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
             myPageFeedContentsCell.delegate = self
             
             myPageFeedContentsCell.likeBtnOut.tag = indexPath.row
-            
-        
         
         if MyPageDataCenter.shared.favorites.isEmpty == false{
             let favorites = MyPageDataCenter.shared.favorites[indexPath.row] //reviews가 옵셔널이 아니므로 옵셔널 바인딩 안된다

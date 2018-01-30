@@ -114,7 +114,7 @@ struct FireBaseData{
                     
                     let favoriteKey = (snap.key)
                     
-                    var feedImg:[String]!
+                    var feedImg:[URL]!
                     var feedBrand:String!
                     var feedName:String!
                     var feedMouth:String!
@@ -132,7 +132,7 @@ struct FireBaseData{
                                     print(feedSnap,"snpaasdsafas")
                                     
                                     if feedSnap.key == "feed_img"{
-                                        feedImg = feedSnap.value as! [String]
+                                        feedImg = feedSnap.value as! [URL]
                                     }
                                     if feedSnap.key == "feed_brand"{
                                         feedBrand = feedSnap.value as! String
@@ -237,7 +237,7 @@ struct FireBaseData{
                             let reviewKey = myReviewData.reviewKeyReturn
                             var feedName:String!
                             var feedBrand:String!
-                            var feedImg:[String]!
+                            var feedImg:[URL]!
                             
                             
                             FireBaseData.shared.refFeedInfo.child("feed_petkey_c").child(feedKey).observeSingleEvent(of: .value, with: { (feedInfoSnapshot) in
@@ -251,7 +251,7 @@ struct FireBaseData{
                                             feedBrand = feedSnap.value as! String
                                         }
                                         if feedSnap.key == "feed_img"{
-                                            feedImg = feedSnap.value as? [String]
+                                            feedImg = feedSnap.value as? [URL]
                                         }
                                     }
                                     
@@ -316,7 +316,7 @@ struct FavoritesData {
     private var feedKey:String!
     private var feedBrand:String!
     private var feedName:String!
-    private var feedImg:String!
+    private var feedImg:URL!
     private var feedMouth:String! //MOUTH_G : GOOD / MOUTH_S : SOSO /  MOUTH_B : BAD
     private var feedIngredient:String!
     private var feedGrade:Int! //0:유기농 / 1:홀리스틱 / 2:슈퍼프리미엄 / 3:프리미엄 / 4:마트용
@@ -336,7 +336,7 @@ struct FavoritesData {
     var feedNameReturn:String{
         return feedName
     }
-    var feedImgReturn:String{
+    var feedImgReturn:URL{
         return feedImg
     }
     var feedMouthReturn:String{
@@ -358,7 +358,7 @@ struct FavoritesData {
         return numberOfReview
     }
     
-    init(favoriteKey:String,feedKey:String,feedImg:[String],feedBrand:String,feedName:String,feedMouth:String,feedIngredient:String,feedGrade:Int,feedPackageFlag:Bool!,feedRating:Int,numberOfReview:Int){
+    init(favoriteKey:String,feedKey:String,feedImg:[URL],feedBrand:String,feedName:String,feedMouth:String,feedIngredient:String,feedGrade:Int,feedPackageFlag:Bool!,feedRating:Int,numberOfReview:Int){
         self.favoriteKey = favoriteKey
         self.feedKey = feedKey
         self.feedBrand = feedBrand
@@ -385,7 +385,7 @@ struct MyReview {
     private var feedDate:String!
     private var feedName:String!
     private var feedBrand:String!
-    private var feedImg:[String]!
+    private var feedImg:[URL]!
 //    private var reviewLike:Int!
 //    private var reviewUnLike:Int!
     
@@ -413,7 +413,7 @@ struct MyReview {
     var feedBrandReturn:String{
         return feedBrand
     }
-    var feedImgReturn:[String]{
+    var feedImgReturn:[URL]{
         return feedImg
     }
 //    var reviewLikeReturn:Int{
@@ -426,7 +426,7 @@ struct MyReview {
     //        self.feedReview = newContent
     //    }
     
-    init(feedKey:String, reviewKey:String,feedName:String,feedBrand:String,feedImg:[String], reviewData:[String:AnyObject]){
+    init(feedKey:String, reviewKey:String,feedName:String,feedBrand:String,feedImg:[URL], reviewData:[String:AnyObject]){
         self.feedKey = feedKey
         self.reviewKey = reviewKey
         self.feedName = feedName

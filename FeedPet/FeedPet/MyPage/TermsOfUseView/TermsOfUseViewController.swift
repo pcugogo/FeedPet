@@ -10,9 +10,10 @@ import UIKit
 
 class TermsOfUseViewController: UIViewController {
 
+    @IBOutlet weak var termsOfUseLinkWebView: UIWebView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        termsOfUseLinkWebView.loadRequest(URLRequest(url: URL(string: "http://feedpet.co.kr/termsofservicetermsofuse/")!))
         // Do any additional setup after loading the view.
     }
 
