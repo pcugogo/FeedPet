@@ -154,6 +154,7 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         //        self.searchController.delegate = searchResultsViewController
         searchController.searchBar.delegate = searchResultsViewController
         searchController.searchBar.searchFieldBackgroundPositionAdjustment = UIOffset(horizontal: 0, vertical: 2)
+        searchController.searchBar.layer.borderWidth = 0
         
         // SearchBar 내부 Textfiled fontsize 조정
         let textFieldInsideUISearchBar =  searchController.searchBar.value(forKey: "searchField") as? UITextField
