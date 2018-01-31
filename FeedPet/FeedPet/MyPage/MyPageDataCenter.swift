@@ -21,20 +21,25 @@ struct MyPageDataCenter {
     
     //테스트용 유저 아이디
     let testUUID = "fUUID7aSMmPmv0nhu530oTt3434515"
+
+    //즐겨찾기 데이터
+    var favorites = [FavoritesData]()
+    var favoritesCount = 0
+    var myPageFeedContentsCellLikeBtnTagValue:Int! //몇번 셀의 좋아요 버튼을 터치한건지 체크하기 위한 버튼태그
+    
+    //내 리뷰 데이터
+    var myReviewKeyDatas = [MyReviewKey]()
+    var myReviewDatas = [MyReview]()
+    
+    var reviewsCount = 0
+    var myPageMyReviewsCellEditBtnTagValue:Int!
+    var myPageMyReviewsCellRemoveBtnTagValue:Int!
+    
+    var reviewThumbDatas = [ReviewThumb]()
     
     //탈퇴하기 내용
     var leaveMembershipReason = ""
     var leaveMembarshipEtcReasonContent = ""
-    
-    //즐겨찾기 데이터
-    var favorites = [FavoritesData]()
-    var favoritesFeedKeys = [String]()
-    var myPageFeedContentsCellLikeBtnTagValue:Int! //몇번 셀의 좋아요 버튼을 터치한건지 체크하기 위한 버튼태그
-    
-    //내 리뷰 데이터
-    var reviews = [ReviewsData]()
-    var reviewsFeedKeys = [String]()
-    
 }
 
 struct userDefaultsName {   //알림 서비스에서 이용하는 유저디폴트 이름들
@@ -44,22 +49,28 @@ struct userDefaultsName {   //알림 서비스에서 이용하는 유저디폴�
     static var mealTimeMinute = "mealTimeMinute"
     static var alarmOnOff = "alarmOnOff"
     
+    static var favoritesDatasCount = "favoritesDatasCount"
+    static var reviewDatasCount = "reviewDatasCount"
 }
 
-
-
-
-class FireBaseData{
+struct FireBaseData{
     
     static let shared = FireBaseData()
     
     private var refBase = Database.database().reference()
+    private var refUserData = Database.database().reference().child("user_data")
     private var refFeed = Database.database().reference().child("feed")
-    private var refFavorites = Database.database().reference().child("favorites")
-    private var refReviews = Database.database().reference().child("reviews")
+    private var refFavorites = Database.database().reference().child("my_favorite")
+    private var refFeedReviews = Database.database().reference().child("feed_review")
+    private var refMyReviews = Database.database().reference().child("my_review")
+    private var refFeedInfo = Database.database().reference().child("feed_info")
+    private var refReviewThumb = Database.database().reference().child("review_thumb")
     
     var refBaseReturn:DatabaseReference{
         return refBase
+    }
+    var refUserDataReturn:DatabaseReference{
+        return refUserData
     }
     var refFeedReturn:DatabaseReference{
         return refFeed
@@ -67,83 +78,252 @@ class FireBaseData{
     var refFavoritesReturn:DatabaseReference{
         return refFavorites
     }
-    var refReviewsReturn:DatabaseReference{
-        return refReviews
+    var refFeedReviewsReturn:DatabaseReference{
+        return refFeedReviews
     }
-    
+    var refMyReviewsReturn:DatabaseReference{
+        return refMyReviews
+    }
+    var refFeedInfoReturn:DatabaseReference{
+        return refFeedInfo
+    }
+    var refReviewThumbReturn:DatabaseReference{
+        return refReviewThumb
+    }
     func fireBaseFavoritesDataLoad(){
-        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
-        FireBaseData.shared.refFavoritesReturn.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in  //페이보릿안의 유저아이디키 작성해서 들어가는데 아예 페이보릿 값이 없거나 현재로그인 유저키값이 없으면 어떻게 될까? 시뮬레이터테스트는 이상 없었다 파이어베이스에서 닐값처리 해주나보다
+        FireBaseData.shared.refFavorites.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in
             if MyPageDataCenter.shared.favorites.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
                 MyPageDataCenter.shared.favorites.removeAll()
             }
-            if MyPageDataCenter.shared.favoritesFeedKeys.isEmpty == false{  //서버에서 데이터를 불러오기전 데이터를 초기화
-                MyPageDataCenter.shared.favoritesFeedKeys.removeAll()
-            }
+            //            if MyPageDataCenter.shared.favoritesFeedKeys.isEmpty == false{  //서버에서 데이터를 불러오기전 데이터를 초기화
+            //                MyPageDataCenter.shared.favoritesFeedKeys.removeAll()
+            //            }
+            MyPageDataCenter.shared.favoritesCount = Int(snapshot.childrenCount)
+            
             if let snapShot = snapshot.children.allObjects as? [DataSnapshot]{
+                
                 
                 for snap in snapShot{
                     
-                    if let favoritesDic = snap.value as? [String:AnyObject]{
-                        let feedKey = (snap.key)
-                        MyPageDataCenter.shared.favoritesFeedKeys.append(feedKey)
+                    
+                    let favoriteKey = (snap.key)
+                    
+                    var feedImg:[String]!
+                    var feedBrand:String!
+                    var feedName:String!
+                    var feedMouth:String!
+                    var feedIngredient:String!
+                    var feedGrade:Int!
+                    var feedPackageFlag:Bool!
+                    var feedRating = 5
+                    var numberOfReview = 0
+                    
+                    if let feedKey = snap.value as? String {
                         
-                        let favorites = FavoritesData(feedKey: feedKey, feedData: favoritesDic)
-                        MyPageDataCenter.shared.favorites.append(favorites)
-                       
-                        
+                        FireBaseData.shared.refFeedInfo.child("feed_petkey_c").child(feedKey).observeSingleEvent(of: .value, with: { (feedInfoSnapshot) in
+                            if let feedSnapshot = feedInfoSnapshot.children.allObjects as? [DataSnapshot]{
+                                for feedSnap in feedSnapshot {
+                                    print(feedSnap,"snpaasdsafas")
+                                    
+                                    if feedSnap.key == "feed_img"{
+                                        feedImg = feedSnap.value as! [String]
+                                    }
+                                    if feedSnap.key == "feed_brand"{
+                                        feedBrand = feedSnap.value as! String
+                                    }
+                                    if feedSnap.key == "feed_name"{
+                                        feedName = feedSnap.value as! String
+                                    }
+                                    if feedSnap.key == "feed_mouth"{
+                                        feedMouth = feedSnap.value as! String
+                                    }
+                                    if feedSnap.key == "feed_ingredient"{
+                                        feedIngredient = feedSnap.value as! String
+                                    }
+                                    if feedSnap.key == "feed_grade"{
+                                        feedGrade = feedSnap.value as! Int
+                                    }
+                                    if feedSnap.key == "feed_package_flag"{
+                                        feedPackageFlag = feedSnap.value as! Bool
+                                    }
+                                }
+                            }
+                            
+                            FireBaseData.shared.refFeedReviews.child(feedKey).observeSingleEvent(of: .value, with: { (reviewSnapshot) in
+                                if let reviewSnaps = reviewSnapshot.value as? [String:AnyObject]{
+                                    for reviewSnap in reviewSnaps{
+                                        if reviewSnap.key == "review_rating"{
+                                            if let rating = reviewSnap.value as? Int {
+                                                feedRating = rating
+                                            }
+                                        }
+                                        if reviewSnap.key == "review_info"{
+                                            if let reviewInfo = reviewSnap.value as? [String:AnyObject]{
+                                                numberOfReview = reviewInfo.keys.count
+                                            }
+                                        }
+                                    }
+                                }
+                                let favorites = FavoritesData(favoriteKey: favoriteKey, feedKey: feedKey, feedImg: feedImg, feedBrand: feedBrand, feedName: feedName, feedMouth: feedMouth, feedIngredient: feedIngredient, feedGrade: feedGrade, feedPackageFlag: feedPackageFlag, feedRating: feedRating, numberOfReview: numberOfReview)
+                               
+                                MyPageDataCenter.shared.favorites.append(favorites)
+                            })
+                            
+                        })
                         
                     }
-                    print("favoritesConut",MyPageDataCenter.shared.favorites.count)
-                   
+                    
                 }
             }
         })
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
-        print("DataCenter",MyPageDataCenter.shared.favorites)
+        
     }
     
-    func fireBaseReviewsDataLoad(){
-        
+    func fireBaseMyReviewDataLoad(){
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
-        FireBaseData.shared.refReviewsReturn.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in
-           
+        FireBaseData.shared.refMyReviews.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if MyPageDataCenter.shared.myReviewKeyDatas.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
+                MyPageDataCenter.shared.myReviewKeyDatas.removeAll()
+            }
+            
+            MyPageDataCenter.shared.reviewsCount = Int(snapshot.childrenCount)
+            
             if let snapShot = snapshot.children.allObjects as? [DataSnapshot]{
                 
                 for snap in snapShot{
                     
-                    if let reviewsDic = snap.value as? [String:AnyObject]{
+                    if let reviewKeyDic = snap.value as? [String:AnyObject]{
                         let feedKey = (snap.key)
-                        MyPageDataCenter.shared.reviewsFeedKeys.append(feedKey)
-                        
-                        let reviews = ReviewsData(feedKey: feedKey, reviewData: reviewsDic)
-                        MyPageDataCenter.shared.reviews.append(reviews)
+                        let reviewData = MyReviewKey(feedKey: feedKey, reviewKeyDic: reviewKeyDic)
+                        MyPageDataCenter.shared.myReviewKeyDatas.append(reviewData)
                         
                     }
-                    print("reviewsCount",MyPageDataCenter.shared.reviews.count)
                     
                 }
+                self.fireBaseFeedReviewsDataLoad()
+                self.FireBaseReviewThumbDataLoad()
             }
         })
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    
+    
+    func fireBaseFeedReviewsDataLoad(){
         
-        print("DataCenter",MyPageDataCenter.shared.favorites)
+        if MyPageDataCenter.shared.myReviewDatas.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
+            MyPageDataCenter.shared.myReviewDatas.removeAll()
+        }
+        
+        
+        for myReviewData in MyPageDataCenter.shared.myReviewKeyDatas {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            FireBaseData.shared.refFeedReviews.child(myReviewData.feedKeyReturn).child("review_info").child(myReviewData.reviewKeyReturn).queryOrdered(byChild: "feed_date").observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                
+                if let snapShot = snapshot.value as? [String:AnyObject] {
+                    print(snapShot,"fdsgdfsgsdfg")
+
+                            
+                            let feedKey = myReviewData.feedKeyReturn
+                            let reviewKey = myReviewData.reviewKeyReturn
+                            var feedName:String!
+                            var feedBrand:String!
+                            var feedImg:[String]!
+                            
+                            
+                            FireBaseData.shared.refFeedInfo.child("feed_petkey_c").child(feedKey).observeSingleEvent(of: .value, with: { (feedInfoSnapshot) in
+                                if let feedSnapshot = feedInfoSnapshot.children.allObjects as? [DataSnapshot]{
+                                    
+                                    for feedSnap in feedSnapshot{
+                                        if feedSnap.key == "feed_name"{
+                                            feedName = feedSnap.value as! String
+                                        }
+                                        if feedSnap.key == "feed_brand"{
+                                            feedBrand = feedSnap.value as! String
+                                        }
+                                        if feedSnap.key == "feed_img"{
+                                            feedImg = feedSnap.value as? [String]
+                                        }
+                                    }
+                                    
+                                }
+
+                                    let reviewData = MyReview(feedKey: feedKey, reviewKey: reviewKey, feedName: feedName, feedBrand: feedBrand, feedImg: feedImg, reviewData: snapShot)
+                                
+                                    
+                                    MyPageDataCenter.shared.myReviewDatas.append(reviewData)
+                                    print(MyPageDataCenter.shared.myReviewDatas,"ss")
+                                    MyPageDataCenter.shared.myReviewDatas.reverse() //배열 반대로 바꾸는 함수 9.3버전 이상
+                                    print(MyPageDataCenter.shared.myReviewDatas,"rr")
+                            })
+                    
+        
+                }
+            })
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        }
+        
+        
+        
+    }
+    
+    func FireBaseReviewThumbDataLoad(){
+        
+        for reviewKeyData in MyPageDataCenter.shared.myReviewKeyDatas{
+            var reviewLike = 0
+            var reviewUnLike = 0
+            FireBaseData.shared.refReviewThumb.child(reviewKeyData.reviewKeyReturn).runTransactionBlock({ (reviewThumbSnapshot) -> TransactionResult in
+                if let reviewThumbSnap = reviewThumbSnapshot.value as? [String:AnyObject]{
+                    for thumbSnap in reviewThumbSnap{
+                        if thumbSnap.key == "review_like"{
+                            if let likeSnap = thumbSnap.value as? [String:AnyObject]{
+                                reviewLike = likeSnap.keys.count
+                            }
+                        }
+                        if thumbSnap.key == "review_unlike"{
+                            if let unLikeSnap = thumbSnap.value as? [String:AnyObject]{
+                                reviewUnLike = unLikeSnap.keys.count
+                            }
+                        }
+                        
+                    }
+                    let thumbData = ReviewThumb(reviewKey: reviewKeyData.reviewKeyReturn, numberOfLike: reviewLike, numberOfUnLike: reviewUnLike)
+                    MyPageDataCenter.shared.reviewThumbDatas.append(thumbData)
+                }
+                
+                
+                return TransactionResult.success(withValue: reviewThumbSnapshot)
+            })
+        }
     }
     
 }
 
-class FavoritesData {
-    
+
+
+
+struct FavoritesData {
+    private var favoriteKey:String!
     private var feedKey:String!
     private var feedBrand:String!
     private var feedName:String!
     private var feedImg:String!
-    private var feedMouth:Int! //0:GOOD / 1:SOSO / 2:BAD
-    private var feedIngredientKey:String!
+    private var feedMouth:String! //MOUTH_G : GOOD / MOUTH_S : SOSO /  MOUTH_B : BAD
+    private var feedIngredient:String!
     private var feedGrade:Int! //0:유기농 / 1:홀리스틱 / 2:슈퍼프리미엄 / 3:프리미엄 / 4:마트용
-    private var feedpackingMethod:String!
+    private var feedPackageFlag:Bool!
     private var rating:Int! // 별 1~5개까지
+    private var numberOfReview:Int!
     
+    var favoriteKeyReturn:String{
+        return favoriteKey
+    }
     var feedKeyReturn:String{
         return feedKey
     }
@@ -156,148 +336,158 @@ class FavoritesData {
     var feedImgReturn:String{
         return feedImg
     }
-    var feedMouthReturn:Int{
+    var feedMouthReturn:String{
         return feedMouth
     }
-    var feedIngredientKeyReturn:String{
-        return feedIngredientKey
+    var feedIngredientReturn:String{
+        return feedIngredient
     }
     var feedGradeReturn:Int{
         return feedGrade
     }
-    var feedpackingMethodReturn:String{
-        return feedpackingMethod
+    var feedPackageFlagReturn:Bool{
+        return feedPackageFlag
     }
     var ratingReturn:Int{
         return rating
     }
-    init(feedBrand:String,feedName:String,feedImg:String,feedMouth:Int,feedIngredientKey:String,feedGrade:Int,feedpackingMethod:String,rating:Int){
-        
-        self.feedBrand = feedBrand
-        self.feedName = feedName
-        self.feedImg = feedImg
-        self.feedMouth = feedMouth
-        self.feedIngredientKey = feedIngredientKey
-        self.feedGrade = feedGrade
-        self.feedpackingMethod = feedpackingMethod
-        self.rating = rating
+    var numberOfReviewReturn:Int{
+        return numberOfReview
     }
-    init(feedKey:String, feedData:[String:AnyObject]){
+    
+    init(favoriteKey:String,feedKey:String,feedImg:[String],feedBrand:String,feedName:String,feedMouth:String,feedIngredient:String,feedGrade:Int,feedPackageFlag:Bool!,feedRating:Int,numberOfReview:Int){
+        self.favoriteKey = favoriteKey
         self.feedKey = feedKey
-
-        if let feedBrand = feedData["feed_brand_key"]{
-            self.feedBrand = feedBrand as? String
-        }
-        
-        if let feedName = feedData["feed_name"]{
-            self.feedName = feedName as? String
-        }
-        if let feedImg = feedData["feed_Image"]{
-            self.feedImg = feedImg as? String
-        }
-        if let feedMouth = feedData["feed_mouth"]{
-            self.feedMouth = feedMouth as? Int
-        }
-        if let feedIngredientKey = feedData["feed_ingredient_key"]{
-            self.feedIngredientKey = feedIngredientKey as? String
-        }
-        if let feedGrade = feedData["feed_grade"]{
-            self.feedGrade = feedGrade as? Int
-        }
-        if let feedpackingMethod = feedData["packing_method"]{
-            self.feedpackingMethod = feedpackingMethod as? String
-        }
-        
-        if let rating = feedData["rating"]{
-            self.rating = rating as? Int
-        }
+        self.feedBrand = feedBrand
+        self.feedImg = feedImg[0]
+        self.feedName = feedName
+        self.feedMouth = feedMouth
+        self.feedIngredient = feedIngredient
+        self.feedGrade = feedGrade
+        self.feedPackageFlag = feedPackageFlag
+        self.rating = feedRating
+        self.numberOfReview = numberOfReview
         
     }
     
 }
 
 
-class ReviewsData {
+struct MyReview {
     private var feedKey:String!
-    private var feedBrand:String!
+    private var reviewKey:String!
+    private var userKey:String!
+    private var feedRating:Int!
+    private var feedReview:String!
+    private var feedDate:String!
     private var feedName:String!
-    private var feedImg:String!
-    private var writeDate:String!
-    private var reviewContent:String!
-    private var reviewGoods:Int!
-    private var reviewNotGoods:Int!
-    private var rating:Int!
+    private var feedBrand:String!
+    private var feedImg:[String]!
+//    private var reviewLike:Int!
+//    private var reviewUnLike:Int!
     
     var feedKeyReturn:String{
         return feedKey
     }
-    var feedBrandReturn:String{
-        return feedBrand
+    var reviewKeyReturn:String{
+        return reviewKey
+    }
+    var userKeyReturn:String{
+        return userKey
+    }
+    var feedRatingReturn:Int{
+        return feedRating
+    }
+    var feedReviewReturn:String{
+        return feedReview
+    }
+    var feedDateReturn:String{
+        return feedDate
     }
     var feedNameReturn:String{
         return feedName
     }
-    var feedImgReturn:String{
+    var feedBrandReturn:String{
+        return feedBrand
+    }
+    var feedImgReturn:[String]{
         return feedImg
     }
-    var writeDateReturn:String{
-        return writeDate
-    }
-    var reviewContentReturn:String{
-        return reviewContent
-    }
-    var reviewGoodsReturn:Int{
-        return reviewGoods
-    }
-    var reviewNotGoodsReturn:Int{
-        return reviewNotGoods
-    }
-    var ratingReturn:Int{
-        return rating
-    }
-
-    init(feedBrand:String,feedName:String,feedImg:String,writeDate:String,reviewContent:String,reviewGoods:Int,reviewNotGoods:Int,rating:Int){
-        
-        self.feedBrand = feedBrand
-        self.feedName = feedName
-        self.feedImg = feedImg
-        self.writeDate = writeDate
-        self.reviewContent = reviewContent
-        self.reviewGoods = reviewGoods
-        self.reviewNotGoods = reviewNotGoods
-        self.rating = rating
-    }
+//    var reviewLikeReturn:Int{
+//        return reviewLike
+//    }
+//    var reviewUnLikeReturn:Int{
+//        return reviewUnLike
+//    }
+    //    mutating func reviewContentUpdeter(newContent:String){
+    //        self.feedReview = newContent
+    //    }
     
-    init(feedKey:String, reviewData:[String:AnyObject]){
+    init(feedKey:String, reviewKey:String,feedName:String,feedBrand:String,feedImg:[String], reviewData:[String:AnyObject]){
         self.feedKey = feedKey
+        self.reviewKey = reviewKey
+        self.feedName = feedName
+        self.feedBrand = feedBrand
+        self.feedImg = feedImg
+//        self.reviewLike = reviewLike
+//        self.reviewUnLike = reviewUnLike
         
-        if let feedBrand = reviewData["feed_brand_key"]{
-            self.feedBrand = feedBrand as? String
+        if let userKey = reviewData["user_key"]{
+            self.userKey = userKey as? String
         }
-        if let feedName = reviewData["feed_name"]{
-            self.feedName = feedName as? String
+        if let feedRating = reviewData["feed_rating"]{
+            self.feedRating = feedRating as? Int
         }
-        if let feedImg = reviewData["feed_Image"]{
-            self.feedImg = feedImg as? String
+        if let feedReview = reviewData["feed_review"]{
+            self.feedReview = feedReview as? String
         }
-        if let writeDate = reviewData["write_date"]{
-            self.writeDate = writeDate as? String
+        if let feedDate = reviewData["feed_date"]{
+            self.feedDate = feedDate as? String
         }
-        if let reviewContent = reviewData["review_content"]{
-            self.reviewContent = reviewContent as? String
-        }
-        if let reviewGoods = reviewData["review_goods"]{
-            self.reviewGoods = reviewGoods as? Int
-        }
-        if let reviewNotGoods = reviewData["review_not_goods"]{
-            self.reviewNotGoods = reviewNotGoods as? Int
-        }
-        if let rating = reviewData["rating"]{
-            self.rating = rating as? Int
-        }
+        
         
     }
     
 }
+
+struct MyReviewKey {
+    private var feedKey:String!
+    private var reviewKey:String!
+    
+    var feedKeyReturn:String{
+        return feedKey
+    }
+    var reviewKeyReturn:String{
+        return reviewKey
+    }
+    init(feedKey:String,reviewKeyDic:[String:AnyObject]) {
+        self.feedKey = feedKey
+        if let reviewKey = reviewKeyDic["review_key"]{
+            self.reviewKey = reviewKey as? String
+        }
+    }
+}
+struct ReviewThumb {
+    private var reviewKey:String!
+    private var numberOfLike:Int!
+    private var numberOfUnLike:Int!
+    
+    var reviewKeyReturn:String{
+        return reviewKey
+    }
+    var numberOfLikeReturn:Int{
+        return numberOfLike
+    }
+    
+    var numberOfUnLikeReturn:Int{
+        return numberOfUnLike
+    }
+    init(reviewKey:String,numberOfLike:Int,numberOfUnLike:Int) {
+        self.reviewKey = reviewKey
+        self.numberOfLike = numberOfLike
+        self.numberOfUnLike = numberOfUnLike
+    }
+}
+
 
 

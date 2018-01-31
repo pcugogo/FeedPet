@@ -11,8 +11,6 @@
 		14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */; };
 		14035C1A1FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */; };
 		14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C0D1FF24E95005ABAE0 /* EditInfoViewController.swift */; };
-		14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C0E1FF24E95005ABAE0 /* MyInfoCell.swift */; };
-		14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C0F1FF24E95005ABAE0 /* PetInfoCell.swift */; };
 		14035C1F1FF24E95005ABAE0 /* MyPage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14035C101FF24E95005ABAE0 /* MyPage.storyboard */; };
 		14035C201FF24E95005ABAE0 /* MyMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C121FF24E95005ABAE0 /* MyMenuCell.swift */; };
 		14035C211FF24E95005ABAE0 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14035C131FF24E95005ABAE0 /* MyPageViewController.swift */; };
@@ -37,16 +35,12 @@
 		14DC31B01FFD687800C046F4 /* LeaveMembershipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DC31AF1FFD687800C046F4 /* LeaveMembershipViewController.swift */; };
 		14E193711FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E193701FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift */; };
 		14E5C19120053910007E936A /* WriteReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E5C19020053910007E936A /* WriteReviewViewController.swift */; };
-		14E5C1932005398E007E936A /* WriteReviewVCFeedImgCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E5C1922005398E007E936A /* WriteReviewVCFeedImgCell.swift */; };
-		14E5C195200539A7007E936A /* WriteReviewVCTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E5C194200539A7007E936A /* WriteReviewVCTextViewCell.swift */; };
 		4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C01C85D1FEB886B0016E674 /* AppDelegate.swift */; };
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
 		4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8661FEB886B0016E674 /* LaunchScreen.storyboard */; };
 		4C1E6DDB2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDA2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift */; };
 		4C1E6DDD20130DD500C7EDFC /* FeedReviewListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDC20130DD500C7EDFC /* FeedReviewListTableViewCell.swift */; };
 		4C1E6DDF20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDE20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift */; };
-		4C1E6DE22013152D00C7EDFC /* MyPageMyReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DE02013152C00C7EDFC /* MyPageMyReviewsCell.swift */; };
-		4C1E6DE32013152D00C7EDFC /* MyPageMyReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DE12013152D00C7EDFC /* MyPageMyReviewsViewController.swift */; };
 		4C1E6DE92014C07E00C7EDFC /* FeedIngredientChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DE82014C07E00C7EDFC /* FeedIngredientChartTableViewCell.swift */; };
 		4C1E6DED20151F4800C7EDFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C1E6DEC20151F4800C7EDFC /* Assets.xcassets */; };
 		4C229C82200B9E50004FFD07 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C81200B9E50004FFD07 /* FilterViewController.swift */; };
@@ -81,9 +75,12 @@
 		4CF7C45520040DE400AF8E35 /* FunctionalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */; };
 		4CF7C45720040EA100AF8E35 /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C45620040EA100AF8E35 /* MainPageViewController.swift */; };
 		6ACED27F2266C806A26F1AEA /* Pods_FeedPet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3219B4369B3766416839B81B /* Pods_FeedPet.framework */; };
-		FC598EB62010D7AE008914EB /* FavoritesEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EB32010D7AD008914EB /* FavoritesEmptyCell.swift */; };
 		FC598EB72010D7AE008914EB /* MyPageFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EB42010D7AD008914EB /* MyPageFavoritesViewController.swift */; };
 		FC598EB82010D7AE008914EB /* MyPageFeedContentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC598EB52010D7AD008914EB /* MyPageFeedContentsCell.swift */; };
+		FC709DAA201A4CA2005AF023 /* MyPageReviewEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC709DA9201A4CA2005AF023 /* MyPageReviewEditViewController.swift */; };
+		FC709DAC201A4CDE005AF023 /* MyPageMyReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC709DAB201A4CDE005AF023 /* MyPageMyReviewsViewController.swift */; };
+		FC709DB0201A4E3E005AF023 /* MyPageMyReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC709DAF201A4E3E005AF023 /* MyPageMyReviewsCell.swift */; };
+		FCA26EE420139BC5000D8BAF /* MyPageTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA26EE320139BC5000D8BAF /* MyPageTestViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,8 +88,6 @@
 		14035C081FF24E95005ABAE0 /* AlarmSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSwitchCell.swift; sourceTree = "<group>"; };
 		14035C091FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalAlarmSwitchCell.swift; sourceTree = "<group>"; };
 		14035C0D1FF24E95005ABAE0 /* EditInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditInfoViewController.swift; sourceTree = "<group>"; };
-		14035C0E1FF24E95005ABAE0 /* MyInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyInfoCell.swift; sourceTree = "<group>"; };
-		14035C0F1FF24E95005ABAE0 /* PetInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetInfoCell.swift; sourceTree = "<group>"; };
 		14035C101FF24E95005ABAE0 /* MyPage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyPage.storyboard; sourceTree = "<group>"; };
 		14035C121FF24E95005ABAE0 /* MyMenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMenuCell.swift; sourceTree = "<group>"; };
 		14035C131FF24E95005ABAE0 /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -117,8 +112,6 @@
 		14DC31AF1FFD687800C046F4 /* LeaveMembershipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveMembershipViewController.swift; sourceTree = "<group>"; };
 		14E193701FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveMembershipEtcReasonCell.swift; sourceTree = "<group>"; };
 		14E5C19020053910007E936A /* WriteReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteReviewViewController.swift; sourceTree = "<group>"; };
-		14E5C1922005398E007E936A /* WriteReviewVCFeedImgCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteReviewVCFeedImgCell.swift; sourceTree = "<group>"; };
-		14E5C194200539A7007E936A /* WriteReviewVCTextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteReviewVCTextViewCell.swift; sourceTree = "<group>"; };
 		155F8EE9A3FF90944F5A4F83 /* Pods-FeedPet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedPet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet.debug.xcconfig"; sourceTree = "<group>"; };
 		3219B4369B3766416839B81B /* Pods_FeedPet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FeedPet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A3C22C8F7964B2242907916 /* Pods-FeedPet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FeedPet.release.xcconfig"; path = "Pods/Target Support Files/Pods-FeedPet/Pods-FeedPet.release.xcconfig"; sourceTree = "<group>"; };
@@ -130,8 +123,6 @@
 		4C1E6DDA2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedIngredientTableViewCell.swift; sourceTree = "<group>"; };
 		4C1E6DDC20130DD500C7EDFC /* FeedReviewListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReviewListTableViewCell.swift; sourceTree = "<group>"; };
 		4C1E6DDE20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReviewInfoTableViewCell.swift; sourceTree = "<group>"; };
-		4C1E6DE02013152C00C7EDFC /* MyPageMyReviewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageMyReviewsCell.swift; sourceTree = "<group>"; };
-		4C1E6DE12013152D00C7EDFC /* MyPageMyReviewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageMyReviewsViewController.swift; sourceTree = "<group>"; };
 		4C1E6DE82014C07E00C7EDFC /* FeedIngredientChartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedIngredientChartTableViewCell.swift; sourceTree = "<group>"; };
 		4C1E6DEC20151F4800C7EDFC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C229C81200B9E50004FFD07 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
@@ -165,9 +156,12 @@
 		4CF7C4522003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionalCollectionViewCell.swift; sourceTree = "<group>"; };
 		4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionalViewController.swift; sourceTree = "<group>"; };
 		4CF7C45620040EA100AF8E35 /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
-		FC598EB32010D7AD008914EB /* FavoritesEmptyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesEmptyCell.swift; sourceTree = "<group>"; };
 		FC598EB42010D7AD008914EB /* MyPageFavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageFavoritesViewController.swift; sourceTree = "<group>"; };
 		FC598EB52010D7AD008914EB /* MyPageFeedContentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageFeedContentsCell.swift; sourceTree = "<group>"; };
+		FC709DA9201A4CA2005AF023 /* MyPageReviewEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageReviewEditViewController.swift; path = FeedPet/MyPage/MyReviewView/MyPageReviewEditViewController.swift; sourceTree = SOURCE_ROOT; };
+		FC709DAB201A4CDE005AF023 /* MyPageMyReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageMyReviewsViewController.swift; path = FeedPet/MyPage/MyReviewView/MyPageMyReviewsViewController.swift; sourceTree = SOURCE_ROOT; };
+		FC709DAF201A4E3E005AF023 /* MyPageMyReviewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageMyReviewsCell.swift; path = FeedPet/MyPage/MyReviewView/MyPageMyReviewsCell.swift; sourceTree = SOURCE_ROOT; };
+		FCA26EE320139BC5000D8BAF /* MyPageTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,18 +182,17 @@
 			children = (
 				14035C101FF24E95005ABAE0 /* MyPage.storyboard */,
 				14DA009C1FF671D200819A96 /* MyPageDataCenter.swift */,
+				FCA26EE320139BC5000D8BAF /* MyPageTestViewController.swift */,
 				14035C111FF24E95005ABAE0 /* MyPageView */,
 				14035C0C1FF24E95005ABAE0 /* EditInfoView */,
 				FC598EB22010D7AD008914EB /* MyPageFavoritesView */,
-				FC598EB92010D7ED008914EB /* MyReviewsView */,
+				FCB8500B201A4E9200DC75F9 /* MyReviewView */,
 				14035C051FF24E95005ABAE0 /* AlarmSettingView */,
 				14417CAF1FF2DC2100EA77B3 /* FAQView */,
 				14417CB41FF2F02000EA77B3 /* TermsOfUseView */,
 				148F3F761FF51B4600E83B6B /* TeamIntroductionView */,
 				14DC31AC1FFD5F4500C046F4 /* LeaveMembershipView */,
 				14E5C19020053910007E936A /* WriteReviewViewController.swift */,
-				14E5C1922005398E007E936A /* WriteReviewVCFeedImgCell.swift */,
-				14E5C194200539A7007E936A /* WriteReviewVCTextViewCell.swift */,
 				148F920820061184005200F9 /* IngredientAnalysisViewController.swift */,
 				148F920A20062025005200F9 /* IngredientAnalysisDetailViewController.swift */,
 			);
@@ -221,8 +214,6 @@
 			isa = PBXGroup;
 			children = (
 				14035C0D1FF24E95005ABAE0 /* EditInfoViewController.swift */,
-				14035C0E1FF24E95005ABAE0 /* MyInfoCell.swift */,
-				14035C0F1FF24E95005ABAE0 /* PetInfoCell.swift */,
 			);
 			path = EditInfoView;
 			sourceTree = "<group>";
@@ -406,21 +397,20 @@
 		FC598EB22010D7AD008914EB /* MyPageFavoritesView */ = {
 			isa = PBXGroup;
 			children = (
-				FC598EB32010D7AD008914EB /* FavoritesEmptyCell.swift */,
 				FC598EB42010D7AD008914EB /* MyPageFavoritesViewController.swift */,
 				FC598EB52010D7AD008914EB /* MyPageFeedContentsCell.swift */,
 			);
 			path = MyPageFavoritesView;
 			sourceTree = "<group>";
 		};
-		FC598EB92010D7ED008914EB /* MyReviewsView */ = {
+		FCB8500B201A4E9200DC75F9 /* MyReviewView */ = {
 			isa = PBXGroup;
 			children = (
-				4C1E6DE02013152C00C7EDFC /* MyPageMyReviewsCell.swift */,
-				4C1E6DE12013152D00C7EDFC /* MyPageMyReviewsViewController.swift */,
+				FC709DAB201A4CDE005AF023 /* MyPageMyReviewsViewController.swift */,
+				FC709DAF201A4E3E005AF023 /* MyPageMyReviewsCell.swift */,
+				FC709DA9201A4CA2005AF023 /* MyPageReviewEditViewController.swift */,
 			);
-			name = MyReviewsView;
-			path = "../../../../FeedPet 백업/FeedPet 복사본/FeedPet/FeedPet/MyPage/MyReviewsView";
+			path = MyReviewView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -588,7 +578,9 @@
 			files = (
 				4CAD76821FED3B8D00EDE859 /* DataCenter.swift in Sources */,
 				148F920920061184005200F9 /* IngredientAnalysisViewController.swift in Sources */,
+				FC709DB0201A4E3E005AF023 /* MyPageMyReviewsCell.swift in Sources */,
 				14417CB31FF2DF7200EA77B3 /* FAQDetailViewController.swift in Sources */,
+				FC709DAC201A4CDE005AF023 /* MyPageMyReviewsViewController.swift in Sources */,
 				14DA008C1FF58C4700819A96 /* TeamMemberIntroductionCell.swift in Sources */,
 				4C5FBD671FFEB357004C66EE /* CatMainViewController.swift in Sources */,
 				4CE4F5DE1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift in Sources */,
@@ -596,9 +588,6 @@
 				14DA00991FF6573D00819A96 /* LeaveMembershipBtnCell.swift in Sources */,
 				4C229C8E200CB2DF004FFD07 /* FilterDetailGradeTableViewCell.swift in Sources */,
 				4CE4F5DD1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift in Sources */,
-				14E5C195200539A7007E936A /* WriteReviewVCTextViewCell.swift in Sources */,
-				14E5C1932005398E007E936A /* WriteReviewVCFeedImgCell.swift in Sources */,
-				4C1E6DE22013152D00C7EDFC /* MyPageMyReviewsCell.swift in Sources */,
 				4C8DFB8A200E3A4300331A5B /* FilterMenuHeaderView.swift in Sources */,
 				14035C1A1FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift in Sources */,
 				14035C181FF24E95005ABAE0 /* AlarmSettingViewController.swift in Sources */,
@@ -630,13 +619,11 @@
 				14DA009D1FF671D200819A96 /* MyPageDataCenter.swift in Sources */,
 				14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */,
 				14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */,
+				FC709DAA201A4CA2005AF023 /* MyPageReviewEditViewController.swift in Sources */,
 				4CE4F5DA1FFEAD2B0047E9F9 /* Extension.swift in Sources */,
 				14E193711FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift in Sources */,
 				4C1E6DDF20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift in Sources */,
-				4C1E6DE32013152D00C7EDFC /* MyPageMyReviewsViewController.swift in Sources */,
 				148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */,
-				14035C1E1FF24E95005ABAE0 /* PetInfoCell.swift in Sources */,
-				FC598EB62010D7AE008914EB /* FavoritesEmptyCell.swift in Sources */,
 				4C5FBD651FFEB351004C66EE /* DogMainViewController.swift in Sources */,
 				4CF7C4512003FA7A00AF8E35 /* DogFunctionalViewController.swift in Sources */,
 				14DA00951FF6570E00819A96 /* LeaveMembershipHeaderCell.swift in Sources */,
@@ -650,7 +637,7 @@
 				4C8DFB90200F580900331A5B /* FeedDetailITableViewCell.swift in Sources */,
 				4CF7C4532003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift in Sources */,
 				4C229C88200CB21B004FFD07 /* FilterTableViewCell.swift in Sources */,
-				14035C1D1FF24E95005ABAE0 /* MyInfoCell.swift in Sources */,
+				FCA26EE420139BC5000D8BAF /* MyPageTestViewController.swift in Sources */,
 				14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */,
 				4C8DFB84200E297200331A5B /* FilterMenuSection.swift in Sources */,
 			);
@@ -791,7 +778,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PV38XQ6LPC;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FeedPet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -808,7 +795,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PV38XQ6LPC;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FeedPet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

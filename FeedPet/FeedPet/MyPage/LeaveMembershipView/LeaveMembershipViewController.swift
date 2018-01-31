@@ -11,19 +11,29 @@ import UIKit
 
 
 class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,LeaveMembershipCustomCellDelegate {
-
+    
     
     let leaveMembershipReasonText = ["사용하기 불편해요","정보가 부족해요","다른앱을 사용하고 싶어요","기타"] //탈퇴 이유 텍스트들
     
+    @IBOutlet weak var leaveMemberShipScrollView: UIScrollView!
+    
+    @IBOutlet weak var scrollContentView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+       
+        
         MyPageDataCenter.shared.leaveMembershipReason = ""              //탈퇴이유 데이터 초기화
         MyPageDataCenter.shared.leaveMembarshipEtcReasonContent = ""
         
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        self.leaveMemberShipScrollView.backgroundColor = UIColor.black.withAlphaComponent(0)
+        self.scrollContentView.backgroundColor = UIColor.black.withAlphaComponent(0)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil) //키보드 올라오는 것을 옵저브
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil) //키보드 사라지는 것을 옵저브
     }
     
     override func didReceiveMemoryWarning() {
@@ -55,6 +65,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
                 leaveMembershipEtcReasonCell.backgroundColor = UIColor(red: 217/255, green: 217/255, blue: 217/255, alpha: 1.0)
             }else{
                 leaveMembershipEtcReasonCell.backgroundColor = UIColor.white
+                leaveMembershipEtcReasonCell.etcReasonContentTextField.text = ""
             }
             
             return leaveMembershipEtcReasonCell
@@ -93,7 +104,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
         
         //leaveMembershipTableView
         if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3{
-            
+          
             MyPageDataCenter.shared.leaveMembershipReason = leaveMembershipReasonText[indexPath.row - 1]
             tableView.reloadData()
             
@@ -102,7 +113,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
             
             
         }else if indexPath.row == 4{
-            
+           
             if let etcText = leaveMembershipReasonText.last {
                 MyPageDataCenter.shared.leaveMembershipReason = etcText // 이유가 기타일 경우
             }
@@ -111,7 +122,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
             tableView.reloadData()
             
             
-            self.tableView.frame = CGRect(x: self.tableView.frame.minX, y: self.view.center.y  - 140, width: self.tableView.frame.width, height: 350)
+            self.tableView.frame = CGRect(x: self.tableView.frame.minX, y: self.view.center.y  - 180, width: self.tableView.frame.width, height: 350)
             
             
             
@@ -133,12 +144,20 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
         
     }
     
-    func leaveMembershipTableViewDisappear() {    // 프로토콜 메서드
+   
+    func keyboardEndEditing(){
+        
+        self.view.endEditing(true)
+        self.tableView.frame = CGRect(x: self.tableView.frame.minX, y: self.view.center.y - 180 , width: self.tableView.frame.width, height: 350)
+    }
+    
+    
+    func leaveMembershipTableViewDisappear() {    // 프로토콜 메서드 키보드 사라질때 뷰 위치
         
         MyPageDataCenter.shared.leaveMembershipReason = ""
         MyPageDataCenter.shared.leaveMembarshipEtcReasonContent = ""
         
-        self.tableView.frame = CGRect(x: self.tableView.frame.minX, y: self.view.center.y - 140 , width: self.tableView.frame.width, height: 300)
+//        self.tableView.frame = CGRect(x: self.tableView.frame.minX, y: self.view.center.y - 140 , width: self.tableView.frame.width, height: 300)
         
         tableView.reloadData()
         self.view.endEditing(true)
@@ -146,21 +165,19 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
         
     }
     
-    func leaveMembershipTableViewLocationChange() { //프로토콜 메서드
-        
-        self.tableView.frame = CGRect(x: self.tableView.frame.minX, y: 180, width: self.tableView.frame.width, height: 350)
-    }
-    
     func leaveMembershipTableViewReloadData(){
         tableView.reloadData()
     }
     
-    
-  
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-            leaveMembershipTableViewDisappear()
+    func keyboardWasShown(_ notification : Notification) {
+        self.leaveMemberShipScrollView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 230)
     }
+    
+    func keyboardWillHide(_ notification : Notification) {
+        self.leaveMemberShipScrollView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y)
+    }
+    
+
     
     
     
