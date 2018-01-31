@@ -15,7 +15,28 @@ class DataCenter {
     static let shared = DataCenter()
     
     var isLogin: Bool = false
-    
+    let dogFunctionalData: [[String:String]] = [
+        ["functional":"피부","functionalImg":"dogFunctional-Skin"],
+        ["functional":"알러지","functionalImg": "dogFunctional-Allergy"],
+        ["functional":"관절","functionalImg":"dogFunctional-Joint"],
+        ["functional":"다이어트","functionalImg":"dogFunctional-Diet"],
+        ["functional":"인도어","functionalImg":"dogFunctional-Indoor"],
+        ["functional":"장&면역","functionalImg":"dogFunctional-Immune"],
+        ["functional":"퍼포먼스","functionalImg":"dogFunctional-Performance"],
+        ["functional":"비뇨기","functionalImg":"dogFunctional-Urinary"],
+        ["functional":"전체","functionalImg":"dogFunctional-All"]
+    ]
+    let catFunctionalData: [[String:String]] = [
+        ["functional":"피부","functionalImg":"catFunctional-Skin"],
+        ["functional":"알러지","functionalImg": "catFunctional-Allergy"],
+        ["functional":"관절","functionalImg":"catFunctional-Joint"],
+        ["functional":"다이어트","functionalImg":"catFunctional-Diet"],
+        ["functional":"인도어","functionalImg":"catFunctional-Indoor"],
+        ["functional":"장&면역","functionalImg":"catFunctional-Immune"],
+        ["functional":"헤어볼","functionalImg":"catFunctional-Hairball"],
+        ["functional":"비뇨기","functionalImg":"catFunctional-Urinary"],
+        ["functional":"전체","functionalImg":"catFunctional-All"]
+    ]
     // Login 확인 요청 메서드
     func requestIsLogin() -> Bool {
         if Auth.auth().currentUser == nil {
@@ -72,6 +93,13 @@ class DataCenter {
     func getFeedData(){
         
     }
+    func functionalSettingData(currentPet: String)->[[String:String]]{
+        if currentPet == "feed_petkey_d"{
+            return dogFunctionalData
+        }else{
+            return catFunctionalData
+        }
+    }
     
 }
 
@@ -121,7 +149,7 @@ struct FeedInfo{
     var feedWeight: [JSON]!
     var feedFunctional: [JSON]!
     var feedImg: [JSON]!
-    var feedMouth: Int!
+    var feedMouth: String!
     var feedGrade: Int!
     var feedCountry: String!
     var feedPackageFlag: Bool!
@@ -139,7 +167,7 @@ struct FeedInfo{
         self.feedWeight = feedJsonData.1["feed_weight"].arrayValue
         self.feedFunctional = feedJsonData.1["feed_functional"].arrayValue
         self.feedImg = feedJsonData.1["feed_img"].arrayValue
-        self.feedMouth = feedJsonData.1["feed_mouth"].intValue
+        self.feedMouth = feedJsonData.1["feed_mouth"].stringValue
         self.feedGrade = feedJsonData.1["feed_grade"].intValue
         self.feedCountry = feedJsonData.1["feed_country"].stringValue
         self.feedPackageFlag = feedJsonData.1["feed_package_flag"].boolValue
@@ -161,7 +189,7 @@ struct FeedInfo{
         self.feedWeight = feedJsonDataTest["feed_weight"].arrayValue
         self.feedFunctional = feedJsonDataTest["feed_functional"].arrayValue
         self.feedImg = feedJsonDataTest["feed_img"].arrayValue
-        self.feedMouth = feedJsonDataTest["feed_mouth"].intValue
+        self.feedMouth = feedJsonDataTest["feed_mouth"].stringValue
         self.feedGrade = feedJsonDataTest["feed_grade"].intValue
         self.feedCountry = feedJsonDataTest["feed_country"].stringValue
         self.feedPackageFlag = feedJsonDataTest["feed_package_flag"].boolValue
@@ -203,5 +231,98 @@ struct FeedInfoList {
         
         
         self.feed = feedList
+    }
+}
+
+// 성분 데이터 모델
+struct FeedDetailIngredient {
+    // 좋은 성분 고유키 배열
+    var feedIngredientGood: [JSON]!
+    // 주의 성분 고유키 배열
+    var feedIngredientWarning: [JSON]!
+    // 조단백
+    var crudeProtein: Int!
+    // 조지방
+    var crudeFat: Int!
+    // 조섬유
+    var crudeFibre: Int!
+    // 조회분
+    var crudeAsh: Int!
+    // 칼슘
+    var calcium: Int!
+    // 인
+    var phosphorus: Int!
+    
+    init(ingredientData: JSON) {
+        self.feedIngredientGood = ingredientData["feed_ingredient_good"].arrayValue
+        self.feedIngredientWarning = ingredientData["feed_ingredient_warning"].arrayValue
+        self.crudeProtein = ingredientData["crude_protein"].intValue
+        self.crudeFat = ingredientData["crude_fat"].intValue
+        self.crudeAsh = ingredientData["crude_ash"].intValue
+        self.crudeFibre = ingredientData["crude_figre"].intValue
+        self.calcium = ingredientData["calcium"].intValue
+        self.phosphorus = ingredientData["phosphorus"].intValue
+    }
+    
+}
+// 성분 데이터 모델-TEST
+struct FeedDetailIngredientTest {
+    // 좋은 성분 고유키 배열
+    var feedIngredientGood: [String]!
+    // 주의 성분 고유키 배열
+    var feedIngredientWarning: [String]!
+    // 조단백
+    var crudeProtein: Float!
+    // 조지방
+    var crudeFat: Float!
+    // 조섬유
+    var crudeFibre: Float!
+
+    // 조회분
+    var crudeAsh: Float!
+    // 칼슘
+    var calcium: Float!
+    // 인
+    var phosphorus: Float!
+    
+    init(ingredientData: [String:Any]) {
+        self.feedIngredientGood = ingredientData["feed_ingredient_good"] as! [String]
+        self.feedIngredientWarning = ingredientData["feed_ingredient_warning"] as! [String]
+        self.crudeProtein = ingredientData["crude_protein"] as! Float
+        self.crudeFat = ingredientData["crude_fat"] as! Float
+        self.crudeFibre = ingredientData["crude_fibre"] as! Float
+        self.crudeAsh = ingredientData["crude_ash"] as! Float
+        self.calcium = ingredientData["calcium"] as! Float
+        self.phosphorus = ingredientData["phosphorus"] as! Float
+    }
+    
+}
+
+// 기능성 정보 모델링
+struct Functional{
+    var functionalKey: String!
+    var functionalName: String!
+    var functionalImg: String!
+    
+    init(functionalJSON: (String,JSON)) {
+        self.functionalKey = functionalJSON.0
+        self.functionalName = functionalJSON.1["functional_name"].stringValue
+        self.functionalImg = functionalJSON.1["functional_img"].stringValue
+    }
+    
+}
+struct FunctionalList {
+    var functional: [Functional]
+    
+    init(functionJson: JSON) {
+        var functionalList: [Functional] = []
+        for function in functionJson{
+            let functionOne = Functional(functionalJSON: function)
+            functionalList.append(functionOne)
+            
+        }
+        
+        
+        self.functional = functionalList
     }
 }

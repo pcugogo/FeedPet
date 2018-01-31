@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "doubleCheckBtn.png",
+      "filename" : "name_check_btn_activity.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "name_check_btn_activity@2.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "name_check_btn_activity@3.png",
       "scale" : "3x"
     }
   ],

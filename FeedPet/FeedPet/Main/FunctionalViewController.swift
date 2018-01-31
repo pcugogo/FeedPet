@@ -7,23 +7,14 @@
 //
 
 import UIKit
+import Firebase
+import SwiftyJSON
 
 class FunctionalViewController: UIViewController {
     
-    var delegate: TableViewScrollDelegate?
     
-    // 강아지일때-MainPageViewController에서 강아지,고야잉 구분하여데이터 할당예정
-    var testData: [[String:String]] = [
-                                    ["functional":"피부","functionalImg":"dogFunctional-Skin"],
-                                    ["functional":"알러지","functionalImg": "dogFunctional-Allergy"],
-                                    ["functional":"관절","functionalImg":"dogFunctional-Joint"],
-                                    ["functional":"다이어트","functionalImg":"dogFunctional-Diet"],
-                                    ["functional":"인도어","functionalImg":"dogFunctional-Indoor"],
-                                    ["functional":"장&면역","functionalImg":"dogFunctional-Immune"],
-                                    ["functional":"퍼포먼스","functionalImg":"dogFunctional-Performance"],
-                                    ["functional":"비뇨기","functionalImg":"dogFunctional-Urinary"],
-                                    ["functional":"전체","functionalImg":"dogFunctional-All"]
-    ]
+    
+    var functionalData = [[String:String]]()
     @IBOutlet weak var functionalCollectionView: UICollectionView!
     @IBOutlet weak var filterMenuView: UIView!
     
@@ -31,7 +22,7 @@ class FunctionalViewController: UIViewController {
         super.viewDidLoad()
         functionalCollectionView.delegate = self
         functionalCollectionView.dataSource = self
-        
+        functionalDataLoad()
         // Do any additional setup after loading the view.
     }
 
@@ -47,6 +38,18 @@ class FunctionalViewController: UIViewController {
         
     }
     
+    func functionalDataLoad(){
+        let reference = Database.database().reference().child("feed_functional").child("functional_petkey_c")
+        reference.observeSingleEvent(of: .value, with: { (dataSnap) in
+            print(dataSnap.value)
+            guard let data = dataSnap.value else {return}
+            let json = JSON(data)
+            var functionListData = FunctionalList.init(functionJson: json)
+            print(functionListData)
+        }) { (error) in
+            
+        }
+    }
     
 //    func tableViewScroll() {
 //        filterMenuView.frame.offsetBy(dx: self.view.layer.frame.maxX, dy: 0)
@@ -102,20 +105,18 @@ extension FunctionalViewController: UICollectionViewDelegateFlowLayout{
 extension FunctionalViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return testData.count
+        return functionalData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let functionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "FunctionalCell", for: indexPath) as! FunctionalCollectionViewCell
-        functionCell.functionalImag.image = UIImage(named: testData[indexPath.item]["functionalImg"]!)
+        functionCell.functionalImag.image = UIImage(named: functionalData[indexPath.item]["functionalImg"]!)
         
-        functionCell.functionalLabel.text = testData[indexPath.item]["functional"]
+        functionCell.functionalLabel.text = functionalData[indexPath.item]["functional"]
         
         return functionCell
     }
     
     
 }
-protocol TableViewScrollDelegate {
-    func tableViewScroll()
-}
+

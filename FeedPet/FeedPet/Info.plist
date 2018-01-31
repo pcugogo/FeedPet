@@ -72,8 +72,14 @@
 	</array>
     <key>NSAppTransportSecurity</key>
     <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>feedpet.co.kr</key>
+            <dict>
+                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+            </dict>
+        </dict>
     </dict>
 </dict>
 </plist>
