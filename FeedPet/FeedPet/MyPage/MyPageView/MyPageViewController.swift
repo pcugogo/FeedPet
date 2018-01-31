@@ -16,7 +16,7 @@ enum enumSettingSection:Int { //섹션 이름
     case Setting = 2
 }
 
-class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,MFMailComposeViewControllerDelegate,MyMenuCellDelegate {
+class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,MFMailComposeViewControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MyPageCellDelegate {
     
     let settingMenuName = ["버전정보","알람설정","FAQ","이용약관","문의하기","팀소개","로그아웃","탈퇴하기" ]
     let settingMenuImg = [#imageLiteral(resourceName: "MyPageVersionInfo"),#imageLiteral(resourceName: "MyPageAlarmSetting"),#imageLiteral(resourceName: "MyPageFAQ"),#imageLiteral(resourceName: "MyPageTermsOfUse"),#imageLiteral(resourceName: "MyPageContactUs"),#imageLiteral(resourceName: "MyPageTeamIntroduction"),#imageLiteral(resourceName: "MyPageLogOut"),#imageLiteral(resourceName: "MyPageLeaveMembership")]
@@ -25,7 +25,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let deviceInfo = UIDevice.current.model
     let userSystemNameAndVersion = "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)" // 현재 사용자 iOS 버전
     let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
-    
+    var profileImg:UIImage?
     
     
     @IBOutlet weak var tableView: UITableView!
@@ -90,6 +90,11 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if indexPath.section == 0 && indexPath.row == 0{
             
             let profileCell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as! ProfileCell
+            profileCell.delegate = self
+            if let pickImg = profileImg {
+                profileCell.profileImg.image = pickImg
+                profileCell.profileImg.clipsToBounds = true
+            }
             return profileCell
             
         }else if indexPath.section == 1 && indexPath.row == 0 {
@@ -259,8 +264,29 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let myPageMyReviewsView:MyPageMyReviewsViewController = storyboard?.instantiateViewController(withIdentifier: "MyPageMyReviewsViewController") as! MyPageMyReviewsViewController
         navigationController?.pushViewController(myPageMyReviewsView, animated: true)
     }
-    
+    func imgPickerSet() {
+        let imagePickerController:UIImagePickerController =
+            UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.navigationBar.isTranslucent = false
+        self.present(imagePickerController, animated: true, completion:  nil)
+    }
    
+    func imagePickerController(_ picker:UIImagePickerController,didFinishPickingMediaWithInfo info: [String:Any]){
+        print("info:",info)
+        
+        guard let image = info["UIImagePickerControllerOriginalImage"] as? UIImage else {
+            return
+        }
+        image.withRenderingMode(.alwaysOriginal) // 색상이 파란색으로 나오는 경우의 이유는 시스템 버튼을 쓰게 되면 자동 랜더링을 쓰게 되는 경우가 있는데 이렇게 모드를 바꿔주면 내가 고른 이미지를 띄워줘라는 뜻이다
+        profileImg = image
+        tableView.reloadData()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+//        FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_profileImg":image])
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        self.dismiss(animated: true, completion: nil)
+
+    }
     
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)

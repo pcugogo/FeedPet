@@ -12,7 +12,6 @@ import UIKit
 protocol LeaveMembershipCustomCellDelegate {
     func leaveMembershipTableViewReloadData()
     func leaveMembershipTableViewDisappear()
-    func keyboardEndEditing()
 }
 
 

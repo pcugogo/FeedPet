@@ -8,8 +8,10 @@
 
 import UIKit
 
-class ProfileCell: UITableViewCell {
+class ProfileCell: UITableViewCell,UIImagePickerControllerDelegate {
 
+    var delegate:MyPageCellDelegate?
+    
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var nickNameLb: UILabel!
     @IBOutlet weak var userIdLb: UILabel!
@@ -20,6 +22,7 @@ class ProfileCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         profileImg.layer.cornerRadius = 40
         petTypeLb.layer.masksToBounds = true
         petTypeLb.layer.cornerRadius = 3
@@ -33,5 +36,11 @@ class ProfileCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    func imageRegistration(){
+        delegate?.imgPickerSet()
+    }
+    @IBAction func profileImgBtnAction(_ sender: UIButton) {
+        imageRegistration()
+    }
+    
 }

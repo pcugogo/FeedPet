@@ -156,7 +156,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
                 let reviewAutoKey = FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).child("review_info").childByAutoId()
                 FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).child("review_info").child(reviewAutoKey.key).updateChildValues(feedReviewInfoDic)
                 FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).updateChildValues(["review_rating":self.totalRating])
-                FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(self.self.feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
+                FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(self.feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
             })
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             

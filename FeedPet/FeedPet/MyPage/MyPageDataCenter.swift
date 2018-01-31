@@ -58,7 +58,7 @@ struct FireBaseData{
     static let shared = FireBaseData()
     
     private var refBase = Database.database().reference()
-    private var refUserData = Database.database().reference().child("user_data")
+    private var refUserInfo = Database.database().reference().child("user_info")
     private var refFeed = Database.database().reference().child("feed")
     private var refFavorites = Database.database().reference().child("my_favorite")
     private var refFeedReviews = Database.database().reference().child("feed_review")
@@ -69,8 +69,8 @@ struct FireBaseData{
     var refBaseReturn:DatabaseReference{
         return refBase
     }
-    var refUserDataReturn:DatabaseReference{
-        return refUserData
+    var refUserInfoReturn:DatabaseReference{
+        return refUserInfo
     }
     var refFeedReturn:DatabaseReference{
         return refFeed

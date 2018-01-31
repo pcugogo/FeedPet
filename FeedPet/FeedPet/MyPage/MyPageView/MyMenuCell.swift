@@ -8,14 +8,15 @@
 
 import UIKit
 
-protocol MyMenuCellDelegate{
+protocol MyPageCellDelegate{
     func toFavoritesView()
     func toMyReviewView()
+    func imgPickerSet()
 }
 
 class MyMenuCell: UITableViewCell {
 
-    var delegate:MyMenuCellDelegate?
+    var delegate:MyPageCellDelegate?
     
     @IBOutlet weak var favoritesNumLb: UILabel!
     

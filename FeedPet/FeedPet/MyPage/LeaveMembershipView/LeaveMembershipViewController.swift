@@ -145,11 +145,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
     }
     
    
-    func keyboardEndEditing(){
-        
-        self.view.endEditing(true)
-        self.tableView.frame = CGRect(x: self.tableView.frame.minX, y: self.view.center.y - 180 , width: self.tableView.frame.width, height: 350)
-    }
+   
     
     
     func leaveMembershipTableViewDisappear() {    // 프로토콜 메서드 키보드 사라질때 뷰 위치

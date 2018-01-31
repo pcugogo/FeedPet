@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditInfoViewController: UIViewController {
+class EditInfoViewController: UIViewController,UITextFieldDelegate {
 
     @IBOutlet weak var emailLb: UILabel!
     
@@ -21,20 +21,29 @@ class EditInfoViewController: UIViewController {
     @IBOutlet weak var catBtnImgView: UIImageView!
     @IBOutlet weak var dogTextLb: UILabel!
     @IBOutlet weak var catTextLb: UILabel!
-    
-    
-    var dogAgeAray: [String] = ["퍼피", "어덜트", "시니어"]
-    var catAgeArray: [String] = ["주니어", "어덜트", "시니어"]
-    
+
+
+    //강아지/고양이 펫종류
+    var petType = "functional_petkey_d"
+    let dogType = "functional_petkey_d"
+    let catType = "functional_petkey_c"
+    //펫연령
+    var petAge = 0
+    let dogAgeAray: [String] = ["퍼피", "어덜트", "시니어"]
+    let catAgeArray: [String] = ["주니어", "어덜트", "시니어"]
     var ageArray: [String] = []
+    //펫 기호
+    var petFunctionKey = [String]() //선택된 기능의 인덱스패스와 비교하여 선택된 기능키만 담아서 통신한다
+    var petFunctionTotalKey = ["all","allergy","diet","immune","indoor","joint","performance","skin","urinary" ]//초기값 강아지로 설정
+    let dogFunctionKey = ["all","allergy","diet","immune","indoor","joint","performance","skin","urinary" ]
+    let catFunctionKey = ["all","allergy","diet","hairball","immune","indoor","joint","skin","urinary" ]
     
-    var dogFunctionalArray: [String] = ["피부","알러지","관절","다이어트","인도어","장&면역","퍼포먼스","비뇨기","전체"]
-    var catFunctionalArray: [String] = ["피부","알러지","관절","다이어트","인도어","장&면역","헤어볼","비뇨기","전체"]
+    let dogFunctionalArray: [String] = ["피부","알러지","관절","다이어트","인도어","장&면역","퍼포먼스","비뇨기","전체"]
+    let catFunctionalArray: [String] = ["피부","알러지","관절","다이어트","인도어","장&면역","헤어볼","비뇨기","전체"]
     var functionalArray: [String] = []
     
     
-    var ageIndexPath: IndexPath = IndexPath()
-    var functionalIndexPath: [IndexPath] = []
+    var functionalIndexPath: [IndexPath] = [] //선택된 펫기호 인덱스패스
     
     // 선택 반려동물 태그값 체크를 위한 옵저버 프로퍼티
     var petBtnTag: Int = 0 {
@@ -47,6 +56,11 @@ class EditInfoViewController: UIViewController {
                 dogTextLb.textColor = UIColor(red: 27/255, green: 169/255, blue: 142/255, alpha: 1.0)
                 catTextLb.textColor = UIColor(red: 181/255, green: 181/255, blue: 181/255, alpha: 1.0)
                 
+                petType = dogType
+                petFunctionTotalKey = dogFunctionKey
+                    
+                print(petType)
+                print(petFunctionTotalKey)
                 ageArray = dogAgeAray
                 functionalArray = dogFunctionalArray
             }else{
@@ -55,6 +69,11 @@ class EditInfoViewController: UIViewController {
                 dogTextLb.textColor = UIColor(red: 181/255, green: 181/255, blue: 181/255, alpha: 1.0)
                 catTextLb.textColor = UIColor(red: 229/255, green: 170/255, blue: 54/255, alpha: 1.0)
                 
+                petType = catType
+                petFunctionTotalKey = catFunctionKey
+
+                print(petType)
+                print(petFunctionTotalKey)
                 ageArray = catAgeArray
                 functionalArray = catFunctionalArray
             }
@@ -67,7 +86,7 @@ class EditInfoViewController: UIViewController {
     // ########################################
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        nickNameTextField.delegate = self
         petAgeCollectionView.delegate = self
         petAgeCollectionView.dataSource = self
         petFunctionalCollectionView.delegate = self
@@ -89,7 +108,13 @@ class EditInfoViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true
+    }
     // ########################################
     // MARK: IBAction Method
     // ########################################
@@ -98,9 +123,35 @@ class EditInfoViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    
     @IBAction func saveBtnAction(_ sender: UIBarButtonItem) {
+        
+        if nickNameTextField.text?.isEmpty == false{
+        petFunctionKey = []
+        for i in functionalIndexPath{
+            print(i)
+            petFunctionKey.append(petFunctionTotalKey[i[1]])
+            print(petFunctionKey)
+        }
+            print(petType,"type")
+            print(petAge,"age")
+//        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+       
+//            FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_nic":nickNameTextField.text])
+        //        FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet":petType])
+//
+//        FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_petage":petAge])
+//        FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet_funtional":petFunctionKey])
+//        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        }else{
+            let nickNameNilAlert = UIAlertController(title: "", message: "닉네임을 입력해주세요", preferredStyle: .alert)
+            let okBtn = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            nickNameNilAlert.addAction(okBtn)
+            self.present(nickNameNilAlert, animated: true, completion: nil)
+        }
     }
     @IBAction func nickDuplicateBtnAction(_ sender: UIButton) {
+        
     }
     
     @IBAction func petSlectBtnTouched(_ sender: UIButton) {
@@ -151,7 +202,7 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
             funcionalCell.petSelectInt = petBtnTag
             
             functionalIndexPath.append(indexPath)
-            collectionView.selectAll(animated: true)
+//            collectionView.selectAll(animated: true)
             
             
             //            for item in 0..<collectionView.numberOfItems(inSection: 0) {
@@ -162,9 +213,7 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
         }
         
     }
-    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
+  
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //        let cell = collectionView.cellForItem(at: indexPath)!
         
@@ -174,6 +223,7 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
             if indexPath.item == collectionView.numberOfItems(inSection: 0)-1 {
                 // 확장한 코드
                 
+               
                 functionalIndexPath = collectionView.selectAll(animated: true)
                 //                functionalIndexPath.append(indexPath)
                 print(functionalIndexPath)
@@ -183,20 +233,21 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
                 //            }
                 
             }else{
-                if functionalIndexPath.contains(indexPath){
-                    let indexInt = functionalIndexPath.index(of: indexPath)
-                  
-                    functionalIndexPath.remove(at: indexInt!)
-                    print("------기능성 선택한 값이 존재할경우 slect 인덱스패스------: ",functionalIndexPath)
-                }
-                else{
+                print(indexPath.item,"itemmmmm")
+//                if functionalIndexPath.contains(indexPath){
+//                    let indexInt = functionalIndexPath.index(of: indexPath)
+//
+//                    functionalIndexPath.remove(at: indexInt!)
+//                    print("------기능성 선택한 값이 존재할경우 didSelect 인덱스패스------: ",functionalIndexPath)
+//                }
+//                else{
                     functionalIndexPath.append(indexPath)
-                    print("------기능성 선택한 값이 존재하지 않을경우 slect 인덱스패스------: ",functionalIndexPath)
-                }
+                    print("------기능성 선택한 값이 존재하지 않을경우 didSelect 인덱스패스------: ",functionalIndexPath)
+//                }
                 
                 let pathtest = IndexPath(item: collectionView.numberOfItems(inSection: 0)-1, section: 0)
                 if functionalIndexPath.count == 8{
-                    let indexInt = functionalIndexPath.index(of: pathtest)
+//                    let indexInt = functionalIndexPath.index(of: pathtest)
                     collectionView.selectItem(at: pathtest, animated: true, scrollPosition: .centeredVertically)
                     functionalIndexPath.append(pathtest)
                     
@@ -213,8 +264,8 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
             //
             //            }
             //
-            ageIndexPath = indexPath
-            
+
+            petAge = indexPath.row
         }
        
         
@@ -241,13 +292,15 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
                 let indexInt = functionalIndexPath.index(of: indexPath)
                 
                 functionalIndexPath.remove(at: indexInt!)
-                print("------기능성 didDeslect 인덱스패스------: ",functionalIndexPath)
+                print("------기능성 didDeselect 인덱스패스------: ",functionalIndexPath)
             }
         }
     }
     
     
-    
+    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
     
     
 }
