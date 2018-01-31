@@ -19,7 +19,6 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
     //여기까지 상세화면에서 받아야 될 데이터
     
     var totalRating = 0
-    var keyboardHeight = 0
     var ratingNumberOfStars = 5 //서버에 넘겨질 평점 초기 별 갯수 5개
     
     let reviewWriteDateFormatter : DateFormatter = DateFormatter()
