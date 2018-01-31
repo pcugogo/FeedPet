@@ -21,7 +21,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     }
    
     
-    var scrollDelegate: TableViewScrollDelegate?
+    
 //    var feedData: [FeedInfo] = []
     var testReference: DatabaseReference = Database.database().reference()
     var ref: DatabaseReference!
@@ -32,8 +32,13 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     var feedInfoStartKey: String!
     var currentPet = String()
     
+    
     @IBOutlet weak var feedInfoTableView: UITableView!
     @IBOutlet weak var feedListCountLabel: UILabel!
+    
+    /*******************************************/
+    //MARK:-        LifeCycle                  //
+    /*******************************************/
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,14 +46,13 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         feedInfoTableView.delegate = self
         print(self.navigationController?.topViewController)
         print(self.parent?.navigationController)
+        
 //        기존 테이블 전체 데이터 호출
-        getLoadFeedList()
+        feedDataCountLoad()
         
         // 페이지네이션 데이터
         feedDataHandlePagination()
-        DispatchQueue.main.async {
-            self.feedListCountLabel.text = self.feedPagenationData.count.description
-        }
+        
 //        ref.database.reference()
 //        scrollDelegate = self
 //        self.navigationController?.isNavigationBarHidden = true
@@ -77,7 +81,15 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         // Dispose of any resources that can be recreated.
     }
     
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "FuncitonalEmbeddedSegue") {
+            let functionalView = segue.destination as! FunctionalViewController
+            functionalView.functionalData = DataCenter.shared.functionalSettingData(currentPet: currentPet)
+            // Now you have a pointer to the child view controller.
+            // You can save the reference to it, or pass data to it.
+            
+        }
+    }
     /*
     // MARK: - Navigation
 
@@ -87,7 +99,11 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
+    /*******************************************/
+    //MARK:-     IndicatorInfoProvider         //
+    /*******************************************/
+    
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
         var indicator = IndicatorInfo(title: nil, image: nil)
         if indicatorTitle == "멍" {
@@ -103,31 +119,16 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         return indicator
         
     }
-    func getLoadFeedList(){
-        testReference.child("feed_info").child("feed_petkey_c").observeSingleEvent(of: .value, with: { (dataSnap) in
+    
+    /*******************************************/
+    //MARK:-           Data 호출                //
+    /*******************************************/
+    // MARK: 전체 데이터 카운트 호출
+    func feedDataCountLoad(){
+        testReference.child("feed_info").child(currentPet).observeSingleEvent(of: .value, with: { (dataSnap) in
             DispatchQueue.main.async {
                 self.feedListCountLabel.text = dataSnap.childrenCount.description
             }
-//            print("-----datsnap----- : " ,dataSnap.value)
-//            guard let feedInfoList = dataSnap.value  else {return}
-//            let feedInfoJsonList = JSON(feedInfoList)
-//            let test = JSON(dataSnap.value as Any)
-//            print("-----[feedInfoJsonList]----- : ", feedInfoJsonList)
-//            var list = FeedInfoList(feedsJson: feedInfoJsonList)
-//            print("-----[list]----- : ", list)
-//
-//
-//
-//            var list2 = FeedInfoList(feedsJsonTest: test.arrayValue)
-//            print("-----[list2]----- : ", list2)
-//
-//            print("-----[test]----- : ", test)
-//
-//            DispatchQueue.main.async {
-//                self.feedPagenationData = list.feed
-//                self.feedListCountLabel.text = self.feedPagenationData.count.description
-//                self.feedInfoTableView.reloadData()
-//            }
         }) { (error) in
             print(error)
         }
@@ -136,9 +137,9 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     
     // MARK: 사료 정보 페이징 처리를 위한 함수
     func feedDataHandlePagination(){
-        print(currentPet)
+        print("---현재 반려동물----",currentPet)
         // 현재 고양이 데이터만 존재하므로 curretnPet 부분을 "feed_petkey_c"로 임시 작업
-        let reference = Database.database().reference().child("feed_info").child("feed_petkey_c").queryOrderedByKey()
+        let reference = Database.database().reference().child("feed_info").child(currentPet).queryOrderedByKey()
         if feedInfoStartKey == nil{
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             reference.queryLimited(toFirst: 10).observeSingleEvent(of: .value, with: { (dataSnap) in
@@ -189,6 +190,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
             })
         }
         
+        
 //        ref.child("feed_info").child(currentPet).queryOrderedByKey().queryLimited(toLast: 10).observeSingleEvent(of: .value, with: { (dataSnap) in
 //
 //            if dataSnap.childrenCount > 0{
@@ -203,6 +205,10 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
 //            print(error)
 //        }
     }
+    /*******************************************/
+    //MARK:-         Class Method              //
+    /*******************************************/
+    // MARK: 현재 반려동물 체크 메서드
     func currentPetCheck(){
         if indicatorTitle == "멍" {
             currentPet = "feed_petkey_d"
@@ -211,21 +217,24 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         }
     }
     
-    func setupAnimationForNavigationBar(caseOfFunction: Bool) {
-        if caseOfFunction == true {
-            UIView.animate(withDuration: 0.5) {
-                self.navigationController?.navigationBar.transform = CGAffineTransform(translationX: 0, y: -200)
-            }
-        } else {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.navigationController?.navigationBar.transform = CGAffineTransform.identity
-            })
-        }
-        
-    }
+//    func setupAnimationForNavigationBar(caseOfFunction: Bool) {
+//        if caseOfFunction == true {
+//            UIView.animate(withDuration: 0.5) {
+//                self.navigationController?.navigationBar.transform = CGAffineTransform(translationX: 0, y: -200)
+//            }
+//        } else {
+//            UIView.animate(withDuration: 0.5, animations: {
+//                self.navigationController?.navigationBar.transform = CGAffineTransform.identity
+//            })
+//        }
+//
+//    }
     
 }
 extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
+    /*************************************************/
+    //MARK:-  TableViewDelegate, TableViewDataSource //
+    /*************************************************/
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return feedPagenationData.count
     }

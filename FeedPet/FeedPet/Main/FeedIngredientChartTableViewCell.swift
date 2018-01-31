@@ -44,7 +44,7 @@ class FeedIngredientChartTableViewCell: UITableViewCell {
         
         ingredientChartBar.barHeight = Float(ingredientChartBar.layer.frame.height)
         ingredientChartBar.emptyColor = UIColor.init(hexString: "e0e0e0")
-        ingredientChartBar.progressColor = UIColor.init(hexString: "#FF6600")
+        ingredientChartBar.progressColor = UIColor.init(hexString: "#F39800")
         ingredientChartBar.barsCanBeClick = false
         
         //chart.progressClickColor = UIColor.init(hexString: "09467D")

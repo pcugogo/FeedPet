@@ -8,11 +8,14 @@
 
 import UIKit
 import XLPagerTabStrip
+import Firebase
 
 class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<MainMenuIconCollectionViewCell> {
     
     let redColor = UIColor(red: 221/255.0, green: 0/255.0, blue: 19/255.0, alpha: 1.0)
     let unselectedIconColor = UIColor(red: 73/255.0, green: 8/255.0, blue: 10/255.0, alpha: 1.0)
+    var searchController: UISearchController!
+    
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -127,9 +130,39 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     */
     
     @IBAction func feedSearchBtnTouched(_ sender: UIButton) {
-        let nextViewContorller = self.storyboard?.instantiateViewController(withIdentifier: "FeedSearchViewController") as! FeedSearchViewController
+//        let nextViewContorller = self.storyboard?.instantiateViewController(withIdentifier: "FeedSearchViewController") as! FeedSearchViewController
         //        self.present(nextViewContorller, animated: true, completion: nil)
-        self.navigationController?.pushViewController(nextViewContorller, animated: true)
+//        self.navigationController?.pushViewController(nextViewContorller, animated: true)
+        
+        
+        UIBarButtonItem.appearance(whenContainedInInstancesOf:[UISearchBar.self]).tintColor = UIColor.white
+        
+        // 검색 결과를 보여줄 FeedSearchResultViewController 할당
+        let searchResultsViewController = storyboard!.instantiateViewController(withIdentifier: "FeedSearchResultView") as! FeedSearchResultViewController
+        // 결과 화면 뷰에 델리게이트를 현재의 뷰가 사용하기 위해 델리게이트 구현
+        searchResultsViewController.delegate = self
+        
+        // 검색하기위한 컨트롤러 할당 및 셋팅
+        searchController = UISearchController(searchResultsController: searchResultsViewController)
+        searchController.searchResultsUpdater = searchResultsViewController
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = true
+        searchController.searchBar.barTintColor = UIColor.init(hexString: "#FF6600")
+        searchController.searchBar.isTranslucent = false
+        searchController.searchBar.placeholder = "상품명이나 브랜드명을 검색해주세요."
+        self.definesPresentationContext = true
+        //        self.searchController.delegate = searchResultsViewController
+        searchController.searchBar.delegate = searchResultsViewController
+        searchController.searchBar.searchFieldBackgroundPositionAdjustment = UIOffset(horizontal: 0, vertical: 2)
+        
+        // SearchBar 내부 Textfiled fontsize 조정
+        let textFieldInsideUISearchBar =  searchController.searchBar.value(forKey: "searchField") as? UITextField
+        let placeholderLabel = textFieldInsideUISearchBar?.value(forKey: "placeholderLabel") as? UILabel
+        placeholderLabel?.font = UIFont.systemFont(ofSize: 12.0)
+        // 구현한  SearchController를 화면에 띄어주기위해 present 호출
+        present(searchController, animated: true, completion: nil)
+        searchController.delegate = self
+        
     }
    
     // LoginView로 이동
@@ -140,3 +173,19 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     }
 
 }
+
+extension PageControllerBaseController: UISearchControllerDelegate{
+    // 검색 컨트롤러가 자동으로 닫힐 때 호출
+    @nonobjc func willDismissSearchController(_ searchController: UISearchController) {
+        print("검색 컨트롤러 자동닫힘")
+    }
+
+
+}
+extension PageControllerBaseController: SelectedCellProtocol{
+    func didSelectedCell(view: FeedDetailViewController) {
+        self.navigationController?.pushViewController(view, animated: true)
+    }
+}
+
+

@@ -7,39 +7,111 @@
 //
 
 import UIKit
+import Firebase
+import SwiftyJSON
 
 class FeedSearchViewController: UIViewController {
-    
-    
-    private lazy var searchViewController = UISearchController(searchResultsController: nil)
+    @IBOutlet weak var searchResultTableView: UITableView!
+//    let searchController = UISearchController(searchResultsController: nil)
+    var searchViewController = UISearchController(searchResultsController: nil)
+    var searchController : UISearchController!
     override func viewDidLoad() {
         super.viewDidLoad()
-        let bar = UISearchBar.init()
+        
+        let bar = UISearchBar(frame: CGRect(x: 0, y: 20, width: UIScreen.main.bounds.width, height: 44))
+//        bar.searchBarStyle = .minimal
+//        let bar = UISearchBar.init()
 //        bar.layer.borderColor = UIColor.cyan.cgColor
 //        bar.layer.borderWidth = 1
+        bar.delegate = self
         bar.layer.cornerRadius = 5.0
-        
         bar.clipsToBounds = true
         bar.searchBarStyle = .default
+        
+        
         bar.placeholder = "상품명이나 브랜드명을 검색해 주세요."
-//        self.navigationItem.titleView = bar
+        
+       
+        self.navigationItem.titleView = bar
+        
 //        self.setSearchControl()
+
+        
+
+ 
+        // 테스트 1
+//        self.searchController = UISearchController(searchResultsController:  nil)
+//        searchController.searchResultsUpdater = self
+//        searchController.delegate = self
+//        searchController.searchBar.delegate = self
+//
+//        // 검색시 서치바 부분을 숨김 여부에 대한 값
+//        searchController.hidesNavigationBarDuringPresentation = false
+//
+//        // 검색 중 기본내용 흐리게 표시되는지 여부에 대한 값
+//        searchController.dimsBackgroundDuringPresentation = false
+//
+//
+//        searchController.searchBar.placeholder = "상품명이나 브랜드명을 검색해 주세요."
+//        searchController.searchBar.searchBarStyle = .default
+//
+//        let frame = CGRect(x: 0, y: 0, width: 300, height: 30)
+//        let titleView = UIView(frame: frame)
+//
+//        searchController.searchBar.frame = frame
+//        titleView.addSubview(searchController.searchBar)
+//        self.navigationItem.titleView = titleView
         
         
+ 
+ 
+        
+        
+        
+  /*
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = false
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Candies"
         searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = "상품명이나 브랜드명을 검색해 주세요."
-        searchController.searchBar.searchBarStyle = .default
+        searchController.delegate = self
+        navigationItem.searchController = searchController
+//        navigationItem.titleView = searchViewController.searchBar
+        definesPresentationContext = true
+   
+   */
         
-        let frame = CGRect(x: 0, y: 0, width: 300, height: 30)
-        let titleView = UIView(frame: frame)
-        searchController.searchBar.backgroundImage = UIImage()
-        searchController.searchBar.frame = frame
-        titleView.addSubview(searchController.searchBar)
-        self.navigationItem.titleView = titleView
+        
+        // Setup the Scope Bar
+//        searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
+//        searchController.searchBar.delegate = self
+//        navigationItem.titleView = searchController.searchBar
+//        self.searchDisplayController?.displaysSearchBarInNavigationBar = true
+        // Setup the search footer
+//        tableView.tableFooterView = searchFooter
+        
         // Do any additional setup after loading the view.
+        
+          // 테스트 2
+//        self.searchController = UISearchController(searchResultsController:  nil)
+//
+//        self.searchController.searchResultsUpdater = self
+//        self.searchController.delegate = self
+//        self.searchController.searchBar.delegate = self
+//
+//        self.searchController.hidesNavigationBarDuringPresentation = false
+//        self.searchController.dimsBackgroundDuringPresentation = true
+//
+//        let frame = CGRect(x: 0, y: -10, width: 300, height: 30)
+//        let titleview = UIView(frame: frame)
+//        titleview.addSubview(searchController.searchBar)
+//
+//        searchController.searchBar.frame = frame
+//
+//        self.navigationItem.titleView = titleview//searchController.searchBar
+//
+//        self.definesPresentationContext = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -85,9 +157,56 @@ class FeedSearchViewController: UIViewController {
         // cancel button Color 변경
         searchViewController.searchBar.tintColor = UIColor.init(hexString: "#FF6600")
         searchViewController.searchBar.barTintColor = UIColor.white
+        
     }
 }
+extension FeedSearchViewController: UITableViewDelegate, UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let resultCell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath)
+        
+        return resultCell
+    }
+    
+}
+
+extension FeedSearchViewController: UISearchResultsUpdating{
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        
+        guard let text = searchBar.text, !text.isEmpty else {return}
+        print(text)
+    }
+    
+    
+}
+
+
+extension FeedSearchViewController: UISearchControllerDelegate {}
 
 extension FeedSearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("요걸로 검색됨 \(searchText)")
+        //이게 빈칸이면, 저장됐던 검색어가 뜬다
+        let reference = Database.database().reference().child("feed_info").child("feed_petkey_c").queryOrdered(byChild: "feed_name").queryStarting(atValue: searchText).queryEnding(atValue: "\(searchText)\u{f8ff}")
+        
+        reference.observe(.value, with: { (snap) in
+            if snap.hasChildren(){
+                print(snap.value)
+                print(snap.childrenCount)
+            }else{
+                    print("no-data")
+            }
+        }) { (error) in
+            print(error)
+        }
     
+    }
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        print("gjgjgjgj")
+    }
+        
 }

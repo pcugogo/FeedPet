@@ -43,6 +43,7 @@
 		4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8611FEB886B0016E674 /* Main.storyboard */; };
 		4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C01C8661FEB886B0016E674 /* LaunchScreen.storyboard */; };
 		4C173186201C678700D97F32 /* FeedSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C173185201C678700D97F32 /* FeedSearchViewController.swift */; };
+		4C173188201E165800D97F32 /* FeedSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C173187201E165800D97F32 /* FeedSearchBar.swift */; };
 		4C1E6DDB2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDA2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift */; };
 		4C1E6DDD20130DD500C7EDFC /* FeedReviewListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDC20130DD500C7EDFC /* FeedReviewListTableViewCell.swift */; };
 		4C1E6DDF20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDE20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift */; };
@@ -74,6 +75,7 @@
 		4CE4F5DA1FFEAD2B0047E9F9 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */; };
 		4CE4F5DD1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5DB1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift */; };
 		4CE4F5DE1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5DC1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift */; };
+		4CE87A7F201E770800AC2E7F /* FeedSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE87A7E201E770800AC2E7F /* FeedSearchResultViewController.swift */; };
 		4CF7C44B2003A57100AF8E35 /* MainCustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C44A2003A57100AF8E35 /* MainCustomNavigationBar.swift */; };
 		4CF7C4532003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C4522003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift */; };
 		4CF7C45520040DE400AF8E35 /* FunctionalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */; };
@@ -126,6 +128,7 @@
 		4C01C8671FEB886B0016E674 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C01C8691FEB886B0016E674 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C173185201C678700D97F32 /* FeedSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSearchViewController.swift; sourceTree = "<group>"; };
+		4C173187201E165800D97F32 /* FeedSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSearchBar.swift; sourceTree = "<group>"; };
 		4C1E6DDA2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedIngredientTableViewCell.swift; sourceTree = "<group>"; };
 		4C1E6DDC20130DD500C7EDFC /* FeedReviewListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReviewListTableViewCell.swift; sourceTree = "<group>"; };
 		4C1E6DDE20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReviewInfoTableViewCell.swift; sourceTree = "<group>"; };
@@ -157,6 +160,7 @@
 		4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		4CE4F5DB1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetAgeCollectionViewCell.swift; sourceTree = "<group>"; };
 		4CE4F5DC1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetFunctionalCollectionViewCell.swift; sourceTree = "<group>"; };
+		4CE87A7E201E770800AC2E7F /* FeedSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSearchResultViewController.swift; sourceTree = "<group>"; };
 		4CF7C44A2003A57100AF8E35 /* MainCustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCustomNavigationBar.swift; sourceTree = "<group>"; };
 		4CF7C4522003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionalCollectionViewCell.swift; sourceTree = "<group>"; };
 		4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionalViewController.swift; sourceTree = "<group>"; };
@@ -325,7 +329,9 @@
 				4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */,
 				4CE4F5DB1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift */,
 				4CF7C44A2003A57100AF8E35 /* MainCustomNavigationBar.swift */,
+				4C173187201E165800D97F32 /* FeedSearchBar.swift */,
 				4C173185201C678700D97F32 /* FeedSearchViewController.swift */,
+				4CE87A7E201E770800AC2E7F /* FeedSearchResultViewController.swift */,
 				4CE4F5DC1FFEAD5A0047E9F9 /* PetFunctionalCollectionViewCell.swift */,
 				4C5FBD611FFEB2CA004C66EE /* Main */,
 				14035C041FF24E95005ABAE0 /* MyPage */,
@@ -585,6 +591,7 @@
 				14DA00901FF598E700819A96 /* TeamLbCell.swift in Sources */,
 				4C1E6DDD20130DD500C7EDFC /* FeedReviewListTableViewCell.swift in Sources */,
 				14035C201FF24E95005ABAE0 /* MyMenuCell.swift in Sources */,
+				4C173188201E165800D97F32 /* FeedSearchBar.swift in Sources */,
 				14E5C19120053910007E936A /* WriteReviewViewController.swift in Sources */,
 				4CAD76801FED142E00EDE859 /* LoginViewController.swift in Sources */,
 				14035C241FF24E95005ABAE0 /* SettingHeaderCell.swift in Sources */,
@@ -609,6 +616,7 @@
 				14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */,
 				4CE4F5DA1FFEAD2B0047E9F9 /* Extension.swift in Sources */,
 				14E193711FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift in Sources */,
+				4CE87A7F201E770800AC2E7F /* FeedSearchResultViewController.swift in Sources */,
 				4C1E6DDF20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift in Sources */,
 				4C1E6DE32013152D00C7EDFC /* MyPageMyReviewsViewController.swift in Sources */,
 				148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */,
@@ -766,6 +774,7 @@
 			baseConfigurationReference = 155F8EE9A3FF90944F5A4F83 /* Pods-FeedPet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PV38XQ6LPC;
 				INFOPLIST_FILE = FeedPet/Info.plist;
@@ -773,6 +782,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gisuhwang.FeedPet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -783,6 +793,7 @@
 			baseConfigurationReference = 3A3C22C8F7964B2242907916 /* Pods-FeedPet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PV38XQ6LPC;
 				INFOPLIST_FILE = FeedPet/Info.plist;
@@ -790,6 +801,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gisuhwang.FeedPet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

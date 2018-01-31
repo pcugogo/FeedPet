@@ -15,7 +15,28 @@ class DataCenter {
     static let shared = DataCenter()
     
     var isLogin: Bool = false
-    
+    let dogFunctionalData: [[String:String]] = [
+        ["functional":"피부","functionalImg":"dogFunctional-Skin"],
+        ["functional":"알러지","functionalImg": "dogFunctional-Allergy"],
+        ["functional":"관절","functionalImg":"dogFunctional-Joint"],
+        ["functional":"다이어트","functionalImg":"dogFunctional-Diet"],
+        ["functional":"인도어","functionalImg":"dogFunctional-Indoor"],
+        ["functional":"장&면역","functionalImg":"dogFunctional-Immune"],
+        ["functional":"퍼포먼스","functionalImg":"dogFunctional-Performance"],
+        ["functional":"비뇨기","functionalImg":"dogFunctional-Urinary"],
+        ["functional":"전체","functionalImg":"dogFunctional-All"]
+    ]
+    let catFunctionalData: [[String:String]] = [
+        ["functional":"피부","functionalImg":"catFunctional-Skin"],
+        ["functional":"알러지","functionalImg": "catFunctional-Allergy"],
+        ["functional":"관절","functionalImg":"catFunctional-Joint"],
+        ["functional":"다이어트","functionalImg":"catFunctional-Diet"],
+        ["functional":"인도어","functionalImg":"catFunctional-Indoor"],
+        ["functional":"장&면역","functionalImg":"catFunctional-Immune"],
+        ["functional":"헤어볼","functionalImg":"catFunctional-Hairball"],
+        ["functional":"비뇨기","functionalImg":"catFunctional-Urinary"],
+        ["functional":"전체","functionalImg":"catFunctional-All"]
+    ]
     // Login 확인 요청 메서드
     func requestIsLogin() -> Bool {
         if Auth.auth().currentUser == nil {
@@ -71,6 +92,13 @@ class DataCenter {
     
     func getFeedData(){
         
+    }
+    func functionalSettingData(currentPet: String)->[[String:String]]{
+        if currentPet == "feed_petkey_d"{
+            return dogFunctionalData
+        }else{
+            return catFunctionalData
+        }
     }
     
 }
@@ -270,4 +298,31 @@ struct FeedDetailIngredientTest {
     
 }
 
-
+// 기능성 정보 모델링
+struct Functional{
+    var functionalKey: String!
+    var functionalName: String!
+    var functionalImg: String!
+    
+    init(functionalJSON: (String,JSON)) {
+        self.functionalKey = functionalJSON.0
+        self.functionalName = functionalJSON.1["functional_name"].stringValue
+        self.functionalImg = functionalJSON.1["functional_img"].stringValue
+    }
+    
+}
+struct FunctionalList {
+    var functional: [Functional]
+    
+    init(functionJson: JSON) {
+        var functionalList: [Functional] = []
+        for function in functionJson{
+            let functionOne = Functional(functionalJSON: function)
+            functionalList.append(functionOne)
+            
+        }
+        
+        
+        self.functional = functionalList
+    }
+}
