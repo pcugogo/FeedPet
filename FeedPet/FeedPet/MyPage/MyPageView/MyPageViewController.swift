@@ -18,21 +18,34 @@ enum enumSettingSection:Int { //섹션 이름
 
 class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,MFMailComposeViewControllerDelegate,MyMenuCellDelegate {
     
-    let settingMenuName = [ "버전정보","알람설정","FAQ","이용약관","문의하기","팀소개","로그아웃","탈퇴하기" ]
+    let settingMenuName = ["버전정보","알람설정","FAQ","이용약관","문의하기","팀소개","로그아웃","탈퇴하기" ]
+    let settingMenuImg = [#imageLiteral(resourceName: "MyPageVersionInfo"),#imageLiteral(resourceName: "MyPageAlarmSetting"),#imageLiteral(resourceName: "MyPageFAQ"),#imageLiteral(resourceName: "MyPageTermsOfUse"),#imageLiteral(resourceName: "MyPageContactUs"),#imageLiteral(resourceName: "MyPageTeamIntroduction"),#imageLiteral(resourceName: "MyPageLogOut"),#imageLiteral(resourceName: "MyPageLeaveMembership")]
     //설정 메뉴 이름들
     
-    let userSystemVersion = UIDevice.current.systemVersion // 현재 사용자 iOS 버전
+    let deviceInfo = UIDevice.current.model
+    let userSystemNameAndVersion = "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)" // 현재 사용자 iOS 버전
     let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
+    
+    
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+         print(MyPageDataCenter.shared.favorites)
+//        FireBaseData.shared.fireBaseMyReviewDataLoad()
+     
+//        FireBaseData.shared.fireBaseFavoritesDataLoad()
+//        FireBaseData.shared.fireBaseReviewsDataLoad()
+        //마이페이지 전에 있는 뷰의 뷰디드로드에서 데이터를 로드해야 MyMenuCell의 즐겨찾기 수랑 리뷰 수가 없데이트 된다
         
-        FireBaseData.shared.fireBaseFavoritesDataLoad()
-        FireBaseData.shared.fireBaseReviewsDataLoad()
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+
+        tableView.reloadData()
+        
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -84,6 +97,8 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let myMenuCell = tableView.dequeueReusableCell(withIdentifier: "MyMenuCell", for: indexPath) as! MyMenuCell
 
             myMenuCell.delegate = self
+            myMenuCell.favoritesNumLb.text = "\(MyPageDataCenter.shared.favoritesCount)개"
+            myMenuCell.myReviewsNumLb.text = "\(MyPageDataCenter.shared.reviewsCount)개"
             
             return myMenuCell
             
@@ -95,6 +110,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }else{
             let settingCell = tableView.dequeueReusableCell(withIdentifier: "SettingCell", for: indexPath) as! SettingCell
             settingCell.settingMenuNameLb.text = settingMenuName[indexPath.row - 1]
+            settingCell.settingIconimg.image = settingMenuImg[indexPath.row - 1]
             return settingCell
         }
         
@@ -111,7 +127,11 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         }else if indexPath.section == 2 && indexPath.row == 1{        //버전
             DispatchQueue.main.async{
-                let versionAlert:UIAlertController = UIAlertController(title: "ver 1.1.0", message: "최신 ver 1.2.0", preferredStyle: .alert)
+                guard let appVersion = self.userAppVersion else{
+                    return
+                }
+                
+                let versionAlert:UIAlertController = UIAlertController(title: "ver \(appVersion)", message: "최신 ver 1.1.0", preferredStyle: .alert)
                 
                 let okBtn:UIAlertAction = UIAlertAction(title: "업데이트 하러가기", style: .default, handler: nil)
                 versionAlert.addAction(okBtn)
@@ -135,16 +155,17 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }else if indexPath.section == 2 && indexPath.row == 5 {        //문의하기
             if MFMailComposeViewController.canSendMail() {
                 let mail = MFMailComposeViewController()
+                mail.navigationBar.isTranslucent = false
                 mail.mailComposeDelegate = self
                 mail.setToRecipients(["feedpet2018@gmail.com"])
                 mail.navigationBar.isTranslucent = false
-                mail.setSubject("문의합니다")
+                mail.setSubject("Feedpet Support")
                 
-                guard let AppVersion = userAppVersion else{
+                guard let appVersion = userAppVersion else{
                     return
                 }
-                
-                mail.setMessageBody("* iOS Version: \(userSystemVersion) / App Version: \(String(describing: AppVersion))\n\n문의 내용을 입력해주세요", isHTML: false)
+                //Please type your feedback above the line./ 앱버전/ 디바이스:아이폰 /프로세서/ os: /langauge
+                mail.setMessageBody("\n\n\n\n\n\n\n------------------------------\nPlease type your feedback above the line.\n\nFeedPet v\(appVersion)\nDevice: \(deviceInfo)\nOS: \(userSystemNameAndVersion)", isHTML: false)
                 present(mail, animated: true)
                 print("메일 보내기 성공")
             } else {
@@ -242,8 +263,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
    
     
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
-        //디스미스
-        
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
