@@ -50,7 +50,7 @@ class MyPageReviewEditViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
+    //리뷰삭제 메서드
     func reviewRemoveAlertController() {
         
         let reviewRemoveAlert:UIAlertController = UIAlertController(title: "", message: "선택하신 리뷰를 삭제하시겠습니까?", preferredStyle: .alert)
@@ -86,13 +86,16 @@ class MyPageReviewEditViewController: UIViewController {
         self.present(reviewRemoveAlert, animated: true, completion: nil)
     }
     
+    //리뷰 수정 메서드
     func reviewEditComplate(){
-        dateFormatter.dateFormat = "yyyy.MM.dd"
+        dateFormatter.locale = Locale(identifier: "ko")
+        dateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
         let dateString = dateFormatter.string(from: date)
         
         if let index = MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue {
             
-            let editFeedKey = MyPageDataCenter.shared.myReviewDatas[index]
+            var editFeedKey = MyPageDataCenter.shared.myReviewDatas[index]
+           
             
             if let reviewContentText = self.feedWriteContentTextView.text{
                 FireBaseData.shared.refFeedReviewsReturn.child(editFeedKey.feedKeyReturn).child("review_info").child(editFeedKey.reviewKeyReturn).updateChildValues(["feed_review":reviewContentText])
@@ -100,6 +103,10 @@ class MyPageReviewEditViewController: UIViewController {
             }
             FireBaseData.shared.refFeedReviewsReturn.child(editFeedKey.feedKeyReturn).child("review_info").child(editFeedKey.reviewKeyReturn).updateChildValues(["feed_date":dateString])
             FireBaseData.shared.fireBaseFeedReviewsDataLoad()
+            editFeedKey.feedDateEdit(feedDate: dateString)
+            MyPageDataCenter.shared.favorites.sort { (data: FavoritesData, data2: FavoritesData) -> Bool in
+                return data.addToFavoritesDateReturn > data2.addToFavoritesDateReturn
+            }
             print("수정 데이터 통신 완료")
         }
         let editComplateAlert:UIAlertController = UIAlertController(title: "", message: "저장되었습니다!", preferredStyle: .alert)
@@ -111,20 +118,18 @@ class MyPageReviewEditViewController: UIViewController {
         self.present(editComplateAlert, animated: true, completion: nil)
     }
     
+    
+    
+    
     func keyboardWasShown(_ notification : Notification) {
                             self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y + 140)
     }
     
     func keyboardWillHide(_ notification : Notification) {
-                            self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y - 140)
+        self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y - 140)
     }
-//    func keyboardWillShow(notification: NSNotification) {
-//
-//        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            keyboardHeight = Int(keyboardSize.height)
-//            print("keyboardHeight",keyboardHeight)
-//        }
-//    }
+
+    
     func createToolbar(textView : UITextView) { //텍스트 뷰 키보드 위에 올라갈 툴바
         let toolbar = UIToolbar()
         toolbar.barStyle = UIBarStyle.default

@@ -142,7 +142,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
             
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             FireBaseData.shared.refFeedReviewsReturn.child(feedKey).child("review_rating").observeSingleEvent(of: .value, with: { (snapShot) in
-                if let feedTotalRating = snapShot.value as? Int{
+                if let feedTotalRating = snapShot.value as? Int{ //리뷰데이터에 "review_rating"가있으면 평균내고 없으면 그냥 값을 넣는다
                     self.totalRating = feedTotalRating
                     
                     self.totalRating += self.ratingNumberOfStars

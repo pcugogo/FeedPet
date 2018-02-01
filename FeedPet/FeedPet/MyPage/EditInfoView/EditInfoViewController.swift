@@ -140,14 +140,14 @@ class EditInfoViewController: UIViewController {
             print(petType,"type")
             print(petAge,"age")
             //싱글옵저브이다 마이페이지데이터센터에 각각 유저정보값을 업데이트해줘야된다
-            //        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
-            //            FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_nic":nickNameTextField.text])
-            //        FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet":petType])
-            //
-            //        FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_petage":petAge])
-            //        FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet_funtional":petFunctionKey])
-            //        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_nic":nickNameTextField.text])
+            FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet":petType])
+            
+            FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_petage":petAge])
+            FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet_funtional":petFunctionKey])
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
         }else{
             let nickNameNilAlert = UIAlertController(title: "", message: "닉네임을 입력해주세요", preferredStyle: .alert)
             let okBtn = UIAlertAction(title: "OK", style: .cancel, handler: nil)
