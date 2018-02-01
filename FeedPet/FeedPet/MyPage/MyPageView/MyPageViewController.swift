@@ -16,7 +16,7 @@ enum enumSettingSection:Int { //섹션 이름
     case Setting = 2
 }
 
-class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,MFMailComposeViewControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MyPageCellDelegate {
+class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,MyPageCellDelegate {
     
     let settingMenuName = ["버전정보","알람설정","FAQ","이용약관","문의하기","팀소개","로그아웃","탈퇴하기" ]
     let settingMenuImg = [#imageLiteral(resourceName: "MyPageVersionInfo"),#imageLiteral(resourceName: "MyPageAlarmSetting"),#imageLiteral(resourceName: "MyPageFAQ"),#imageLiteral(resourceName: "MyPageTermsOfUse"),#imageLiteral(resourceName: "MyPageContactUs"),#imageLiteral(resourceName: "MyPageTeamIntroduction"),#imageLiteral(resourceName: "MyPageLogOut"),#imageLiteral(resourceName: "MyPageLeaveMembership")]
@@ -30,6 +30,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var loadingImgView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
          print(MyPageDataCenter.shared.favorites)
@@ -52,16 +53,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Dispose of any resources that can be recreated.
     }
     
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -127,7 +119,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         if indexPath.section == 0 && indexPath.row == 0{              //프로필 수정
             let editInfoView:EditInfoViewController = self.storyboard?.instantiateViewController(withIdentifier: "EditInfoViewController") as! EditInfoViewController
-            
+            editInfoView.dataIsLoaded = true
             self.navigationController?.pushViewController(editInfoView, animated: true)
             
         }else if indexPath.section == 2 && indexPath.row == 1{        //버전
@@ -225,15 +217,38 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        
-        if section == 0 {
             return 20
-        }else{
-            return 20
-        }
-        
     }
     
+    
+    
+    
+    func toFavoritesView() {
+        let myPageFavoritesView:MyPageFavoritesViewController = storyboard?.instantiateViewController(withIdentifier: "MyPageFavoritesViewController") as! MyPageFavoritesViewController
+        navigationController?.pushViewController(myPageFavoritesView, animated: true)
+    }
+    
+    func toMyReviewView() {
+        let myPageMyReviewsView:MyPageMyReviewsViewController = storyboard?.instantiateViewController(withIdentifier: "MyPageMyReviewsViewController") as! MyPageMyReviewsViewController
+        navigationController?.pushViewController(myPageMyReviewsView, animated: true)
+    }
+    func imgPickerSet() {
+        //UINavigationControllerDelegate델리게이트를 사용해야 사용할수있다
+        let imagePickerController:UIImagePickerController =
+            UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.navigationBar.isTranslucent = false
+        self.present(imagePickerController, animated: true, completion:  nil)
+    }
+   
+    
+    
+    @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension MyPageViewController:MFMailComposeViewControllerDelegate{
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         switch result {
         case .cancelled:
@@ -253,45 +268,44 @@ class MyPageViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         dismiss(animated: true, completion: nil)
     }
-    
-    
-    func toFavoritesView() {
-        let myPageFavoritesView:MyPageFavoritesViewController = storyboard?.instantiateViewController(withIdentifier: "MyPageFavoritesViewController") as! MyPageFavoritesViewController
-        navigationController?.pushViewController(myPageFavoritesView, animated: true)
-    }
-    
-    func toMyReviewView() {
-        let myPageMyReviewsView:MyPageMyReviewsViewController = storyboard?.instantiateViewController(withIdentifier: "MyPageMyReviewsViewController") as! MyPageMyReviewsViewController
-        navigationController?.pushViewController(myPageMyReviewsView, animated: true)
-    }
-    func imgPickerSet() {
-        let imagePickerController:UIImagePickerController =
-            UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.navigationBar.isTranslucent = false
-        self.present(imagePickerController, animated: true, completion:  nil)
-    }
-   
+}
+
+extension MyPageViewController:UIImagePickerControllerDelegate{
     func imagePickerController(_ picker:UIImagePickerController,didFinishPickingMediaWithInfo info: [String:Any]){
         print("info:",info)
         
-        guard let image = info["UIImagePickerControllerOriginalImage"] as? UIImage else {
+        guard let pickImg = info["UIImagePickerControllerOriginalImage"] as? UIImage else {
             return
         }
-        image.withRenderingMode(.alwaysOriginal) // 색상이 파란색으로 나오는 경우의 이유는 시스템 버튼을 쓰게 되면 자동 랜더링을 쓰게 되는 경우가 있는데 이렇게 모드를 바꿔주면 내가 고른 이미지를 띄워줘라는 뜻이다
-        profileImg = image
+        pickImg.withRenderingMode(.alwaysOriginal) // 색상이 파란색으로 나오는 경우의 이유는 시스템 버튼을 쓰게 되면 자동 랜더링을 쓰게 되는 경우가 있는데 이렇게 모드를 바꿔주면 내가 고른 이미지를 띄워줘라는 뜻이다
+        profileImg = pickImg
         tableView.reloadData()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-//        FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_profileImg":image])
+        
+        //         guard let uploadData = UIImagePNGRepresentation(pickImg) else {return}
+        //
+        //        Storage.storage().reference().child("UserProfile/").child(MyPageDataCenter.shared.testUUID).putData(uploadData, metadata: nil, completion: { (metaData, error) in
+        //
+        //            if let error = error{
+        //                print("error://",error)
+        //                return
+        //            }
+        //
+        //            print("metaData://",metaData)
+        //            guard let urlStr = metaData?.downloadURL()?.absoluteString else {return}//업로드한 이미지 다운받는 URL
+        //            print(urlStr)
+        //
+        //
+        //            Database.database().reference().child(uid).child("UserInfo").updateChildValues(["userName":userName,"profileImg":urlStr], withCompletionBlock: { (error, ref) in
+        //                print("database error://", error)
+        //                print("database reference://", ref)
+        //            })
+        //        })
+        
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         self.dismiss(animated: true, completion: nil)
-
-    }
-    
-    @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+        
     }
 }
-
 
 

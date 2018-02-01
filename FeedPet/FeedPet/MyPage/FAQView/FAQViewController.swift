@@ -9,7 +9,7 @@
 import UIKit
 
 class FAQViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
-
+    let fAQContentImgNameArr = ["faq_mouth_img","faq_ranking_img","faq_alarm_img","faq_feed_grade_img"]
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -55,19 +55,20 @@ class FAQViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         if indexPath.row == 0{
             
             fAQDetailView.barTitle = "입소문 지수는 무엇인가요?"
-            //이미지뷰에 이미지 넣으면 완성
+            fAQDetailView.fAQContentImgName = fAQContentImgNameArr[indexPath.row]
+            
             self.navigationController?.pushViewController(fAQDetailView, animated: true)
         }else if indexPath.row == 1{
             fAQDetailView.barTitle = "랭킹 기준은 무엇인가요?"
-            //이미지뷰에 이미지 넣으면 완성
+            fAQDetailView.fAQContentImgName = fAQContentImgNameArr[indexPath.row]
             self.navigationController?.pushViewController(fAQDetailView, animated: true)
         }else if indexPath.row == 2{
             fAQDetailView.barTitle = "밥 타임 알람은 무엇인가요?"
-            //이미지뷰에 이미지 넣으면 완성
+            fAQDetailView.fAQContentImgName = fAQContentImgNameArr[indexPath.row]
             self.navigationController?.pushViewController(fAQDetailView, animated: true)
         }else if indexPath.row == 3{
             fAQDetailView.barTitle = "등급이란 무엇인가요?"
-            //이미지뷰에 이미지 넣으면 완성
+            fAQDetailView.fAQContentImgName = fAQContentImgNameArr[indexPath.row]
             self.navigationController?.pushViewController(fAQDetailView, animated: true)
         }
     }

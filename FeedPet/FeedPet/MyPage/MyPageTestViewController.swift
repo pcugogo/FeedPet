@@ -12,9 +12,10 @@ class MyPageTestViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        FireBaseData.shared.fireBaseUserInfoDataLoad()
         FireBaseData.shared.fireBaseMyReviewDataLoad()
         FireBaseData.shared.fireBaseFavoritesDataLoad()
-        
+       
     }
 
   

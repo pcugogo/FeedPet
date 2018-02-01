@@ -25,10 +25,43 @@ class ProfileCell: UITableViewCell,UIImagePickerControllerDelegate {
         
         profileImg.layer.cornerRadius = 40
         petTypeLb.layer.masksToBounds = true
-        petTypeLb.layer.cornerRadius = 3
+        petTypeLb.layer.cornerRadius = 5
         petAgeLb.layer.masksToBounds = true
-        petAgeLb.layer.cornerRadius = 3
-      
+        petAgeLb.layer.cornerRadius = 5
+        
+        userIdLb.text = MyPageDataCenter.shared.userEmail
+        nickNameLb.text = MyPageDataCenter.shared.userNicName
+        if let userProfileImgURL = URL(string:MyPageDataCenter.shared.userImg) {
+            profileImg.kf.setImage(with: userProfileImgURL)
+            profileImg.layer.cornerRadius = 40
+            profileImg.clipsToBounds = true
+        }
+        if MyPageDataCenter.shared.petType == "functional_petkey_d"{
+            petTypeLb.text = "#멍"
+            switch MyPageDataCenter.shared.petAge{
+            case 0:
+                petAgeLb.text = "#퍼피"
+            case 1:
+                petAgeLb.text = "#어덜트"
+            case 2:
+                petAgeLb.text = "#시니어"
+            default:
+                print("error")
+            }
+        }else{
+            petTypeLb.text = "#냥"
+            switch MyPageDataCenter.shared.petAge{
+            case 0:
+                petAgeLb.text = "#키튼"
+            case 1:
+                petAgeLb.text = "#어덜트"
+            case 2:
+                petAgeLb.text = "#시니어"
+            default:
+                print("error")
+            }
+        }
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
