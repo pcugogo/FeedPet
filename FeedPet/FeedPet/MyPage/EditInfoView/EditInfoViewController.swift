@@ -35,6 +35,7 @@ class EditInfoViewController: UIViewController {
     //펫 기호
     var petFunctionKey = [String]() //선택된 기능의 인덱스패스와 비교하여 선택된 기능키만 담아서 통신한다
     var petFunctionTotalKey = ["skin","allergy","joint","diet","indoor","immune","performance","urinary","all"]//초기값 강아지로 설정
+    var petFunctionTotalKeyDic = ["skin":0,"allergy":1,"joint":2,"diet":3,"indoor":4,"immune":5,"performance":6,"urinary":7,"all":8]
     var loadPetFunctionKey = [String]() //유저가 체크했던 기존 키값 //기존전 화면에서 디폴트값을 넣는지 확인
     let dogFunctionKey = ["skin","allergy","joint","diet","indoor","immune","performance","urinary","all"]
     let catFunctionKey = ["skin","allergy","joint","diet","indoor","immune","hairball","urinary","all"]
@@ -60,7 +61,7 @@ class EditInfoViewController: UIViewController {
                 
                 petType = dogType
                 petFunctionTotalKey = dogFunctionKey
-                
+                petAge = 0
                 print(petType)
                 print(petFunctionTotalKey)
                 ageArray = dogAgeAray
@@ -73,7 +74,7 @@ class EditInfoViewController: UIViewController {
                 
                 petType = catType
                 petFunctionTotalKey = catFunctionKey
-                
+                petAge = 0
                 print(petType)
                 print(petFunctionTotalKey)
                 ageArray = catAgeArray
@@ -103,6 +104,13 @@ class EditInfoViewController: UIViewController {
         petAge = MyPageDataCenter.shared.petAge
         petType = MyPageDataCenter.shared.petType
         loadPetFunctionKey = MyPageDataCenter.shared.loadPetFunctionKey
+        print(loadPetFunctionKey,"뷰딛로")
+        for loadKey in loadPetFunctionKey{
+            if let funcLoadKey  = petFunctionTotalKeyDic[loadKey]{
+                functionalKeyIndex.append(funcLoadKey)
+            }
+            print("초기 loadKey",functionalKeyIndex)
+        }
         print("---뷰 디드로드 - functionlInedxPath 값: ", functionalIndexPath)
         // 최초 선택은 디폴트가 강아지로되어있다.
         ageArray = dogAgeAray
@@ -139,13 +147,15 @@ class EditInfoViewController: UIViewController {
             }
             print(petType,"type")
             print(petAge,"age")
+            print(petFunctionKey,"petFunctionKey")
             //싱글옵저브이다 마이페이지데이터센터에 각각 유저정보값을 업데이트해줘야된다
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            
+            FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).child("user_pet_funtional").removeValue()//펑셔널이 어레이로 되있어서 값이 바뀌지않고 계속 추가되기떄문에 지운다음에 추가해준다
+
             FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_nic":nickNameTextField.text])
             FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet":petType])
-            
-            FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_petage":petAge])
+
+            FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet_age":petAge])
             FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet_funtional":petFunctionKey])
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
         }else{
@@ -160,15 +170,24 @@ class EditInfoViewController: UIViewController {
     }
     
     @IBAction func petSlectBtnTouched(_ sender: UIButton) {
-        //        if sender.tag == petState.Dog.rawValue {
-        //        }
-        //        petBtnTag = sender.tag
+
         print(sender.tag)
-        
         petBtnTag = sender.tag
     }
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ########################################
 // MARK: Extension -
@@ -215,22 +234,20 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
             funcionalCell.petSelectInt = petBtnTag
             
             if dataIsLoaded == true {
-                var keyIndex = 0
-                for totalKey in petFunctionTotalKey{
-                    keyIndex += 1
-                    for loadKey in loadPetFunctionKey{
-                        if totalKey == loadKey{
-                            functionalKeyIndex.append(keyIndex - 1)
-                            
-                        }
-                        
-                    }
-                }
+
+                
+                
+                
                 for selectIndex in functionalKeyIndex {
                     if indexPath.row == selectIndex{
                         funcionalCell.isSelected = true
                         collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
-                        functionalIndexPath.append(indexPath)
+                        if functionalIndexPath.contains(indexPath) == true{
+                            functionalIndexPath.remove(at: indexPath.row)
+                        }else{
+                            functionalIndexPath.append(indexPath)
+                        }
+                        print("초기 functionalIndexPath",functionalIndexPath)
                     }
                 }
                 
@@ -262,8 +279,7 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
                     
                     functionalIndexPath.remove(at: indexInt!)
                     print("------기능성 선택한 값이 존재할경우 didSelect 인덱스패스------: ",functionalIndexPath)
-                }
-                else{
+                }else{
                     functionalIndexPath.append(indexPath)
                     print("------didSelect 인덱스패스------: ",functionalIndexPath)
                 }
@@ -277,9 +293,11 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
                 }
                 
             }
-            
+            if functionalIndexPath.count == 8{
+            }
         }else{
             petAge = indexPath.row
+            print("petAge Pick",petAge)
         }
         
         
