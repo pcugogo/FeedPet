@@ -16,27 +16,28 @@ class DataCenter {
     
     var isLogin: Bool = false
     let dogFunctionalData: [[String:String]] = [
-        ["functional":"피부","functionalImg":"dogFunctional-Skin"],
-        ["functional":"알러지","functionalImg": "dogFunctional-Allergy"],
-        ["functional":"관절","functionalImg":"dogFunctional-Joint"],
-        ["functional":"다이어트","functionalImg":"dogFunctional-Diet"],
-        ["functional":"인도어","functionalImg":"dogFunctional-Indoor"],
-        ["functional":"장&면역","functionalImg":"dogFunctional-Immune"],
-        ["functional":"퍼포먼스","functionalImg":"dogFunctional-Performance"],
-        ["functional":"비뇨기","functionalImg":"dogFunctional-Urinary"],
-        ["functional":"전체","functionalImg":"dogFunctional-All"]
+        ["functional":"피부","functionalImg":"dogFunctional-Skin", "functionalKey":"skin"],
+        ["functional":"알러지","functionalImg": "dogFunctional-Allergy", "functionalKey":"allergy"],
+        ["functional":"관절","functionalImg":"dogFunctional-Joint", "functionalKey":"joint"],
+        ["functional":"다이어트","functionalImg":"dogFunctional-Diet", "functionalKey":"diet"],
+        ["functional":"인도어","functionalImg":"dogFunctional-Indoor", "functionalKey":"indoor"],
+        ["functional":"장&면역","functionalImg":"dogFunctional-Immune", "functionalKey":"immune"],
+        ["functional":"퍼포먼스","functionalImg":"dogFunctional-Performance", "functionalKey":"performance"],
+        ["functional":"비뇨기","functionalImg":"dogFunctional-Urinary", "functionalKey":"urinary"],
+        ["functional":"전체","functionalImg":"dogFunctional-All", "functionalKey":"all"]
     ]
     let catFunctionalData: [[String:String]] = [
-        ["functional":"피부","functionalImg":"catFunctional-Skin"],
-        ["functional":"알러지","functionalImg": "catFunctional-Allergy"],
-        ["functional":"관절","functionalImg":"catFunctional-Joint"],
-        ["functional":"다이어트","functionalImg":"catFunctional-Diet"],
-        ["functional":"인도어","functionalImg":"catFunctional-Indoor"],
-        ["functional":"장&면역","functionalImg":"catFunctional-Immune"],
-        ["functional":"헤어볼","functionalImg":"catFunctional-Hairball"],
-        ["functional":"비뇨기","functionalImg":"catFunctional-Urinary"],
-        ["functional":"전체","functionalImg":"catFunctional-All"]
+        ["functional":"피부","functionalImg":"catFunctional-Skin", "functionalKey":"skin"],
+        ["functional":"알러지","functionalImg": "catFunctional-Allergy", "functionalKey":"allergy"],
+        ["functional":"관절","functionalImg":"catFunctional-Joint", "functionalKey":"joint"],
+        ["functional":"다이어트","functionalImg":"catFunctional-Diet", "functionalKey":"diet"],
+        ["functional":"인도어","functionalImg":"catFunctional-Indoor", "functionalKey":"indoor"],
+        ["functional":"장&면역","functionalImg":"catFunctional-Immune", "functionalKey":"immune"],
+        ["functional":"헤어볼","functionalImg":"catFunctional-Hairball", "functionalKey":"hairball"],
+        ["functional":"비뇨기","functionalImg":"catFunctional-Urinary","functionalKey":"urinary"],
+        ["functional":"전체","functionalImg":"catFunctional-All", "functionalKey":"all"]
     ]
+    var currentPetKey: String = ""
     // Login 확인 요청 메서드
     func requestIsLogin() -> Bool {
         if Auth.auth().currentUser == nil {
@@ -146,9 +147,9 @@ struct FeedInfo{
     var feedName: String!
     var feedIngredient: String!
     var feedAge: Int!
-    var feedWeight: [JSON]!
-    var feedFunctional: [JSON]!
-    var feedImg: [JSON]!
+    var feedWeight: [Double]!
+    var feedFunctional: [String]!
+    var feedImg: [String]!
     var feedMouth: String!
     var feedGrade: Int!
     var feedCountry: String!
@@ -164,9 +165,9 @@ struct FeedInfo{
         self.feedName = feedJsonData.1["feed_name"].stringValue
         self.feedIngredient = feedJsonData.1["feed_ingredient"].stringValue
         self.feedAge = feedJsonData.1["feed_age"].intValue
-        self.feedWeight = feedJsonData.1["feed_weight"].arrayValue
-        self.feedFunctional = feedJsonData.1["feed_functional"].arrayValue
-        self.feedImg = feedJsonData.1["feed_img"].arrayValue
+        self.feedWeight = feedJsonData.1["feed_weight"].arrayObject as! [Double]
+        self.feedFunctional = feedJsonData.1["feed_functional"].arrayObject as! [String]
+        self.feedImg = feedJsonData.1["feed_img"].arrayObject as! [String]
         self.feedMouth = feedJsonData.1["feed_mouth"].stringValue
         self.feedGrade = feedJsonData.1["feed_grade"].intValue
         self.feedCountry = feedJsonData.1["feed_country"].stringValue
@@ -186,9 +187,9 @@ struct FeedInfo{
         self.feedName = feedJsonDataTest["feed_name"].stringValue
         self.feedIngredient = feedJsonDataTest["feed_ingredient"].stringValue
         self.feedAge = feedJsonDataTest["feed_age"].intValue
-        self.feedWeight = feedJsonDataTest["feed_weight"].arrayValue
-        self.feedFunctional = feedJsonDataTest["feed_functional"].arrayValue
-        self.feedImg = feedJsonDataTest["feed_img"].arrayValue
+        self.feedWeight = feedJsonDataTest["feed_weight"].arrayObject as! [Double]
+        self.feedFunctional = feedJsonDataTest["feed_functional"].arrayObject as! [String]
+        self.feedImg = feedJsonDataTest["feed_img"].arrayObject as! [String]
         self.feedMouth = feedJsonDataTest["feed_mouth"].stringValue
         self.feedGrade = feedJsonDataTest["feed_grade"].intValue
         self.feedCountry = feedJsonDataTest["feed_country"].stringValue
@@ -201,7 +202,9 @@ struct FeedInfo{
         
         
     }
-    
+    init() {
+        
+    }
 }
 // 사료 리스트
 struct FeedInfoList {
@@ -321,8 +324,7 @@ struct FunctionalList {
             functionalList.append(functionOne)
             
         }
-        
-        
         self.functional = functionalList
     }
+    
 }

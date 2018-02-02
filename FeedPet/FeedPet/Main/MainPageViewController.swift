@@ -27,9 +27,15 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     var ref: DatabaseReference!
     
     
-    
+    // 페이지네이션 데이터 변수
     var feedPagenationData = [FeedInfo]()
+    // 사료키값을 담을 데이터
     var feedInfoStartKey: String!
+    
+    var feedAllData = [FeedInfo]()
+    var feedInfoKey: String!
+    var feedFilteringData = [FeedInfo]()
+    
     var currentPet = String()
     
     
@@ -50,7 +56,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
 //        기존 테이블 전체 데이터 호출
         feedDataCountLoad()
         
-        // 페이지네이션 데이터
+        // 페이지네이션 데이터 - 최초 가입시 선택한 기능성에
         feedDataHandlePagination()
         
 //        ref.database.reference()
@@ -126,6 +132,26 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     // MARK: 전체 데이터 카운트 호출
     func feedDataCountLoad(){
         testReference.child("feed_info").child(currentPet).observeSingleEvent(of: .value, with: { (dataSnap) in
+            guard let feedInfoListJson = dataSnap.value else {return}
+            let feedJson = JSON(feedInfoListJson)
+            var feedData = [FeedInfo]()
+            if dataSnap.childrenCount > 0 {
+                for feed in feedJson{
+                    
+                    let feedOne = FeedInfo(feedJsonData: feed)
+//                    self.feedPagenationData.insert(feedOne, at: self.feedPagenationData.count)
+                    feedData.append(feedOne)
+                    
+                }
+                self.feedAllData = feedData
+                DispatchQueue.main.async {
+                    self.feedAllDataPagination(functionalKey: ["immune","joint"])
+                    self.feedInfoTableView.reloadData()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                }
+                print(self.feedInfoStartKey)
+                print(self.feedPagenationData)
+            }
             DispatchQueue.main.async {
                 self.feedListCountLabel.text = dataSnap.childrenCount.description
             }
@@ -133,6 +159,52 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
             print(error)
         }
         
+    }
+    
+    func feedAllDataPagination(functionalKey: [String]){
+        // 최초 페이지네이션 키 값이 nil일 경우
+        var filterData = [FeedInfo]()
+        
+        for index in 0 ..< functionalKey.count{
+            var datafilterData = feedAllData.filter {$0.feedFunctional.contains(functionalKey[index])}
+            print("필터링 데이터 인덱스: \(index) /카운튼:\(datafilterData.count) :",datafilterData)
+            filterData = filterData + datafilterData
+            print("필터링 데이터 인덱스 totoal /카운튼:\(filterData.count) :",filterData)
+        }
+        var dd = [FeedInfo]()
+        var testa = ["immune","joint"]
+        for feed in feedAllData{
+            
+            for functionalkey in functionalKey{
+                print("JSON(functionalKey)",functionalkey)
+                print(feed.feedFunctional.contains(functionalkey))
+                if feed.feedFunctional.contains(functionalkey) {
+                    dd.append(feed)
+                    print("해당 기능성 키:",feed.feedFunctional)
+                }
+                
+            }
+        }
+        print(dd,"/",dd.count)
+        
+        // 1. 먼저 기능성 키값에 String 값을 할당
+        for key in functionalKey {
+            // key => [String] 배열에 하나의 값
+            // 2. 전체 사료정보중 사료하나의 값을 할당
+            for feedOne in feedAllData{
+                // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                var a = feedAllData.filter({!$0.feedKey.contains(feedOne.feedKey)})
+                var b = filterData.contains(where: { (feedInfo) -> Bool in
+                    return feedInfo.feedKey != feedOne.feedKey
+                })
+                if feedOne.feedFunctional.contains(key){
+                    //존재한다면 해당 사료의 값을 확인해보자.
+                    // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+                    print("존재하는 사료 정보 확인:", feedOne.feedKey)
+                    
+                }
+            }
+        }
     }
     
     // MARK: 사료 정보 페이징 처리를 위한 함수
@@ -212,8 +284,10 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     func currentPetCheck(){
         if indicatorTitle == "멍" {
             currentPet = "feed_petkey_d"
+            DataCenter.shared.currentPetKey = currentPet
         }else{
             currentPet = "feed_petkey_c"
+            DataCenter.shared.currentPetKey = currentPet
         }
     }
     
@@ -262,7 +336,7 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         feedCell.feedIngredientLabel.text = self.feedPagenationData[indexPath.row].feedIngredient
         
     
-        if let urlStr = self.feedPagenationData[indexPath.row].feedImg.first?.stringValue, let url = URL(string: urlStr){
+        if let urlStr = self.feedPagenationData[indexPath.row].feedImg.first, let url = URL(string: urlStr){
 
             feedCell.feedImgView.kf.setImage(with: url)
 //            DispatchQueue.main.async {

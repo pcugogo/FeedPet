@@ -15,6 +15,8 @@ class FunctionalViewController: UIViewController {
     
     
     var functionalData = [[String:String]]()
+    var functionalList = [Functional]()
+    
     @IBOutlet weak var functionalCollectionView: UICollectionView!
     @IBOutlet weak var filterMenuView: UIView!
     
@@ -116,7 +118,12 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
         
         return functionCell
     }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(functionalData[indexPath.row]["functionalKey"])
+    }
     
-    
+    func functionalFeedDataLoad(functional: String, currentPet: String){
+        
+    }
 }
 

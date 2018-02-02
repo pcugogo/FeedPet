@@ -9,6 +9,7 @@ target 'FeedPet' do
     pod 'Firebase'
     pod 'Firebase/Auth'
     pod 'Firebase/Database'
+    pod 'Firebase/Storage'
     
     pod 'GoogleSignIn'
     
@@ -21,7 +22,7 @@ target 'FeedPet' do
     pod 'XLPagerTabStrip', '~> 8.0'
     pod 'ChartProgressBar', '~> 1.0'
     pod 'Kingfisher', '~> 4.6'
-    
+    pod 'SwiftGIF', '~> 0.1'
     
 end
 
