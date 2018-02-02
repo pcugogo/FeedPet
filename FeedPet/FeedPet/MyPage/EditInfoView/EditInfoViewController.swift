@@ -104,7 +104,6 @@ class EditInfoViewController: UIViewController {
         petAge = MyPageDataCenter.shared.petAge
         petType = MyPageDataCenter.shared.petType
         loadPetFunctionKey = MyPageDataCenter.shared.loadPetFunctionKey
-        print(loadPetFunctionKey,"뷰딛로")
         for loadKey in loadPetFunctionKey{
             if let funcLoadKey  = petFunctionTotalKeyDic[loadKey]{
                 functionalKeyIndex.append(funcLoadKey)

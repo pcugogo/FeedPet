@@ -15,7 +15,10 @@ class MyPageTestViewController: UIViewController {
         FireBaseData.shared.fireBaseUserInfoDataLoad()
         FireBaseData.shared.fireBaseMyReviewDataLoad()
         FireBaseData.shared.fireBaseFavoritesDataLoad()
-       
+        let ingredientGoodKey = ["ingredient_key_g159","ingredient_key_g1","ingredient_key_g12"]
+        let ingredientWarningKey = ["ingredient_key_w17","ingredient_key_w9"]
+        FireBaseData.shared.feedGoodIngredientDataLoad(ingredientGoodKey: ingredientGoodKey)
+        FireBaseData.shared.feedWarningIngredientDataLoad(ingredientWarningKey: ingredientWarningKey)
     }
 
   
@@ -26,14 +29,13 @@ class MyPageTestViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func toIngredientViewBtnAction(_ sender: UIButton) {
+        
+        let ingredientView:IngredientAnalysisViewController = self.storyboard?.instantiateViewController(withIdentifier: "IngredientAnalysisViewController") as! IngredientAnalysisViewController
+        
+        self.navigationController?.pushViewController(ingredientView, animated: true)
+        
     }
-    */
+    
 
 }

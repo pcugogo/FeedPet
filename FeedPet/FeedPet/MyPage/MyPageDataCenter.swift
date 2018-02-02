@@ -42,9 +42,14 @@ struct MyPageDataCenter {
     
     var reviewThumbDatas = [ReviewThumb]()
     
+    //성분분석 데이터
+    var feedIngredientGoodDatas = [FeedIngredientGood]()
+    var feedIngredientWarningDatas = [FeedIngredientWarning]()
+    
     //탈퇴하기 내용
     var leaveMembershipReason = ""
     var leaveMembarshipEtcReasonContent = ""
+    
 }
 
 struct userDefaultsName {   //알림 서비스에서 이용하는 유저디폴트 이름들
@@ -70,6 +75,8 @@ struct FireBaseData{
     private var refMyReviews = Database.database().reference().child("my_review")
     private var refFeedInfo = Database.database().reference().child("feed_info")
     private var refReviewThumb = Database.database().reference().child("review_thumb")
+    private var refFeedIngredientGood = Database.database().reference().child("feed_ingredient").child("ingredient_key_g")
+    private var refFeedIngredientWarning = Database.database().reference().child("feed_ingredient").child("ingredient_key_w")
     
     var refBaseReturn:DatabaseReference{
         return refBase
@@ -95,6 +102,13 @@ struct FireBaseData{
     var refReviewThumbReturn:DatabaseReference{
         return refReviewThumb
     }
+    var refFeedIngredientGoodReturn:DatabaseReference{
+        return refFeedIngredientGood
+    }
+    var refFeedIngredientWarningReturn:DatabaseReference{
+        return refFeedIngredientWarning
+    }
+    
     func fireBaseUserInfoDataLoad(){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -226,7 +240,7 @@ struct FireBaseData{
                                     return data.addToFavoritesDateReturn > data2.addToFavoritesDateReturn
                                 }
                             }
-
+                            
                         })//여기까지 강아지일때 피드값
                         
                         //여기부터 고양이
@@ -267,7 +281,7 @@ struct FireBaseData{
                                     return data.addToFavoritesDateReturn > data2.addToFavoritesDateReturn
                                 }
                             }
-                          
+                            
                             
                             
                         })//여기 까지 고양이일때 피드값
@@ -282,11 +296,10 @@ struct FireBaseData{
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
-        
-        
     }
     
     func favoriteReviewData(){
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         for favorite in MyPageDataCenter.shared.favorites{
             FireBaseData.shared.refFeedReviews.child(favorite.feedKeyReturn).observeSingleEvent(of: .value, with: { (reviewSnapshot) in
                 let feedKey = favorite.feedKeyReturn
@@ -312,6 +325,7 @@ struct FireBaseData{
                 
             })
         }
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
     func fireBaseMyReviewDataLoad(){
@@ -431,7 +445,7 @@ struct FireBaseData{
     }
     
     func FireBaseReviewThumbDataLoad(){
-        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         for reviewKeyData in MyPageDataCenter.shared.myReviewKeyDatas{
             var reviewLike = 0
             var reviewUnLike = 0
@@ -458,6 +472,56 @@ struct FireBaseData{
                 return TransactionResult.success(withValue: reviewThumbSnapshot)
             })
         }
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    
+    //좋은 성분 정보 데이터 불러오기
+    func feedGoodIngredientDataLoad(ingredientGoodKey:[String]) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        for goodKey in ingredientGoodKey{
+            refFeedIngredientGood.child(goodKey).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let ingredientSnapshot = snapshot.value as? [String:AnyObject]{
+                    var goodIngredientName:String?
+                    var goodIngredientText:String?
+                    for ingredientSnap in ingredientSnapshot{
+                        if ingredientSnap.key == "ingredient_name"{
+                            goodIngredientName = ingredientSnap.value as? String
+                        }
+                        if ingredientSnap.key == "ingredient_text"{
+                            goodIngredientText = ingredientSnap.value as? String
+                        }
+                    }
+                    guard let ingredientName = goodIngredientName,let ingredientText = goodIngredientText else {return}
+                    let goodIngredientInfo = FeedIngredientGood(ingredientName: ingredientName, ingredientText: ingredientText)
+                    MyPageDataCenter.shared.feedIngredientGoodDatas.append(goodIngredientInfo)
+                }
+            })
+        }
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    //주의 성분 데이터 불러오기
+    func feedWarningIngredientDataLoad(ingredientWarningKey:[String]) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        for warningKey in ingredientWarningKey{
+            refFeedIngredientWarning.child(warningKey).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let ingredientSnapshot = snapshot.value as? [String:AnyObject]{
+                    var warningIngredientName:String?
+                    var warningIngredientText:String?
+                    for ingredientSnap in ingredientSnapshot{
+                        if ingredientSnap.key == "ingredient_name"{
+                            warningIngredientName = ingredientSnap.value as? String
+                        }
+                        if ingredientSnap.key == "ingredient_text"{
+                            warningIngredientText = ingredientSnap.value as? String
+                        }
+                    }
+                    guard let ingredientName = warningIngredientName,let ingredientText = warningIngredientText else {return}
+                    let warningIngredientInfo = FeedIngredientWarning(ingredientName: ingredientName, ingredientText: ingredientText)
+                    MyPageDataCenter.shared.feedIngredientWarningDatas.append(warningIngredientInfo)
+                }
+            })
+        }
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
 }
@@ -506,12 +570,6 @@ struct FavoritesData {
     var feedPackageFlagReturn:Bool{
         return feedPackageFlag
     }
-    //    var ratingReturn:Int{
-    //        return rating
-    //    }
-    //    var numberOfReviewReturn:Int{ //총 리뷰 갯수
-    //        return numberOfReview
-    //    }
     var addToFavoritesDateReturn:String{
         return addToFavoritesDate
     }
@@ -666,3 +724,36 @@ struct ReviewThumb {
     }
 }
 
+struct FeedIngredientGood {
+    
+    private var ingredientName:String!
+    private var ingredientText:String!
+    
+    var ingredientNameReturn:String{
+        return ingredientName
+    }
+    var ingredientTextReturn:String{
+        return ingredientText
+    }
+    init(ingredientName:String,ingredientText:String){
+        self.ingredientName = ingredientName
+        self.ingredientText = ingredientText
+    }
+}
+struct FeedIngredientWarning{
+    
+    private var ingredientName:String!
+    private var ingredientText:String!
+    
+    var ingredientNameReturn:String{
+        return ingredientName
+    }
+    var ingredientTextReturn:String{
+        return ingredientText
+    }
+    init(ingredientName:String,ingredientText:String){
+        
+        self.ingredientName = ingredientName
+        self.ingredientText = ingredientText
+    }
+}

@@ -16,7 +16,7 @@
         <!--My Page View Controller-->
         <scene sceneID="WQD-Fk-g0Y">
             <objects>
-                <viewController id="5uH-Uq-Wmp" customClass="MyPageViewController" customModule="FeedPet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MyPageViewController" id="5uH-Uq-Wmp" customClass="MyPageViewController" customModule="FeedPet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="naH-fm-1c7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -350,12 +350,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mdt-wB-9h4" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="9PK-kR-MPz">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <viewLayoutGuide key="safeArea" id="T1D-2Z-EFV"/>
-                </view>
             </objects>
             <point key="canvasLocation" x="752.79999999999995" y="34.632683658170919"/>
         </scene>
@@ -657,6 +651,12 @@
                                                 <action selector="backBtnAction:" destination="ORq-LN-7Jl" id="W13-ET-Hvt"/>
                                             </connections>
                                         </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="초기화" id="Za2-qm-3lV">
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <connections>
+                                                <action selector="alarmResetBtnAction:" destination="ORq-LN-7Jl" id="3ls-je-deW"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -911,7 +911,11 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="성분분석" id="pmn-OG-Zxq">
-                                        <barButtonItem key="leftBarButtonItem" title="Item" id="2lz-As-TZY"/>
+                                        <barButtonItem key="leftBarButtonItem" title="Item" id="2lz-As-TZY">
+                                            <connections>
+                                                <action selector="backBtnAction:" destination="Ytv-24-96R" id="nJT-wg-U7t"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -2438,13 +2442,22 @@
                                     <segue destination="xE3-Hg-KqR" kind="show" id="1vY-AJ-fmT"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="efN-Tj-sDb">
+                                <rect key="frame" x="136.33333333333334" y="441" width="102" height="30"/>
+                                <state key="normal" title="ingredientView"/>
+                                <connections>
+                                    <action selector="toIngredientViewBtnAction:" destination="txb-93-xUq" eventType="touchUpInside" id="Y4L-NV-Dff"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="efN-Tj-sDb" firstAttribute="top" secondItem="iYL-2n-gkX" secondAttribute="bottom" id="1mh-oy-BMW"/>
                             <constraint firstItem="IA1-EV-wZW" firstAttribute="bottom" secondItem="qJ3-vr-wFy" secondAttribute="centerY" id="Iqu-gx-27P"/>
                             <constraint firstItem="IA1-EV-wZW" firstAttribute="centerX" secondItem="qJ3-vr-wFy" secondAttribute="centerX" id="RqD-Hs-EDj"/>
                             <constraint firstItem="iYL-2n-gkX" firstAttribute="centerX" secondItem="qJ3-vr-wFy" secondAttribute="centerX" id="d3N-GC-J0l"/>
                             <constraint firstItem="iYL-2n-gkX" firstAttribute="top" secondItem="qJ3-vr-wFy" secondAttribute="centerY" id="e9V-aO-Whs"/>
+                            <constraint firstItem="efN-Tj-sDb" firstAttribute="centerX" secondItem="qJ3-vr-wFy" secondAttribute="centerX" id="nXB-kN-ciW"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="qJ3-vr-wFy"/>
                     </view>

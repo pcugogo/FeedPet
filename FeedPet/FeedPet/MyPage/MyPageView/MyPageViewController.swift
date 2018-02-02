@@ -34,10 +34,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
          print(MyPageDataCenter.shared.favorites)
-//        FireBaseData.shared.fireBaseMyReviewDataLoad()
-     
-//        FireBaseData.shared.fireBaseFavoritesDataLoad()
-//        FireBaseData.shared.fireBaseReviewsDataLoad()
+
         //마이페이지 전에 있는 뷰의 뷰디드로드에서 데이터를 로드해야 MyMenuCell의 즐겨찾기 수랑 리뷰 수가 없데이트 된다
         
     }
