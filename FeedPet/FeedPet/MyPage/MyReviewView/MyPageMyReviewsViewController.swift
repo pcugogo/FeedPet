@@ -63,8 +63,8 @@ class MyPageMyReviewsViewController: UIViewController,UITableViewDataSource,UITa
         myPageMyReviewsCell.removeBtnOut.tag = indexPath.row
         
         if MyPageDataCenter.shared.myReviewDatas.isEmpty == false{
-            let review = MyPageDataCenter.shared.myReviewDatas[indexPath.row]
-            myPageMyReviewsCell.configureCell(review: review)
+            
+            myPageMyReviewsCell.configureCell(review: MyPageDataCenter.shared.myReviewDatas[indexPath.row])
         }
         
         return myPageMyReviewsCell

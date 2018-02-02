@@ -2439,7 +2439,7 @@
                                 </constraints>
                                 <state key="normal" title="reviewWrite"/>
                                 <connections>
-                                    <segue destination="xE3-Hg-KqR" kind="show" id="1vY-AJ-fmT"/>
+                                    <action selector="toReviewWriteBtnAction:" destination="txb-93-xUq" eventType="touchUpInside" id="uYZ-yk-mLD"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="efN-Tj-sDb">

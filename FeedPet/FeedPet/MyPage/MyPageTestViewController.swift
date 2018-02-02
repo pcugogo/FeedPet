@@ -9,7 +9,12 @@
 import UIKit
 
 class MyPageTestViewController: UIViewController {
-
+    
+    let feedKey:String = "feed_key_c177"
+    let feedBrand:String = "내추럴발란스"
+    let feedName:String = "내추럴발란스 LID 완두&오리 포뮬러"
+    let feedImg:String = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_c177_1.png"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         FireBaseData.shared.fireBaseUserInfoDataLoad()
@@ -28,7 +33,16 @@ class MyPageTestViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    @IBAction func toReviewWriteBtnAction(_ sender: UIButton) {
+        let writeReviewView:WriteReviewViewController = self.storyboard?.instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController
+        writeReviewView.feedKey = "feed_key_c177"
+        writeReviewView.feedBrand = "내추럴발란스"
+        writeReviewView.feedName = "내추럴발란스 LID 완두&오리 포뮬러"
+        writeReviewView.feedImg = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_c177_1.png"
+        
+        self.navigationController?.pushViewController(writeReviewView, animated: true)
+    }
+    
     @IBAction func toIngredientViewBtnAction(_ sender: UIButton) {
         
         let ingredientView:IngredientAnalysisViewController = self.storyboard?.instantiateViewController(withIdentifier: "IngredientAnalysisViewController") as! IngredientAnalysisViewController
