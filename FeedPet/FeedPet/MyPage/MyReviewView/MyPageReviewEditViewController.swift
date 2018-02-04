@@ -12,7 +12,9 @@ class MyPageReviewEditViewController: UIViewController {
     
     
     var myReviews:MyReview!
-    let dateFormatter : DateFormatter = DateFormatter()
+    let reviewEditDateFormatter : DateFormatter = DateFormatter()
+    let dateFormatterHour : DateFormatter = DateFormatter()
+    let dateFormatterAMPM : DateFormatter = DateFormatter()
     let date = Date()
     
     var keyboardHeight = 0
@@ -88,9 +90,31 @@ class MyPageReviewEditViewController: UIViewController {
     
     //리뷰 수정 메서드
     func reviewEditComplate(){
-        dateFormatter.locale = Locale(identifier: "ko")
-        dateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
-        let dateString = dateFormatter.string(from: date)
+       
+        reviewEditDateFormatter.locale = Locale(identifier: "ko")
+        dateFormatterHour.dateFormat = "hh"
+        dateFormatterAMPM.dateFormat = "aa"
+        
+        let amPmStr = dateFormatterAMPM.string(from: date)
+        let hourString = dateFormatterHour.string(from: date)
+        
+        if amPmStr == "AM" {
+            if hourString == "12"{
+                reviewEditDateFormatter.dateFormat = "yyyy.MM.dd 00:mm" //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
+            }else{
+                reviewEditDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+            }
+        }else if amPmStr == "PM" || MyPageDataCenter.shared.mealTimeAMPM["morning"] == "오후"{
+            if hourString == "12"{
+                reviewEditDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+            }else{
+                reviewEditDateFormatter.dateFormat = "yyyy.MM.dd \(Int(hourString)! + 12):mm"
+                //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
+            }
+            
+        }
+        let dateString = self.reviewEditDateFormatter.string(from: self.date)
+        
         
         if let index = MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue {
             

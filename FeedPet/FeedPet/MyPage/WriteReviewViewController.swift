@@ -22,6 +22,8 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
     var ratingNumberOfStars = 5 //서버에 넘겨질 평점 초기 별 갯수 5개
     
     let reviewWriteDateFormatter : DateFormatter = DateFormatter()
+    let dateFormatterHour : DateFormatter = DateFormatter()
+    let dateFormatterAMPM : DateFormatter = DateFormatter()
     let date = Date()
     
     let textViewPlaceHolderText = "사용하신 상품의 리뷰를 남겨주세요:)"
@@ -127,7 +129,28 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
     
     @IBAction func saveBtnAction(_ sender: UIBarButtonItem) {
         reviewWriteDateFormatter.locale = Locale(identifier: "ko")
-        reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+        dateFormatterHour.dateFormat = "hh"
+        dateFormatterAMPM.dateFormat = "aa"
+        
+        let amPmStr = dateFormatterAMPM.string(from: date)
+        let hourString = dateFormatterHour.string(from: date)
+        
+        if amPmStr == "AM" {
+            if hourString == "12"{
+                reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd 00:mm" //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
+            }else{
+                reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+            }
+        }else if amPmStr == "PM" || MyPageDataCenter.shared.mealTimeAMPM["morning"] == "오후"{
+            if hourString == "12"{
+                reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+            }else{
+                reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd \(Int(hourString)! + 12):mm"
+                 //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
+            }
+            
+        }
+        
         let dateString = self.reviewWriteDateFormatter.string(from: self.date)
         
         if reviewContentsTextView.text.isEmpty || reviewContentsTextView.text == textViewPlaceHolderText {
@@ -138,6 +161,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
             blankContents.addAction(okBtn)
             self.present(blankContents, animated: true, completion: nil)
         }else{
+            
             let feedReviewInfoDic = ["feed_date":dateString,"feed_rating":self.ratingNumberOfStars,"feed_review":reviewContentsTextView.text,"user_key":MyPageDataCenter.shared.testUUID] as [String : Any]
             
             UIApplication.shared.isNetworkActivityIndicatorVisible = true

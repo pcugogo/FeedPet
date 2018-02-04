@@ -35,10 +35,10 @@ class MyPageTestViewController: UIViewController {
     
     @IBAction func toReviewWriteBtnAction(_ sender: UIButton) {
         let writeReviewView:WriteReviewViewController = self.storyboard?.instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController
-        writeReviewView.feedKey = "feed_key_c177"
-        writeReviewView.feedBrand = "내추럴발란스"
-        writeReviewView.feedName = "내추럴발란스 LID 완두&오리 포뮬러"
-        writeReviewView.feedImg = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_c177_1.png"
+        writeReviewView.feedKey = "feed_key_d115"
+        writeReviewView.feedBrand = "퓨리나"
+        writeReviewView.feedName = "퍼피차우 생후 1개월 이상 전연령용"
+        writeReviewView.feedImg = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_d115_1.png"
         
         self.navigationController?.pushViewController(writeReviewView, animated: true)
     }

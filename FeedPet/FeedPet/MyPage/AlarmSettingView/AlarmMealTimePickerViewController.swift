@@ -62,13 +62,13 @@ class AlarmMealTimePickerViewController: UIViewController {
         let dateString = formatter.string(from: timePickerViewOut.date)
         let hourString = dateFormatterHour.string(from: timePickerViewOut.date)
         let minuteStr = dateFormatterMinute.string(from: timePickerViewOut.date)
-        let AMPMStr = dateFormatterAMPM.string(from: timePickerViewOut.date)
+        let amPmStr = dateFormatterAMPM.string(from: timePickerViewOut.date)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",hourString)
         if cellIdentificationNumber == 1{
             
             MyPageDataCenter.shared.mealTime["morning"] = dateString          //셀의 레이블에 담을 피커뷰의 시간을 담습니다
             
-            MyPageDataCenter.shared.mealTimeAMPM["morning"] = AMPMStr
+            MyPageDataCenter.shared.mealTimeAMPM["morning"] = amPmStr
             
             if MyPageDataCenter.shared.mealTimeAMPM["morning"] == "AM" || MyPageDataCenter.shared.mealTimeAMPM["morning"] == "오전" {
                 if hourString == "12"{
@@ -97,7 +97,7 @@ class AlarmMealTimePickerViewController: UIViewController {
             MyPageDataCenter.shared.mealTime["lunch"] = dateString
             
             
-            MyPageDataCenter.shared.mealTimeAMPM["lunch"] = AMPMStr
+            MyPageDataCenter.shared.mealTimeAMPM["lunch"] = amPmStr
             
             if MyPageDataCenter.shared.mealTimeAMPM["lunch"] == "AM" || MyPageDataCenter.shared.mealTimeAMPM["lunch"] == "오전" {
                 if hourString == "12"{
@@ -125,7 +125,7 @@ class AlarmMealTimePickerViewController: UIViewController {
             
             MyPageDataCenter.shared.mealTime["dinner"] = dateString
             
-            MyPageDataCenter.shared.mealTimeAMPM["dinner"] = AMPMStr
+            MyPageDataCenter.shared.mealTimeAMPM["dinner"] = amPmStr
             
             if MyPageDataCenter.shared.mealTimeAMPM["dinner"] == "AM" || MyPageDataCenter.shared.mealTimeAMPM["dinner"] == "오전" {
                 if hourString == "12"{
