@@ -90,7 +90,7 @@ class MyPageReviewEditViewController: UIViewController {
     
     //리뷰 수정 메서드
     func reviewEditComplate(){
-       
+        
         reviewEditDateFormatter.locale = Locale(identifier: "ko")
         dateFormatterHour.dateFormat = "hh"
         dateFormatterAMPM.dateFormat = "aa"
@@ -104,7 +104,7 @@ class MyPageReviewEditViewController: UIViewController {
             }else{
                 reviewEditDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
             }
-        }else if amPmStr == "PM" || MyPageDataCenter.shared.mealTimeAMPM["morning"] == "오후"{
+        }else if amPmStr == "PM" {
             if hourString == "12"{
                 reviewEditDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
             }else{
@@ -119,7 +119,7 @@ class MyPageReviewEditViewController: UIViewController {
         if let index = MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue {
             
             var editFeedKey = MyPageDataCenter.shared.myReviewDatas[index]
-           
+            
             
             if let reviewContentText = self.feedWriteContentTextView.text{
                 FireBaseData.shared.refFeedReviewsReturn.child(editFeedKey.feedKeyReturn).child("review_info").child(editFeedKey.reviewKeyReturn).updateChildValues(["feed_review":reviewContentText])
@@ -146,13 +146,13 @@ class MyPageReviewEditViewController: UIViewController {
     
     
     func keyboardWasShown(_ notification : Notification) {
-                            self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y + 140)
+        self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y + 140)
     }
     
     func keyboardWillHide(_ notification : Notification) {
         self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y - 140)
     }
-
+    
     
     func createToolbar(textView : UITextView) { //텍스트 뷰 키보드 위에 올라갈 툴바
         let toolbar = UIToolbar()

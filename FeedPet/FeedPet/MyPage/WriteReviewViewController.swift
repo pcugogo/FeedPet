@@ -141,12 +141,12 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
             }else{
                 reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
             }
-        }else if amPmStr == "PM" || MyPageDataCenter.shared.mealTimeAMPM["morning"] == "오후"{
+        }else if amPmStr == "PM" {
             if hourString == "12"{
                 reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
             }else{
                 reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd \(Int(hourString)! + 12):mm"
-                 //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
+                //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
             }
             
         }
