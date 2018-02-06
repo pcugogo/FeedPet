@@ -45,3 +45,51 @@ extension UIColor {
         return String(format:"#%06x", rgb)
     }
 }
+
+extension UIView {
+    
+    func autoLayoutAnchor(top:NSLayoutYAxisAnchor?,
+                          left:NSLayoutXAxisAnchor?,
+                          right:NSLayoutXAxisAnchor?,
+                          bottom:NSLayoutYAxisAnchor?,
+                          topConstant: CGFloat,
+                          leftConstant: CGFloat,
+                          rigthConstant: CGFloat,
+                          bottomConstant: CGFloat,
+                          width: CGFloat,
+                          height: CGFloat,
+                          centerX: NSLayoutXAxisAnchor?,
+                          centerY: NSLayoutYAxisAnchor?
+        )
+    {
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        if let top = top {
+            self.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
+        }
+        if let left = left {
+            self.leftAnchor.constraint(equalTo: left, constant: leftConstant).isActive = true
+        }
+        if let right = right {
+            self.rightAnchor.constraint(equalTo: right, constant: -rigthConstant).isActive = true
+        }
+        if let bottom = bottom {
+            self.bottomAnchor.constraint(equalTo: bottom, constant: -bottomConstant).isActive = true
+        }
+        
+        if width > 0 {
+            self.widthAnchor.constraint(equalToConstant: width).isActive = true
+        }
+        if height > 0 {
+            self.heightAnchor.constraint(equalToConstant: height).isActive = true
+        }
+        
+        if let centerX = centerX{
+            self.centerXAnchor.constraint(equalTo: centerX).isActive = true
+        }
+        if let centerY = centerY{
+            self.centerYAnchor.constraint(equalTo: centerY).isActive = true
+        }
+    }
+}
