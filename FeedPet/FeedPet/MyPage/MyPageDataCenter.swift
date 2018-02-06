@@ -9,7 +9,7 @@
 import Foundation
 import Firebase
 
-struct MyPageDataCenter {
+class MyPageDataCenter {
     static var shared = MyPageDataCenter()
     
     //펫 식사 시간 알림 데이터
@@ -231,6 +231,7 @@ struct FireBaseData{
                             
                         })//여기까지 강아지일때 피드값
                         
+                        
                         //여기부터 고양이
                         FireBaseData.shared.refFeedInfo.child("feed_petkey_c").child(feedKey).observeSingleEvent(of: .value, with: { (feedInfoSnapshot) in
                             if let feedSnapshot = feedInfoSnapshot.children.allObjects as? [DataSnapshot]{
@@ -267,16 +268,17 @@ struct FireBaseData{
                                 MyPageDataCenter.shared.favorites.sort { (data: FavoritesData, data2: FavoritesData) -> Bool in
                                     return data.addToFavoritesDateReturn > data2.addToFavoritesDateReturn
                                 }
+                                
                             }
                             
-                            
+                            self.favoriteReviewData()
                             
                         })//여기 까지 고양이일때 피드값
                         
                     }
                     
                 }
-                self.favoriteReviewData()
+                
             }
             
         })
@@ -288,20 +290,25 @@ struct FireBaseData{
     func favoriteReviewData(){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         for favorite in MyPageDataCenter.shared.favorites{
+            print(favorite,"favoo")
             FireBaseData.shared.refFeedReviews.child(favorite.feedKeyReturn).observeSingleEvent(of: .value, with: { (reviewSnapshot) in
+                print(reviewSnapshot,"ssamdlas,")
                 let feedKey = favorite.feedKeyReturn
                 var feedRating = 5
                 var numberOfReview = 0
                 if let reviewSnaps = reviewSnapshot.value as? [String:AnyObject]{
                     for reviewSnap in reviewSnaps{
+                        print(reviewSnap,"asd")
                         if reviewSnap.key == "review_rating"{
                             if let rating = reviewSnap.value as? Int {
                                 feedRating = rating
                             }
                         }
                         if reviewSnap.key == "review_info"{
+                             print(reviewSnap.value,"ccccount1")
                             if let reviewInfo = reviewSnap.value as? [String:AnyObject]{
                                 numberOfReview = reviewInfo.keys.count
+                                print(reviewInfo.keys.count,"ccccount")
                             }
                         }
                     }

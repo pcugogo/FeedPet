@@ -182,8 +182,8 @@ class AlarmMealTimePickerViewController: UIViewController {
             self.contentView.frame = CGRect(x: 0, y: self.view.frame.maxY, width: self.view.bounds.width, height: 245.0)
         }){ (finished) in
             if finished {
+                self.delegate?.navigationbarHiddeFalse()
                 self.view.removeFromSuperview()
-                
             }
         }
         

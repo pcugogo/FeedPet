@@ -189,6 +189,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
             let leaveMembershipView:LeaveMembershipViewController = storyboard?.instantiateViewController(withIdentifier: "LeaveMembershipViewController") as! LeaveMembershipViewController
             
             self.addChildViewController(leaveMembershipView) //alarmMealTimePickerView에 있는 피커뷰를 addsubview
+            self.navigationController?.isNavigationBarHidden = true
             leaveMembershipView.view.frame = self.view.frame //참고 사이트 https://www.youtube.com/watch?v=FgCIRMz_3dE
             self.view.addSubview(leaveMembershipView.view)
             leaveMembershipView.didMove(toParentViewController: self)
@@ -217,9 +218,6 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
             return 20
     }
     
-    
-    
-    
     func toFavoritesView() {
         let myPageFavoritesView:MyPageFavoritesViewController = storyboard?.instantiateViewController(withIdentifier: "MyPageFavoritesViewController") as! MyPageFavoritesViewController
         navigationController?.pushViewController(myPageFavoritesView, animated: true)
@@ -237,8 +235,6 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
         imagePickerController.navigationBar.isTranslucent = false
         self.present(imagePickerController, animated: true, completion:  nil)
     }
-   
-    
     
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)

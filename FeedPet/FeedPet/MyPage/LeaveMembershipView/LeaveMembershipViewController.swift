@@ -11,8 +11,7 @@ import UIKit
 
 
 class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,LeaveMembershipCustomCellDelegate {
-    
-    
+
     let leaveMembershipReasonText = ["사용하기 불편해요","정보가 부족해요","다른앱을 사용하고 싶어요","기타"] //탈퇴 이유 텍스트들
     
     @IBOutlet weak var leaveMemberShipScrollView: UIScrollView!
@@ -22,8 +21,6 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       
         
         MyPageDataCenter.shared.leaveMembershipReason = ""              //탈퇴이유 데이터 초기화
         MyPageDataCenter.shared.leaveMembarshipEtcReasonContent = ""
@@ -172,9 +169,10 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
     func keyboardWillHide(_ notification : Notification) {
         self.leaveMemberShipScrollView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y)
     }
-    
-
-    
+  
+    func navigationbarHiddeFalse() {
+        self.navigationController?.isNavigationBarHidden = false
+    }
     
     
     

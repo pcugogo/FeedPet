@@ -143,6 +143,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             alarmMealTimePickerView.delegate = self //델리게이트 권한 위임
             
             self.addChildViewController(alarmMealTimePickerView) //alarmMealTimePickerView에 있는 피커뷰를 addsubview
+            self.navigationController?.isNavigationBarHidden = true 
             alarmMealTimePickerView.view.frame = self.view.frame //참고 사이트 https://www.youtube.com/watch?v=FgCIRMz_3dE
             self.view.addSubview(alarmMealTimePickerView.view)
             alarmMealTimePickerView.didMove(toParentViewController: self)
@@ -153,6 +154,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             alarmMealTimePickerView.delegate = self
             
             self.addChildViewController(alarmMealTimePickerView)
+            self.navigationController?.isNavigationBarHidden = true
             alarmMealTimePickerView.view.frame = self.view.frame
             self.view.addSubview(alarmMealTimePickerView.view)
             alarmMealTimePickerView.didMove(toParentViewController: self)
@@ -164,6 +166,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             alarmMealTimePickerView.delegate = self
             
             self.addChildViewController(alarmMealTimePickerView)
+            self.navigationController?.isNavigationBarHidden = true
             alarmMealTimePickerView.view.frame = self.view.frame
             self.view.addSubview(alarmMealTimePickerView.view)
             alarmMealTimePickerView.didMove(toParentViewController: self)
@@ -302,7 +305,10 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             
         }
     }
-
+    
+    func navigationbarHiddeFalse(){
+        self.navigationController?.isNavigationBarHidden = false
+    }
     
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
         
@@ -339,8 +345,6 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
         }
         tableView.reloadData()
     }
-    
-
     
 
     
