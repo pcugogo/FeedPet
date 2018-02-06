@@ -20,9 +20,8 @@ target 'FeedPet' do
     
     pod 'SwiftyJSON'
     pod 'XLPagerTabStrip', '~> 8.0'
-    pod 'ChartProgressBar', '~> 1.0'
     pod 'Kingfisher', '~> 4.6'
-    pod 'SwiftGIF', '~> 0.1'
+    pod 'SwiftyGif', '~> 4.0'
     
 end
 

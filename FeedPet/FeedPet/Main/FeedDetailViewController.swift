@@ -13,6 +13,7 @@ class FeedDetailViewController: UIViewController {
     @IBOutlet weak var feedDetailTableView: UITableView!
     
     var feedDetailInfo: FeedInfo?
+    var ingredientData: FeedDetailIngredient?
     var tempData: [String:Any] = ["feed_ingredient_good":
                                         ["ingredient_key_g1","ingredient_key_g2"],
                                   "feed_ingredient_warning":
@@ -30,7 +31,7 @@ class FeedDetailViewController: UIViewController {
         feedDetailTableView.dataSource = self
 //        self.navigationController?.isNavigationBarHidden = false
         
-        
+        self.feedDetailTableView.register(UINib(nibName: "FeedIngredientProgressChartTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedIngredientProgressChartCell")
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -123,11 +124,14 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
             ingredientCell.goodIngredientCountLabel.text = warning.count.description
             return ingredientCell
         case 2:
-            let ingredientChartCell = tableView.dequeueReusableCell(withIdentifier: "FeedIngredientChartCell", for: indexPath) as! FeedIngredientChartTableViewCell
-            
-            ingredientChartCell.ingredientDataTest = FeedDetailIngredientTest(ingredientData: tempData)
-            ingredientChartCell.ingredientLoadData(ingredientData: FeedDetailIngredientTest(ingredientData: tempData))
-            return ingredientChartCell
+//            let ingredientChartCell = tableView.dequeueReusableCell(withIdentifier: "FeedIngredientChartCell", for: indexPath) as! FeedIngredientChartTableViewCell
+//
+//            ingredientChartCell.ingredientDataTest = FeedDetailIngredientTest(ingredientData: tempData)
+//            ingredientChartCell.ingredientLoadData(ingredientData: FeedDetailIngredientTest(ingredientData: tempData))
+//            return ingredientChartCell
+            let chartProgressCell = tableView.dequeueReusableCell(withIdentifier: "FeedIngredientProgressChartCell", for: indexPath) as! FeedIngredientProgressChartTableViewCell
+            chartProgressCell.ingredeintDataSetting(ingredient: ingredientData)
+            return chartProgressCell
         
         default:
             

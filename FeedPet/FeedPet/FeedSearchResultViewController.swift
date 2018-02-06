@@ -43,6 +43,8 @@ class FeedSearchResultViewController: UIViewController {
     }
     */
     func dataLoad(){
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let referenceT = Database.database().reference().child("feed_info").child("feed_petkey_c").queryOrdered(byChild: "feed_name")
         referenceT.observeSingleEvent(of: .value, with: { (dataSnap) in
             guard let dataSnapValue = dataSnap.value else {return}
@@ -53,6 +55,8 @@ class FeedSearchResultViewController: UIViewController {
             DispatchQueue.main.async {
                 print("----totalData: ----- ",self.totalData)
                 self.resultTableView.reloadData()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                
             }
         }) { (error) in
             print(error)
