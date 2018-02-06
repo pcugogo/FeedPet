@@ -153,8 +153,9 @@ class DataCenter {
     }
     //**************test end****
     
-    // MARK: Gif LoadingIndicaotr 호출 메서드 - 디자인 관련 
-    
+    // MARK: Gif LoadingIndicaotr 호출 메서드(통신시작) - 디자인 관련 추후 옮길예정
+    // 사용법: 데이터센턴 싱글턴 패턴으로 함수 호출 하여 사용
+    // ex) let spiner = DataCenter.shard.displayLoadingIndicator(onView: 현재사용할 뷰컨의 뷰)
     func displsyLoadingIndicator(onView: UIView)->UIView {
         let spinner = UIView(frame: onView.bounds)
 //        spinner.autoLayoutAnchor(top: onView.topAnchor,
@@ -228,6 +229,10 @@ class DataCenter {
         }
         return spinner
     }
+    
+    // gif인디케이터 삭제 메서드
+    // 사용법 - 상위 메서드에서 생성한 spiner를 파라미터로 전달
+    // ex) DataCenter.shard.removeSpiner(spiner: spiner)
     func removeSpinner(spinner :UIView) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.3, animations: {

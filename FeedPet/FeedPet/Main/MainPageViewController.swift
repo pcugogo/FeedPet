@@ -379,6 +379,7 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         print("----select FeedData ----",feedDetailData)
         let feedDeatilView: FeedDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "FeedDetailView") as! FeedDetailViewController
         feedDeatilView.feedDetailInfo = feedDetailData
+        
         DataCenter.shared.feedDetailIngredientDataLoad(feedKey: feedDetailData.feedKey) { (feedDetailIngredientData) in
             print(feedDetailIngredientData)
             feedDeatilView.ingredientData = feedDetailIngredientData
@@ -502,6 +503,7 @@ enum FeedMouth: String{
 }
 
 
+// SwiftyGif 활용한 인데케이터 사용을 위한 프로토콜
 protocol LoadingIndicatorProtocol {
     func loadingIndicatorDisplay()
     func loadingRemoveDisplay()

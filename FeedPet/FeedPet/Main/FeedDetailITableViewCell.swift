@@ -32,16 +32,32 @@ class FeedDetailITableViewCell: UITableViewCell {
     // 슬라이드 들어갈 이미지 컨텐츠뷰의 넓이 제약사항
     @IBOutlet weak var feedImgContentVIewWidthConstraints: NSLayoutConstraint!
     
+    var feedInfo: FeedInfo?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
     }
-
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        
+        
+    }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
+        guard let feedDetailInfo = feedInfo else {return}
+        feedBrandNameLabel.text = feedDetailInfo.feedBrand
+        feedNameLabel.text = feedDetailInfo.feedName
+        feedAgeLabel.text = ""
+        feedTargetLabel.text = ""
+        feedCountryOriginLabel.text = feedDetailInfo.feedCountry
+        feedIngredientLabel.text = feedDetailInfo.feedIngredient
+        FeedGrade(rawValue: feedDetailInfo.feedGrade)?.gardeText(label: feedGradeLabel)
+        FeedMouth(rawValue: feedDetailInfo.feedMouth)?.mouthImgSetting(mouthImgView: feedPetEvaluationRatingImgView)
     }
 
 }

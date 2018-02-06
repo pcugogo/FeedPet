@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ChartProgressBar
 
 class FeedIngredientTableViewCell: UITableViewCell {
 
