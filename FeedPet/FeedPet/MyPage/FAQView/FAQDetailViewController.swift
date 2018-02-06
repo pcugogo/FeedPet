@@ -9,15 +9,15 @@
 import UIKit
 
 class FAQDetailViewController: UIViewController {
-
+    
     var barTitle = ""
-   
-    @IBOutlet weak var FAQNaviItem: UINavigationItem!
-    @IBOutlet weak var FAQImgView: UIImageView!
+    var fAQContentImgName = ""
+    @IBOutlet weak var fAQNaviItem: UINavigationItem!
+    @IBOutlet weak var fAQImgView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-       FAQNaviItem.title = barTitle
-        // Do any additional setup after loading the view.
+       fAQNaviItem.title = barTitle
+        fAQImgView.image = UIImage(named: fAQContentImgName)
     }
     
 

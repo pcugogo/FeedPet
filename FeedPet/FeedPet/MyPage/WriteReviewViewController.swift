@@ -12,16 +12,18 @@ import Firebase
 class WriteReviewViewController: UIViewController,UITextViewDelegate {
     
     //여기서부터
-    var feedKey:String = "feed_key_c177"
-    var feedBrand:String = "내추럴발란스"
-    var feedName:String = "내추럴발란스 LID 완두&오리 포뮬러"
-    var feedImg:String = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_c177_1.png"
+    var feedKey:String = ""
+    var feedBrand:String = ""
+    var feedName:String = ""
+    var feedImg:String = ""
     //여기까지 상세화면에서 받아야 될 데이터
     
     var totalRating = 0
     var ratingNumberOfStars = 5 //서버에 넘겨질 평점 초기 별 갯수 5개
     
     let reviewWriteDateFormatter : DateFormatter = DateFormatter()
+    let dateFormatterHour : DateFormatter = DateFormatter()
+    let dateFormatterAMPM : DateFormatter = DateFormatter()
     let date = Date()
     
     let textViewPlaceHolderText = "사용하신 상품의 리뷰를 남겨주세요:)"
@@ -127,7 +129,28 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
     
     @IBAction func saveBtnAction(_ sender: UIBarButtonItem) {
         reviewWriteDateFormatter.locale = Locale(identifier: "ko")
-        reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+        dateFormatterHour.dateFormat = "hh"
+        dateFormatterAMPM.dateFormat = "aa"
+        
+        let amPmStr = dateFormatterAMPM.string(from: date)
+        let hourString = dateFormatterHour.string(from: date)
+        
+        if amPmStr == "AM" {
+            if hourString == "12"{
+                reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd 00:mm" //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
+            }else{
+                reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+            }
+        }else if amPmStr == "PM" {
+            if hourString == "12"{
+                reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+            }else{
+                reviewWriteDateFormatter.dateFormat = "yyyy.MM.dd \(Int(hourString)! + 12):mm"
+                //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
+            }
+            
+        }
+        
         let dateString = self.reviewWriteDateFormatter.string(from: self.date)
         
         if reviewContentsTextView.text.isEmpty || reviewContentsTextView.text == textViewPlaceHolderText {
@@ -138,11 +161,12 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
             blankContents.addAction(okBtn)
             self.present(blankContents, animated: true, completion: nil)
         }else{
+            
             let feedReviewInfoDic = ["feed_date":dateString,"feed_rating":self.ratingNumberOfStars,"feed_review":reviewContentsTextView.text,"user_key":MyPageDataCenter.shared.testUUID] as [String : Any]
             
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             FireBaseData.shared.refFeedReviewsReturn.child(feedKey).child("review_rating").observeSingleEvent(of: .value, with: { (snapShot) in
-                if let feedTotalRating = snapShot.value as? Int{
+                if let feedTotalRating = snapShot.value as? Int{ //리뷰데이터에 "review_rating"가있으면 평균내고 없으면 그냥 값을 넣는다
                     self.totalRating = feedTotalRating
                     
                     self.totalRating += self.ratingNumberOfStars
@@ -156,7 +180,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
                 let reviewAutoKey = FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).child("review_info").childByAutoId()
                 FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).child("review_info").child(reviewAutoKey.key).updateChildValues(feedReviewInfoDic)
                 FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).updateChildValues(["review_rating":self.totalRating])
-                FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(self.self.feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
+                FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(self.feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
             })
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             

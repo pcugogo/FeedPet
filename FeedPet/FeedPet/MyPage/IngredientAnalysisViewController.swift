@@ -9,10 +9,7 @@
 import UIKit
 
 class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
-    
-    let goodIngredientTestData = ["닭고기","비타민","유기농 완두콩","감자","건조계란","타우린","연어오일(오메가3)"]
-    let cautionIngredientTestData = ["부산물","가금류고기","주의성분1","주의성분2","주의성분3"]
-    
+
     @IBOutlet weak var ingredientSCOut: UISegmentedControl!
     
     @IBOutlet weak var tableView: UITableView!
@@ -20,7 +17,6 @@ class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
     }
     
     override func didReceiveMemoryWarning() {
@@ -31,9 +27,9 @@ class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UIT
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if ingredientSCOut.selectedSegmentIndex == 0{ //좋은 성분
-            return goodIngredientTestData.count
+            return MyPageDataCenter.shared.feedIngredientGoodDatas.count
         }else{ //selectedSegmentIndex == 1 주의 성분
-            return cautionIngredientTestData.count
+            return MyPageDataCenter.shared.feedIngredientWarningDatas.count
         }
     }
     
@@ -43,11 +39,11 @@ class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UIT
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         
         if ingredientSCOut.selectedSegmentIndex == 0{ //좋은 성분
-            cell.textLabel?.text = goodIngredientTestData[indexPath.row]
+            cell.textLabel?.text = MyPageDataCenter.shared.feedIngredientGoodDatas[indexPath.row].ingredientNameReturn
             cell.textLabel?.textColor = UIColor(red: 52/255, green: 152/255, blue: 219/255, alpha: 1.0)
             return cell
         }else{ //selectedSegmentIndex == 1 주의 성분
-            cell.textLabel?.text = cautionIngredientTestData[indexPath.row]
+            cell.textLabel?.text = MyPageDataCenter.shared.feedIngredientWarningDatas[indexPath.row].ingredientNameReturn
             cell.textLabel?.textColor = UIColor(red: 188/255, green: 55/255, blue: 41/255, alpha: 1.0)
             return cell
         }
@@ -61,10 +57,11 @@ class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UIT
         if ingredientSCOut.selectedSegmentIndex == 0{ //좋은 성분
             let ingredientAnalysisDetailView:IngredientAnalysisDetailViewController = storyboard?.instantiateViewController(withIdentifier: "IngredientAnalysisDetailViewController") as! IngredientAnalysisDetailViewController
             
-            for dataIndex in 0...goodIngredientTestData.count{
+            for dataIndex in 0...MyPageDataCenter.shared.feedIngredientGoodDatas.count{
                 if indexPath.row == dataIndex {
                     
-                    ingredientAnalysisDetailView.testData = goodIngredientTestData[indexPath.row]
+                    ingredientAnalysisDetailView.ingredientName = MyPageDataCenter.shared.feedIngredientGoodDatas[indexPath.row].ingredientNameReturn
+                    ingredientAnalysisDetailView.ingredientContent = MyPageDataCenter.shared.feedIngredientGoodDatas[indexPath.row].ingredientTextReturn
                     ingredientAnalysisDetailView.selectedSegmentIndex = ingredientSCOut.selectedSegmentIndex
                     
                     self.addChildViewController(ingredientAnalysisDetailView)
@@ -78,9 +75,10 @@ class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UIT
             
             let ingredientAnalysisDetailView:IngredientAnalysisDetailViewController = storyboard?.instantiateViewController(withIdentifier: "IngredientAnalysisDetailViewController") as! IngredientAnalysisDetailViewController
             
-            for dataIndex in 0...goodIngredientTestData.count{
+            for dataIndex in 0...MyPageDataCenter.shared.feedIngredientWarningDatas.count{
                 if indexPath.row == dataIndex{
-                    ingredientAnalysisDetailView.testData = cautionIngredientTestData[indexPath.row]
+                    ingredientAnalysisDetailView.ingredientName = MyPageDataCenter.shared.feedIngredientWarningDatas[indexPath.row].ingredientNameReturn
+                          ingredientAnalysisDetailView.ingredientContent = MyPageDataCenter.shared.feedIngredientWarningDatas[indexPath.row].ingredientTextReturn
                     ingredientAnalysisDetailView.selectedSegmentIndex = ingredientSCOut.selectedSegmentIndex
                     
                     self.addChildViewController(ingredientAnalysisDetailView)
@@ -112,14 +110,9 @@ class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UIT
         }
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     
 }

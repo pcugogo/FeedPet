@@ -9,12 +9,21 @@
 import UIKit
 
 class MyPageTestViewController: UIViewController {
-
+    
+    let feedKey:String = "feed_key_c177"
+    let feedBrand:String = "내추럴발란스"
+    let feedName:String = "내추럴발란스 LID 완두&오리 포뮬러"
+    let feedImg:String = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_c177_1.png"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        FireBaseData.shared.fireBaseUserInfoDataLoad()
         FireBaseData.shared.fireBaseMyReviewDataLoad()
         FireBaseData.shared.fireBaseFavoritesDataLoad()
-        
+        let ingredientGoodKey = ["ingredient_key_g159","ingredient_key_g1","ingredient_key_g12"]
+        let ingredientWarningKey = ["ingredient_key_w17","ingredient_key_w9"]
+        FireBaseData.shared.feedGoodIngredientDataLoad(ingredientGoodKey: ingredientGoodKey)
+        FireBaseData.shared.feedWarningIngredientDataLoad(ingredientWarningKey: ingredientWarningKey)
     }
 
   
@@ -24,15 +33,23 @@ class MyPageTestViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func toReviewWriteBtnAction(_ sender: UIButton) {
+        let writeReviewView:WriteReviewViewController = self.storyboard?.instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController
+        writeReviewView.feedKey = "feed_key_d115"
+        writeReviewView.feedBrand = "퓨리나"
+        writeReviewView.feedName = "퍼피차우 생후 1개월 이상 전연령용"
+        writeReviewView.feedImg = "http://feedpet.co.kr/wp-content/uploads/feed/feed_key_d115_1.png"
+        
+        self.navigationController?.pushViewController(writeReviewView, animated: true)
     }
-    */
+    
+    @IBAction func toIngredientViewBtnAction(_ sender: UIButton) {
+        
+        let ingredientView:IngredientAnalysisViewController = self.storyboard?.instantiateViewController(withIdentifier: "IngredientAnalysisViewController") as! IngredientAnalysisViewController
+        
+        self.navigationController?.pushViewController(ingredientView, animated: true)
+        
+    }
+    
 
 }

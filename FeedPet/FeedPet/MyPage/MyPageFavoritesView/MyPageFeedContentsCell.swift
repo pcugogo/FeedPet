@@ -82,45 +82,49 @@ class MyPageFeedContentsCell: UITableViewCell {
             print("error")
         }
         
-        
-        //평점 1부터 시작
-        switch favorites.ratingReturn{
-        case 1 :
-            firstStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            secondStarImgView.image = #imageLiteral(resourceName: "normalStar")
-            thirdStarImgView.image = #imageLiteral(resourceName: "normalStar")
-            fourthStarImgView.image = #imageLiteral(resourceName: "normalStar")
-            fifthStarImgView.image = #imageLiteral(resourceName: "normalStar")
-        case 2:
-            
-            firstStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            secondStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            thirdStarImgView.image = #imageLiteral(resourceName: "normalStar")
-            fourthStarImgView.image = #imageLiteral(resourceName: "normalStar")
-            fifthStarImgView.image = #imageLiteral(resourceName: "normalStar")
-        case 3:
-            
-            firstStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            secondStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            thirdStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            fourthStarImgView.image = #imageLiteral(resourceName: "normalStar")
-            fifthStarImgView.image = #imageLiteral(resourceName: "normalStar")
-        case 4:
-            firstStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            secondStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            thirdStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            fourthStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            fifthStarImgView.image = #imageLiteral(resourceName: "normalStar")
-        case 5:
-            firstStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            secondStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            thirdStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            fourthStarImgView.image = #imageLiteral(resourceName: "selectStar")
-            fifthStarImgView.image = #imageLiteral(resourceName: "selectStar")
-        default:
-            print("error")
+        for favoriteReviewInfoData in MyPageDataCenter.shared.favoriteReviewInfoDatas{
+            if favorites.feedKeyReturn == favoriteReviewInfoData.feedKeyReturn{
+                let rating = favoriteReviewInfoData.feedRatingReturn
+                ratingLb.text = String(favoriteReviewInfoData.numberOfReviewReturn)
+                //평점 1부터 시작
+                switch rating{
+                case 1 :
+                    firstStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    secondStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                    thirdStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                    fourthStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                    fifthStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                case 2:
+                    
+                    firstStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    secondStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    thirdStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                    fourthStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                    fifthStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                case 3:
+                    
+                    firstStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    secondStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    thirdStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    fourthStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                    fifthStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                case 4:
+                    firstStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    secondStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    thirdStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    fourthStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    fifthStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                case 5:
+                    firstStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    secondStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    thirdStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    fourthStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                    fifthStarImgView.image = #imageLiteral(resourceName: "selectStar")
+                default:
+                    print("error")
+                }
+            }
         }
-        
         
        
         switch favorites.feedMouthReturn {    // MOUTH_G : GOOD / MOUTH_S : SOSO /  MOUTH_B : BAD
@@ -147,7 +151,7 @@ class MyPageFeedContentsCell: UITableViewCell {
             packingMethodTextLb.text = "전체포장"
         }
         
-        ratingLb.text = String(favorites.numberOfReviewReturn)
+        
         
     }
     

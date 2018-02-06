@@ -10,20 +10,21 @@ import UIKit
 
 class IngredientAnalysisDetailViewController: UIViewController {
     
-    var testData = ""
+    var ingredientName = ""
+    var ingredientContent = ""
     var selectedSegmentIndex = 0
     
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var ingredientNameLb: UILabel!
     @IBOutlet weak var asteriskLb: UILabel!
-    
     @IBOutlet weak var ingredientDetailLb: UILabel!
     
     @IBOutlet weak var okBtnOut: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ingredientNameLb.text = testData
+        ingredientNameLb.text = ingredientName
+        ingredientDetailLb.text = ingredientContent
         
         if selectedSegmentIndex == 0{
             ingredientNameLb.textColor = UIColor(red: 52/255, green: 152/255, blue: 219/255, alpha: 1.0)

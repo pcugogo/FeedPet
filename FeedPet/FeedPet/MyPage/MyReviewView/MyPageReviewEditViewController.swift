@@ -12,7 +12,9 @@ class MyPageReviewEditViewController: UIViewController {
     
     
     var myReviews:MyReview!
-    let dateFormatter : DateFormatter = DateFormatter()
+    let reviewEditDateFormatter : DateFormatter = DateFormatter()
+    let dateFormatterHour : DateFormatter = DateFormatter()
+    let dateFormatterAMPM : DateFormatter = DateFormatter()
     let date = Date()
     
     var keyboardHeight = 0
@@ -50,7 +52,7 @@ class MyPageReviewEditViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
+    //리뷰삭제 메서드
     func reviewRemoveAlertController() {
         
         let reviewRemoveAlert:UIAlertController = UIAlertController(title: "", message: "선택하신 리뷰를 삭제하시겠습니까?", preferredStyle: .alert)
@@ -86,13 +88,38 @@ class MyPageReviewEditViewController: UIViewController {
         self.present(reviewRemoveAlert, animated: true, completion: nil)
     }
     
+    //리뷰 수정 메서드
     func reviewEditComplate(){
-        dateFormatter.dateFormat = "yyyy.MM.dd"
-        let dateString = dateFormatter.string(from: date)
+        
+        reviewEditDateFormatter.locale = Locale(identifier: "ko")
+        dateFormatterHour.dateFormat = "hh"
+        dateFormatterAMPM.dateFormat = "aa"
+        
+        let amPmStr = dateFormatterAMPM.string(from: date)
+        let hourString = dateFormatterHour.string(from: date)
+        
+        if amPmStr == "AM" {
+            if hourString == "12"{
+                reviewEditDateFormatter.dateFormat = "yyyy.MM.dd 00:mm" //오전12시일경우 매칭할 시간이 0시가 됩니다 그래서 0으로 바꿔줍니다
+            }else{
+                reviewEditDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+            }
+        }else if amPmStr == "PM" {
+            if hourString == "12"{
+                reviewEditDateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+            }else{
+                reviewEditDateFormatter.dateFormat = "yyyy.MM.dd \(Int(hourString)! + 12):mm"
+                //오후 1시일 경우 매칭할 숫자가 13시입니다 그래서 12를 더해 담습니다
+            }
+            
+        }
+        let dateString = self.reviewEditDateFormatter.string(from: self.date)
+        
         
         if let index = MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue {
             
-            let editFeedKey = MyPageDataCenter.shared.myReviewDatas[index]
+            var editFeedKey = MyPageDataCenter.shared.myReviewDatas[index]
+            
             
             if let reviewContentText = self.feedWriteContentTextView.text{
                 FireBaseData.shared.refFeedReviewsReturn.child(editFeedKey.feedKeyReturn).child("review_info").child(editFeedKey.reviewKeyReturn).updateChildValues(["feed_review":reviewContentText])
@@ -100,6 +127,10 @@ class MyPageReviewEditViewController: UIViewController {
             }
             FireBaseData.shared.refFeedReviewsReturn.child(editFeedKey.feedKeyReturn).child("review_info").child(editFeedKey.reviewKeyReturn).updateChildValues(["feed_date":dateString])
             FireBaseData.shared.fireBaseFeedReviewsDataLoad()
+            editFeedKey.feedDateEdit(feedDate: dateString)
+            MyPageDataCenter.shared.favorites.sort { (data: FavoritesData, data2: FavoritesData) -> Bool in
+                return data.addToFavoritesDateReturn > data2.addToFavoritesDateReturn
+            }
             print("수정 데이터 통신 완료")
         }
         let editComplateAlert:UIAlertController = UIAlertController(title: "", message: "저장되었습니다!", preferredStyle: .alert)
@@ -111,20 +142,18 @@ class MyPageReviewEditViewController: UIViewController {
         self.present(editComplateAlert, animated: true, completion: nil)
     }
     
+    
+    
+    
     func keyboardWasShown(_ notification : Notification) {
-                            self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y + 140)
+        self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y + 140)
     }
     
     func keyboardWillHide(_ notification : Notification) {
-                            self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y - 140)
+        self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y - 140)
     }
-//    func keyboardWillShow(notification: NSNotification) {
-//
-//        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            keyboardHeight = Int(keyboardSize.height)
-//            print("keyboardHeight",keyboardHeight)
-//        }
-//    }
+    
+    
     func createToolbar(textView : UITextView) { //텍스트 뷰 키보드 위에 올라갈 툴바
         let toolbar = UIToolbar()
         toolbar.barStyle = UIBarStyle.default

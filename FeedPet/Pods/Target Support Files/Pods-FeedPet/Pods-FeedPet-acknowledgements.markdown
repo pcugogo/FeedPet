@@ -99,23 +99,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ## Firebase
 
-Copyright 2017 Google
+Copyright 2018 Google
 
 ## FirebaseAnalytics
 
-Copyright 2017 Google
+Copyright 2018 Google
 
 ## FirebaseAuth
 
-Copyright 2017 Google
+Copyright 2018 Google
 
 ## FirebaseCore
 
-Copyright 2017 Google
+Copyright 2018 Google
 
 ## FirebaseDatabase
 
-Copyright 2017 Google
+Copyright 2018 Google
 
 ## FirebaseInstanceID
 
@@ -123,7 +123,7 @@ Copyright 2017 Google
 
 ## FirebaseStorage
 
-Copyright 2017 Google
+Copyright 2018 Google
 
 ## GTMOAuth2
 
@@ -539,7 +539,7 @@ Copyright 2017 Google
 
 ## GoogleSignIn
 
-Copyright 2017 Google
+Copyright 2018 Google
 
 ## GoogleToolboxForMac
 

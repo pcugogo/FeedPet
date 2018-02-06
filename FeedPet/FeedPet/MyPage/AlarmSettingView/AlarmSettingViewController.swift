@@ -143,6 +143,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             alarmMealTimePickerView.delegate = self //델리게이트 권한 위임
             
             self.addChildViewController(alarmMealTimePickerView) //alarmMealTimePickerView에 있는 피커뷰를 addsubview
+            self.navigationController?.isNavigationBarHidden = true 
             alarmMealTimePickerView.view.frame = self.view.frame //참고 사이트 https://www.youtube.com/watch?v=FgCIRMz_3dE
             self.view.addSubview(alarmMealTimePickerView.view)
             alarmMealTimePickerView.didMove(toParentViewController: self)
@@ -153,6 +154,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             alarmMealTimePickerView.delegate = self
             
             self.addChildViewController(alarmMealTimePickerView)
+            self.navigationController?.isNavigationBarHidden = true
             alarmMealTimePickerView.view.frame = self.view.frame
             self.view.addSubview(alarmMealTimePickerView.view)
             alarmMealTimePickerView.didMove(toParentViewController: self)
@@ -164,6 +166,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             alarmMealTimePickerView.delegate = self
             
             self.addChildViewController(alarmMealTimePickerView)
+            self.navigationController?.isNavigationBarHidden = true
             alarmMealTimePickerView.view.frame = self.view.frame
             self.view.addSubview(alarmMealTimePickerView.view)
             alarmMealTimePickerView.didMove(toParentViewController: self)
@@ -302,15 +305,46 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
             
         }
     }
-
+    
+    func navigationbarHiddeFalse(){
+        self.navigationController?.isNavigationBarHidden = false
+    }
     
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
         
         self.navigationController?.popViewController(animated: true)
     }
     
-    
-
+    @IBAction func alarmResetBtnAction(_ sender: UIBarButtonItem) {
+        
+        MyPageDataCenter.shared.switchOnOff = ["total":false,"morning":false,"lunch":false,"dinner":false]
+        MyPageDataCenter.shared.mealTime = ["morning":"오전 00:00","lunch":"오후 00:00","dinner":"오후 00:00"]
+        MyPageDataCenter.shared.mealTimeHour = ["morning":00,"lunch":00,"dinner":00]
+        MyPageDataCenter.shared.mealTimeMinute = ["morning":00,"lunch":00,"dinner":00]
+        MyPageDataCenter.shared.mealTimeAMPM = ["morning":"nil","lunch":"nil","dinner":"nil"]
+        UserDefaults.standard.removeObject(forKey: userDefaultsName.mealTime)
+        UserDefaults.standard.removeObject(forKey: userDefaultsName.mealTimeHour)
+        UserDefaults.standard.removeObject(forKey: userDefaultsName.mealTimeMinute)
+        UserDefaults.standard.removeObject(forKey: userDefaultsName.mealTimeAMPM)
+        UserDefaults.standard.removeObject(forKey: userDefaultsName.alarmOnOff)
+//        UserDefaults.standard.setValue(MyPageDataCenter.shared.mealTime, forKey: userDefaultsName.mealTime)
+//        UserDefaults.standard.setValue(MyPageDataCenter.shared.mealTimeHour, forKey: userDefaultsName.mealTimeHour)
+//        UserDefaults.standard.setValue(MyPageDataCenter.shared.mealTimeMinute, forKey: userDefaultsName.mealTimeMinute)
+//        UserDefaults.standard.setValue(MyPageDataCenter.shared.mealTimeAMPM, forKey: userDefaultsName.mealTimeAMPM)
+//        UserDefaults.standard.setValue(MyPageDataCenter.shared.switchOnOff, forKey: userDefaultsName.alarmOnOff)
+        
+        if #available(iOS 10.0, *) {
+            //removeAllPendingNotificationRequests() 토탈스위치가 off일때 모든 알람을 지워줍니다.
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            
+            // 기존 알림 확인
+            UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in
+                print("///// notificationRequests.count- 7892: \n", notificationRequests.count)
+                print("///// notificationRequests detail- 7892: \n", notificationRequests)
+            }
+        }
+        tableView.reloadData()
+    }
     
 
     

@@ -24,6 +24,11 @@ class TeamIntroductionViewController: UIViewController,UITableViewDelegate,UITab
         // Dispose of any resources that can be recreated.
     }
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+
+            return 12
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -58,10 +63,10 @@ class TeamIntroductionViewController: UIViewController,UITableViewDelegate,UITab
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 381
+            return 450
         }else{
             if indexPath.row == 0{
-                return 27
+                return 57
             }else{
                 return 70
             }

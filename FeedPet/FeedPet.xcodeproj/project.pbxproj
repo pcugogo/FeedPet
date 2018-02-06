@@ -86,6 +86,8 @@
 		FC709DAA201A4CA2005AF023 /* MyPageReviewEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC709DA9201A4CA2005AF023 /* MyPageReviewEditViewController.swift */; };
 		FC709DAC201A4CDE005AF023 /* MyPageMyReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC709DAB201A4CDE005AF023 /* MyPageMyReviewsViewController.swift */; };
 		FC709DB0201A4E3E005AF023 /* MyPageMyReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC709DAF201A4E3E005AF023 /* MyPageMyReviewsCell.swift */; };
+		FC75AC3C202259230041283E /* EditInfoViewAgeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC75AC3B202259230041283E /* EditInfoViewAgeCollectionViewCell.swift */; };
+		FC75AC3E2022596A0041283E /* EditInfoViewPetFunctionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC75AC3D2022596A0041283E /* EditInfoViewPetFunctionCollectionViewCell.swift */; };
 		FCA26EE420139BC5000D8BAF /* MyPageTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA26EE320139BC5000D8BAF /* MyPageTestViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -173,6 +175,8 @@
 		FC709DA9201A4CA2005AF023 /* MyPageReviewEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageReviewEditViewController.swift; path = FeedPet/MyPage/MyReviewView/MyPageReviewEditViewController.swift; sourceTree = SOURCE_ROOT; };
 		FC709DAB201A4CDE005AF023 /* MyPageMyReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageMyReviewsViewController.swift; path = FeedPet/MyPage/MyReviewView/MyPageMyReviewsViewController.swift; sourceTree = SOURCE_ROOT; };
 		FC709DAF201A4E3E005AF023 /* MyPageMyReviewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageMyReviewsCell.swift; path = FeedPet/MyPage/MyReviewView/MyPageMyReviewsCell.swift; sourceTree = SOURCE_ROOT; };
+		FC75AC3B202259230041283E /* EditInfoViewAgeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInfoViewAgeCollectionViewCell.swift; sourceTree = "<group>"; };
+		FC75AC3D2022596A0041283E /* EditInfoViewPetFunctionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInfoViewPetFunctionCollectionViewCell.swift; sourceTree = "<group>"; };
 		FCA26EE320139BC5000D8BAF /* MyPageTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -226,6 +230,8 @@
 			isa = PBXGroup;
 			children = (
 				14035C0D1FF24E95005ABAE0 /* EditInfoViewController.swift */,
+				FC75AC3B202259230041283E /* EditInfoViewAgeCollectionViewCell.swift */,
+				FC75AC3D2022596A0041283E /* EditInfoViewPetFunctionCollectionViewCell.swift */,
 			);
 			path = EditInfoView;
 			sourceTree = "<group>";
@@ -634,8 +640,10 @@
 				14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */,
 				FC709DAA201A4CA2005AF023 /* MyPageReviewEditViewController.swift in Sources */,
 				4CE4F5DA1FFEAD2B0047E9F9 /* Extension.swift in Sources */,
+				FC75AC3E2022596A0041283E /* EditInfoViewPetFunctionCollectionViewCell.swift in Sources */,
 				4C1C1BCC202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.swift in Sources */,
 				14E193711FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift in Sources */,
+				FC75AC3C202259230041283E /* EditInfoViewAgeCollectionViewCell.swift in Sources */,
 				4CE87A7F201E770800AC2E7F /* FeedSearchResultViewController.swift in Sources */,
 				4C1E6DDF20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift in Sources */,
 				148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */,

@@ -12,6 +12,7 @@ import UserNotifications
 protocol AlarmCustomCellDelegate {
     func updateTableView()
     func UpdateMealTimeAlarmNotification()
+    func navigationbarHiddeFalse()
 }
 
 class TotalAlarmSwitchCell: UITableViewCell {
