@@ -15,8 +15,14 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     let redColor = UIColor(red: 221/255.0, green: 0/255.0, blue: 19/255.0, alpha: 1.0)
     let unselectedIconColor = UIColor(red: 73/255.0, green: 8/255.0, blue: 10/255.0, alpha: 1.0)
     var searchController: UISearchController!
-    
-    
+    // 아이콘 선택 변화시 체크를 위한 옵저버 프로퍼티
+    var indicatorTitle: String = ""{
+        didSet{
+            currentPetCheck()
+        }
+    }
+    var curretPetKey = String()
+    var spinerView = UIView()
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -56,9 +62,11 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
             if oldCell?.title == "멍" {
                 oldCell?.menuIconImg.image = #imageLiteral(resourceName: "dogDisable")
                 newCell?.menuIconImg.image = #imageLiteral(resourceName: "catAble")
+                self?.indicatorTitle = "냥"
             }else{
                 oldCell?.menuIconImg.image = #imageLiteral(resourceName: "catDisable")
                 newCell?.menuIconImg.image = #imageLiteral(resourceName: "dogAble")
+                self?.indicatorTitle = "멍"
             }
         }
         // XLPagerTabStrip의 탭바 설정입니다.
@@ -80,7 +88,7 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
 //                self.showLoginViewController()
 //            }
 //        }
-        
+       
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -103,10 +111,11 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
 //        let child_2 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CatMainViewController") as! CatMainViewController
         let child_1 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainPageViewController") as! MainPageViewController
         child_1.indicatorTitle = "멍"
+        child_1.delegate = self
         
         let child_2 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainPageViewController") as! MainPageViewController
         child_2.indicatorTitle = "냥"
-        
+        child_2.delegate = self
         
         return [child_1, child_2]
     }
@@ -134,7 +143,6 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         //        self.present(nextViewContorller, animated: true, completion: nil)
 //        self.navigationController?.pushViewController(nextViewContorller, animated: true)
         
-        
         UIBarButtonItem.appearance(whenContainedInInstancesOf:[UISearchBar.self]).tintColor = UIColor.white
         
         // 검색 결과를 보여줄 FeedSearchResultViewController 할당
@@ -149,7 +157,12 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         searchController.dimsBackgroundDuringPresentation = true
         searchController.searchBar.barTintColor = UIColor.init(hexString: "#FF6600")
         searchController.searchBar.isTranslucent = false
-        searchController.searchBar.placeholder = "상품명이나 브랜드명을 검색해주세요."
+        print(DataCenter.shared.currentPetKey)
+        if DataCenter.shared.currentPetKey == "feed_petkey_d"{
+            searchController.searchBar.placeholder = "강아지사료 상품명이나 브랜드명을 검색해주세요."
+        }else{
+            searchController.searchBar.placeholder = "고양이사료 상품명이나 브랜드명을 검색해주세요."
+        }
         self.definesPresentationContext = true
         //        self.searchController.delegate = searchResultsViewController
         searchController.searchBar.delegate = searchResultsViewController
@@ -172,7 +185,20 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
 //        self.present(nextViewContorller, animated: true, completion: nil)
         self.navigationController?.pushViewController(nextViewContorller, animated: true)
     }
-
+    /*******************************************/
+    //MARK:-         Class Method              //
+    /*******************************************/
+    // MARK: 현재 반려동물 체크 메서드
+    func currentPetCheck(){
+        if indicatorTitle == "멍" {
+            curretPetKey = "feed_petkey_d"
+            DataCenter.shared.currentPetKey = curretPetKey
+        }else{
+            curretPetKey = "feed_petkey_c"
+            DataCenter.shared.currentPetKey = curretPetKey
+        }
+        
+    }
 }
 
 extension PageControllerBaseController: UISearchControllerDelegate{
@@ -189,4 +215,15 @@ extension PageControllerBaseController: SelectedCellProtocol{
     }
 }
 
-
+extension PageControllerBaseController: LoadingIndicatorProtocol{
+    
+    func loadingIndicatorDisplay() {
+        spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+    }
+    
+    func loadingRemoveDisplay() {
+        DataCenter.shared.removeSpinner(spinner: spinerView)
+    }
+    
+    
+}

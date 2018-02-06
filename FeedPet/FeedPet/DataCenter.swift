@@ -9,34 +9,35 @@
 import Foundation
 import SwiftyJSON
 import Firebase
-
+import SwiftyGif
 class DataCenter {
     // 싱글턴 패턴
     static let shared = DataCenter()
     
     var isLogin: Bool = false
     let dogFunctionalData: [[String:String]] = [
-        ["functional":"피부","functionalImg":"dogFunctional-Skin"],
-        ["functional":"알러지","functionalImg": "dogFunctional-Allergy"],
-        ["functional":"관절","functionalImg":"dogFunctional-Joint"],
-        ["functional":"다이어트","functionalImg":"dogFunctional-Diet"],
-        ["functional":"인도어","functionalImg":"dogFunctional-Indoor"],
-        ["functional":"장&면역","functionalImg":"dogFunctional-Immune"],
-        ["functional":"퍼포먼스","functionalImg":"dogFunctional-Performance"],
-        ["functional":"비뇨기","functionalImg":"dogFunctional-Urinary"],
-        ["functional":"전체","functionalImg":"dogFunctional-All"]
+        ["functional":"피부","functionalImg":"dogFunctional-Skin", "functionalKey":"skin"],
+        ["functional":"알러지","functionalImg": "dogFunctional-Allergy", "functionalKey":"allergy"],
+        ["functional":"관절","functionalImg":"dogFunctional-Joint", "functionalKey":"joint"],
+        ["functional":"다이어트","functionalImg":"dogFunctional-Diet", "functionalKey":"diet"],
+        ["functional":"인도어","functionalImg":"dogFunctional-Indoor", "functionalKey":"indoor"],
+        ["functional":"장&면역","functionalImg":"dogFunctional-Immune", "functionalKey":"immune"],
+        ["functional":"퍼포먼스","functionalImg":"dogFunctional-Performance", "functionalKey":"performance"],
+        ["functional":"비뇨기","functionalImg":"dogFunctional-Urinary", "functionalKey":"urinary"],
+        ["functional":"전체","functionalImg":"dogFunctional-All", "functionalKey":"all"]
     ]
     let catFunctionalData: [[String:String]] = [
-        ["functional":"피부","functionalImg":"catFunctional-Skin"],
-        ["functional":"알러지","functionalImg": "catFunctional-Allergy"],
-        ["functional":"관절","functionalImg":"catFunctional-Joint"],
-        ["functional":"다이어트","functionalImg":"catFunctional-Diet"],
-        ["functional":"인도어","functionalImg":"catFunctional-Indoor"],
-        ["functional":"장&면역","functionalImg":"catFunctional-Immune"],
-        ["functional":"헤어볼","functionalImg":"catFunctional-Hairball"],
-        ["functional":"비뇨기","functionalImg":"catFunctional-Urinary"],
-        ["functional":"전체","functionalImg":"catFunctional-All"]
+        ["functional":"피부","functionalImg":"catFunctional-Skin", "functionalKey":"skin"],
+        ["functional":"알러지","functionalImg": "catFunctional-Allergy", "functionalKey":"allergy"],
+        ["functional":"관절","functionalImg":"catFunctional-Joint", "functionalKey":"joint"],
+        ["functional":"다이어트","functionalImg":"catFunctional-Diet", "functionalKey":"diet"],
+        ["functional":"인도어","functionalImg":"catFunctional-Indoor", "functionalKey":"indoor"],
+        ["functional":"장&면역","functionalImg":"catFunctional-Immune", "functionalKey":"immune"],
+        ["functional":"헤어볼","functionalImg":"catFunctional-Hairball", "functionalKey":"hairball"],
+        ["functional":"비뇨기","functionalImg":"catFunctional-Urinary","functionalKey":"urinary"],
+        ["functional":"전체","functionalImg":"catFunctional-All", "functionalKey":"all"]
     ]
+    var currentPetKey: String = ""
     // Login 확인 요청 메서드
     func requestIsLogin() -> Bool {
         if Auth.auth().currentUser == nil {
@@ -101,6 +102,147 @@ class DataCenter {
         }
     }
     
+    func feedDetailIngredientDataLoad(feedKey: String, comlition:@escaping (FeedDetailIngredient)->Void){
+        let ref = Database.database().reference().child("feed_detail").child(feedKey)
+        ref.observeSingleEvent(of: .value, with: { (dataSnap) in
+            guard let data = dataSnap.value else {return}
+            let jsonData = JSON(data)
+            let feedDetailIngredientData = FeedDetailIngredient(ingredientData: jsonData)
+            print("###상세 성분데이터##://",feedDetailIngredientData)
+            comlition(feedDetailIngredientData)
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
+    
+    ///**************test******
+    func indicatorStart(viewController: UIViewController, indicatorImgView: UIImageView){
+        let backgroundView: UIView = UIView(frame: viewController.view.bounds)
+        backgroundView.backgroundColor = .gray
+        backgroundView.bringSubview(toFront: indicatorImgView)
+        viewController.view.addSubview(backgroundView)
+    }
+    func showActivityIndicatory(uiView: UIView, animating: Bool) {
+        let backgroundView: UIView = UIView()
+        backgroundView.frame = uiView.frame
+        backgroundView.center = uiView.center
+        backgroundView.backgroundColor = .gray
+        
+       
+        let loadingIndicatorView = UIImageView()
+        
+        loadingIndicatorView.frame = CGRect(x: 0.0, y: 0.0, width: 60.0, height: 60.0)
+        loadingIndicatorView.center = CGPoint(x: backgroundView.frame.size.width/2, y: backgroundView.frame.size.height/2)
+        let gifManager = SwiftyGifManager(memoryLimit:30)
+        let gif = UIImage(gifName: "loading_img@3.gif")
+        loadingIndicatorView.setGifImage(gif, manager: gifManager)
+        
+//        backgroundView.addSubview(loadingIndicatorView)
+//        uiView.addSubview(backgroundView)
+        
+        if animating {
+            backgroundView.addSubview(loadingIndicatorView)
+            uiView.addSubview(backgroundView)
+
+        }
+    }
+    
+    func nibRemove(toViewController: UIViewController){
+        toViewController.view.removeFromSuperview()
+    }
+    //**************test end****
+    
+    // MARK: Gif LoadingIndicaotr 호출 메서드(통신시작) - 디자인 관련 추후 옮길예정
+    // 사용법: 데이터센턴 싱글턴 패턴으로 함수 호출 하여 사용
+    // ex) let spiner = DataCenter.shard.displayLoadingIndicator(onView: 현재사용할 뷰컨의 뷰)
+    func displsyLoadingIndicator(onView: UIView)->UIView {
+        let spinner = UIView(frame: onView.bounds)
+//        spinner.autoLayoutAnchor(top: onView.topAnchor,
+//                                  left: onView.leftAnchor,
+//                                  right: onView.rightAnchor,
+//                                  bottom: onView.bottomAnchor,
+//                                  topConstant: 0,
+//                                  leftConstant: 0,
+//                                  rigthConstant: 0,
+//                                  bottomConstant: 0,
+//                                  width: 0,
+//                                  height: 0,
+//                                  centerX: nil,
+//                                  centerY: nil)
+        spinner.backgroundColor = UIColor.init(hexString: "#333333", alpha: 0.5)
+        let loadingIndicator: UIImageView = {
+           let imgView = UIImageView()
+            let gifManager = SwiftyGifManager(memoryLimit:30)
+            let gif = UIImage(gifName: "loading_img@3.gif")
+            imgView.setGifImage(gif, manager: gifManager)
+            imgView.contentMode = .scaleAspectFit
+            imgView.clipsToBounds = true
+            return imgView
+        }()
+//        loadingIndicator.autoLayoutAnchor(top: onView.topAnchor,
+//                                          left: nil,
+//                                          right: nil,
+//                                          bottom: nil,
+//                                          topConstant: 300,
+//                                          leftConstant: 0,
+//                                          rigthConstant: 0,
+//                                          bottomConstant: 0,
+//                                          width: 80,
+//                                          height: 80,
+//                                          centerX: onView.centerXAnchor,
+//                                          centerY: nil)
+//        loadingIndicator.center = spinner.center
+        let gifManager = SwiftyGifManager(memoryLimit:30)
+        let gif = UIImage(gifName: "loading_img@3.gif")
+        loadingIndicator.setGifImage(gif, manager: gifManager)
+        DispatchQueue.main.async {
+//            spinner.addSubview(loadingIndicator)
+            
+            onView.addSubview(spinner)
+            spinner.autoLayoutAnchor(top: onView.topAnchor,
+                                     left: onView.leftAnchor,
+                                     right: onView.rightAnchor,
+                                     bottom: onView.bottomAnchor,
+                                     topConstant: 0,
+                                     leftConstant: 0,
+                                     rigthConstant: 0,
+                                     bottomConstant: 0,
+                                     width: 0,
+                                     height: 0,
+                                     centerX: nil,
+                                     centerY: nil)
+            spinner.addSubview(loadingIndicator)
+            loadingIndicator.autoLayoutAnchor(top: nil,
+                                              left: nil,
+                                              right: nil,
+                                              bottom: nil,
+                                              topConstant: 0,
+                                              leftConstant: 0,
+                                              rigthConstant: 0,
+                                              bottomConstant: 0,
+                                              width: spinner.layer.frame.width * 0.22,
+                                              height: spinner.layer.frame.width * 0.22,
+                                              centerX: spinner.centerXAnchor,
+                                              centerY: spinner.centerYAnchor)
+//            loadingIndicator.widthAnchor.constraint(equalTo: <#T##NSLayoutDimension#>, multiplier: <#T##CGFloat#>)
+        }
+        return spinner
+    }
+    
+    // gif인디케이터 삭제 메서드
+    // 사용법 - 상위 메서드에서 생성한 spiner를 파라미터로 전달
+    // ex) DataCenter.shard.removeSpiner(spiner: spiner)
+    func removeSpinner(spinner :UIView) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3, animations: {
+                spinner.alpha = 0
+            }, completion: { (finish) in
+                
+                spinner.removeFromSuperview()
+            })
+        }
+    }
 }
 
 // Firebase User 데이터 구조
@@ -146,9 +288,9 @@ struct FeedInfo{
     var feedName: String!
     var feedIngredient: String!
     var feedAge: Int!
-    var feedWeight: [JSON]!
-    var feedFunctional: [JSON]!
-    var feedImg: [JSON]!
+    var feedWeight: [Double]!
+    var feedFunctional: [String]!
+    var feedImg: [String]!
     var feedMouth: String!
     var feedGrade: Int!
     var feedCountry: String!
@@ -164,9 +306,9 @@ struct FeedInfo{
         self.feedName = feedJsonData.1["feed_name"].stringValue
         self.feedIngredient = feedJsonData.1["feed_ingredient"].stringValue
         self.feedAge = feedJsonData.1["feed_age"].intValue
-        self.feedWeight = feedJsonData.1["feed_weight"].arrayValue
-        self.feedFunctional = feedJsonData.1["feed_functional"].arrayValue
-        self.feedImg = feedJsonData.1["feed_img"].arrayValue
+        self.feedWeight = feedJsonData.1["feed_weight"].arrayObject as! [Double]
+        self.feedFunctional = feedJsonData.1["feed_functional"].arrayObject as! [String]
+        self.feedImg = feedJsonData.1["feed_img"].arrayObject as! [String]
         self.feedMouth = feedJsonData.1["feed_mouth"].stringValue
         self.feedGrade = feedJsonData.1["feed_grade"].intValue
         self.feedCountry = feedJsonData.1["feed_country"].stringValue
@@ -186,9 +328,9 @@ struct FeedInfo{
         self.feedName = feedJsonDataTest["feed_name"].stringValue
         self.feedIngredient = feedJsonDataTest["feed_ingredient"].stringValue
         self.feedAge = feedJsonDataTest["feed_age"].intValue
-        self.feedWeight = feedJsonDataTest["feed_weight"].arrayValue
-        self.feedFunctional = feedJsonDataTest["feed_functional"].arrayValue
-        self.feedImg = feedJsonDataTest["feed_img"].arrayValue
+        self.feedWeight = feedJsonDataTest["feed_weight"].arrayObject as! [Double]
+        self.feedFunctional = feedJsonDataTest["feed_functional"].arrayObject as! [String]
+        self.feedImg = feedJsonDataTest["feed_img"].arrayObject as! [String]
         self.feedMouth = feedJsonDataTest["feed_mouth"].stringValue
         self.feedGrade = feedJsonDataTest["feed_grade"].intValue
         self.feedCountry = feedJsonDataTest["feed_country"].stringValue
@@ -201,7 +343,9 @@ struct FeedInfo{
         
         
     }
-    
+    init() {
+        
+    }
 }
 // 사료 리스트
 struct FeedInfoList {
@@ -241,27 +385,27 @@ struct FeedDetailIngredient {
     // 주의 성분 고유키 배열
     var feedIngredientWarning: [JSON]!
     // 조단백
-    var crudeProtein: Int!
+    var crudeProtein: Float!
     // 조지방
-    var crudeFat: Int!
+    var crudeFat: Float!
     // 조섬유
-    var crudeFibre: Int!
+    var crudeFibre: Float!
     // 조회분
-    var crudeAsh: Int!
+    var crudeAsh: Float!
     // 칼슘
-    var calcium: Int!
+    var calcium: Float!
     // 인
-    var phosphorus: Int!
+    var phosphorus: Float!
     
     init(ingredientData: JSON) {
         self.feedIngredientGood = ingredientData["feed_ingredient_good"].arrayValue
         self.feedIngredientWarning = ingredientData["feed_ingredient_warning"].arrayValue
-        self.crudeProtein = ingredientData["crude_protein"].intValue
-        self.crudeFat = ingredientData["crude_fat"].intValue
-        self.crudeAsh = ingredientData["crude_ash"].intValue
-        self.crudeFibre = ingredientData["crude_figre"].intValue
-        self.calcium = ingredientData["calcium"].intValue
-        self.phosphorus = ingredientData["phosphorus"].intValue
+        self.crudeProtein = ingredientData["crude_protein"].floatValue
+        self.crudeFat = ingredientData["crude_fat"].floatValue
+        self.crudeAsh = ingredientData["crude_ash"].floatValue
+        self.crudeFibre = ingredientData["crude_figre"].floatValue
+        self.calcium = ingredientData["calcium"].floatValue
+        self.phosphorus = ingredientData["phosphorus"].floatValue
     }
     
 }
@@ -321,8 +465,7 @@ struct FunctionalList {
             functionalList.append(functionOne)
             
         }
-        
-        
         self.functional = functionalList
     }
+    
 }
