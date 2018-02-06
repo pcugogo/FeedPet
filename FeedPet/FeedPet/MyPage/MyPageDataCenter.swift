@@ -156,6 +156,25 @@ struct FireBaseData{
         })
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
+    
+    // 닉네임 중복 체크 메서드
+    func nicNameDoubleChek(nickName: String, completion: @escaping (Bool)->Void){
+        
+        Database.database().reference().child("user_profiles").queryOrdered(byChild: "nickName").queryEqual(toValue: nickName).observeSingleEvent(of: .value, with: { (snapShot) in
+            
+            if let snapDict = snapShot.value as? [String:AnyObject]{
+                print(snapDict)
+                completion(true)
+            }else{
+                completion(false)
+            }
+        }, withCancel: {(Err) in
+            
+            print(Err.localizedDescription)
+            
+        })
+    }
+    
     func fireBaseFavoritesDataLoad(){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
