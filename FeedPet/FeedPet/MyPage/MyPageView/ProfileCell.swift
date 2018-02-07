@@ -22,7 +22,7 @@ class ProfileCell: UITableViewCell,UIImagePickerControllerDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+     
         profileImg.layer.cornerRadius = 40
         petTypeLb.layer.masksToBounds = true
         petTypeLb.layer.cornerRadius = 5
@@ -31,6 +31,7 @@ class ProfileCell: UITableViewCell,UIImagePickerControllerDelegate {
         
         userIdLb.text = MyPageDataCenter.shared.userEmail
         nickNameLb.text = MyPageDataCenter.shared.userNicName
+     
         if let userProfileImgURL = URL(string:MyPageDataCenter.shared.userImg) {
             profileImg.kf.setImage(with: userProfileImgURL)
             profileImg.layer.cornerRadius = 40
@@ -61,7 +62,7 @@ class ProfileCell: UITableViewCell,UIImagePickerControllerDelegate {
                 print("error")
             }
         }
-        
+      
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
