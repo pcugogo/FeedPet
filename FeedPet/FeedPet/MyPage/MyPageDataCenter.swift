@@ -53,30 +53,30 @@ class MyPageDataCenter {
 }
 
 struct userDefaultsName {   //알림 서비스에서 이용하는 유저디폴트 이름들
-    static var mealTime = "mealTime"
-    static var mealTimeAMPM = "mealTimeAMPM"
-    static var mealTimeHour = "mealTimeHour"
-    static var mealTimeMinute = "mealTimeMinute"
-    static var alarmOnOff = "alarmOnOff"
+    static let mealTime = "mealTime"
+    static let mealTimeAMPM = "mealTimeAMPM"
+    static let mealTimeHour = "mealTimeHour"
+    static let mealTimeMinute = "mealTimeMinute"
+    static let alarmOnOff = "alarmOnOff"
     
-    static var favoritesDatasCount = "favoritesDatasCount"
-    static var reviewDatasCount = "reviewDatasCount"
+    static let favoritesDatasCount = "favoritesDatasCount"
+    static let reviewDatasCount = "reviewDatasCount"
 }
 
 struct FireBaseData{
     
     static let shared = FireBaseData()
     
-    private var refBase = Database.database().reference()
-    private var refUserInfo = Database.database().reference().child("user_info")
-    private var refFeed = Database.database().reference().child("feed")
-    private var refFavorites = Database.database().reference().child("my_favorite")
-    private var refFeedReviews = Database.database().reference().child("feed_review")
-    private var refMyReviews = Database.database().reference().child("my_review")
-    private var refFeedInfo = Database.database().reference().child("feed_info")
-    private var refReviewThumb = Database.database().reference().child("review_thumb")
-    private var refFeedIngredientGood = Database.database().reference().child("feed_ingredient").child("ingredient_key_g")
-    private var refFeedIngredientWarning = Database.database().reference().child("feed_ingredient").child("ingredient_key_w")
+    private let refBase = Database.database().reference()
+    private let refUserInfo = Database.database().reference().child("user_info")
+    private let refFeed = Database.database().reference().child("feed")
+    private let refFavorites = Database.database().reference().child("my_favorite")
+    private let refFeedReviews = Database.database().reference().child("feed_review")
+    private let refMyReviews = Database.database().reference().child("my_review")
+    private let refFeedInfo = Database.database().reference().child("feed_info")
+    private let refReviewThumb = Database.database().reference().child("review_thumb")
+    private let refFeedIngredientGood = Database.database().reference().child("feed_ingredient").child("ingredient_key_g")
+    private let refFeedIngredientWarning = Database.database().reference().child("feed_ingredient").child("ingredient_key_w")
     
     var refBaseReturn:DatabaseReference{
         return refBase
