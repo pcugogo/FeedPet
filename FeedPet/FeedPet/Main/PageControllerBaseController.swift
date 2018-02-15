@@ -23,8 +23,10 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     }
     var curretPetKey = String()
     var spinerView = UIView()
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,16 +35,55 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         buttonBarItemSpec = ButtonBarItemSpec.nibFile(nibName: "MainMenuIconCollectionViewCell", bundle: Bundle(for: MainMenuIconCollectionViewCell.self), width: { _ in
             return 55.0
         })
+        
+        
+        
     }
     
     override func viewDidLoad() {
+//        let backgroundView = UIView(frame: self.view.frame)
+//        backgroundView.backgroundColor = UIColor.init(hexString: "#FF6600")
+//        self.view.addSubview(backgroundView)
+        
+        
+            
+//            let LoginViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+            //            let navigation = UINavigationController(rootViewController: LoginViewController)
+            
+            //            self.present(LoginViewController, animated: true, completion: nil)
+            //            self.navigationController?.pushViewController(LoginViewController, animated: true)
+        
+            
+//            self.navigationController?.present(UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainTest") as! MainViewController, animated: false, completion: {
+//                
+//            })
+            
+           
+        
+        
+        
+        //
+        //        if !DataCenter.shared.requestIsLogin(){
+        //            let LoginViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
+        //            //            let navigation = UINavigationController(rootViewController: LoginViewController)
+        //
+        //            //            self.present(LoginViewController, animated: true, completion: nil)
+        //            //            self.navigationController?.pushViewController(LoginViewController, animated: true)
+        //            self.navigationController?.present(LoginViewController, animated: false, completion: {
+        //
+        //
+//            })
+//
+//        }
         // change selected bar color
 //        settings.style.buttonBarBackgroundColor = UIColor(red: 255/255.0, green: 102/255.0, blue: 0/255.0, alpha: 1.0)
 //        settings.style.buttonBarItemBackgroundColor = .clear
         
         // 셀렉트 바 색
 //        settings.style.selectedBarBackgroundColor = UIColor(red: 234/255.0, green: 234/255.0, blue: 234/255.0, alpha: 1.0)
-        
+      
+            
+       
         // 하단의 셀레트 바 높이
         settings.style.selectedBarHeight = 0.0
 //        settings.style.buttonBarMinimumLineSpacing = 0
@@ -53,7 +94,7 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
 //        settings.style.buttonBarRightContentInset = 0
 //
         // Icon 선택 변화시 이루어질 클로져
-        changeCurrentIndexProgressive = { [weak self] (oldCell: MainMenuIconCollectionViewCell?, newCell: MainMenuIconCollectionViewCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
+       changeCurrentIndexProgressive = { [weak self] (oldCell: MainMenuIconCollectionViewCell?, newCell: MainMenuIconCollectionViewCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
             guard changeCurrentIndex == true else { return }
 //            oldCell?.menuIconImg.tintColor = self?.unselectedIconColor
 //
@@ -69,6 +110,8 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
                 self?.indicatorTitle = "멍"
             }
         }
+        super.viewDidLoad()
+        
         // XLPagerTabStrip의 탭바 설정입니다.
         // [주의!] 스토리보드의 설정들은 먹히지 않습니다.
 //        let mySelectedColor = UIColor.blue
@@ -76,9 +119,9 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
 //        buttonBarView.selectedBar.backgroundColor = mySelectedColor
 //        buttonBarView.backgroundColor = myBackgroundColor
 //        settings.style.buttonBarItemBackgroundColor = myBackgroundColor
-        super.viewDidLoad()
+        
         //테스트 위한 로그아웃 호출
-        DataCenter.shared.singOut()
+        
 //        navigationController?.navigationBar.shadowImage = UIImage()
 //        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         // 로그인 여부 체크 - 비로그인시 로그인화면으로 이동
@@ -88,7 +131,8 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
 //                self.showLoginViewController()
 //            }
 //        }
-       
+        
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -139,9 +183,9 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     */
     
     @IBAction func feedSearchBtnTouched(_ sender: UIButton) {
-//        let nextViewContorller = self.storyboard?.instantiateViewController(withIdentifier: "FeedSearchViewController") as! FeedSearchViewController
+        //        let nextViewContorller = self.storyboard?.instantiateViewController(withIdentifier: "FeedSearchViewController") as! FeedSearchViewController
         //        self.present(nextViewContorller, animated: true, completion: nil)
-//        self.navigationController?.pushViewController(nextViewContorller, animated: true)
+        //        self.navigationController?.pushViewController(nextViewContorller, animated: true)
         
         UIBarButtonItem.appearance(whenContainedInInstancesOf:[UISearchBar.self]).tintColor = UIColor.white
         
@@ -176,6 +220,7 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         // 구현한  SearchController를 화면에 띄어주기위해 present 호출
         present(searchController, animated: true, completion: nil)
         searchController.delegate = self
+
         
     }
    

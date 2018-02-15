@@ -10,6 +10,8 @@ import Foundation
 import SwiftyJSON
 import Firebase
 import SwiftyGif
+import GoogleSignIn
+
 class DataCenter {
     // 싱글턴 패턴
     static let shared = DataCenter()
@@ -37,7 +39,10 @@ class DataCenter {
         ["functional":"비뇨기","functionalImg":"catFunctional-Urinary","functionalKey":"urinary"],
         ["functional":"전체","functionalImg":"catFunctional-All", "functionalKey":"all"]
     ]
-    var currentPetKey: String = ""
+    var currentPetKey: String = "feed_petkey_d"
+    
+    var loginUserData: [String:Any] = [:]
+    
     // Login 확인 요청 메서드
     func requestIsLogin() -> Bool {
         if Auth.auth().currentUser == nil {
@@ -58,19 +63,24 @@ class DataCenter {
         })
         
     }
-    
-    func singOut(){
+    func getUserData()->[String:Any]{
+     
+        return loginUserData
+    }
+    func googleLogOut(){
         do{
             try Auth.auth().signOut()
-        }catch{
-            
+            GIDSignIn.sharedInstance().signOut()
+        }catch let error as Error {
+            print(error.localizedDescription)
         }
+        
     }
     
     // 닉네임 중복 체크 메서드
     func nicNameDoubleChek(nickName: String, completion: @escaping (Bool)->Void){
         
-        Database.database().reference().child("user_profiles").queryOrdered(byChild: "nickName").queryEqual(toValue: nickName).observeSingleEvent(of: .value, with: { (snapShot) in
+        Database.database().reference().child("user_info").queryOrdered(byChild: "user_nic").queryEqual(toValue: nickName).observeSingleEvent(of: .value, with: { (snapShot) in
             
             if let snapDict = snapShot.value as? [String:AnyObject]{
                 print(snapDict)
@@ -174,9 +184,9 @@ class DataCenter {
         let loadingIndicator: UIImageView = {
            let imgView = UIImageView()
             let gifManager = SwiftyGifManager(memoryLimit:30)
-            let gif = UIImage(gifName: "loading_img@3.gif")
+            let gif = UIImage(gifName: "loading_img@.gif")
             imgView.setGifImage(gif, manager: gifManager)
-            imgView.contentMode = .scaleAspectFit
+            imgView.contentMode = .scaleToFill
             imgView.clipsToBounds = true
             return imgView
         }()
@@ -194,7 +204,7 @@ class DataCenter {
 //                                          centerY: nil)
 //        loadingIndicator.center = spinner.center
         let gifManager = SwiftyGifManager(memoryLimit:30)
-        let gif = UIImage(gifName: "loading_img@3.gif")
+        let gif = UIImage(gifName: "loading_img@3x2.gif")
         loadingIndicator.setGifImage(gif, manager: gifManager)
         DispatchQueue.main.async {
 //            spinner.addSubview(loadingIndicator)
@@ -254,28 +264,35 @@ struct User {
     // 추가 가입정보
     var userNickname: String?
     var userProfileImgUrl: String?
-    var ueerGender: String?
+    var userGender: String?
     
     // 반려동물 가입정보
-    var petAge: Int?
-    var petFunctional: [Int]?
+    var userPet: String?
+    var userPetAge: Int?
+    var userPetFunctional: [String]?
     
     
     init() {
         
-        
+       
     }
     init(socialData: [String:Any]) {
-        self.userName = socialData["userName"] as? String ?? "no-name"
-        self.userEmail = socialData["userEmail"] as? String ?? "no-email"
+        self.userName = socialData["user_name"] as? String ?? "no-name"
+        self.userEmail = socialData["user_emial"] as? String ?? "no-email"
         
     }
     
     init(allInfoData: [String:Any]) {
-        self.userName = allInfoData["userName"] as? String ?? "no-name"
-        self.userEmail = allInfoData["userEmail"] as? String ?? "no-email"
-        
+        self.userName = allInfoData["user_name"] as? String
+        self.userEmail = allInfoData["user_email"] as? String
+        self.userNickname = allInfoData["user_nic"] as? String
+        self.userGender = allInfoData["user_gender"] as? String
+        self.userPet = allInfoData["user_pet"] as? String
+        self.userPetAge = allInfoData["user_petage"] as? Int
+        self.userPetFunctional = allInfoData["user_pet_functional"] as? [String]
     }
+    
+    
     
     
 }
@@ -320,6 +337,7 @@ struct FeedInfo{
         
         
         
+        
     }
     
     init(feedJsonDataTest: JSON) {
@@ -350,7 +368,7 @@ struct FeedInfo{
 // 사료 리스트
 struct FeedInfoList {
     
-    let feed: [FeedInfo]
+    var feed: [FeedInfo]!
     
     init(feedsJsonTest: [JSON]) {
         var feedList: [FeedInfo] = []
@@ -467,5 +485,26 @@ struct FunctionalList {
         }
         self.functional = functionalList
     }
+    
+}
+
+struct FeedReview {
+    var feedKey: String!
+    var reviewInfo: [ReviewInfo]?
+    var reviewRation: Int!
+    
+    init(feedReviewJSON: (String,JSON)) {
+        self.feedKey = feedReviewJSON.0
+        
+    }
+    
+}
+
+struct ReviewInfo {
+    var reviewKey: String!
+    var userKey: String!
+    var feedRating: Int!
+    var feedReviewCon: String!
+    var reviewDate: String!
     
 }

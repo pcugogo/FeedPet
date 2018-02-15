@@ -24,7 +24,8 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     
 //    var feedData: [FeedInfo] = []
     var testReference: DatabaseReference = Database.database().reference()
-    var ref: DatabaseReference!
+    var ref: DatabaseReference = Database.database().reference()
+    
     
     
     // 페이지네이션 데이터 변수
@@ -41,8 +42,10 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     var currentPet = String()
     
     
+    @IBOutlet weak var functionalContainerView: UIView!
     @IBOutlet weak var feedInfoTableView: UITableView!
     @IBOutlet weak var feedListCountLabel: UILabel!
+    
     @IBOutlet weak var loadingIndicatorImgView: LoadingIndicatorImgView!
     /*******************************************/
     //MARK:-        LifeCycle                  //
@@ -97,8 +100,10 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "FuncitonalEmbeddedSegue") {
+            // Container 뷰의 세그 ID값을 할당하여 데이터 전달 및 델리게이트 패턴 적용
             let functionalView = segue.destination as! FunctionalViewController
             functionalView.functionalData = DataCenter.shared.functionalSettingData(currentPet: currentPet)
+            functionalView.sendFunctionalDelegate = self
             // Now you have a pointer to the child view controller.
             // You can save the reference to it, or pass data to it.
             
@@ -142,7 +147,9 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         delegate?.loadingIndicatorDisplay()
 //        let indi = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+        print("@@선택 반려동물://",currentPet)
         testReference.child("feed_info").child(currentPet).observeSingleEvent(of: .value, with: { (dataSnap) in
+            print("@@데이터수://",dataSnap.childrenCount)
             guard let feedInfoListJson = dataSnap.value else {return}
             let feedJson = JSON(feedInfoListJson)
             var feedData = [FeedInfo]()
@@ -157,7 +164,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
                 self.feedAllData = feedData
                 DispatchQueue.main.async {
                     // 필터링 테스트
-                    self.feedAllDataPagination(functionalKey: ["immune","joint"])
+                    self.feedAllDataPagination(functionalKey: [])
                     self.feedInfoTableView.reloadData()
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
 //                    DataCenter.shared.removeSpinner(spinner: indi)
@@ -167,7 +174,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
                 print(self.feedPagenationData)
             }
             DispatchQueue.main.async {
-                self.feedListCountLabel.text = dataSnap.childrenCount.description
+//                self.feedListCountLabel.text = dataSnap.childrenCount.description
 //                DataCenter.shared.nibRemove(toViewController: self)
                 self.delegate?.loadingRemoveDisplay()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -181,7 +188,8 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     func feedAllDataPagination(functionalKey: [String]){
         // 최초 페이지네이션 키 값이 nil일 경우
         var filterData = [FeedInfo]()
-        
+        print("선택한 키값에 맞는 사료정보이때 키값://",functionalKey)
+        if functionalKey.count != 0{
         // 1. 먼저 기능성 키값에 String 값을 할당
         for key in functionalKey {
             // key => [String] 배열에 하나의 값
@@ -210,7 +218,18 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         feedFilteringData = filterData.sorted(by: { (feedOne, feedTwo) -> Bool in
             return feedOne.feedName < feedTwo.feedName
         })
-        print("정렬://",feedFilteringData)
+        
+        }else{
+            feedFilteringData = feedAllData
+        }
+        print("정렬://",feedFilteringData,"//카운트:",feedFilteringData.count)
+        
+        DispatchQueue.main.async {
+            self.feedListCountLabel.text = self.feedFilteringData.count.description
+            self.feedInfoTableView.reloadData()
+        }
+        
+        
 //        print("필터데이터://",filterData,"/카운트:", filterData.count)
 //        let reference = Database.database().reference().child("feed_info").child(currentPet).queryOrdered(byChild: "feed_functional").queryEqual(toValue: "immune")
 //        reference.observeSingleEvent(of: .value, with: { (data) in
@@ -218,7 +237,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
 //        }, withCancel: nil)
         if currentPageCount == 0 {
             for index in 0...10 {
-                feedFilteringPaginationData.append(feedFilteringData[index])
+//                feedFilteringPaginationData.append(feedFilteringData[index])
             }
         }else{
             
@@ -334,40 +353,54 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
     //MARK:-  TableViewDelegate, TableViewDataSource //
     /*************************************************/
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
         return feedFilteringData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let feedCell = tableView.dequeueReusableCell(withIdentifier: "FeedMainInfoCell", for: indexPath) as! FeedMainInfoTableViewCell
+        print(self.feedFilteringData[indexPath.row].feedBrand)
         feedCell.feedBrandLabel.text = self.feedFilteringData[indexPath.row].feedBrand
         feedCell.feedNameLabel.text = self.feedFilteringData[indexPath.row].feedName
 
-        let gradeInt: Int = self.feedFilteringData[indexPath.row].feedGrade
-//        let gradeText: String = FeedGrade.init(rawValue: gradeInt)?.gardeText() ?? "no-data"
-//        feedCell.feedGradeLabel.text = gradeText
-        
-        // Enum을 통해 해당 셀의 레이블의 값 할당 과 텍스트 컬러 변경 => 좋은방법일지 생각해보고 좋지않다면 함수로 분리하여 호출하자
-        FeedGrade.init(rawValue: gradeInt)?.gardeText(label: feedCell.feedGradeLabel)
-        // Enum을 통한 입소문 이미지 할당 위에 코드와 동일 한 구조
-        FeedMouth.init(rawValue: self.feedFilteringData[indexPath.row].feedMouth)?.mouthImgSetting(mouthImgView: feedCell.feedMouthImgView)
-        
-        // 포장방식 분기처리
-        if self.feedFilteringData[indexPath.row].feedPackageFlag {
-            feedCell.feedPackageLabel.text = "소분포장"
-        }else{
-            feedCell.feedPackageLabel.text = "전체포장"
-        }
-        feedCell.feedIngredientLabel.text = self.feedFilteringData[indexPath.row].feedIngredient
-        
-    
-        if let urlStr = self.feedFilteringData[indexPath.row].feedImg.first, let url = URL(string: urlStr){
-
-            feedCell.feedImgView.kf.setImage(with: url)
-//            DispatchQueue.main.async {
+//        let gradeInt: Int = self.feedFilteringData[indexPath.row].feedGrade
+////        let gradeText: String = FeedGrade.init(rawValue: gradeInt)?.gardeText() ?? "no-data"
+////        feedCell.feedGradeLabel.text = gradeText
 //
-//            }
-
-        }
+//        // Enum을 통해 해당 셀의 레이블의 값 할당 과 텍스트 컬러 변경 => 좋은방법일지 생각해보고 좋지않다면 함수로 분리하여 호출하자
+//        FeedGrade.init(rawValue: gradeInt)?.gradeText(label: feedCell.feedGradeLabel)
+//
+//        // Enum을 통한 입소문 이미지 할당 위에 코드와 동일 한 구조
+//        FeedMouth.init(rawValue: self.feedFilteringData[indexPath.row].feedMouth)?.mouthImgSetting(mouthImgView: feedCell.feedMouthImgView)
+//
+//        // 포장방식 분기처리
+//        if self.feedFilteringData[indexPath.row].feedPackageFlag {
+//            feedCell.feedPackageLabel.text = "소분포장"
+//        }else{
+//            feedCell.feedPackageLabel.text = "전체포장"
+//        }
+//        feedCell.feedIngredientLabel.text = self.feedFilteringData[indexPath.row].feedIngredient
+//
+//
+//        if let urlStr = self.feedFilteringData[indexPath.row].feedImg.first, let url = URL(string: urlStr){
+//
+//            feedCell.feedImgView.kf.setImage(with: url)
+////            DispatchQueue.main.async {
+////
+////            }
+//
+//        }
+//        // 리뷰데이터 필요
+//        ref.child("feed_review").child(self.feedFilteringData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
+//            // 1. 리뷰의 갯수가 필요하
+//            guard let reviewData = dataSnap.value else {return}
+//            var reviewDataJSON = JSON(reviewData)
+//
+//        }) { (error) in
+//            print(error.localizedDescription)
+//        }
+//
+        feedCell.feedData = self.feedFilteringData[indexPath.row]
         
         return feedCell
     }
@@ -379,13 +412,13 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         print("----select FeedData ----",feedDetailData)
         let feedDeatilView: FeedDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "FeedDetailView") as! FeedDetailViewController
         feedDeatilView.feedDetailInfo = feedDetailData
-        
+        delegate?.loadingIndicatorDisplay()
         DataCenter.shared.feedDetailIngredientDataLoad(feedKey: feedDetailData.feedKey) { (feedDetailIngredientData) in
             print(feedDetailIngredientData)
             feedDeatilView.ingredientData = feedDetailIngredientData
-            self.parent?.navigationController?.pushViewController(feedDeatilView, animated: true)
             DispatchQueue.main.async {
- 
+                self.parent?.navigationController?.pushViewController(feedDeatilView, animated: true)
+                self.delegate?.loadingRemoveDisplay()
             }
         }
 //        self.parent?.navigationController?.pushViewController(feedDeatilView, animated: true)
@@ -424,12 +457,13 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         }
         
     }
-    
-    
-        
-    
-    
 }
+extension MainPageViewController: FunctionalKeySend {
+    func functionalKeySend(keyArr: [String]) {
+        feedAllDataPagination(functionalKey: keyArr)
+    }
+}
+
 enum FeedGrade: Int{
     case ratingOrganic = 0
     case ratingHolistic = 1
@@ -438,7 +472,7 @@ enum FeedGrade: Int{
     case ratingGroceryBrand = 4
     case ratingNo = 5
     
-    func gardeText(label: UILabel){
+    func gradeText(label: UILabel){
         switch self {
         case .ratingOrganic:
             label.textColor = UIColor.init(hexString: "338FCB")

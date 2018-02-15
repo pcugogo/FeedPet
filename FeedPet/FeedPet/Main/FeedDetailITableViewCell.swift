@@ -56,7 +56,7 @@ class FeedDetailITableViewCell: UITableViewCell {
         feedTargetLabel.text = ""
         feedCountryOriginLabel.text = feedDetailInfo.feedCountry
         feedIngredientLabel.text = feedDetailInfo.feedIngredient
-        FeedGrade(rawValue: feedDetailInfo.feedGrade)?.gardeText(label: feedGradeLabel)
+        FeedGrade(rawValue: feedDetailInfo.feedGrade)?.gradeText(label: feedGradeLabel)
         FeedMouth(rawValue: feedDetailInfo.feedMouth)?.mouthImgSetting(mouthImgView: feedPetEvaluationRatingImgView)
     }
 

@@ -43,7 +43,7 @@ class FeedSearchResultViewController: UIViewController {
     }
     */
     func dataLoad(){
-        
+        let currentKey: String = DataCenter.shared.currentPetKey
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let referenceT = Database.database().reference().child("feed_info").child("feed_petkey_c").queryOrdered(byChild: "feed_name")
         referenceT.observeSingleEvent(of: .value, with: { (dataSnap) in
@@ -143,8 +143,14 @@ extension FeedSearchResultViewController: UITableViewDelegate, UITableViewDataSo
         let selectFeedKey = searchFeedData[indexPath.row].feedKey
         let feedDetailView = self.storyboard?.instantiateViewController(withIdentifier: "FeedDetailView") as! FeedDetailViewController
         feedDetailView.feedDetailInfo = searchFeedData[indexPath.row]
-        
-        delegate?.didSelectedCell(view: feedDetailView)
+        DataCenter.shared.feedDetailIngredientDataLoad(feedKey: searchFeedData[indexPath.row].feedKey) { (feedDetailIngredientData) in
+            print(feedDetailIngredientData)
+            feedDetailView.ingredientData = feedDetailIngredientData
+            DispatchQueue.main.async {
+                 self.delegate?.didSelectedCell(view: feedDetailView)
+            }
+        }
+//       delegate?.didSelectedCell(view: feedDetailView)
         
         
 //        present(feedDetailView, animated: false, completion: nil)

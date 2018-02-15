@@ -116,18 +116,16 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
             ingredientCell.goodIngredientCountLabel.text = warning.count.description
             return ingredientCell
         case 2:
-//            let ingredientChartCell = tableView.dequeueReusableCell(withIdentifier: "FeedIngredientChartCell", for: indexPath) as! FeedIngredientChartTableViewCell
-//
-//            ingredientChartCell.ingredientDataTest = FeedDetailIngredientTest(ingredientData: tempData)
-//            ingredientChartCell.ingredientLoadData(ingredientData: FeedDetailIngredientTest(ingredientData: tempData))
-//            return ingredientChartCell
             let chartProgressCell = tableView.dequeueReusableCell(withIdentifier: "FeedIngredientProgressChartCell", for: indexPath) as! FeedIngredientProgressChartTableViewCell
             chartProgressCell.ingredeintDataSetting(ingredient: ingredientData)
             return chartProgressCell
-        
-        default:
+        case 3:
+            let reviewInfoCell = tableView.dequeueReusableCell(withIdentifier: "FeedReviewInfoCell", for: indexPath) as! FeedReviewInfoTableViewCell
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "FeedIngredientCell", for: indexPath) as! FeedIngredientTableViewCell
+            return reviewInfoCell
+            
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FeedReviewListTableCell", for: indexPath) as! FeedReviewListTableViewCell
             
             return cell
         }

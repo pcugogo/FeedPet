@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import Firebase
+import SwiftyJSON
 
 class AddPetInformationViewController: UIViewController {
 
@@ -21,34 +22,49 @@ class AddPetInformationViewController: UIViewController {
     var catAgeArray: [String] = ["주니어", "어덜트", "시니어"]
     
     var ageArray: [String] = []
-    
+    var ageIntValue: Int = 1
     var dogFunctionalArray: [String] = ["피부","알러지","관절","다이어트","인도어","장&면역","퍼포먼스","비뇨기","전체"]
     var catFunctionalArray: [String] = ["피부","알러지","관절","다이어트","인도어","장&면역","헤어볼","비뇨기","전체"]
+    var dogDicArray: [[String:String]] = [["key":"skin","text":"피부"],["key":"allergy","text":"알러지"],["key":"joint","text":"관절"],["key":"diet","text":"다이어트"],["key":"indoor","text":"인도어"],
+                                          ["key":"immune","text":"장&면역"],["key":"performance","text":"퍼포먼스"],["key":"urinary","text":"비뇨기"],["key":"all","text":"전체"]]
     var functionalArray: [String] = []
+    var functionalDicArray: [[String:String]] = [[:]]
     
     
     var ageIndexPath: IndexPath = IndexPath()
     var functionalIndexPath: [IndexPath] = []
     
+    var userData: [String:Any] = [:]
+    var petKey: String = "functional_petkey_d"
+    var userPet: String = "feed_petkey_d"
     // 선택 반려동물 태그값 체크를 위한 옵저버 프로퍼티
     var petBtnTag: Int = 0 {
         didSet{
-            petAgeCollectionView.reloadData()
-            petFunctionalCollectionView.reloadData()
+            
             if petBtnTag == 0{
                 dogBtnOutlet.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
                 catBtnOutlet.setImage(#imageLiteral(resourceName: "catDisable"), for: .normal)
                 ageArray = dogAgeAray
-                functionalArray = dogFunctionalArray
+//                functionalArray = dogFunctionalArray
+                functionalDicArray = dogDicArray
+                petKey = "functional_petkey_d"
+                userPet = "feed_petkey_d"
             }else{
                 dogBtnOutlet.setImage(#imageLiteral(resourceName: "dogDisable"), for: .normal)
                 catBtnOutlet.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
                 ageArray = catAgeArray
-                functionalArray = catFunctionalArray
+//                functionalArray = catFunctionalArray
+                functionalDicArray = dogDicArray
+                petKey = "functional_petkey_c"
+                userPet = "feed_petkey_c"
             }
-
+            functionalKeyLoad()
+            petAgeCollectionView.reloadData()
+            petFunctionalCollectionView.reloadData()
         }
     }
+    
+    var delegate: ViewDismissProtocol?
     
     // ########################################
     // MARK: View LifeCycle
@@ -64,10 +80,15 @@ class AddPetInformationViewController: UIViewController {
         
         
         print("---뷰 디드로드 - functionlInedxPath 값: ", functionalIndexPath)
+        print(userData)
         // 최초 선택은 디폴트가 강아지로되어있다.
         ageArray = dogAgeAray
-        functionalArray = dogFunctionalArray
+//        functionalArray = dogFunctionalArray
+        functionalDicArray = dogDicArray
         // Do any additional setup after loading the view.
+        
+        functionalKeyLoad()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -89,12 +110,88 @@ class AddPetInformationViewController: UIViewController {
         petBtnTag = sender.tag
     }
     
+    
+    @IBAction func doneBtnTouched(_ sender: UIBarButtonItem){
+        var functionalKeyArr: [String] = []
+        
+        if !functionalIndexPath.isEmpty {
+            if functionalIndexPath.count == 9 {
+                functionalKeyArr.append("all")
+                print(functionalKeyArr)
+            }else{
+                for functionIndexpath in functionalIndexPath {
+                    guard let functionKey = functionalDicArray[functionIndexpath.item]["key"] as? String else {return}
+                    functionalKeyArr.append(functionKey)
+                    
+                }
+                print(functionalKeyArr)
+                
+                //            functionalKeyArr = functionalIndexPath.map { (indexpath) -> String in
+                //                self.functionalDicArray[indexpath.item]["key"] as? String ?? "all"
+                //            }
+                //            print(functionalKeyArr)
+            }
+            userData.updateValue(userPet, forKey: "user_pet")
+            userData.updateValue(ageIntValue, forKey: "user_petage")
+            userData.updateValue(functionalKeyArr, forKey: "user_pet_functional")
+            print("회원최동데이터://",userData)
+            print( UserDefaults.standard.string(forKey: "userUID"))
+            
+//            guard let userUID = UserDefaults.standard.string(forKey: "userUID") else {return}
+            guard let userUID =  Auth.auth().currentUser?.uid else {return}
+            print(userUID)
+           
+            // 파이어베이스 사용자 정보 값 저장
+            let ref = Database.database().reference().child("user_info").child(userUID)
+            ref.setValue(userData)
+            DispatchQueue.main.async {
+                self.dismiss(animated: true) {
+                    
+                    self.delegate?.currentViewDismiss()
+                }
+            }
+           
+            
+        }else{
+//            let pathTest = IndexPath(item: 8, section: 0)
+//            petFunctionalCollectionView.selectItem(at: pathTest, animated: true, scrollPosition: .centeredVertically)
+//            functionalIndexPath.append(pathTest)
+//            functionalIndexPath = petFunctionalCollectionView.selectAll(animated: true)
+            print(functionalIndexPath)
+            let alert = UIAlertController(title: nil, message: "기능성은 한가지 이상 선택해주세요.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        
+        
+        
+    }
+    func functionalKeyLoad(){
+        let ref = Database.database().reference()
+        // 0209변경예정- petKey 값 파베데이터에서 모두 "feed_petkey_d" 형태로 변경할예정
+        ref.child("feed_functional").child(petKey).observeSingleEvent(of: .value, with: { (dataSnap) in
+            guard let data = dataSnap.value else {return}
+            print(data)
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
 }
 
 // ########################################
 // MARK: Extension -                
 // ########################################
 extension AddPetInformationViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let height: CGFloat = collectionView.cellForItem(at: indexPath)?.frame.size.height ?? 30.0
+        print(collectionView.bottomAnchor)
+        let width: CGFloat = collectionView.frame.size.width/3 - 10
+        
+        return CGSize(width: width, height: height)
+        
+    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var itemCount = 0
         if collectionView == petAgeCollectionView {
@@ -122,10 +219,12 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
         }else {
              let funcionalCell = collectionView.dequeueReusableCell(withReuseIdentifier: "functionalCell", for: indexPath) as! PetFunctionalCollectionViewCell
             
-            funcionalCell.functionalLabel.text = functionalArray[indexPath.item]
+//            funcionalCell.functionalLabel.text = functionalArray[indexPath.item]
+            funcionalCell.functionalLabel.text = functionalDicArray[indexPath.item]["text"]
             funcionalCell.petSelectInt = petBtnTag
             
             functionalIndexPath.append(indexPath)
+            
             collectionView.selectAll(animated: true)
             
             
@@ -150,7 +249,7 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
                 // 확장한 코드
                 
                 functionalIndexPath = collectionView.selectAll(animated: true)
-//                functionalIndexPath.append(indexPath)
+                //                functionalIndexPath.append(indexPath)
                 print(functionalIndexPath)
                 // 초기 구현함수
                 //                for item in 0..<collectionView.numberOfItems(inSection: 0) {
@@ -162,11 +261,11 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
                     let indexInt = functionalIndexPath.index(of: indexPath)
                     print(indexInt)
                     functionalIndexPath.remove(at: indexInt!)
-                    print("------기능성 선택한 값이 존재할경우 slect 인덱스패스------: ",functionalIndexPath)
+                    print("------기능성 선택한 값이 존재할경우 slect 인덱스패스------: ",functionalIndexPath,"---/")
                 }
                 else{
                     functionalIndexPath.append(indexPath)
-                    print("------기능성 선택한 값이 존재하지 않을경우 slect 인덱스패스------: ",functionalIndexPath)
+                    print("------기능성 선택한 값이 존재하지 않을경우 slect 인덱스패스------: ",functionalIndexPath,"--/")
                 }
                 
                 let pathtest = IndexPath(item: collectionView.numberOfItems(inSection: 0)-1, section: 0)
@@ -174,7 +273,7 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
                     let indexInt = functionalIndexPath.index(of: pathtest)
                     collectionView.selectItem(at: pathtest, animated: true, scrollPosition: .centeredVertically)
                     functionalIndexPath.append(pathtest)
-                    
+                    print("무슨경우더라?/",functionalIndexPath)
                 }
                 
             }
@@ -188,8 +287,9 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
 //
 //            }
 //
-            ageIndexPath = indexPath
             
+            ageIndexPath = indexPath
+            ageIntValue = indexPath.item+1
         }
         
     }
@@ -215,7 +315,7 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
                 let indexInt = functionalIndexPath.index(of: indexPath)
                 print(indexInt)
                 functionalIndexPath.remove(at: indexInt!)
-                print("------기능성 didDeslect 인덱스패스------: ",functionalIndexPath)
+                print("------기능성 didDeslect 인덱스패스------: ",functionalIndexPath,"/")
             }
         }
     }
@@ -228,11 +328,12 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
 // UICollectionView 확장
 extension UICollectionView {
     
-    // 모든 셀 선택
+    // 모든 셀 선택 => 기능성 키값에서 "all"부분이 =>모든데이터 포함으로 변경에 따라 return 부분에 -1을 해주었다.
+    // all이라는 부분은 실제로 데이터로는 들어가지않고 UI로만 표시해준다.
     func selectAll(animated: Bool) -> [IndexPath]{
         var inpathArr: [IndexPath] = []
         (0..<numberOfSections).flatMap { (section) -> [IndexPath]? in
-            return (0..<numberOfItems(inSection: section)).flatMap({ (item) -> IndexPath? in
+            return (0..<numberOfItems(inSection: section)-1).flatMap({ (item) -> IndexPath? in
                 return IndexPath(item: item, section: section)
                 
             })
@@ -256,4 +357,6 @@ extension UICollectionView {
     
 }
 
-
+protocol ViewDismissProtocol {
+    func currentViewDismiss()
+}

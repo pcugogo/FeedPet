@@ -20,6 +20,9 @@ class FeedReviewInfoTableViewCell: UITableViewCell {
     
     
     @IBOutlet weak var reviewCountLabel: UILabel!
+    
+//    var reviewInfoData:
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

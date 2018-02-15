@@ -69,7 +69,7 @@ class FeedIngredientProgressChartTableViewCell: UITableViewCell {
 //        self.progressBarSetting(proteinValue: CGFloat(ingredientDetailData.crudeProtein), fatValue: CGFloat(ingredientDetailData.crudeFat), fibreValue: CGFloat(ingredientDetailData.crudeFibre), ashValue: CGFloat(ingredientDetailData.crudeAsh), calcuimValue: CGFloat(ingredientDetailData.calcium), phosphorusValue: CGFloat(ingredientDetailData.phosphorus))
         
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: .allowAnimatedContent, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: .allowAnimatedContent, animations: {
             self.progressBarSetting(proteinValue: ingredientDetailData.crudeProtein, fatValue: ingredientDetailData.crudeFat, fibreValue: ingredientDetailData.crudeFibre, ashValue: ingredientDetailData.crudeAsh, calcuimValue: ingredientDetailData.calcium, phosphorusValue: ingredientDetailData.phosphorus)
         }) { (finish) in
             

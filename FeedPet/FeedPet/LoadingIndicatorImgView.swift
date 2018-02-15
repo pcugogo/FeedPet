@@ -38,7 +38,7 @@ class LoadingIndicatorImgView: UIImageView {
         super.init(coder: aDecoder)
         
         let gifManager = SwiftyGifManager(memoryLimit:30)
-        let gif = UIImage(gifName: "loading_img@3.gif")
+        let gif = UIImage(gifName: "loading_img.gif")
         self.setGifImage(gif, manager: gifManager)
 
     }

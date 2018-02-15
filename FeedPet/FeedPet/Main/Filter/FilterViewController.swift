@@ -69,6 +69,34 @@ class FilterViewController: UIViewController {
                                                     textLabel: "오리")
                     ],
                                    expanded: false),
+                FilterMenuSections(menu: "중량",
+                                   filterMenuKind: [
+                                    FilterMenuInner(cellType: "Detail",
+                                                    checkState: false,
+                                                    gradeImg: nil,
+                                                    textLabel: "1kg이하"),
+                                    FilterMenuInner(cellType: "Detail",
+                                                    checkState: false,
+                                                    gradeImg: nil,
+                                                    textLabel: "1kg~2kg이하"),
+                                    FilterMenuInner(cellType: "Detail",
+                                                    checkState: false,
+                                                    gradeImg: nil,
+                                                    textLabel: "2kg~5kg이하"),
+                                    FilterMenuInner(cellType: "Detail",
+                                                    checkState: false,
+                                                    gradeImg: nil,
+                                                    textLabel: "5kg~10kg이하"),
+                                    FilterMenuInner(cellType: "Detail",
+                                                    checkState: false,
+                                                    gradeImg: nil,
+                                                    textLabel: "10kg~15kg이하"),
+                                    FilterMenuInner(cellType: "Detail",
+                                                    checkState: false,
+                                                    gradeImg: nil,
+                                                    textLabel: "15kg이상")
+                    ],
+                                   expanded: false),
                 FilterMenuSections(menu: "브랜드",
                                    filterMenuKind: [
                                     FilterMenuInner(cellType: "Detail",
@@ -176,7 +204,10 @@ extension FilterViewController: UITableViewDataSource, UITableViewDelegate, Filt
             return detailCell
         }
     }
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        print(testFilterMenuSection[indexPath.section])
+    }
     
     func toggleSection(header: FilterMenuHeaderView, section: Int) {
         
