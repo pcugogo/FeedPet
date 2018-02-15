@@ -9,6 +9,7 @@
 import UIKit
 import MessageUI
 import Firebase
+import Photos
 
 enum enumSettingSection:Int { //섹션 이름
     case Profile = 0
@@ -27,6 +28,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
     let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
     var profileImg:UIImage?
     
+    var spinerView = UIView()
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -80,10 +82,13 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
             
             let profileCell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as! ProfileCell
             profileCell.delegate = self
+            spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
             if let pickImg = profileImg {
                 profileCell.profileImg.image = pickImg
                 profileCell.profileImg.clipsToBounds = true
             }
+            DataCenter.shared.removeSpinner(spinner: spinerView)
+            
             return profileCell
             
         }else if indexPath.section == 1 && indexPath.row == 0 {
@@ -105,9 +110,9 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
             let settingCell = tableView.dequeueReusableCell(withIdentifier: "SettingCell", for: indexPath) as! SettingCell
             settingCell.settingMenuNameLb.text = settingMenuName[indexPath.row - 1]
             settingCell.settingIconimg.image = settingMenuImg[indexPath.row - 1]
+            
             return settingCell
         }
-        
         
     }
     
@@ -144,8 +149,8 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
             
         }else if indexPath.section == 2 && indexPath.row == 4 {        //이용 약관
             let termsOfUseView:TermsOfUseViewController = storyboard?.instantiateViewController(withIdentifier: "TermsOfUseViewController") as! TermsOfUseViewController
-            self.navigationController?.pushViewController(termsOfUseView, animated: true)
-            
+
+            self.navigationController?.pushViewController(termsOfUseView, animated: true)    
         }else if indexPath.section == 2 && indexPath.row == 5 {        //문의하기
             if MFMailComposeViewController.canSendMail() {
                 let mail = MFMailComposeViewController()
@@ -229,11 +234,29 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
     }
     func imgPickerSet() {
         //UINavigationControllerDelegate델리게이트를 사용해야 사용할수있다
-        let imagePickerController:UIImagePickerController =
-            UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.navigationBar.isTranslucent = false
-        self.present(imagePickerController, animated: true, completion:  nil)
+        spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+        let photos = PHPhotoLibrary.authorizationStatus()
+        if photos == .notDetermined {
+            PHPhotoLibrary.requestAuthorization({status in
+                if status == .authorized{
+                    
+                } else {}
+            })
+        }
+        
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let imagePickerController:UIImagePickerController =
+                UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.navigationBar.isTranslucent = false
+            self.present(imagePickerController, animated: true, completion: {
+                DispatchQueue.main.async {
+                    DataCenter.shared.removeSpinner(spinner: self.spinerView)
+                }
+            })
+            
+        }
+        
     }
     
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
@@ -267,7 +290,7 @@ extension MyPageViewController:UIImagePickerControllerDelegate{
     func imagePickerController(_ picker:UIImagePickerController,didFinishPickingMediaWithInfo info: [String:Any]){
         print("info:",info)
         
-        guard let pickImg = info["UIImagePickerControllerOriginalImage"] as? UIImage else {
+        guard let pickImg = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             return
         }
         pickImg.withRenderingMode(.alwaysOriginal) // 색상이 파란색으로 나오는 경우의 이유는 시스템 버튼을 쓰게 되면 자동 랜더링을 쓰게 되는 경우가 있는데 이렇게 모드를 바꿔주면 내가 고른 이미지를 띄워줘라는 뜻이다
@@ -275,25 +298,24 @@ extension MyPageViewController:UIImagePickerControllerDelegate{
         tableView.reloadData()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        //         guard let uploadData = UIImagePNGRepresentation(pickImg) else {return}
-        //
-        //        Storage.storage().reference().child("UserProfile/").child(MyPageDataCenter.shared.testUUID).putData(uploadData, metadata: nil, completion: { (metaData, error) in
-        //
-        //            if let error = error{
-        //                print("error://",error)
-        //                return
-        //            }
-        //
-        //            print("metaData://",metaData)
-        //            guard let urlStr = metaData?.downloadURL()?.absoluteString else {return}//업로드한 이미지 다운받는 URL
-        //            print(urlStr)
-        //
-        //
-        //            Database.database().reference().child(uid).child("UserInfo").updateChildValues(["userName":userName,"profileImg":urlStr], withCompletionBlock: { (error, ref) in
-        //                print("database error://", error)
-        //                print("database reference://", ref)
-        //            })
-        //        })
+                 guard let uploadData = UIImagePNGRepresentation(pickImg) else {return}
+        
+                Storage.storage().reference().child("UserProfile/").child(MyPageDataCenter.shared.testUUID).putData(uploadData, metadata: nil, completion: { (metaData, error) in
+        
+                    if let error = error{
+                        print("error://",error)
+                        return
+                    }
+                    
+//                    print("metaData://",metaData)
+                    guard let urlStr = metaData?.downloadURL()?.absoluteString else {return}//업로드한 이미지 다운받는 URL
+                    print(urlStr)
+                    
+                    
+                    FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_img":urlStr])
+                    
+                    
+                })
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         self.dismiss(animated: true, completion: nil)

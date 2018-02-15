@@ -165,6 +165,13 @@ class EditInfoViewController: UIViewController {
             FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet_age":petAge])
             FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet_funtional":petFunctionKey])
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            let nickNameNilAlert = UIAlertController(title: "", message: "저장되었습니다", preferredStyle: .alert)
+            let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_) in
+                self.navigationController?.popViewController(animated: true)
+            })
+            nickNameNilAlert.addAction(okBtn)
+            self.present(nickNameNilAlert, animated: true, completion: nil)
+            
         }else{
             
             let nickNameNilAlert = UIAlertController(title: "", message: "닉네임 중복확인을 해주세요", preferredStyle: .alert)
