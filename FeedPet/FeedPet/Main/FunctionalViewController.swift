@@ -27,7 +27,8 @@ class FunctionalViewController: UIViewController {
     
     var functionalKeyString: [String] = []
     // 델리게이트 패턴을 사용하기 위해 FunctionalKeySend 프로토콜 타입의 변수 선언
-    var sendFunctionalDelegate: FunctionalKeySend?
+    var sendFunctionalDelegate: FunctionalProtocol?
+    var filterDelegate: FilterProtocol?
     
     @IBOutlet weak var functionalCollectionView: UICollectionView!
     @IBOutlet weak var filterMenuView: UIView!
@@ -49,7 +50,7 @@ class FunctionalViewController: UIViewController {
     
     @IBAction func filterBtnTouched(_ sender: UIButton){
         let filterView: FilterViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FilterView") as! FilterViewController
-        
+        filterView.filterDelegate = self
         self.present(filterView, animated: true, completion: nil)
         
     }
@@ -229,11 +230,17 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
         }
         
     }
-    
+}
+// FilterViewController와 관계를 가지는 FunctionalViewController에 데이터를 넘겨주기위한 확장
+extension FunctionalViewController: FilterProtocol{
+    func selectFilterData(filterData: FilterData, selectState: Bool) {
+        self.sendFunctionalDelegate?.filterDataSend(filterData: filterData, selectState: selectState)
+    }
     
     
 }
 
-protocol FunctionalKeySend {
+protocol FunctionalProtocol {
     func functionalKeySend(keyArr: [String])
+    func filterDataSend(filterData: FilterData, selectState: Bool)
 }

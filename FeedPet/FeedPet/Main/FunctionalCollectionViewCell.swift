@@ -13,6 +13,7 @@ class FunctionalCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var functionalImag: UIImageView!
     @IBOutlet weak var functionalLabel: UILabel!
     @IBOutlet weak var dividerImg: UIImageView!
+    @IBOutlet weak var selectCheckImg: UIImageView!
     
     var functionalSelectInt: Int = 0 {
         didSet{
@@ -22,7 +23,7 @@ class FunctionalCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.layer.backgroundColor = UIColor.gray.cgColor
+//        self.layer.backgroundColor = UIColor.gray.cgColor
         self.layer.cornerRadius = 3 //self.layer.bounds.size.height/2
     }
     override init(frame: CGRect) {
@@ -38,18 +39,22 @@ class FunctionalCollectionViewCell: UICollectionViewCell {
             if isSelected{
                 functionalChangeCheck()
             }else {
-                self.backgroundColor = .gray //.clear
+//                self.backgroundColor = .gray //.clear
+                self.selectCheckImg.isHidden = true
                 
             }
         }
     }
     
     func functionalChangeCheck(){
+        // 선택한 경우
         if functionalSelectInt == 0{
-            self.backgroundColor = UIColor.init(hexString: "#1ABC9C")
+//            self.backgroundColor = UIColor.init(hexString: "#1ABC9C")
+            self.selectCheckImg.isHidden = false
             
         }else{
-            self.backgroundColor = UIColor.init(hexString: "#F1C40F")
+//            self.backgroundColor = UIColor.init(hexString: "#F1C40F")
+            self.selectCheckImg.isHidden = true
         }
     }
 }

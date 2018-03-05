@@ -18,6 +18,7 @@ struct FilterMenuSections {
         self.filterMenuKind = filterMenuKind
         self.expanded = expanded
     }
+   
 }
 
 struct FilterMenuInner {
@@ -25,11 +26,13 @@ struct FilterMenuInner {
     var checkState: Bool!
     var gradeImg: String?
     var textLabel: String!
+    var filterValue: Any!
     
-    init(cellType: String, checkState: Bool, gradeImg: String?, textLabel: String) {
+    init(cellType: String, checkState: Bool, gradeImg: String?, textLabel: String, filterValue: Any) {
         self.cellType = cellType
         self.checkState = checkState
         self.gradeImg = gradeImg
         self.textLabel = textLabel
+        self.filterValue = filterValue
     }
 }

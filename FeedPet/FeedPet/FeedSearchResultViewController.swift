@@ -45,7 +45,7 @@ class FeedSearchResultViewController: UIViewController {
     func dataLoad(){
         let currentKey: String = DataCenter.shared.currentPetKey
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        let referenceT = Database.database().reference().child("feed_info").child("feed_petkey_c").queryOrdered(byChild: "feed_name")
+        let referenceT = Database.database().reference().child("feed_info").child(currentKey).queryOrdered(byChild: "feed_name")
         referenceT.observeSingleEvent(of: .value, with: { (dataSnap) in
             guard let dataSnapValue = dataSnap.value else {return}
             let searchFeedData = JSON(dataSnapValue)

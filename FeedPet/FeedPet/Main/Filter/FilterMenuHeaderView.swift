@@ -10,6 +10,7 @@ import UIKit
 
 protocol FilterMenuExpendableHeaderViewDelegate {
     func toggleSection(header: FilterMenuHeaderView, section: Int)
+    
 }
 class FilterMenuHeaderView: UITableViewHeaderFooterView {
     

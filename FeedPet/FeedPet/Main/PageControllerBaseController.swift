@@ -101,12 +101,12 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
 //            newCell?.menuIconImg.tintColor = .white
             
             if oldCell?.title == "멍" {
-                oldCell?.menuIconImg.image = #imageLiteral(resourceName: "dogDisable")
-                newCell?.menuIconImg.image = #imageLiteral(resourceName: "catAble")
+                oldCell?.menuIconImg.image = #imageLiteral(resourceName: "dogDisableImg")
+                newCell?.menuIconImg.image = #imageLiteral(resourceName: "catAbleImg")
                 self?.indicatorTitle = "냥"
             }else{
-                oldCell?.menuIconImg.image = #imageLiteral(resourceName: "catDisable")
-                newCell?.menuIconImg.image = #imageLiteral(resourceName: "dogAble")
+                oldCell?.menuIconImg.image = #imageLiteral(resourceName: "catDisableImg")
+                newCell?.menuIconImg.image = #imageLiteral(resourceName: "dogAbleImg")
                 self?.indicatorTitle = "멍"
             }
         }
@@ -166,7 +166,7 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     
     override func configure(cell: MainMenuIconCollectionViewCell, for indicatorInfo: IndicatorInfo) {
         cell.menuIconImg.image = indicatorInfo.image?.withRenderingMode(.alwaysTemplate)
-        cell.menuIconLabel.text = indicatorInfo.title
+//        cell.menuIconLabel.text = indicatorInfo.title
         
         cell.title = indicatorInfo.title!
         

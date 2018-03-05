@@ -35,7 +35,34 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     
     var feedAllData = [FeedInfo]()
     var feedInfoKey: String!
-    var feedFilteringData = [FeedInfo]()
+    // 기능성 선택에 따른 총 데이터
+    var feedFunctionalFilteringData = [FeedInfo]()
+    
+    // 필터에서 선택한 값에 따른 총 데이터
+    var feedFilterFilteringData = [FeedInfo]()
+    // 필터에 값이 있는지 판단을 위한 변수 - 초기에는 필터 선택값이 없음
+    // 모든 기능성 및 필터 데이터 적용된 토탈데이터
+    var feedFilteringTotalData = [FeedInfo]()
+    
+    var filterSelectFlag: Bool = false {
+        didSet{
+            print(filterSelectFlag)
+            print(feedFilterFilteringData.count)
+            print(feedFunctionalFilteringData.count)
+            if filterSelectFlag {
+                feedFilteringTotalData = feedFilterFilteringData
+            }else{
+                feedFilteringTotalData = feedFunctionalFilteringData
+            }
+            DispatchQueue.main.async {
+                self.feedListCountLabel.text = self.feedFilteringTotalData.count.description
+                self.feedInfoTableView.reloadData()
+            }
+        }
+    }
+    var filterItemDataInfo: FilterData?
+    
+    var filteringDataInfo = [FeedInfo]()
     var feedFilteringPaginationData = [FeedInfo]()
     var currentPageCount: Int = 0
     
@@ -73,7 +100,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         // Do any additional setup after loading the view.
 //        DataCenter.shared.fromNib(toViewController: self)
 //        DataCenter.shared.showActivityIndicatory(uiView: (self.parent?.view)! ,animating: true)
-  
+          
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -127,12 +154,12 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         var indicator = IndicatorInfo(title: nil, image: nil)
         if indicatorTitle == "멍" {
             indicator.title = "멍"
-            indicator.image = #imageLiteral(resourceName: "dogAble")
+            indicator.image = #imageLiteral(resourceName: "dogAbleImg")
             
         }
         else{
             indicator.title = "냥"
-            indicator.image = #imageLiteral(resourceName: "catAble")
+            indicator.image = #imageLiteral(resourceName: "catAbleImg")
             
         }
         return indicator
@@ -184,50 +211,584 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         }
         
     }
+    func selectFilterItem(filterItemData: FilterData, selectState: Bool){
+        print("필터 값존재 여부://",selectState)
+        let functionalKey =  [1,2]
+        // 최초 페이지네이션 키 값이 nil일 경우
+        var filterData = [FeedInfo]()
+        var filteringData = [FeedInfo]()
+        var isDataEmpty: Bool = false
+//        var temporaryFeedInfoData: [FeedInfo] = []
+        print(feedFilteringTotalData.count)
+        feedFilterFilteringData = feedFunctionalFilteringData
+        
+        self.filterItemDataInfo = filterItemData
+        filteringDataInfo = []
+        print("필터에서 선택한 키값://",filterItemData)
+//        guard let grade = filterItemData.grade else{ return }
+        if let gradeData = filterItemData.grade {
+            
+//            let data = feedFilterFilteringData.filter({ (feedOne) -> Bool in
+//
+//               return gradeData.contains(where: { (grade) -> Bool in
+//                if feedOne.feedGrade == grade{
+//                    filteringData.append(feedOne)
+//                }
+//                    return feedOne.feedGrade == grade
+//                })
+//            })
+//
+//
+//            print("필터정렬한데이터 등급://",filteringData,"//카운트://",filteringData.count)
+//            filteringData = data
+            if filteringDataInfo.isEmpty && !isDataEmpty {
+                for grade in gradeData {
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in feedFilterFilteringData{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값 ==> 중복데이터가 있을수 없기에 변경하고 코드중복 함수로 관리 할 예정
+                        let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if !duplicationCheck && feedOne.feedGrade == grade{
+                            filterData.append(feedOne)
+                        }
+
+                    }
+                }
+                filteringDataInfo = filterData
+                
+            }else{
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for grade in gradeData {
+                    
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in filteringDataInfo{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값
+                        let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if temporaryFeedInfoData.count < 1 && feedOne.feedGrade == grade{
+                            //존재한다면 해당 사료의 값을 확인해보자.
+                            // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+                            print("존재하는 사료 정보 확인1:", feedOne.feedGrade)
+                            temporaryFeedInfoData.append(feedOne)
+                            
+                        }else if !duplicationCheck && feedOne.feedGrade == grade {
+                            print("존재하는 사료 정보 확인2:", feedOne.feedGrade)
+                            temporaryFeedInfoData.append(feedOne)
+                        }
+                        
+                        
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty = true
+                }
+                filteringDataInfo = temporaryFeedInfoData
+            }
+            
+//            }else {
+//                if gradeData.count > 1{
+//                    for grade in gradeData {
+//
+//                        // 2. 전체 사료정보중 사료하나의 값을 할당
+//                        for feedOne in feedFilterFilteringData{
+//                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+//                            // 4. FilterData에 중복 데이터 제거하기위한 값
+//                            let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+//                                return feedInfo.feedKey == feedOne.feedKey
+//                            })
+//
+//                            if filterData.count < 1 && feedOne.feedGrade == grade{
+//                                //존재한다면 해당 사료의 값을 확인해보자.
+//                                // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+//                                print("존재하는 사료 정보 확인1:", feedOne.feedGrade)
+//                                filterData.append(feedOne)
+//
+//                            }else if !duplicationCheck && feedOne.feedGrade == grade {
+//                                print("존재하는 사료 정보 확인2:", feedOne.feedGrade)
+//                                filterData.append(feedOne)
+//                            }
+//
+//
+//                        }
+//                    }
+//
+//                }else{
+//
+//                    for grade in gradeData {
+//
+//                        // 2. 전체 사료정보중 사료하나의 값을 할당
+//                        for feedOne in filteringDataInfo{
+//                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+//                            // 4. FilterData에 중복 데이터 제거하기위한 값
+//                            let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+//                                return feedInfo.feedKey == feedOne.feedKey
+//                            })
+//
+//                            if filterData.count < 1 && feedOne.feedGrade == grade{
+//                                //존재한다면 해당 사료의 값을 확인해보자.
+//                                // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+//                                print("존재하는 사료 정보 확인1:", feedOne.feedGrade)
+//                                filterData.append(feedOne)
+//
+//                            }else if !duplicationCheck && feedOne.feedGrade == grade {
+//                                print("존재하는 사료 정보 확인2:", feedOne.feedGrade)
+//                                filterData.append(feedOne)
+//                            }
+//
+//
+//                        }
+//                    }
+//                }
+//
+//
+//            }
+            
+            print("filteringDataInfo 등급://",filteringDataInfo,"//카운트://",filteringDataInfo.count)
+        }
+        
+        
+        
+        if let ageData = filterItemData.age {
+            if filteringDataInfo.isEmpty && !isDataEmpty {
+                for age in ageData {
+                    
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in feedFilterFilteringData{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값
+                        
+                        let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if !duplicationCheck && feedOne.feedAge == age {
+                            print("존재하는 사료 정보 확인2:", feedOne.feedAge)
+                            filterData.append(feedOne)
+                        }
+                        
+                        
+                    }
+                    
+                    //                let a = self.feedFilteringData.filter{$0.feedGrade == grade}
+                }
+                filteringDataInfo = filterData
+
+            }else {
+                print("연령대 선택 기존에 값 잇지롱://", filteringDataInfo)
+                
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for age in ageData {
+                    
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in filteringDataInfo{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값
+                        let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if !duplicationCheck && feedOne.feedAge == age {
+                            print("존재하는 사료 정보 확인2:", feedOne.feedAge)
+                            temporaryFeedInfoData.append(feedOne)
+                        }
+                        
+                        
+                    }
+                }
+//                if ageData.count > 1{
+//                    for age in ageData {
+//
+//                        // 2. 전체 사료정보중 사료하나의 값을 할당
+//                        for feedOne in feedFilterFilteringData{
+//                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+//                            // 4. FilterData에 중복 데이터 제거하기위한 값
+//                            let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+//                                return feedInfo.feedKey == feedOne.feedKey
+//                            })
+//
+//                            if filterData.count < 1 && feedOne.feedAge == age{
+//                                //존재한다면 해당 사료의 값을 확인해보자.
+//                                // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+//                                print("존재하는 사료 정보 확인1:", feedOne.feedAge)
+//                                filterData.append(feedOne)
+//
+//                            }else if !duplicationCheck && feedOne.feedAge == age {
+//                                print("존재하는 사료 정보 확인2:", feedOne.feedAge)
+//                                filterData.append(feedOne)
+//                            }
+//
+//
+//                        }
+//                    }
+//
+//                }else{
+//
+//                    for age in ageData {
+//
+//                        // 2. 전체 사료정보중 사료하나의 값을 할당
+//                        for feedOne in filteringDataInfo{
+//                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+//                            // 4. FilterData에 중복 데이터 제거하기위한 값
+//                            let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+//                                return feedInfo.feedKey == feedOne.feedKey
+//                            })
+//
+//                            if filterData.count < 1 && feedOne.feedAge == age{
+//                                //존재한다면 해당 사료의 값을 확인해보자.
+//                                // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+//                                print("존재하는 사료 정보 확인1:", feedOne.feedAge)
+//                                filterData.append(feedOne)
+//
+//                            }else if !duplicationCheck && feedOne.feedAge == age {
+//                                print("존재하는 사료 정보 확인2:", feedOne.feedAge)
+//                                filterData.append(feedOne)
+//                            }
+//
+//
+//                        }
+//                    }
+//                }
+                
+                
+                filteringDataInfo = temporaryFeedInfoData
+            }
+            if filteringDataInfo.isEmpty {
+                isDataEmpty = true
+            }
+            print("filterData 연령대1://",filterData,"//연랭대 1카운트://",filterData.count)
+            print("filterData 연령대2://",filteringDataInfo,"//연령대 2카운트://",filteringDataInfo.count)
+            
+        }
+        
+        // 주원료
+        if let ingredientData = filterItemData.ingredient {
+//            let data = feedFilterFilteringData.filter({ (feedOne) -> Bool in
+//                return ingredientData.contains(where: { (ingredient) -> Bool in
+//                    return feedOne.feedIngredient == ingredient
+//                })
+//            })
+//            print("필터정렬한데이터 주원료://",data,"//카운트://",data.count)
+//            feedFilterFilteringData = data
+            print("선택 주원료 정보들://",ingredientData)
+            if filteringDataInfo.isEmpty && !isDataEmpty{
+                for ingrdient in ingredientData {
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in feedFilterFilteringData{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값
+                        let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if !duplicationCheck && feedOne.feedIngredient == ingrdient {
+                            print("존재하는 사료 정보 확인2:", feedOne.feedIngredient)
+                            filterData.append(feedOne)
+                        }
+                        
+                        
+                    }
+                }
+                print(filterData)
+                filteringDataInfo = filterData
+            }else{
+                
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for ingrdient in ingredientData {
+                    
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in filteringDataInfo{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값
+                        let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if !duplicationCheck && feedOne.feedIngredient == ingrdient {
+                            print("존재하는 사료 정보 확인2:", feedOne.feedIngredient)
+                            temporaryFeedInfoData.append(feedOne)
+                        }
+                        
+                        
+                        
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty = true
+                }
+                filteringDataInfo = temporaryFeedInfoData
+                print("filterData temporaryFeedInfoData://",temporaryFeedInfoData,"//temporaryFeedInfoData 1카운트://",temporaryFeedInfoData.count)
+            }
+            print("filterData temporaryFeedInfoData2://",filteringDataInfo,"//temporaryFeedInfoData 2카운트://",filteringDataInfo.count)
+        }
+        
+        
+        
+
+        // 브랜드
+        if let brandData = filterItemData.brand {
+//            let data = feedFilterFilteringData.filter({ (feedOne) -> Bool in
+//                return brandData.contains(where: { (brand) -> Bool in
+//                    return feedOne.feedBrand == brand
+//                })
+//            })
+//            print("필터정렬한데이터 브랜드://",data,"//카운트://",data.count)
+//            feedFilterFilteringData = data
+
+                if filteringDataInfo.isEmpty && !isDataEmpty{
+                    for brand in brandData {
+                        // 2. 전체 사료정보중 사료하나의 값을 할당
+                        for feedOne in feedFilterFilteringData{
+                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                            // 4. FilterData에 중복 데이터 제거하기위한 값
+                            let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                                return feedInfo.feedKey == feedOne.feedKey
+                            })
+                            
+                            if !duplicationCheck && feedOne.feedBrand == brand {
+                                print("존재하는 사료 정보 확인2:", feedOne.feedIngredient)
+                                filterData.append(feedOne)
+                            }
+                            
+                            
+                        }
+                    }
+                    filteringDataInfo = filterData
+                }else{
+                    
+                    var temporaryFeedInfoData: [FeedInfo] = []
+                    for brand in brandData {
+                        
+                        // 2. 전체 사료정보중 사료하나의 값을 할당
+                        for feedOne in filteringDataInfo{
+                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                            // 4. FilterData에 중복 데이터 제거하기위한 값
+                            let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                                return feedInfo.feedKey == feedOne.feedKey
+                            })
+                            
+                            if !duplicationCheck && feedOne.feedBrand == brand {
+                                print("존재하는 사료 정보 확인2:", feedOne.feedBrand)
+                                temporaryFeedInfoData.append(feedOne)
+                            }
+                            
+                            
+                        }
+                    }
+                    if temporaryFeedInfoData.isEmpty {
+                        isDataEmpty =  true
+                    }
+                    print("선택 주원료 정보들 분기카운트://",temporaryFeedInfoData.count,"//",temporaryFeedInfoData)
+                    filteringDataInfo = temporaryFeedInfoData
+                }
+                
+            
+        }
+        
+        // 그레인프리
+        if let grainFreeData = filterItemData.grinfreeFlag {
+//            let data = feedFilterFilteringData.filter({ (feedOne) -> Bool in
+//                return feedOne.grainfreeFlag == grainFreeData
+//            })
+//            print("필터정렬한데이터 그래인프리://",data,"//카운트://",data.count)
+//            feedFilterFilteringData = data
+            
+            if filteringDataInfo.isEmpty && !isDataEmpty{
+                for feedOne in feedFilterFilteringData{
+                    let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.grainfreeFlag == grainFreeData {
+                        filterData.append(feedOne)
+                    }
+                
+                }
+                print(filterData)
+                filteringDataInfo = filterData
+            }else{
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for feedOne in filteringDataInfo{
+                    let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.grainfreeFlag == grainFreeData {
+                        temporaryFeedInfoData.append(feedOne)
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty =  true
+                }
+                
+                filteringDataInfo = temporaryFeedInfoData
+            }
+            
+        }
+    
+        // 유기농/오가닉
+        if let organicData = filterItemData.organicFlag {
+            if filteringDataInfo.isEmpty && !isDataEmpty {
+                for feedOne in feedFilterFilteringData{
+                    let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.organicFlag == organicData {
+                        filterData.append(feedOne)
+                    }
+                    
+                }
+                print(filterData)
+                filteringDataInfo = filterData
+            }else{
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for feedOne in filteringDataInfo{
+                    let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.organicFlag == organicData {
+                        temporaryFeedInfoData.append(feedOne)
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty = true
+                }
+                filteringDataInfo = temporaryFeedInfoData
+            }
+        }
+        
+        // LID
+        if let lidData = filterItemData.lidFlag {
+            if filteringDataInfo.isEmpty && !isDataEmpty {
+                for feedOne in feedFilterFilteringData{
+                    let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.lidFlag == lidData {
+                        filterData.append(feedOne)
+                    }
+                    
+                }
+                print(filterData)
+                filteringDataInfo = filterData
+            }else{
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for feedOne in filteringDataInfo{
+                    let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.lidFlag == lidData {
+                        temporaryFeedInfoData.append(feedOne)
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty = true
+                }
+                filteringDataInfo = temporaryFeedInfoData
+            }
+        }
+        
+        // 대형견/묘
+        if let bitPetData = filterItemData.bigPetFlag {
+            if filteringDataInfo.isEmpty && !isDataEmpty {
+                for feedOne in feedFilterFilteringData{
+                    let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.bigFlag == bitPetData {
+                        filterData.append(feedOne)
+                    }
+                    
+                }
+                
+                print(filterData)
+                filteringDataInfo = filterData
+            }else{
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for feedOne in filteringDataInfo{
+                    let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.bigFlag == bitPetData {
+                        temporaryFeedInfoData.append(feedOne)
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty = true
+                }
+                filteringDataInfo = temporaryFeedInfoData
+            }
+        }
+        
+        
+//        feedFilterFilteringData = filterData
+        print(filteringDataInfo)
+        feedFilterFilteringData = filteringDataInfo
+        self.filterSelectFlag = selectState
+        print("필터에서 선택완료한 필터링된 총 데이터://",feedFilterFilteringData,"//총카운트://",feedFilterFilteringData.count)
+        print(self.feedFilteringTotalData.count.description)
+        
+        
+        
+    }
+    
     
     func feedAllDataPagination(functionalKey: [String]){
         // 최초 페이지네이션 키 값이 nil일 경우
         var filterData = [FeedInfo]()
         print("선택한 키값에 맞는 사료정보이때 키값://",functionalKey)
         if functionalKey.count != 0{
-        // 1. 먼저 기능성 키값에 String 값을 할당
-        for key in functionalKey {
-            // key => [String] 배열에 하나의 값
-            // 2. 전체 사료정보중 사료하나의 값을 할당
-            for feedOne in feedAllData{
-                // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
-                // 4. FilterData에 중복 데이터 제거하기위한 값
-                let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
-                    return feedInfo.feedKey == feedOne.feedKey
-                })
-                
-                if filterData.count < 1 && feedOne.feedFunctional.contains(key){
-                    //존재한다면 해당 사료의 값을 확인해보자.
-                    // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
-                    print("존재하는 사료 정보 확인1:", feedOne.feedKey)
-                    filterData.append(feedOne)
+            // 1. 먼저 기능성 키값에 String 값을 할당
+            for key in functionalKey {
+                // key => [String] 배열에 하나의 값
+                // 2. 전체 사료정보중 사료하나의 값을 할당
+                for feedOne in feedAllData{
+                    // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                    // 4. FilterData에 중복 데이터 제거하기위한 값
+                    let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
                     
-                }else if !duplicationCheck && feedOne.feedFunctional.contains(key) {
-                    print("존재하는 사료 정보 확인2:", feedOne.feedKey)
-                    filterData.append(feedOne)
+                    if filterData.count < 1 && feedOne.feedFunctional.contains(key){
+                        //존재한다면 해당 사료의 값을 확인해보자.
+                        // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+                        print("존재하는 사료 정보 확인1:", feedOne.feedKey)
+                        filterData.append(feedOne)
+                        
+                    }else if !duplicationCheck && feedOne.feedFunctional.contains(key) {
+                        print("존재하는 사료 정보 확인2:", feedOne.feedKey)
+                        filterData.append(feedOne)
+                    }
+                    
                 }
-                
+            }
+            
+            feedFunctionalFilteringData = filterData.sorted(by: { (feedOne, feedTwo) -> Bool in
+                return feedOne.feedName < feedTwo.feedName
+            })
+            
+        }else{
+            feedFunctionalFilteringData = feedAllData
+        }
+        feedFilteringTotalData = feedFunctionalFilteringData
+        
+        if let filterItem = filterItemDataInfo {
+            self.selectFilterItem(filterItemData: filterItem, selectState: filterSelectFlag)
+            
+        }else{
+            DispatchQueue.main.async {
+                self.feedListCountLabel.text = self.feedFunctionalFilteringData.count.description
+                self.feedInfoTableView.reloadData()
             }
         }
         
-        feedFilteringData = filterData.sorted(by: { (feedOne, feedTwo) -> Bool in
-            return feedOne.feedName < feedTwo.feedName
-        })
         
-        }else{
-            feedFilteringData = feedAllData
-        }
-        print("정렬://",feedFilteringData,"//카운트:",feedFilteringData.count)
+        print("정렬기능성://",feedFunctionalFilteringData,"//카운트:",feedFunctionalFilteringData.count)
         
-        DispatchQueue.main.async {
-            self.feedListCountLabel.text = self.feedFilteringData.count.description
-            self.feedInfoTableView.reloadData()
-        }
+        
         
         
 //        print("필터데이터://",filterData,"/카운트:", filterData.count)
@@ -354,14 +915,14 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
     /*************************************************/
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        return feedFilteringData.count
+        return feedFilteringTotalData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let feedCell = tableView.dequeueReusableCell(withIdentifier: "FeedMainInfoCell", for: indexPath) as! FeedMainInfoTableViewCell
-        print(self.feedFilteringData[indexPath.row].feedBrand)
-        feedCell.feedBrandLabel.text = self.feedFilteringData[indexPath.row].feedBrand
-        feedCell.feedNameLabel.text = self.feedFilteringData[indexPath.row].feedName
+        print(self.feedFilteringTotalData[indexPath.row].feedBrand)
+        feedCell.feedBrandLabel.text = self.feedFilteringTotalData[indexPath.row].feedBrand
+        feedCell.feedNameLabel.text = self.feedFilteringTotalData[indexPath.row].feedName
 
 //        let gradeInt: Int = self.feedFilteringData[indexPath.row].feedGrade
 ////        let gradeText: String = FeedGrade.init(rawValue: gradeInt)?.gardeText() ?? "no-data"
@@ -400,7 +961,7 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
 //            print(error.localizedDescription)
 //        }
 //
-        feedCell.feedData = self.feedFilteringData[indexPath.row]
+        feedCell.feedData = self.feedFilteringTotalData[indexPath.row]
         
         return feedCell
     }
@@ -408,7 +969,7 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
-        let feedDetailData: FeedInfo = feedFilteringData[indexPath.row]
+        let feedDetailData: FeedInfo = feedFilteringTotalData[indexPath.row]
         print("----select FeedData ----",feedDetailData)
         let feedDeatilView: FeedDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "FeedDetailView") as! FeedDetailViewController
         feedDeatilView.feedDetailInfo = feedDetailData
@@ -458,12 +1019,20 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         
     }
 }
-extension MainPageViewController: FunctionalKeySend {
+
+extension MainPageViewController: FunctionalProtocol{
+    func filterDataSend(filterData: FilterData, selectState: Bool) {
+        selectFilterItem(filterItemData: filterData, selectState: selectState)
+    }
+    
     func functionalKeySend(keyArr: [String]) {
+        print(keyArr)
         feedAllDataPagination(functionalKey: keyArr)
     }
-}
 
+    
+    
+}
 enum FeedGrade: Int{
     case ratingOrganic = 0
     case ratingHolistic = 1

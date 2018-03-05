@@ -39,10 +39,180 @@ class DataCenter {
         ["functional":"비뇨기","functionalImg":"catFunctional-Urinary","functionalKey":"urinary"],
         ["functional":"전체","functionalImg":"catFunctional-All", "functionalKey":"all"]
     ]
+    let filterItemDataMenuSection = [
+        FilterMenuSections(menu: "등급",
+                           filterMenuKind: [
+                            FilterMenuInner(cellType: "GradeDetail",
+                                            checkState: false,
+                                            gradeImg: "ratingOrganic",
+                                            textLabel: "1:유기농",
+                                            filterValue: "0"),
+                            FilterMenuInner(cellType: "GradeDetail",
+                                            checkState: false,
+                                            gradeImg: "ratingHolistic",
+                                            textLabel: "2:홀리스틱",
+                                            filterValue: "1"),
+                            FilterMenuInner(cellType: "GradeDetail",
+                                            checkState: false,
+                                            gradeImg: "ratingSuperPremium",
+                                            textLabel: "3:슈퍼프리미엄",
+                                            filterValue: "2"),
+                            FilterMenuInner(cellType: "GradeDetail",
+                                            checkState: false,
+                                            gradeImg: "ratingPremium",
+                                            textLabel: "4:프리미엄",
+                                            filterValue: "3"),
+                            FilterMenuInner(cellType: "GradeDetail",
+                                            checkState: false,
+                                            gradeImg: "ratingGroceryBrand",
+                                            textLabel: "5:마트용",
+                                            filterValue: "4")
+            ],
+                           expanded: false),
+        FilterMenuSections(menu: "연령대",
+                           filterMenuKind: [
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "전연령",
+                                            filterValue: "0"),
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "퍼피/키튼",
+                                            filterValue: "1"),
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "어덜트",
+                                            filterValue: "2"),
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "시니어",
+                                            filterValue: "3")
+            ],
+                           expanded: false),
+        FilterMenuSections(menu: "주원료",
+                           filterMenuKind: [
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "닭",
+                                            filterValue: "닭"),
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "소",
+                                            filterValue: "소"),
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "오리",
+                                            filterValue: "오리")
+            ],
+                           expanded: false),
+        // 중량은 일단빼둬야할것 같다. 사료정보에는 2,4,10형태의 값으로 존재하기에
+        //                FilterMenuSections(menu: "중량",
+        //                                   filterMenuKind: [
+        //                                    FilterMenuInner(cellType: "Detail",
+        //                                                    checkState: false,
+        //                                                    gradeImg: nil,
+        //                                                    textLabel: "1kg이하"),
+        //                                    FilterMenuInner(cellType: "Detail",
+        //                                                    checkState: false,
+        //                                                    gradeImg: nil,
+        //                                                    textLabel: "1kg~2kg이하"),
+        //                                    FilterMenuInner(cellType: "Detail",
+        //                                                    checkState: false,
+        //                                                    gradeImg: nil,
+        //                                                    textLabel: "2kg~5kg이하"),
+        //                                    FilterMenuInner(cellType: "Detail",
+        //                                                    checkState: false,
+        //                                                    gradeImg: nil,
+        //                                                    textLabel: "5kg~10kg이하"),
+        //                                    FilterMenuInner(cellType: "Detail",
+        //                                                    checkState: false,
+        //                                                    gradeImg: nil,
+        //                                                    textLabel: "10kg~15kg이하"),
+        //                                    FilterMenuInner(cellType: "Detail",
+        //                                                    checkState: false,
+        //                                                    gradeImg: nil,
+        //                                                    textLabel: "15kg이상")
+        //                    ],
+        //                                   expanded: false),
+        FilterMenuSections(menu: "브랜드",
+                           filterMenuKind: [
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "로얄캐닌",
+                                            filterValue: "로얄캐닌"),
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "캣츠랑",
+                                            filterValue: "캣츠랑"),
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "ANF",
+                                            filterValue: "ANF")
+            ],
+                           expanded: false),
+        FilterMenuSections(menu: "그래인프리 여부",
+                           filterMenuKind: [
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "그래인프리",
+                                            filterValue: "그래인프리")
+                            
+            ],
+                           expanded: false),
+        FilterMenuSections(menu: "유기농/오가닉 여부",
+                           filterMenuKind: [
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "유기농/오가닉",
+                                            filterValue: "유기농/오가닉")
+                            
+            ],
+                           expanded: false),
+        FilterMenuSections(menu: "LID 여부",
+                           filterMenuKind: [
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "LID",
+                                            filterValue: "LID")
+                            
+            ],
+                           expanded: false),
+        FilterMenuSections(menu: "대형견/묘 여부",
+                           filterMenuKind: [
+                            FilterMenuInner(cellType: "Detail",
+                                            checkState: false,
+                                            gradeImg: nil,
+                                            textLabel: "대형견/묘",
+                                            filterValue: "대형견/묘")
+                            
+            ],
+                           expanded: false)
+        
+    ]
+
     var currentPetKey: String = "feed_petkey_d"
     
     var loginUserData: [String:Any] = [:]
     
+    var filterGrade: [IndexPath] = []
+    
+    var filterIndexPathArr: [IndexPath] = []
+    var filterIndexPathDicArr : [Int:[IndexPath]] = [:]
+    var filterDogIndexPathDicArr : [Int:[IndexPath]] = [:]
+    var filterCatIndexPathDicArr : [Int:[IndexPath]] = [:]
     // Login 확인 요청 메서드
     func requestIsLogin() -> Bool {
         if Auth.auth().currentUser == nil {
@@ -184,7 +354,7 @@ class DataCenter {
         let loadingIndicator: UIImageView = {
            let imgView = UIImageView()
             let gifManager = SwiftyGifManager(memoryLimit:30)
-            let gif = UIImage(gifName: "loading_img@.gif")
+            let gif = UIImage(gifName: "loading_img.gif")
             imgView.setGifImage(gif, manager: gifManager)
             imgView.contentMode = .scaleToFill
             imgView.clipsToBounds = true
@@ -506,5 +676,68 @@ struct ReviewInfo {
     var feedRating: Int!
     var feedReviewCon: String!
     var reviewDate: String!
+    
+}
+
+
+struct FilterData {
+    var grade: [Int]?
+    var age: [Int]?
+    var ingredient: [String]?
+    var brand: [String]?
+    var grinfreeFlag: Bool?
+    var organicFlag: Bool?
+    var lidFlag: Bool?
+    var bigPetFlag: Bool?
+    
+    init(filterDic: [Int:[IndexPath]], filterinMenuSection: [FilterMenuSections]) {
+        
+        for filterOne in filterDic{
+            
+            switch filterOne.key {
+            case 0:
+                
+                self.grade = filterOne.value.map({ (indexPath) -> Int in
+                    filterinMenuSection[indexPath.section].filterMenuKind[indexPath.row].filterValue as! Int
+                })
+            case 1:
+                
+                self.age = filterOne.value.map({ (indexPath) -> Int in
+                    filterinMenuSection[indexPath.section].filterMenuKind[indexPath.row].filterValue as! Int
+                })
+            case 2:
+                
+                self.ingredient = filterOne.value.map({ (indexPath) -> String in
+                    filterinMenuSection[indexPath.section].filterMenuKind[indexPath.row].filterValue as! String
+                })
+            case 3:
+                
+                self.brand = filterOne.value.map({ (indexPath) -> String in
+                    filterinMenuSection[indexPath.section].filterMenuKind[indexPath.row].filterValue as! String
+                })
+            case 4:
+                // 그레인프리의 키값이 존재하면 true 만약 선택값이 없다면 default에서 추가적 처리
+//                if !filterOne.value.isEmpty {
+//                    self.grinfreeFlag = true
+//                }else{
+//                    self.grinfreeFlag = false
+//                }
+                self.grinfreeFlag = true
+//                guard let grainFreeMenu = filterinMenuSection[filterOne.key].filterMenuKind.first else{return}
+//                self.grinfreeFlag = grainFreeMenu.checkState
+            case 5:
+                self.organicFlag = true
+            case 6:
+                self.lidFlag = true
+            case 7:
+                bigPetFlag = true
+            default:
+                print("예외상황 처리 ")
+            }
+            
+        }
+    }
+    
+    
     
 }
