@@ -7,19 +7,35 @@
 //
 
 import UIKit
+import Firebase
 
 class FeedDetailViewController: UIViewController {
 
     @IBOutlet weak var feedDetailTableView: UITableView!
-    
+    @IBOutlet weak var feedBookMarkBtn: UIBarButtonItem!
     var feedDetailInfo: FeedInfo?
     var ingredientData: FeedDetailIngredient?
-   
+    var isBookMark: Bool = false {
+        didSet{
+            if isBookMark {
+//                feedBookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal, barMetrics: .default)
+                feedBookMarkBtn.image = #imageLiteral(resourceName: "bookMarkAble")
+            }else{
+                
+                feedBookMarkBtn.image = #imageLiteral(resourceName: "bookMarkDisable")
+            }
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         feedDetailTableView.delegate = self
         feedDetailTableView.dataSource = self
 //        self.navigationController?.isNavigationBarHidden = false
+//        self.navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "navigation_backBtn")
+//        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "navigation_backBtn")
+//        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "dkdkdk", style: .plain, target: nil, action: nil)
+        
+        
         
         self.feedDetailTableView.register(UINib(nibName: "FeedIngredientProgressChartTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedIngredientProgressChartCell")
         // Do any additional setup after loading the view.
@@ -52,7 +68,20 @@ class FeedDetailViewController: UIViewController {
         }
         
     }
+    
+    func feedBookMarkLoadData(userUID: String, feedKey: String){
+        Database.database().reference().child("my_favorite").child(userUID).child(feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
+            
+            if dataSnap.hasChildren() {
+                self.feedBookMarkBtn.image = #imageLiteral(resourceName: "bookMarkAble")
+                self.isBookMark = true
+            }else{
+                self.feedBookMarkBtn.image = #imageLiteral(resourceName: "bookMarkDisable")
+                self.isBookMark = false
+            }
 
+        })
+    }
     /*
     // MARK: - Navigation
 
@@ -98,6 +127,7 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
         case 0:
             let detailCell = tableView.dequeueReusableCell(withIdentifier: "FeedDetailCell", for: indexPath) as! FeedDetailITableViewCell
             detailCell.feedInfo = feedDetailInfo
+            detailCell.detailCellDelegate = self
 //            print(feedDetailInfo)
             detailCell.feedBrandNameLabel.text = feedDetailInfo?.feedBrand ?? "no-brand"
             detailCell.feedNameLabel.text = feedDetailInfo?.feedName
@@ -130,8 +160,10 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
                 detailCell.feedImgScrollContentView.addSubview(imageView)
             }
             detailCell.feedImgScrollPageControl.numberOfPages = imgDataCount
-            // ## 제약 사항 변경
-            detailCell.feedImgContentVIewWidthConstraints.constant = detailCell.feedImgScrollView.bounds.size.width * CGFloat(imgDataCount-1)
+            
+            
+            // ## 제약 사항 변경 
+            detailCell.feedImgContentViewWidthConstraints.constant = detailCell.feedImgScrollView.bounds.width * CGFloat(imgDataCount-1)
             // 뷰를 다시 그리는 메서드-적용된 제약사항을 가지고 새롭게 그리기만 하는 메서드이다.(viewDidLoad 등 다른 메서드와의 관계는 없다)
             detailCell.feedImgScrollView.layoutIfNeeded()
             detailCell.feedImgScrollView.isPagingEnabled = true
@@ -164,4 +196,49 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
+}
+extension FeedDetailViewController: FeedDetailCellProtoCol{
+    
+    func viewOnMouthInfoImg(mouthInfoBtnFrame: CGRect, cellHeight: CGFloat) {
+        let backGroundView = UIView(frame: self.view.bounds)
+        print("6/",feedDetailTableView.frame)
+        print("7/",self.view.frame)
+        let mouthInfoView: UIImageView = {
+            let imgView = UIImageView(frame: CGRect(x: self.view.bounds.width * 0.025, y: mouthInfoBtnFrame.origin.y + mouthInfoBtnFrame.height, width: self.view.bounds.width * 0.95, height: cellHeight))
+            imgView.image = #imageLiteral(resourceName: "mouth_info_img")
+            imgView.contentMode = .scaleAspectFit
+            imgView.clipsToBounds = true
+            return imgView
+        }()
+        backGroundView.backgroundColor = UIColor.init(hexString: "#333333", alpha: 0.0)
+        backGroundView.addSubview(mouthInfoView)
+        // 지우려고하는 뷰를 구분짓기 위해 tag값 할당
+        backGroundView.tag = 100
+        backGroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureRemoveView(handleGesture:))))
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+            backGroundView.backgroundColor = UIColor.init(hexString: "#333333", alpha: 0.5)
+            self.view.addSubview(backGroundView)
+        }) { (result) in
+            
+        }
+        
+    }
+
+    func tapGestureRemoveView(handleGesture: UITapGestureRecognizer){
+        print(self.view.subviews)
+        for subView in self.view.subviews{
+            if subView.tag == 100 {
+                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+                    subView.backgroundColor = UIColor.init(hexString: "#333333", alpha: 0.0)
+                }) { (result) in
+                    subView.removeFromSuperview()
+                    
+                }
+                
+            }
+        }
+    }
+    
+    
 }

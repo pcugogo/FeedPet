@@ -57,6 +57,10 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
             DispatchQueue.main.async {
                 self.feedListCountLabel.text = self.feedFilteringTotalData.count.description
                 self.feedInfoTableView.reloadData()
+//                self.feedInfoTableView.setContentOffset(.zero, animated: true)
+                // 데이터 리도드후 최상위로 스크롤 이동을 위해 구현
+//                let topIndex = IndexPath(row: 0, section: 0)
+//                self.feedInfoTableView.scrollToRow(at: topIndex, at: .top, animated: false)
             }
         }
     }
@@ -68,6 +72,16 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     
     var currentPet = String()
     
+    var dataLoadFlag: Bool = false {
+        didSet{
+            if dataLoadFlag {
+                
+            }
+        }
+    }
+    
+    var userUID = String()
+    var feedBookMarkDic: [String:Bool] = [:]
     
     @IBOutlet weak var functionalContainerView: UIView!
     @IBOutlet weak var feedInfoTableView: UITableView!
@@ -91,8 +105,9 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         // 페이지네이션 데이터 - 최초 가입시 선택한 기능성에
 //        feedDataHandlePagination()
         
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        userUID = uid
         
-    
         
 //        ref.database.reference()
 //        scrollDelegate = self
@@ -131,6 +146,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
             let functionalView = segue.destination as! FunctionalViewController
             functionalView.functionalData = DataCenter.shared.functionalSettingData(currentPet: currentPet)
             functionalView.sendFunctionalDelegate = self
+            
             // Now you have a pointer to the child view controller.
             // You can save the reference to it, or pass data to it.
             
@@ -189,16 +205,40 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
                     
                 }
                 self.feedAllData = feedData
-                DispatchQueue.main.async {
-                    // 필터링 테스트
-                    self.feedAllDataPagination(functionalKey: [])
+//                guard let uid = Auth.auth().currentUser?.uid  else {return}
+//
+//                Database.database().reference().child("user_info").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+//                    print(snapshot)
+//                    if let userInfoSnapshot = snapshot.value as? [String:Any]{
+//
+//                        let userInfo = User(userInfoData: userInfoSnapshot)
+//                        print("조회한 유저데이터2://,",userInfo)
+//                        var userFunctionalIndexPath: [IndexPath] = []
+//                        for indexRow in userInfo.userPetFunctionalIndexPathRow {
+//                            userFunctionalIndexPath.append(IndexPath(row: indexRow, section: 0))
+//                        }
+//                        print("조회해온 유저정보의 기능성 인덱스 패스://", userFunctionalIndexPath)
+//                        //                        self.userSelectFunctionalIndexPath = userFunctionalIndexPath
+//                        //                        self.functionalCollectionView.reloadData()
+//
+//                        self.feedAllDataPagination(functionalKey: userInfo.userPetFunctional)
+//                        self.feedInfoTableView.reloadData()
+//                    }
+//
+//                })
+//                DispatchQueue.main.async {
+//
+//                    // 필터링 테스트
+//                    self.feedAllDataPagination(functionalKey: [])
                     self.feedInfoTableView.reloadData()
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-//                    DataCenter.shared.removeSpinner(spinner: indi)
-                    
-                }
+                NotificationCenter.default.post(name: .feedAllDataNoti, object: nil, userInfo: nil)
+//                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+////                    DataCenter.shared.removeSpinner(spinner: indi)
+//
+//                }
                 print(self.feedInfoStartKey)
                 print(self.feedPagenationData)
+                
             }
             DispatchQueue.main.async {
 //                self.feedListCountLabel.text = dataSnap.childrenCount.description
@@ -923,45 +963,150 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         print(self.feedFilteringTotalData[indexPath.row].feedBrand)
         feedCell.feedBrandLabel.text = self.feedFilteringTotalData[indexPath.row].feedBrand
         feedCell.feedNameLabel.text = self.feedFilteringTotalData[indexPath.row].feedName
+        
+        // 셀의 이벤트후 메인뷰컨트롤러에서 행동을 하기위한 델리게이트 선언
+        feedCell.delegate = self
+        
+        feedCell.feedKey = self.feedFilteringTotalData[indexPath.row].feedKey
+        let gradeInt: Int = self.feedFilteringTotalData[indexPath.row].feedGrade
+//        let gradeText: String = FeedGrade.init(rawValue: gradeInt)?.gardeText() ?? "no-data"
+//        feedCell.feedGradeLabel.text = gradeText
 
-//        let gradeInt: Int = self.feedFilteringData[indexPath.row].feedGrade
-////        let gradeText: String = FeedGrade.init(rawValue: gradeInt)?.gardeText() ?? "no-data"
-////        feedCell.feedGradeLabel.text = gradeText
+        // Enum을 통해 해당 셀의 레이블의 값 할당 과 텍스트 컬러 변경 => 좋은방법일지 생각해보고 좋지않다면 함수로 분리하여 호출하자
+        FeedGrade.init(rawValue: gradeInt)?.gradeText(label: feedCell.feedGradeLabel)
+
+        // Enum을 통한 입소문 이미지 할당 위에 코드와 동일 한 구조
+        FeedMouth.init(rawValue: self.feedFilteringTotalData[indexPath.row].feedMouth)?.mouthImgSetting(mouthImgView: feedCell.feedMouthImgView)
+
+        // 포장방식 분기처리
+        if self.feedFilteringTotalData[indexPath.row].feedPackageFlag {
+            feedCell.feedPackageLabel.text = "소분포장"
+        }else{
+            feedCell.feedPackageLabel.text = "전체포장"
+        }
+        feedCell.feedIngredientLabel.text = self.feedFilteringTotalData[indexPath.row].feedIngredient
+
+
+        if let urlStr = self.feedFilteringTotalData[indexPath.row].feedImg.first, let url = URL(string: urlStr){
+
+            feedCell.feedImgView.kf.setImage(with: url)
+//            DispatchQueue.main.async {
 //
-//        // Enum을 통해 해당 셀의 레이블의 값 할당 과 텍스트 컬러 변경 => 좋은방법일지 생각해보고 좋지않다면 함수로 분리하여 호출하자
-//        FeedGrade.init(rawValue: gradeInt)?.gradeText(label: feedCell.feedGradeLabel)
-//
-//        // Enum을 통한 입소문 이미지 할당 위에 코드와 동일 한 구조
-//        FeedMouth.init(rawValue: self.feedFilteringData[indexPath.row].feedMouth)?.mouthImgSetting(mouthImgView: feedCell.feedMouthImgView)
-//
-//        // 포장방식 분기처리
-//        if self.feedFilteringData[indexPath.row].feedPackageFlag {
-//            feedCell.feedPackageLabel.text = "소분포장"
-//        }else{
-//            feedCell.feedPackageLabel.text = "전체포장"
-//        }
-//        feedCell.feedIngredientLabel.text = self.feedFilteringData[indexPath.row].feedIngredient
-//
-//
-//        if let urlStr = self.feedFilteringData[indexPath.row].feedImg.first, let url = URL(string: urlStr){
-//
-//            feedCell.feedImgView.kf.setImage(with: url)
-////            DispatchQueue.main.async {
-////
-////            }
-//
-//        }
-//        // 리뷰데이터 필요
-//        ref.child("feed_review").child(self.feedFilteringData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
-//            // 1. 리뷰의 갯수가 필요하
-//            guard let reviewData = dataSnap.value else {return}
-//            var reviewDataJSON = JSON(reviewData)
-//
-//        }) { (error) in
-//            print(error.localizedDescription)
-//        }
-//
-        feedCell.feedData = self.feedFilteringTotalData[indexPath.row]
+//            }
+
+        }
+
+        let ref = Database.database().reference()
+        
+        ref.child("feed_review").child(feedFilteringTotalData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
+            // 1. 리뷰의 갯수가 필요하
+//            print(feedDataInfo.feedKey)
+            // 2. 선택한 사료에 대한 자식데이터 분기
+            if dataSnap.childrenCount > 0 {
+                guard let reviewData = dataSnap.value else {return}
+                let reviewDataJSON = JSON(reviewData)
+                print(reviewDataJSON)
+                print(dataSnap.childSnapshot(forPath: "review_info").childrenCount)
+                DispatchQueue.main.async {
+                    
+                    feedCell.feedReviewCount.text = dataSnap.childSnapshot(forPath: "review_info").childrenCount.description
+                    guard let reviewRating = dataSnap.childSnapshot(forPath: "review_rating").value as? Int else {return}
+                    print(reviewRating)
+                    // Enum을 사용하여 default 경우 제외
+                    switch reviewRating {
+                    case 1:
+                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "normalStar")
+                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
+                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+                    case 2:
+                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
+                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+                    case 3:
+                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+                    case 4:
+                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+                    case 5:
+                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "selectStar")
+                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "selectStar")
+                    default:
+                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "normalStar")
+                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "normalStar")
+                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
+                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+                    }
+                    
+                }
+            }
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+        
+       
+        ref.child("my_favorite").child(userUID).observeSingleEvent(of: .value, with: { (dataSnap) in
+            var isBookMark: Bool = false
+            print("즐겨찾기 data://",dataSnap.value)
+            
+            if let bookMakrValue = dataSnap.children.allObjects as? [DataSnapshot] {
+                
+                for child in bookMakrValue {
+                    if self.feedFilteringTotalData[indexPath.row].feedKey == child.childSnapshot(forPath: "feed_key").value as? String {
+                        print("이때 북마크://", child)
+                        feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
+                        //                        feedCell.isBookMark = true
+                    }else{
+                        feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
+                        //                        feedCell.isBookMark = false
+                    }
+//                    if childFeedKey == self.filteringDataInfo[indexPath.row].feedKey {
+//                        feedCell.isBookMark = true
+//                    }else{
+//                        feedCell.isBookMark = false
+//                    }
+                    
+//                    if self.feedFilteringTotalData[indexPath.row].feedKey == child.childSnapshot(forPath: "feed_key").value as? String {
+//                        print("이때 북마크://", child)
+//                        feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
+////                        feedCell.isBookMark = true
+//                    }else{
+//                        feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
+////                        feedCell.isBookMark = false
+//                    }
+                }
+            }
+//            print("북마크://",bookMakrValue)
+           
+//            if dataSnap.hasChildren() {
+//                feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
+//                isBookMark = true
+//            }else{
+//                feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
+//            }
+//            // 내 즐겨찾기 정보 상태 전달을위해 feedBookMarkDic 정보에 값 저장
+//            self.feedBookMarkDic.updateValue(isBookMark, forKey: self.feedFilteringTotalData[indexPath.row].feedKey)
+            
+        }) { (error) in
+            print("----bookMakrError://",error.localizedDescription)
+        }
+
+//        feedCell.feedData = self.feedFilteringTotalData[indexPath.row]
         
         return feedCell
     }
@@ -971,14 +1116,18 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         print(indexPath.row)
         let feedDetailData: FeedInfo = feedFilteringTotalData[indexPath.row]
         print("----select FeedData ----",feedDetailData)
-        let feedDeatilView: FeedDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "FeedDetailView") as! FeedDetailViewController
-        feedDeatilView.feedDetailInfo = feedDetailData
+        let feedDetailView: FeedDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "FeedDetailView") as! FeedDetailViewController
+        feedDetailView.feedDetailInfo = feedDetailData
+    
+        feedDetailView.isBookMark = feedBookMarkDic[feedFilteringTotalData[indexPath.row].feedKey] ?? false
+        
+        
         delegate?.loadingIndicatorDisplay()
         DataCenter.shared.feedDetailIngredientDataLoad(feedKey: feedDetailData.feedKey) { (feedDetailIngredientData) in
             print(feedDetailIngredientData)
-            feedDeatilView.ingredientData = feedDetailIngredientData
+            feedDetailView.ingredientData = feedDetailIngredientData
             DispatchQueue.main.async {
-                self.parent?.navigationController?.pushViewController(feedDeatilView, animated: true)
+                self.parent?.navigationController?.pushViewController(feedDetailView, animated: true)
                 self.delegate?.loadingRemoveDisplay()
             }
         }
@@ -1030,6 +1179,91 @@ extension MainPageViewController: FunctionalProtocol{
         feedAllDataPagination(functionalKey: keyArr)
     }
 
+    
+    
+}
+extension MainPageViewController: feedMainInfoCellProtocol{
+    
+    func sendBookMarkValue(isBookMark: Bool, feedKey: String) {
+        print("넘어온 즐겨찾기 값//", isBookMark," 사료키값://", feedKey)
+        // 즐겨찾기 추가
+        let bookMarkRef = Database.database().reference().child("my_favorite").child(userUID).childByAutoId()
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        var bookMarkData: [String:Any] = [:]
+        bookMarkData.updateValue(feedKey, forKey: "feed_key")
+        //            let date = Date()
+        //            let calendar = Calendar.current
+        //            let components = calendar.dateComponents([.year, .month, .day], from: date)
+        //
+        //            let year =  components.year
+        //            let month = components.month
+        //            let day = components.day
+        //
+        //            print("날짜1://, ", "\(year).\(d)")
+        //            print(month)
+        //            print(day)
+        
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko")
+        formatter.dateFormat = "yyyy.MM.dd HH:mm"
+        let currentDataString = formatter.string(from: Date())
+        print("날짜2://, ", currentDataString)
+        bookMarkData.updateValue(currentDataString, forKey: "favorites_date")
+        bookMarkRef.setValue(bookMarkData)
+        print("즐겨찾기 데이터://", bookMarkData)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        
+        /*
+        if isBookMark{
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            var bookMarkData: [String:Any] = [:]
+            bookMarkData.updateValue(feedKey, forKey: "feed_key")
+//            let date = Date()
+//            let calendar = Calendar.current
+//            let components = calendar.dateComponents([.year, .month, .day], from: date)
+//
+//            let year =  components.year
+//            let month = components.month
+//            let day = components.day
+//
+//            print("날짜1://, ", "\(year).\(d)")
+//            print(month)
+//            print(day)
+           
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko")
+            formatter.dateFormat = "yyyy.MM.dd HH:mm"
+            let currentDataString = formatter.string(from: Date())
+            print("날짜2://, ", currentDataString)
+            bookMarkData.updateValue(currentDataString, forKey: "favorites_date")
+            bookMarkRef.setValue(bookMarkData)
+            print("즐겨찾기 데이터://", bookMarkData)
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+//            self.feedInfoTableView.reloadData()
+        }else{
+            let cancelLikeAlert:UIAlertController = UIAlertController(title: "", message: "좋아요를 취소 하시겠습니까?", preferredStyle: .alert)
+            
+            let okBtn:UIAlertAction = UIAlertAction(title: "네", style: .default){ (action) in
+                
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                FireBaseData.shared.refFavoritesReturn.child(self.userUID).childByAutoId().child(feedKey).removeValue()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.feedInfoTableView.reloadData()
+                
+            }
+            let noBtn:UIAlertAction = UIAlertAction(title: "아니오", style: .cancel, handler: nil)
+            
+            cancelLikeAlert.addAction(okBtn)
+            cancelLikeAlert.addAction(noBtn)
+            
+            self.present(cancelLikeAlert, animated: true, completion: nil)
+        }
+ */
+    }
+    
+    
+    
     
     
 }

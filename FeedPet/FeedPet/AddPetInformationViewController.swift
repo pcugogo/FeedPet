@@ -113,19 +113,20 @@ class AddPetInformationViewController: UIViewController {
     
     @IBAction func doneBtnTouched(_ sender: UIBarButtonItem){
         var functionalKeyArr: [String] = []
-        
+        var functionalKeyIndexPathRow: [Int] = []
         if !functionalIndexPath.isEmpty {
             if functionalIndexPath.count == 9 {
                 functionalKeyArr.append("all")
                 print(functionalKeyArr)
             }else{
                 for functionIndexpath in functionalIndexPath {
-                    guard let functionKey = functionalDicArray[functionIndexpath.item]["key"] as? String else {return}
+                    guard let functionKey = functionalDicArray[functionIndexpath.item]["key"] else {return}
                     functionalKeyArr.append(functionKey)
-                    
+                    functionalKeyIndexPathRow.append(functionIndexpath.item)
                 }
                 print(functionalKeyArr)
                 
+                print("ROROW://",functionalKeyIndexPathRow)
                 //            functionalKeyArr = functionalIndexPath.map { (indexpath) -> String in
                 //                self.functionalDicArray[indexpath.item]["key"] as? String ?? "all"
                 //            }
@@ -134,11 +135,16 @@ class AddPetInformationViewController: UIViewController {
             userData.updateValue(userPet, forKey: "user_pet")
             userData.updateValue(ageIntValue, forKey: "user_petage")
             userData.updateValue(functionalKeyArr, forKey: "user_pet_functional")
+            userData.updateValue(functionalKeyIndexPathRow, forKey: "user_pet_functional_indexpath_row")
+            
             print("회원최동데이터://",userData)
+            
+            UserDefaults.standard.set(userData, forKey: "loginUserData")
             print( UserDefaults.standard.string(forKey: "userUID"))
             
 //            guard let userUID = UserDefaults.standard.string(forKey: "userUID") else {return}
             guard let userUID =  Auth.auth().currentUser?.uid else {return}
+           
             print(userUID)
            
             // 파이어베이스 사용자 정보 값 저장
@@ -213,6 +219,7 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
                 ageCell.isSelected = true
                 collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
                 
+                
             }
             
             return ageCell
@@ -223,11 +230,13 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
             funcionalCell.functionalLabel.text = functionalDicArray[indexPath.item]["text"]
             funcionalCell.petSelectInt = petBtnTag
             
+            funcionalCell.isSelected = true
             functionalIndexPath.append(indexPath)
-            
-            collectionView.selectAll(animated: true)
-            
-            
+            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
+//            print("기능성 functionalIndexPath1://",functionalIndexPath)
+//            functionalIndexPath = collectionView.selectAll(animated: true)
+//            print("기능성 functionalIndexPath2://",functionalIndexPath)
+//
 //            for item in 0..<collectionView.numberOfItems(inSection: 0) {
 //                collectionView.selectItem(at: IndexPath(row: item, section: 0), animated: false, scrollPosition: .centeredVertically)
 //            }
@@ -256,24 +265,46 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
                 //                    collectionView.selectItem(at: IndexPath(row: item, section: 0), animated: false, scrollPosition: .centeredVertically)
                 //            }
                 
+//            }else{
+//
+//                if functionalIndexPath.contains(indexPath){
+//                    let indexInt = functionalIndexPath.index(of: indexPath)
+//                    print(indexInt)
+//                    functionalIndexPath.remove(at: indexInt!)
+//                    print("------기능성 선택한 값이 존재할경우 slect 인덱스패스------: ",functionalIndexPath,"---/")
+//                }
+//                else{
+//                    functionalIndexPath.append(indexPath)
+//                    print("------기능성 선택한 값이 존재하지 않을경우 slect 인덱스패스------: ",functionalIndexPath,"--/")
+//                }
+//
+//                let pathtest = IndexPath(item: collectionView.numberOfItems(inSection: 0)-1, section: 0)
+//                if functionalIndexPath.count == 8{
+//                    let indexInt = functionalIndexPath.index(of: pathtest)
+//                    collectionView.selectItem(at: pathtest, animated: true, scrollPosition: .centeredVertically)
+//                    functionalIndexPath.append(pathtest)
+//                    print("무슨경우더라?/",functionalIndexPath)
+//                }
+//
+//            }
             }else{
+                
                 if functionalIndexPath.contains(indexPath){
                     let indexInt = functionalIndexPath.index(of: indexPath)
-                    print(indexInt)
+                    
                     functionalIndexPath.remove(at: indexInt!)
-                    print("------기능성 선택한 값이 존재할경우 slect 인덱스패스------: ",functionalIndexPath,"---/")
-                }
-                else{
+                    print("------기능성 선택한 값이 존재할경우 didSelect 인덱스패스------: ",functionalIndexPath)
+                }else{
                     functionalIndexPath.append(indexPath)
-                    print("------기능성 선택한 값이 존재하지 않을경우 slect 인덱스패스------: ",functionalIndexPath,"--/")
+                    print("------didSelect 인덱스패스------: ",functionalIndexPath)
                 }
                 
                 let pathtest = IndexPath(item: collectionView.numberOfItems(inSection: 0)-1, section: 0)
                 if functionalIndexPath.count == 8{
-                    let indexInt = functionalIndexPath.index(of: pathtest)
+                    //                    let indexInt = functionalIndexPath.index(of: pathtest)
                     collectionView.selectItem(at: pathtest, animated: true, scrollPosition: .centeredVertically)
                     functionalIndexPath.append(pathtest)
-                    print("무슨경우더라?/",functionalIndexPath)
+                    
                 }
                 
             }
@@ -296,6 +327,29 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
     // didDeselectItemAt - 지정한 패스의 항목의 선택이 해제 된 것을 위양에 통지합니다
     // collectionView:didDeselectItemAtIndexPath: 다른 item을 Select하면서 원래 선택된 item이 Deselect 됩니다.
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+//        if collectionView == petFunctionalCollectionView {
+//
+//            if indexPath.item == collectionView.numberOfItems(inSection: 0)-1 {
+//                functionalIndexPath = []
+//                collectionView.deselectAll(animated: true)
+//            }else{
+//                collectionView.deselectItem(at: IndexPath(item:  collectionView.numberOfItems(inSection: 0)-1, section: 0), animated: true)
+//
+//
+//                let pathtest = IndexPath(item: collectionView.numberOfItems(inSection: 0)-1, section: 0)
+//                print("pathtest://",pathtest)
+//                if functionalIndexPath.contains(pathtest){
+//                    let indexInt = functionalIndexPath.index(of: pathtest)
+//                    functionalIndexPath.remove(at: indexInt!)
+//                }
+//            }
+//            if functionalIndexPath.contains(indexPath){
+//                let indexInt = functionalIndexPath.index(of: indexPath)
+//                print(indexInt)
+//                functionalIndexPath.remove(at: indexInt!)
+//                print("------기능성 didDeslect 인덱스패스------: ",functionalIndexPath,"/")
+//            }
+//        }
         if collectionView == petFunctionalCollectionView {
             
             if indexPath.item == collectionView.numberOfItems(inSection: 0)-1 {
@@ -313,9 +367,9 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
             }
             if functionalIndexPath.contains(indexPath){
                 let indexInt = functionalIndexPath.index(of: indexPath)
-                print(indexInt)
+                
                 functionalIndexPath.remove(at: indexInt!)
-                print("------기능성 didDeslect 인덱스패스------: ",functionalIndexPath,"/")
+                print("------기능성 didDeselect 인덱스패스------: ",functionalIndexPath)
             }
         }
     }

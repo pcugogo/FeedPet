@@ -107,6 +107,7 @@ class RootBaseViewController: UIViewController {
 //            })
            
         }
+        
 //        if isLogin {
 //            let page = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PageControllerBase") as! PageControllerBaseController
 //            let nextNavi = UINavigationController(rootViewController: page)
@@ -118,4 +119,5 @@ class RootBaseViewController: UIViewController {
 //            self.present(LoginViewController, animated: true, completion: nil)
 //        }
     }
+    
 }

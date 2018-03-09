@@ -16,6 +16,7 @@ class FunctionalViewController: UIViewController {
     
     var functionalData = [[String:String]]()
     var functionalList = [Functional]()
+    var userDataLoad: Bool = false
     var functionalIndexPath: [IndexPath] = [] {
         didSet{
             DispatchQueue.global(qos: .userInteractive).async {
@@ -40,6 +41,7 @@ class FunctionalViewController: UIViewController {
         functionalDataLoad()
         functionalCollectionView.allowsMultipleSelection = true
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.dataLoadSignal(notification:)), name: .feedAllDataNoti, object: nil)
         // Do any additional setup after loading the view.
     }
 
@@ -47,7 +49,27 @@ class FunctionalViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    @IBAction func dataFilterBtnTouched(_ sender: UIButton){
+        let actionSheet = UIAlertController(title: nil, message: "정렬", preferredStyle: .actionSheet)
+//        let rankingAction = UIAlertAction(title: "랭킹순", style: .default) { (action) in
+//
+//        }
+        let gradeAction = UIAlertAction(title: "등급순", style: .default) { (action) in
+            
+        }
+        let mouthAction = UIAlertAction(title: "입소문순", style: .default) { (action) in
+            
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            
+        }
+//        actionSheet.addAction(rankingAction)
+        actionSheet.addAction(gradeAction)
+        actionSheet.addAction(mouthAction)
+        actionSheet.addAction(cancelAction)
+        
+        self.present(actionSheet, animated: true, completion: nil)
+    }
     @IBAction func filterBtnTouched(_ sender: UIButton){
         let filterView: FilterViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FilterView") as! FilterViewController
         filterView.filterDelegate = self
@@ -104,7 +126,26 @@ class FunctionalViewController: UIViewController {
     }
     */
     func functionalFeedDataLoad(functional: String, currentPet: String){
-        
+        guard let uid = Auth.auth().currentUser?.uid else{return}
+        Database.database().reference().child("user_info").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            print(snapshot)
+            if let userInfoSnapshot = snapshot.value as? [String:Any]{
+                
+                let userInfo = User(userInfoData: userInfoSnapshot)
+                print("조회한 유저데이터2://,",userInfo)
+                var userFunctionalIndexPath: [IndexPath] = []
+                for indexRow in userInfo.userPetFunctionalIndexPathRow {
+                    userFunctionalIndexPath.append(IndexPath(row: indexRow, section: 0))
+                }
+                print("조회해온 유저정보의 기능성 인덱스 패스://", userFunctionalIndexPath)
+                //                        self.userSelectFunctionalIndexPath = userFunctionalIndexPath
+                //                        self.functionalCollectionView.reloadData()
+                
+//                self.feedAllDataPagination(functionalKey: userInfo.userPetFunctional)
+//                self.feedInfoTableView.reloadData()
+            }
+            
+        })
     }
     
     // MARK: Indexpath로 이루어지는 값을 해당 인덱스패스와 일치하는 기능성 키값 String 변환 함수
@@ -127,6 +168,45 @@ class FunctionalViewController: UIViewController {
         
         print("기능성키 변환 결과값:", self.functionalKeyString)
     }
+    
+    // NotificationCenter 옵저버를 사용하여 MainPageViewController에서 선행되어야할 데이터 작업후 노티게시
+    func dataLoadSignal(notification: Notification){
+        
+        // 사용자 가입신 선택한 반려동물이 현재 팻키 값과 동일한지
+        print("가입할때 있던 유저정보://",UserDefaults.standard.value(forKey: "loginUserData"))
+        guard let userInfo = UserDefaults.standard.value(forKey: "loginUserData") as? [String:Any] else {return}
+        let userData = User(userInfoData: userInfo)
+        print("가입할때 있던 유저정보2://",userData)
+        
+        if userData.userPet == DataCenter.shared.currentPetKey {
+            // 만약 위에 코드처럼 UserDefault에 저장할경우 통신이 불필요하다.
+            // 사용자 정보는 최초 가입혹은 수정시에만 변경되므로 통신사용을 하지 않을지 고민이된다.
+            guard let uid = Auth.auth().currentUser?.uid else {return}
+            Database.database().reference().child("user_info").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                print(snapshot)
+                if let userInfoSnapshot = snapshot.value as? [String:Any]{
+                    
+                    let userInfo = User(userInfoData: userInfoSnapshot)
+                    print("조회한 유저데이터2://,",userInfo)
+                    var userFunctionalIndexPath: [IndexPath] = []
+                    for indexRow in userInfo.userPetFunctionalIndexPathRow {
+                        userFunctionalIndexPath.append(IndexPath(row: indexRow, section: 0))
+                    }
+                    print("조회해온 유저정보의 기능성 인덱스 패스://", userFunctionalIndexPath)
+                    //                        self.userSelectFunctionalIndexPath = userFunctionalIndexPath
+                    //                        self.functionalCollectionView.reloadData()
+                    
+                    self.functionalIndexPath = userFunctionalIndexPath
+                    
+                    for indexpath in self.functionalIndexPath{
+                        self.functionalCollectionView.selectItem(at: indexpath, animated: true, scrollPosition: .centeredVertically)
+                    }
+                }
+                
+            })
+        }
+    }
+   
 }
 extension FunctionalViewController: UICollectionViewDelegateFlowLayout{
     
@@ -239,8 +319,12 @@ extension FunctionalViewController: FilterProtocol{
     
     
 }
-
+extension Notification.Name {
+    static let feedAllDataNoti = Notification.Name("feedAllDataNoti")
+}
 protocol FunctionalProtocol {
     func functionalKeySend(keyArr: [String])
     func filterDataSend(filterData: FilterData, selectState: Bool)
 }
+
+

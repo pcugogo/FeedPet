@@ -25,19 +25,34 @@ class FeedMainInfoTableViewCell: UITableViewCell {
     @IBOutlet weak var secontdStarImg: UIImageView!
     @IBOutlet weak var thirdStarImg: UIImageView!
     @IBOutlet weak var fourthStarImg: UIImageView!
-    @IBOutlet weak var FifthStarImg: UIImageView!
+    @IBOutlet weak var fifthStarImg: UIImageView!
+    
+    @IBOutlet weak var bookMarkBtn: UIButton!
     
     var feedData: FeedInfo?
+    var feedKey: String = String()
+    var isBookMark: Bool = false {
+        didSet{
+            if isBookMark {
+                
+                self.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
+            }else{
+                self.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
+            }
+        }
+    }
+    var delegate: feedMainInfoCellProtocol?
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
+       
     }
     
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
+/*
         guard let feedDataInfo = feedData else {return}
         print("FeedMainInfoTableViewCell-setSelected://",feedDataInfo)
         feedBrandLabel.text = feedDataInfo.feedBrand
@@ -129,6 +144,27 @@ class FeedMainInfoTableViewCell: UITableViewCell {
         }) { (error) in
             print(error.localizedDescription)
         }
+ */
     }
+    @IBAction func bookMarkBtnTouched(_ sender: UIBarButtonItem){
+        var bookMarkState: Bool = false
+        // 현재 즐겨찾기되있는경우
+        if isBookMark {
+            // 해당값을 삭제하기 위함이기에 값을 변경해준다
+            bookMarkState = false
+
+        }
+        // 즐겨찾기가 되어있지 않는경우
+        else{
+            // 현재 값을 true로 할당
+            bookMarkState = true
+        }
+        delegate?.sendBookMarkValue(isBookMark: bookMarkState, feedKey: feedKey)
+    }
+    
+}
+
+protocol feedMainInfoCellProtocol {
+    func sendBookMarkValue(isBookMark: Bool, feedKey: String)
     
 }

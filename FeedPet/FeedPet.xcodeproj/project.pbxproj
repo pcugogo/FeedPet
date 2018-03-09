@@ -41,6 +41,7 @@
 		4C0A0FB4202D49D500CAB282 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0A0FB3202D49D500CAB282 /* TermsViewController.swift */; };
 		4C173186201C678700D97F32 /* FeedSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C173185201C678700D97F32 /* FeedSearchViewController.swift */; };
 		4C173188201E165800D97F32 /* FeedSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C173187201E165800D97F32 /* FeedSearchBar.swift */; };
+		4C1AED33204FF31B00364C8A /* login_video360.mov in Resources */ = {isa = PBXBuildFile; fileRef = 4C1AED32204FF31B00364C8A /* login_video360.mov */; };
 		4C1C1BBF20286469004DE72A /* LoadingIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C1C1BBE20286469004DE72A /* LoadingIndicatorView.xib */; };
 		4C1C1BC12028719B004DE72A /* LoadingIndicatorImgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1C1BC02028719B004DE72A /* LoadingIndicatorImgView.swift */; };
 		4C1C1BCC202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1C1BCA202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.swift */; };
@@ -67,6 +68,8 @@
 		4C8DFB8C200E3ACF00331A5B /* FilterMenuHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C8DFB8B200E3ACF00331A5B /* FilterMenuHeaderView.xib */; };
 		4C8DFB8E200F55A700331A5B /* FeedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8DFB8D200F55A700331A5B /* FeedDetailViewController.swift */; };
 		4C8DFB90200F580900331A5B /* FeedDetailITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8DFB8F200F580900331A5B /* FeedDetailITableViewCell.swift */; };
+		4C96FA67204E4D08008F4960 /* FeedReviewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C96FA65204E4D08008F4960 /* FeedReviewListCell.swift */; };
+		4C96FA68204E4D08008F4960 /* FeedReviewListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C96FA66204E4D08008F4960 /* FeedReviewListCell.xib */; };
 		4CAD767E1FED13BF00EDE859 /* loginVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = 4CAD767D1FED13BF00EDE859 /* loginVideo.mov */; };
 		4CAD76801FED142E00EDE859 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD767F1FED142E00EDE859 /* LoginViewController.swift */; };
 		4CAD76821FED3B8D00EDE859 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD76811FED3B8D00EDE859 /* DataCenter.swift */; };
@@ -134,6 +137,7 @@
 		4C0A0FB3202D49D500CAB282 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		4C173185201C678700D97F32 /* FeedSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSearchViewController.swift; sourceTree = "<group>"; };
 		4C173187201E165800D97F32 /* FeedSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSearchBar.swift; sourceTree = "<group>"; };
+		4C1AED32204FF31B00364C8A /* login_video360.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = login_video360.mov; sourceTree = "<group>"; };
 		4C1C1BBE20286469004DE72A /* LoadingIndicatorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingIndicatorView.xib; sourceTree = "<group>"; };
 		4C1C1BC02028719B004DE72A /* LoadingIndicatorImgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicatorImgView.swift; sourceTree = "<group>"; };
 		4C1C1BCA202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedIngredientProgressChartTableViewCell.swift; sourceTree = "<group>"; };
@@ -160,6 +164,8 @@
 		4C8DFB8B200E3ACF00331A5B /* FilterMenuHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterMenuHeaderView.xib; sourceTree = "<group>"; };
 		4C8DFB8D200F55A700331A5B /* FeedDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailViewController.swift; sourceTree = "<group>"; };
 		4C8DFB8F200F580900331A5B /* FeedDetailITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailITableViewCell.swift; sourceTree = "<group>"; };
+		4C96FA65204E4D08008F4960 /* FeedReviewListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReviewListCell.swift; sourceTree = "<group>"; };
+		4C96FA66204E4D08008F4960 /* FeedReviewListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedReviewListCell.xib; sourceTree = "<group>"; };
 		4CAD767D1FED13BF00EDE859 /* loginVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = loginVideo.mov; sourceTree = "<group>"; };
 		4CAD767F1FED142E00EDE859 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4CAD76811FED3B8D00EDE859 /* DataCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
@@ -394,6 +400,8 @@
 				4C8DFB8F200F580900331A5B /* FeedDetailITableViewCell.swift */,
 				4C1E6DDA2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift */,
 				4C1E6DDC20130DD500C7EDFC /* FeedReviewListTableViewCell.swift */,
+				4C96FA65204E4D08008F4960 /* FeedReviewListCell.swift */,
+				4C96FA66204E4D08008F4960 /* FeedReviewListCell.xib */,
 				4C1E6DDE20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift */,
 				4C229C86200CB20A004FFD07 /* Filter */,
 			);
@@ -404,6 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				4CAD767D1FED13BF00EDE859 /* loginVideo.mov */,
+				4C1AED32204FF31B00364C8A /* login_video360.mov */,
 			);
 			path = Design;
 			sourceTree = "<group>";
@@ -508,7 +517,9 @@
 				4C5FBD6D1FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib in Resources */,
 				4C1C1BCF202AC75C004DE72A /* loading_img@3x2.gif in Resources */,
 				14035C1F1FF24E95005ABAE0 /* MyPage.storyboard in Resources */,
+				4C96FA68204E4D08008F4960 /* FeedReviewListCell.xib in Resources */,
 				4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */,
+				4C1AED33204FF31B00364C8A /* login_video360.mov in Resources */,
 				4C1E6DED20151F4800C7EDFC /* Assets.xcassets in Resources */,
 				4CCDDF5A2028615300EF0FD2 /* loading_img@2.gif in Resources */,
 				4CAD767E1FED13BF00EDE859 /* loginVideo.mov in Resources */,
@@ -648,6 +659,7 @@
 				4CE4F5D71FFEAC410047E9F9 /* AddPetInformationViewController.swift in Sources */,
 				4CF7C45720040EA100AF8E35 /* MainPageViewController.swift in Sources */,
 				14DA009D1FF671D200819A96 /* MyPageDataCenter.swift in Sources */,
+				4C96FA67204E4D08008F4960 /* FeedReviewListCell.swift in Sources */,
 				14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */,
 				14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */,
 				FC709DAA201A4CA2005AF023 /* MyPageReviewEditViewController.swift in Sources */,

@@ -111,7 +111,11 @@ struct FireBaseData{
     
     func fireBaseUserInfoDataLoad(){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in
+        print("LOAD uid://",UserDefaults.standard.string(forKey: "userUID") )
+        guard let userUID = UserDefaults.standard.string(forKey: "userUID") else { return }
+        
+        
+        FireBaseData.shared.refUserInfoReturn.child(userUID).observeSingleEvent(of: .value, with: { (snapshot) in
             if let userInfoSnapshot = snapshot.value as? [String:AnyObject]{
                 for userInfoSnap in userInfoSnapshot{
                     
@@ -152,6 +156,22 @@ struct FireBaseData{
                         }
                     }
                 }
+            }
+        })
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    
+    func fireBaseUserInfoLoadData(userUID: String, completion: @escaping (User)->Void){
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
+        
+        FireBaseData.shared.refUserInfoReturn.child(userUID).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let userInfoSnapshot = snapshot.value as? [String:Any]{
+                print("조회한 유저데이터://,",userInfoSnapshot)
+                let userInfo = User(allInfoData: userInfoSnapshot)
+                print("조회한 유저데이터2://,",userInfo)
+                completion(userInfo)
+                
             }
         })
         UIApplication.shared.isNetworkActivityIndicatorVisible = false

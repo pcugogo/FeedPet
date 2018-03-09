@@ -181,12 +181,66 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         // Pass the selected object to the new view controller.
     }
     */
-    
-    @IBAction func feedSearchBtnTouched(_ sender: UIButton) {
-        //        let nextViewContorller = self.storyboard?.instantiateViewController(withIdentifier: "FeedSearchViewController") as! FeedSearchViewController
-        //        self.present(nextViewContorller, animated: true, completion: nil)
-        //        self.navigationController?.pushViewController(nextViewContorller, animated: true)
+    @IBAction func mypageShow(_ sender: UIBarButtonItem){
+        let nextViewController = UIStoryboard.init(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "MyPageViewController") as! MyPageViewController
         
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    @IBAction func feedSearchBtnTouched(_ sender: UIButton) {
+        let nextViewContorller = self.storyboard?.instantiateViewController(withIdentifier: "FeedSearchViewController") as! FeedSearchViewController
+        let searchNavigationController = UINavigationController(rootViewController: nextViewContorller)
+        searchNavigationController.navigationBar.isTranslucent = false
+//        self.present(nextViewContorller, animated: true, completion: nil)
+        self.navigationController?.present(searchNavigationController, animated: true, completion: nil)
+//        self.navigationController?.pushViewController(nextViewContorller, animated: true)
+        
+        
+        /*
+        UIBarButtonItem.appearance(whenContainedInInstancesOf:[UISearchBar.self]).tintColor = UIColor(red: 255, green: 0, blue: 0, alpha: 1)
+        
+        // 검색 결과를 보여줄 FeedSearchResultViewController 할당
+        let searchResultsViewController = storyboard!.instantiateViewController(withIdentifier: "FeedSearchResultView") as! FeedSearchResultViewController
+        // 결과 화면 뷰에 델리게이트를 현재의 뷰가 사용하기 위해 델리게이트 구현
+        searchResultsViewController.delegate = self
+        
+        searchController = UISearchController(searchResultsController: searchResultsViewController)
+        //        searchController.searchResultsUpdater = searchResultsController
+        searchController.hidesNavigationBarDuringPresentation = false
+        //        searchResultsController.isSearchBarClicked = true
+        
+        searchController.searchResultsUpdater = searchResultsViewController
+        searchController.dimsBackgroundDuringPresentation = true
+        searchController.searchBar.barTintColor = UIColor.init(hexString: "#FF6600")
+        searchController.searchBar.isTranslucent = false
+        
+        print(DataCenter.shared.currentPetKey)
+        if DataCenter.shared.currentPetKey == "feed_petkey_d"{
+            searchController.searchBar.placeholder = "강아지사료 상품명이나 브랜드명을 검색해주세요."
+        }else{
+            searchController.searchBar.placeholder = "고양이사료 상품명이나 브랜드명을 검색해주세요."
+        }
+//        self.definesPresentationContext = true
+        searchController.searchBar.delegate = searchResultsViewController
+        searchController.searchBar.searchFieldBackgroundPositionAdjustment = UIOffset(horizontal: 0, vertical: 2)
+        searchController.searchBar.layer.borderWidth = 0
+        
+        
+//        searchController.obscuresBackgroundDuringPresentation = false
+        //        navigationItem.searchController = searchController
+        searchController.isActive = true
+        
+        // SearchBar 내부 Textfiled fontsize 조정
+        let textFieldInsideUISearchBar =  searchController.searchBar.value(forKey: "searchField") as? UITextField
+        let placeholderLabel = textFieldInsideUISearchBar?.value(forKey: "placeholderLabel") as? UILabel
+        placeholderLabel?.font = UIFont.systemFont(ofSize: 12.0)
+        
+        present(searchController, animated: true, completion: nil)
+//        self.navigationController?.present(searchController, animated: true, completion: nil)
+        
+        self.searchController.delegate = self
+ 
+ */
+        /*
         UIBarButtonItem.appearance(whenContainedInInstancesOf:[UISearchBar.self]).tintColor = UIColor.white
         
         // 검색 결과를 보여줄 FeedSearchResultViewController 할당
@@ -213,14 +267,19 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         searchController.searchBar.searchFieldBackgroundPositionAdjustment = UIOffset(horizontal: 0, vertical: 2)
         searchController.searchBar.layer.borderWidth = 0
         
+        
+        searchController.obscuresBackgroundDuringPresentation = false
+//        navigationItem.searchController = searchController
+        searchController.isActive = true
+        
         // SearchBar 내부 Textfiled fontsize 조정
         let textFieldInsideUISearchBar =  searchController.searchBar.value(forKey: "searchField") as? UITextField
         let placeholderLabel = textFieldInsideUISearchBar?.value(forKey: "placeholderLabel") as? UILabel
         placeholderLabel?.font = UIFont.systemFont(ofSize: 12.0)
         // 구현한  SearchController를 화면에 띄어주기위해 present 호출
         present(searchController, animated: true, completion: nil)
-        searchController.delegate = self
-
+        self.searchController.delegate = self
+        */
         
     }
    

@@ -299,6 +299,7 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
                 
             }else{
                 funcionalCell.isSelected = true
+                
                 collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
             }
            

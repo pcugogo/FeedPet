@@ -202,7 +202,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
     
     @IBAction func ratingBtnAction(_ sender: UIButton) {
         switch sender.tag{
-        case 1 :
+        case 1:
             ratingNumberOfStars = 1 // 서버에 넘겨질 평점
             
             firstStarBtnOut.setImage(#imageLiteral(resourceName: "selectStar"), for: .normal)
