@@ -77,12 +77,15 @@ class DataCenter {
         return loginUserData
     }
     func googleLogOut(){
+        
         do{
             try Auth.auth().signOut()
             GIDSignIn.sharedInstance().signOut()
-        }catch let error as Error {
-            print(error.localizedDescription)
+        }catch{
+            
         }
+        
+       
         
     }
     

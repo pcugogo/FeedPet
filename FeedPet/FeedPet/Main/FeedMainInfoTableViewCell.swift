@@ -152,12 +152,13 @@ class FeedMainInfoTableViewCell: UITableViewCell {
         if isBookMark {
             // 해당값을 삭제하기 위함이기에 값을 변경해준다
             bookMarkState = false
-
+            isBookMark = false
         }
         // 즐겨찾기가 되어있지 않는경우
         else{
             // 현재 값을 true로 할당
             bookMarkState = true
+            isBookMark = true
         }
         delegate?.sendBookMarkValue(isBookMark: bookMarkState, feedKey: feedKey)
     }

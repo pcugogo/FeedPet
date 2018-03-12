@@ -988,7 +988,7 @@
                         <viewLayoutGuide key="safeArea" id="jsz-yQ-0a7"/>
                     </view>
                     <navigationItem key="navigationItem" title=" " id="kh3-Vc-xWt">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="profile_btn" id="tDe-Ic-b90">
+                        <barButtonItem key="leftBarButtonItem" image="profile_btn" id="tDe-Ic-b90">
                             <inset key="largeContentSizeImageInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
                             <connections>
                                 <action selector="mypageShow:" destination="u8X-fb-8xK" id="h8B-AE-ffY"/>
@@ -999,7 +999,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" backgroundImage="navigationbar_logo"/>
                         </button>
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="searchBtn" id="XM5-5L-GHN">
+                        <barButtonItem key="rightBarButtonItem" image="searchBtn" id="XM5-5L-GHN">
                             <connections>
                                 <action selector="feedSearchBtnTouched:" destination="u8X-fb-8xK" id="8It-Sa-tlK"/>
                             </connections>
@@ -1053,7 +1053,7 @@
                                 <action selector="cancelBtnTouched:" destination="3w9-Le-ehq" id="fQ8-Qo-r6p"/>
                             </connections>
                         </barButtonItem>
-                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="nUc-Tj-77P">
+                        <button key="titleView" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="nUc-Tj-77P">
                             <rect key="frame" x="102" y="2" width="210" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" backgroundImage="navigationbar_logo"/>
@@ -2156,7 +2156,7 @@
         <image name="googleLoginBtn" width="250" height="30"/>
         <image name="navigationbar_logo" width="210" height="40"/>
         <image name="normalStar" width="20" height="20"/>
-        <image name="profile_btn" width="30" height="55"/>
+        <image name="profile_btn" width="25" height="25"/>
         <image name="searchBtn" width="25" height="25"/>
         <image name="sortImg" width="15" height="15"/>
         <image name="start_screen" width="360" height="640"/>

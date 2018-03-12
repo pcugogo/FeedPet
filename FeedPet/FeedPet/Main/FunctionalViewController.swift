@@ -170,7 +170,7 @@ class FunctionalViewController: UIViewController {
     }
     
     // NotificationCenter 옵저버를 사용하여 MainPageViewController에서 선행되어야할 데이터 작업후 노티게시
-    func dataLoadSignal(notification: Notification){
+    @objc func dataLoadSignal(notification: Notification){
         
         // 사용자 가입신 선택한 반려동물이 현재 팻키 값과 동일한지
         print("가입할때 있던 유저정보://",UserDefaults.standard.value(forKey: "loginUserData"))

@@ -106,7 +106,7 @@ class LoginViewController: UIViewController{
             introPlayer.allowsExternalPlayback = false
             let introPlayerLayer = AVPlayerLayer(player: introPlayer)
             
-            introPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            introPlayerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
             videoView.layer.addSublayer(introPlayerLayer)
             introPlayerLayer.frame = self.view.bounds
             introPlayer.rate = 2

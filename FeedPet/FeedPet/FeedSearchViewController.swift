@@ -228,8 +228,8 @@ class FeedSearchViewController: UIViewController {
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
 //        searchController.searchBar.barTintColor = UIColor.init(hexString: "#FF6600")
-        searchController.searchBar.layer.borderColor = UIColor.init(hexString: "#FF6600").cgColor
-        searchController.searchBar.layer.borderWidth = 1
+//        searchController.searchBar.layer.borderColor = UIColor.init(hexString: "#FF6600").cgColor
+//        searchController.searchBar.layer.borderWidth = 1
         
     
         searchController.searchBar.delegate = self
@@ -242,13 +242,13 @@ class FeedSearchViewController: UIViewController {
         let textFieldInsideUISearchBar =  searchController.searchBar.value(forKey: "searchField") as? UITextField
         let placeholderLabel = textFieldInsideUISearchBar?.value(forKey: "placeholderLabel") as? UILabel
         placeholderLabel?.font = UIFont.systemFont(ofSize: 12.0)
-        placeholderLabel?.textColor = .orange
+//        placeholderLabel?.textColor = .orange
         textFieldInsideUISearchBar?.font = UIFont.systemFont(ofSize: 12.0)
 //        let clearButton = textFieldInsideUISearchBar?.value(forKey: "clearButton") as? UIButton
 //
 //        clearButton?.tintColor = .white
         searchController.searchBar.barStyle = .default
-        searchController.searchBar.searchBarStyle = .minimal
+        
         
         print(DataCenter.shared.currentPetKey)
         if DataCenter.shared.currentPetKey == "feed_petkey_d"{
@@ -259,23 +259,39 @@ class FeedSearchViewController: UIViewController {
         
 
     
-        // searchFiled 부분의 배경색을 커스텀하기위한 코드
-        if let textfield = searchController.searchBar.value(forKey: "searchField") as? UITextField {
-            if let backgroundview = textfield.subviews.first {
-                
-                // Background color
-                backgroundview.backgroundColor = UIColor.white
-                
-                // Rounded corner
-                backgroundview.layer.cornerRadius = 10
-                backgroundview.clipsToBounds = true
-            }
-        }
+        
         
        
-        navigationItem.searchController = searchController
-        //스크롤시 서치바를 표시할지 선택값. 기본값 true
-//        navigationItem.hidesSearchBarWhenScrolling = false
+        if #available(iOS 11.0, *) {
+            searchController.searchBar.searchBarStyle = .minimal
+            // searchFiled 부분의 배경색을 커스텀하기위한 코드
+            if let textfield = searchController.searchBar.value(forKey: "searchField") as? UITextField {
+                if let backgroundview = textfield.subviews.first {
+                    
+                    // Background color
+                    backgroundview.backgroundColor = UIColor.white
+                    
+                    // Rounded corner
+                    backgroundview.layer.cornerRadius = 10
+                    backgroundview.clipsToBounds = true
+                }
+            }
+            navigationItem.searchController = searchController
+            //스크롤시 서치바를 표시할지 선택값. 기본값 true
+            navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            // Fallback on earlier versions
+//            searchController.searchBar.layer.borderColor = UIColor.init(hexString: "#FF6600").cgColor
+//            searchController.searchBar.layer.borderWidth = 0
+//            searchController.searchBar.tintColor =  UIColor.init(hexString: "#FF6600")
+            searchController.searchBar.barTintColor =  UIColor.init(hexString: "#FF6600")
+//            searchResultTableView.tableHeaderView?.backgroundColor = UIColor.init(hexString: "#FF6600")
+//            searchResultTableView.tableHeaderView?.tintColor = UIColor.init(hexString: "#FF6600")
+            searchResultTableView.tableHeaderView = searchController.searchBar
+            
+            
+        }
+        
 
         // Header 뷰에서 사용시
         //        searchResultTableView.tableHeaderView = customSearchBar
@@ -286,10 +302,13 @@ class FeedSearchViewController: UIViewController {
     
 }
 extension FeedSearchViewController: UITableViewDelegate, UITableViewDataSource{
+    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print(searchFeedData.count)
         return searchFeedData.count
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let resultCell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath)
@@ -373,6 +392,10 @@ extension FeedSearchViewController: UISearchBarDelegate {
     }
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         print("gjgjgjgj")
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchFeedData = []
+        self.searchResultTableView.reloadData()
     }
         
 }

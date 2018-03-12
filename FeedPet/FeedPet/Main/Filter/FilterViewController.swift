@@ -760,9 +760,10 @@ extension FilterViewController: UITableViewDataSource, UITableViewDelegate, Filt
         // nil 아닐 경우
         filterDataLoadFlag = true
         if var filterIndexPathKey = filterIndexPathDicArr[indexPath.section] {
+            
             if filterIndexPathKey.contains(indexPath) {
                 let indexInt = filterIndexPathKey.index(of: indexPath)
-                print("기능성 선택한 값이 존재할경우 String:/",indexInt)
+                print("기능성 선택한 값이 존재할경우 String:/",indexInt!)
                 filterIndexPathKey.remove(at: indexInt!)
             }else{
                 print(indexPath)

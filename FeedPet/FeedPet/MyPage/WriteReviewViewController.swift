@@ -96,7 +96,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
         }
         
     }
-    func keyboardDisappears(){
+    @objc func keyboardDisappears(){
         self.view.endEditing(true)
     }
     
@@ -113,12 +113,12 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
         toolbar.items = [flexsibleSpace,complateBtn]
         textView.inputAccessoryView = toolbar
     }
-    func keyboardWasShown(_ notification : Notification) {
+    @objc func keyboardWasShown(_ notification : Notification) {
         
         self.writeReviewScrollView.contentOffset = CGPoint(x: 0, y: self.writeReviewScrollView.contentOffset.y + 140)
     }
     
-    func keyboardWillHide(_ notification : Notification) {
+    @objc func keyboardWillHide(_ notification : Notification) {
         self.writeReviewScrollView.contentOffset = CGPoint(x: 0, y: self.writeReviewScrollView.contentOffset.y - 140)
     }
     

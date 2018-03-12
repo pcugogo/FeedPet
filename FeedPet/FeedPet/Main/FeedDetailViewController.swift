@@ -225,7 +225,7 @@ extension FeedDetailViewController: FeedDetailCellProtoCol{
         
     }
 
-    func tapGestureRemoveView(handleGesture: UITapGestureRecognizer){
+    @objc func tapGestureRemoveView(handleGesture: UITapGestureRecognizer){
         print(self.view.subviews)
         for subView in self.view.subviews{
             if subView.tag == 100 {

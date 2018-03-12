@@ -44,7 +44,7 @@ class LeaveMembershipEtcReasonCell: UITableViewCell,UITextFieldDelegate {
         }
         leaveMembershipTableViewReloadData()
     }
-    func textFieldDidChanged(){ //텍스트필드의 텍스트가 변경되면 변경내용을 변수에 담는다
+    @objc func textFieldDidChanged(){ //텍스트필드의 텍스트가 변경되면 변경내용을 변수에 담는다
         if let etcReasonContent = etcReasonContentTextField.text{
             MyPageDataCenter.shared.leaveMembarshipEtcReasonContent = etcReasonContent
         }

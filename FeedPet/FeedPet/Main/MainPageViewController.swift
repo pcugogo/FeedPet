@@ -44,6 +44,9 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     // 모든 기능성 및 필터 데이터 적용된 토탈데이터
     var feedFilteringTotalData = [FeedInfo]()
     
+    // 즐겨찾기 정보
+    var feedBookMarkData: [String] = []
+    
     var filterSelectFlag: Bool = false {
         didSet{
             print(filterSelectFlag)
@@ -205,6 +208,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
                     
                 }
                 self.feedAllData = feedData
+                self.feedMoreInformationLoad()
 //                guard let uid = Auth.auth().currentUser?.uid  else {return}
 //
 //                Database.database().reference().child("user_info").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -779,6 +783,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     func feedAllDataPagination(functionalKey: [String]){
         // 최초 페이지네이션 키 값이 nil일 경우
         var filterData = [FeedInfo]()
+        self.feedMoreInformationLoad()
         print("선택한 키값에 맞는 사료정보이때 키값://",functionalKey)
         if functionalKey.count != 0{
             // 1. 먼저 기능성 키값에 String 값을 할당
@@ -824,6 +829,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
                 self.feedInfoTableView.reloadData()
             }
         }
+       
         
         
         print("정렬기능성://",feedFunctionalFilteringData,"//카운트:",feedFunctionalFilteringData.count)
@@ -899,7 +905,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
                 }
             })
         }
-        
+        feedMoreInformationLoad()
         
 //        ref.child("feed_info").child(currentPet).queryOrderedByKey().queryLimited(toLast: 10).observeSingleEvent(of: .value, with: { (dataSnap) in
 //
@@ -946,6 +952,27 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     func moreData() {
         for index in 0...5{
             
+        }
+    }
+    
+    func feedMoreInformationLoad(){
+     Database.database().reference().child("my_favorite").child(userUID).observeSingleEvent(of: .value, with: { (dataSnap) in
+            var isBookMark: Bool = false
+            print("즐겨찾기 data://",dataSnap.value)
+            
+            if let bookMakrValue = dataSnap.children.allObjects as? [DataSnapshot] {
+                var bookMarkData: [String] = []
+                for child in bookMakrValue {
+                    guard let feedKey = child.childSnapshot(forPath: "feed_key").value as? String else {return}
+                    bookMarkData.append(feedKey)
+                }
+                print("내즐찾정보:///", bookMarkData)
+                self.feedBookMarkData = bookMarkData
+            }
+        
+            
+        }) { (error) in
+            print("----bookMakrError://",error.localizedDescription)
         }
     }
 }
@@ -1058,41 +1085,42 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         }) { (error) in
             print(error.localizedDescription)
         }
-        
+    
        
-        ref.child("my_favorite").child(userUID).observeSingleEvent(of: .value, with: { (dataSnap) in
+        if feedBookMarkData.contains(self.feedFilteringTotalData[indexPath.row].feedKey) {
+//            feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
+            feedCell.isBookMark = true
+        }else{
+//            feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
+            feedCell.isBookMark = false
+        }
+       self.feedBookMarkDic.updateValue(feedCell.isBookMark, forKey: self.feedFilteringTotalData[indexPath.row].feedKey)
+        ref.child("my_favorite").child(userUID).child(self.feedFilteringTotalData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
             var isBookMark: Bool = false
             print("즐겨찾기 data://",dataSnap.value)
-            
-            if let bookMakrValue = dataSnap.children.allObjects as? [DataSnapshot] {
-                
-                for child in bookMakrValue {
-                    if self.feedFilteringTotalData[indexPath.row].feedKey == child.childSnapshot(forPath: "feed_key").value as? String {
-                        print("이때 북마크://", child)
-                        feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
-                        //                        feedCell.isBookMark = true
-                    }else{
-                        feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
-                        //                        feedCell.isBookMark = false
-                    }
-//                    if childFeedKey == self.filteringDataInfo[indexPath.row].feedKey {
-//                        feedCell.isBookMark = true
-//                    }else{
-//                        feedCell.isBookMark = false
-//                    }
-                    
+//            if dataSnap.hasChildren() {
+//                feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
+//            }else{
+//                feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
+//            }
+//
+//            if let bookMakrValue = dataSnap.children.allObjects as? [DataSnapshot] {
+//
+//                for child in bookMakrValue {
 //                    if self.feedFilteringTotalData[indexPath.row].feedKey == child.childSnapshot(forPath: "feed_key").value as? String {
 //                        print("이때 북마크://", child)
-//                        feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
-////                        feedCell.isBookMark = true
+////                        feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
+//                                                feedCell.isBookMark = true
 //                    }else{
 //                        feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
-////                        feedCell.isBookMark = false
+//                                                feedCell.isBookMark = false
 //                    }
-                }
-            }
+//
+//                }
+//
+//            }
 //            print("북마크://",bookMakrValue)
-           
+
 //            if dataSnap.hasChildren() {
 //                feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
 //                isBookMark = true
@@ -1101,7 +1129,7 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
 //            }
 //            // 내 즐겨찾기 정보 상태 전달을위해 feedBookMarkDic 정보에 값 저장
 //            self.feedBookMarkDic.updateValue(isBookMark, forKey: self.feedFilteringTotalData[indexPath.row].feedKey)
-            
+
         }) { (error) in
             print("----bookMakrError://",error.localizedDescription)
         }
@@ -1186,35 +1214,51 @@ extension MainPageViewController: feedMainInfoCellProtocol{
     
     func sendBookMarkValue(isBookMark: Bool, feedKey: String) {
         print("넘어온 즐겨찾기 값//", isBookMark," 사료키값://", feedKey)
-        // 즐겨찾기 추가
-        let bookMarkRef = Database.database().reference().child("my_favorite").child(userUID).childByAutoId()
+        let bookMarkRef = Database.database().reference().child("my_favorite").child(userUID)
+        // 최초등록
+        if isBookMark {
+            // 즐겨찾기 추가
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            var bookMarkData: [String:Any] = [:]
+            bookMarkData.updateValue(feedKey, forKey: "feed_key")
+            //            let date = Date()
+            //            let calendar = Calendar.current
+            //            let components = calendar.dateComponents([.year, .month, .day], from: date)
+            //
+            //            let year =  components.year
+            //            let month = components.month
+            //            let day = components.day
+            //
+            //            print("날짜1://, ", "\(year).\(d)")
+            //            print(month)
+            //            print(day)
+            
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko")
+            formatter.dateFormat = "yyyy.MM.dd HH:mm"
+            let currentDataString = formatter.string(from: Date())
+            print("날짜2://, ", currentDataString)
+            bookMarkData.updateValue(currentDataString, forKey: "favorites_date")
+            bookMarkRef.childByAutoId().setValue(bookMarkData)
+            print("즐겨찾기 데이터://", bookMarkData)
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
+
+        }
+        else{ // 기존에 데이터 존재시 삭제
+            bookMarkRef.observeSingleEvent(of: .value, with: { (dataSnap) in
+                guard let childrenValue = dataSnap.children.allObjects as? [DataSnapshot] else{return}
+                for bookMark in childrenValue{
+                    if bookMark.childSnapshot(forPath: "feed_key").value as? String == feedKey{
+                        print("즐겨찾기존지하는 키://",bookMark.key)
+                        bookMarkRef.child(bookMark.key).removeValue()
+                    }
+                }
+            })
+        }
         
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        var bookMarkData: [String:Any] = [:]
-        bookMarkData.updateValue(feedKey, forKey: "feed_key")
-        //            let date = Date()
-        //            let calendar = Calendar.current
-        //            let components = calendar.dateComponents([.year, .month, .day], from: date)
-        //
-        //            let year =  components.year
-        //            let month = components.month
-        //            let day = components.day
-        //
-        //            print("날짜1://, ", "\(year).\(d)")
-        //            print(month)
-        //            print(day)
-        
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko")
-        formatter.dateFormat = "yyyy.MM.dd HH:mm"
-        let currentDataString = formatter.string(from: Date())
-        print("날짜2://, ", currentDataString)
-        bookMarkData.updateValue(currentDataString, forKey: "favorites_date")
-        bookMarkRef.setValue(bookMarkData)
-        print("즐겨찾기 데이터://", bookMarkData)
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-        
-        /*
+                /*
         if isBookMark{
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             var bookMarkData: [String:Any] = [:]
