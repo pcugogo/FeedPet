@@ -56,6 +56,10 @@ class FeedDetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func bookMarkBtnTouched(_ sender: UIBarButtonItem){
+        
+    }
     func setupAnimationForNavigationBar(caseOfFunction: Bool) {
         if caseOfFunction == true {
             UIView.animate(withDuration: 0.5) {
@@ -91,6 +95,7 @@ class FeedDetailViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
 
 }
 extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{

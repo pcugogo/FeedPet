@@ -315,6 +315,7 @@ class LoginViewController: UIViewController{
             self.reference = Database.database().reference()
             guard let loginUser = user else{return}
             print("## 로그인 uid 확인: ", loginUser.uid)
+            self.spiner = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
             UserDefaults.standard.setValue(loginUser.uid, forKey: "userUID")
             UserDefaults.standard.setValue(social, forKey: "loginSocial")
             // 최초 로그인시에만 Firebase데이터에 저장
@@ -388,6 +389,8 @@ class LoginViewController: UIViewController{
 //                    }
 
 //                })
+                 guard let spinerView = self.spiner else {return}
+                 DataCenter.shared.removeSpinner(spinner: spinerView)
             })
             
             //                guard let displayName = googleUser.displayName else {return}
@@ -507,6 +510,7 @@ extension LoginViewController: GIDSignInDelegate, GIDSignInUIDelegate{
                     }
                     guard let spinerView = self.spiner else {return}
                     print(spinerView)
+                    DataCenter.shared.removeSpinner(spinner: spinerView)
                 })
                 
                 //                guard let displayName = googleUser.displayName else {return}

@@ -518,11 +518,19 @@ struct FunctionalList {
 
 struct FeedReview {
     var feedKey: String!
-    var reviewInfo: [ReviewInfo]?
-    var reviewRation: Int!
+    var reviewInfo: [ReviewInfo]!
+    var reviewRating: Int!
     
-    init(feedReviewJSON: (String,JSON)) {
-        self.feedKey = feedReviewJSON.0
+    init(feedReviewJSON: JSON, feedKey: String) {
+        self.feedKey = feedKey
+        var reviewDataArray: [ReviewInfo] = []
+        
+        for reviewInfo in  feedReviewJSON["review_info"]{
+            let oneReview = ReviewInfo(feedReviewJSON: reviewInfo)
+            reviewDataArray.append(oneReview)
+        }
+        self.reviewInfo = reviewDataArray
+        self.reviewRating = feedReviewJSON["review_rating"].intValue
         
     }
     
@@ -532,8 +540,16 @@ struct ReviewInfo {
     var reviewKey: String!
     var userKey: String!
     var feedRating: Int!
-    var feedReviewCon: String!
+    var feedReviewContent: String!
     var reviewDate: String!
+    
+    init(feedReviewJSON: (String, JSON)) {
+        self.reviewKey = feedReviewJSON.0
+        self.userKey = feedReviewJSON.1["user_key"].stringValue
+        self.feedRating = feedReviewJSON.1["feed_rating"].intValue
+        self.feedReviewContent = feedReviewJSON.1["feed_review"].stringValue
+        self.reviewDate = feedReviewJSON.1["feed_date"].stringValue
+    }
     
 }
 

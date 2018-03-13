@@ -1483,6 +1483,22 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UfB-Aw-dld">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="736"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="8E7-oZ-vum">
+                                    <rect key="frame" x="0.0" y="569" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X3c-1e-VZd">
+                                            <rect key="frame" x="19.333333333333343" y="5" width="337.33333333333326" height="30"/>
+                                            <state key="normal" backgroundImage="more_comments_btn"/>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="X3c-1e-VZd" firstAttribute="width" secondItem="8E7-oZ-vum" secondAttribute="width" multiplier="0.9" id="RwQ-U1-3wb"/>
+                                        <constraint firstItem="X3c-1e-VZd" firstAttribute="centerX" secondItem="8E7-oZ-vum" secondAttribute="centerX" id="d1P-qG-mlO"/>
+                                        <constraint firstItem="X3c-1e-VZd" firstAttribute="top" secondItem="8E7-oZ-vum" secondAttribute="top" constant="5" id="pUx-Rc-GnF"/>
+                                    </constraints>
+                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="FeedDetailCell" rowHeight="199" id="HrW-3C-I0e" customClass="FeedDetailITableViewCell" customModule="FeedPet" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="199"/>
@@ -2154,6 +2170,7 @@
         <image name="good" width="15" height="15"/>
         <image name="good_btn" width="20" height="20"/>
         <image name="googleLoginBtn" width="250" height="30"/>
+        <image name="more_comments_btn" width="350" height="30"/>
         <image name="navigationbar_logo" width="210" height="40"/>
         <image name="normalStar" width="20" height="20"/>
         <image name="profile_btn" width="25" height="25"/>

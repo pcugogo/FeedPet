@@ -1028,59 +1028,73 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         ref.child("feed_review").child(feedFilteringTotalData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
             // 1. 리뷰의 갯수가 필요하
 //            print(feedDataInfo.feedKey)
+            guard let data = dataSnap.value else {return}
+            
+            let oneReviewData = FeedReview(feedReviewJSON: JSON(data), feedKey: dataSnap.key)
+            feedCell.reviewData = oneReviewData
+            print("리뷰하나의정보://",oneReviewData)
+//            feedCell.feedReviewCount.text = dataSnap.childSnapshot(forPath: "review_info").childrenCount.description
+//            print("사료\(self.feedFilteringTotalData[indexPath.row].feedKey)별점://",dataSnap.value)
+//            let reviewRatingScore = oneReviewData.reviewRating ?? 0
+//            guard let reviewRating = dataSnap.childSnapshot(forPath: "review_rating").value as? Int else {return}
+            
+//            print(reviewRating)
+            // Enum을 사용하여 default 경우 제외
+            
+
             // 2. 선택한 사료에 대한 자식데이터 분기
-            if dataSnap.childrenCount > 0 {
-                guard let reviewData = dataSnap.value else {return}
-                let reviewDataJSON = JSON(reviewData)
-                print(reviewDataJSON)
-                print(dataSnap.childSnapshot(forPath: "review_info").childrenCount)
-                DispatchQueue.main.async {
-                    
-                    feedCell.feedReviewCount.text = dataSnap.childSnapshot(forPath: "review_info").childrenCount.description
-                    guard let reviewRating = dataSnap.childSnapshot(forPath: "review_rating").value as? Int else {return}
-                    print(reviewRating)
-                    // Enum을 사용하여 default 경우 제외
-                    switch reviewRating {
-                    case 1:
-                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "normalStar")
-                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
-                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
-                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
-                    case 2:
-                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
-                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
-                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
-                    case 3:
-                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
-                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
-                    case 4:
-                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
-                    case 5:
-                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "selectStar")
-                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "selectStar")
-                    default:
-                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "normalStar")
-                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "normalStar")
-                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
-                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
-                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
-                    }
-                    
-                }
-            }
+//            if dataSnap.childrenCount > 0 {
+//                guard let reviewData = dataSnap.value else {return}
+//                let reviewDataJSON = JSON(reviewData)
+//                print(reviewDataJSON)
+//                print(dataSnap.childSnapshot(forPath: "review_info").childrenCount)
+//                DispatchQueue.main.async {
+//
+//                    feedCell.feedReviewCount.text = dataSnap.childSnapshot(forPath: "review_info").childrenCount.description
+//                    guard let reviewRating = dataSnap.childSnapshot(forPath: "review_rating").value as? Int else {return}
+//                    print(reviewRating)
+//                    // Enum을 사용하여 default 경우 제외
+//                    switch reviewRating {
+//                    case 1:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                    case 2:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                    case 3:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                    case 4:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                    case 5:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                    default:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                    }
+//
+//                }
+//            }
             
         }) { (error) in
             print(error.localizedDescription)
