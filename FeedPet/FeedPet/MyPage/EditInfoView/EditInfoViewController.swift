@@ -53,7 +53,7 @@ class EditInfoViewController: UIViewController {
     var nickNameDuplicate = false
     
     // 선택 반려동물 태그값 체크를 위한 옵저버 프로퍼티
-    var petBtnTag: Int = 0 { 
+    var petBtnTag: Int = 0 {
         didSet{
             petAgeCollectionView.reloadData()
             petFunctionalCollectionView.reloadData()
@@ -154,14 +154,14 @@ class EditInfoViewController: UIViewController {
             //싱글옵저브이다 마이페이지데이터센터에 각각 유저정보값을 업데이트해줘야된다
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).child("user_pet_funtional").removeValue()//펑셔널이 어레이로 되있어서 값이 바뀌지않고 계속 추가되기떄문에 지운다음에 추가해준다
-
-           
-                if let nickName = nickNameTextField.text{
+            
+            
+            if let nickName = nickNameTextField.text{
                 FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_nic":nickName])
-                }
+            }
             
             FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet":petType])
-
+            
             FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet_age":petAge])
             FireBaseData.shared.refUserInfoReturn.child(MyPageDataCenter.shared.testUUID).updateChildValues(["user_pet_funtional":petFunctionKey])
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -191,7 +191,7 @@ class EditInfoViewController: UIViewController {
                         self.nickNameDuplicate = false
                         self.nickNameDuplicateTextLb.isHidden = false
                     })
-            
+                    
                     duplicateAlert.addAction(okBtn)
                     self.present(duplicateAlert, animated: true, completion: nil)
                 }else{
@@ -216,7 +216,7 @@ class EditInfoViewController: UIViewController {
     }
     
     @IBAction func petSlectBtnTouched(_ sender: UIButton) {
-
+        
         print(sender.tag)
         petBtnTag = sender.tag
     }
@@ -271,7 +271,7 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
                     
                 }
             }
-          
+            
             return ageCell
         }else {
             let funcionalCell = collectionView.dequeueReusableCell(withReuseIdentifier: "functionalCell", for: indexPath) as! EditInfoViewPetFunctionCollectionViewCell
@@ -280,7 +280,7 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
             funcionalCell.petSelectInt = petBtnTag
             
             if dataIsLoaded == true {
-
+                
                 
                 
                 
@@ -301,7 +301,7 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
                 funcionalCell.isSelected = true
                 collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
             }
-           
+            
             return funcionalCell
         }
         
@@ -392,4 +392,3 @@ extension EditInfoViewController:UITextFieldDelegate{
         return true
     }
 }
-

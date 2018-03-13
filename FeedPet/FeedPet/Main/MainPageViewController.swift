@@ -24,7 +24,8 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     
 //    var feedData: [FeedInfo] = []
     var testReference: DatabaseReference = Database.database().reference()
-    var ref: DatabaseReference!
+    var ref: DatabaseReference = Database.database().reference()
+    
     
     
     // 페이지네이션 데이터 변수
@@ -34,15 +35,61 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     
     var feedAllData = [FeedInfo]()
     var feedInfoKey: String!
-    var feedFilteringData = [FeedInfo]()
+    // 기능성 선택에 따른 총 데이터
+    var feedFunctionalFilteringData = [FeedInfo]()
+    
+    // 필터에서 선택한 값에 따른 총 데이터
+    var feedFilterFilteringData = [FeedInfo]()
+    // 필터에 값이 있는지 판단을 위한 변수 - 초기에는 필터 선택값이 없음
+    // 모든 기능성 및 필터 데이터 적용된 토탈데이터
+    var feedFilteringTotalData = [FeedInfo]()
+    
+    // 즐겨찾기 정보
+    var feedBookMarkData: [String] = []
+    
+    var filterSelectFlag: Bool = false {
+        didSet{
+            print(filterSelectFlag)
+            print(feedFilterFilteringData.count)
+            print(feedFunctionalFilteringData.count)
+            if filterSelectFlag {
+                feedFilteringTotalData = feedFilterFilteringData
+            }else{
+                feedFilteringTotalData = feedFunctionalFilteringData
+            }
+            DispatchQueue.main.async {
+                self.feedListCountLabel.text = self.feedFilteringTotalData.count.description
+                self.feedInfoTableView.reloadData()
+//                self.feedInfoTableView.setContentOffset(.zero, animated: true)
+                // 데이터 리도드후 최상위로 스크롤 이동을 위해 구현
+//                let topIndex = IndexPath(row: 0, section: 0)
+//                self.feedInfoTableView.scrollToRow(at: topIndex, at: .top, animated: false)
+            }
+        }
+    }
+    var filterItemDataInfo: FilterData?
+    
+    var filteringDataInfo = [FeedInfo]()
     var feedFilteringPaginationData = [FeedInfo]()
     var currentPageCount: Int = 0
     
     var currentPet = String()
     
+    var dataLoadFlag: Bool = false {
+        didSet{
+            if dataLoadFlag {
+                
+            }
+        }
+    }
     
+    var userUID = String()
+    var feedBookMarkDic: [String:Bool] = [:]
+    
+    @IBOutlet weak var functionalContainerView: UIView!
     @IBOutlet weak var feedInfoTableView: UITableView!
     @IBOutlet weak var feedListCountLabel: UILabel!
+    
     @IBOutlet weak var loadingIndicatorImgView: LoadingIndicatorImgView!
     /*******************************************/
     //MARK:-        LifeCycle                  //
@@ -61,8 +108,9 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         // 페이지네이션 데이터 - 최초 가입시 선택한 기능성에
 //        feedDataHandlePagination()
         
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        userUID = uid
         
-    
         
 //        ref.database.reference()
 //        scrollDelegate = self
@@ -70,7 +118,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         // Do any additional setup after loading the view.
 //        DataCenter.shared.fromNib(toViewController: self)
 //        DataCenter.shared.showActivityIndicatory(uiView: (self.parent?.view)! ,animating: true)
-  
+          
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -97,8 +145,11 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "FuncitonalEmbeddedSegue") {
+            // Container 뷰의 세그 ID값을 할당하여 데이터 전달 및 델리게이트 패턴 적용
             let functionalView = segue.destination as! FunctionalViewController
             functionalView.functionalData = DataCenter.shared.functionalSettingData(currentPet: currentPet)
+            functionalView.sendFunctionalDelegate = self
+            
             // Now you have a pointer to the child view controller.
             // You can save the reference to it, or pass data to it.
             
@@ -122,12 +173,12 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         var indicator = IndicatorInfo(title: nil, image: nil)
         if indicatorTitle == "멍" {
             indicator.title = "멍"
-            indicator.image = #imageLiteral(resourceName: "dogAble")
+            indicator.image = #imageLiteral(resourceName: "dogAbleImg")
             
         }
         else{
             indicator.title = "냥"
-            indicator.image = #imageLiteral(resourceName: "catAble")
+            indicator.image = #imageLiteral(resourceName: "catAbleImg")
             
         }
         return indicator
@@ -142,7 +193,9 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         delegate?.loadingIndicatorDisplay()
 //        let indi = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+        print("@@선택 반려동물://",currentPet)
         testReference.child("feed_info").child(currentPet).observeSingleEvent(of: .value, with: { (dataSnap) in
+            print("@@데이터수://",dataSnap.childrenCount)
             guard let feedInfoListJson = dataSnap.value else {return}
             let feedJson = JSON(feedInfoListJson)
             var feedData = [FeedInfo]()
@@ -155,19 +208,44 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
                     
                 }
                 self.feedAllData = feedData
-                DispatchQueue.main.async {
-                    // 필터링 테스트
-                    self.feedAllDataPagination(functionalKey: ["immune","joint"])
+                self.feedMoreInformationLoad()
+//                guard let uid = Auth.auth().currentUser?.uid  else {return}
+//
+//                Database.database().reference().child("user_info").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+//                    print(snapshot)
+//                    if let userInfoSnapshot = snapshot.value as? [String:Any]{
+//
+//                        let userInfo = User(userInfoData: userInfoSnapshot)
+//                        print("조회한 유저데이터2://,",userInfo)
+//                        var userFunctionalIndexPath: [IndexPath] = []
+//                        for indexRow in userInfo.userPetFunctionalIndexPathRow {
+//                            userFunctionalIndexPath.append(IndexPath(row: indexRow, section: 0))
+//                        }
+//                        print("조회해온 유저정보의 기능성 인덱스 패스://", userFunctionalIndexPath)
+//                        //                        self.userSelectFunctionalIndexPath = userFunctionalIndexPath
+//                        //                        self.functionalCollectionView.reloadData()
+//
+//                        self.feedAllDataPagination(functionalKey: userInfo.userPetFunctional)
+//                        self.feedInfoTableView.reloadData()
+//                    }
+//
+//                })
+//                DispatchQueue.main.async {
+//
+//                    // 필터링 테스트
+//                    self.feedAllDataPagination(functionalKey: [])
                     self.feedInfoTableView.reloadData()
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-//                    DataCenter.shared.removeSpinner(spinner: indi)
-                    
-                }
+                NotificationCenter.default.post(name: .feedAllDataNoti, object: nil, userInfo: nil)
+//                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+////                    DataCenter.shared.removeSpinner(spinner: indi)
+//
+//                }
                 print(self.feedInfoStartKey)
                 print(self.feedPagenationData)
+                
             }
             DispatchQueue.main.async {
-                self.feedListCountLabel.text = dataSnap.childrenCount.description
+//                self.feedListCountLabel.text = dataSnap.childrenCount.description
 //                DataCenter.shared.nibRemove(toViewController: self)
                 self.delegate?.loadingRemoveDisplay()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -177,40 +255,588 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         }
         
     }
+    func selectFilterItem(filterItemData: FilterData, selectState: Bool){
+        print("필터 값존재 여부://",selectState)
+        let functionalKey =  [1,2]
+        // 최초 페이지네이션 키 값이 nil일 경우
+        var filterData = [FeedInfo]()
+        var filteringData = [FeedInfo]()
+        var isDataEmpty: Bool = false
+//        var temporaryFeedInfoData: [FeedInfo] = []
+        print(feedFilteringTotalData.count)
+        feedFilterFilteringData = feedFunctionalFilteringData
+        
+        self.filterItemDataInfo = filterItemData
+        filteringDataInfo = []
+        print("필터에서 선택한 키값://",filterItemData)
+//        guard let grade = filterItemData.grade else{ return }
+        if let gradeData = filterItemData.grade {
+            
+//            let data = feedFilterFilteringData.filter({ (feedOne) -> Bool in
+//
+//               return gradeData.contains(where: { (grade) -> Bool in
+//                if feedOne.feedGrade == grade{
+//                    filteringData.append(feedOne)
+//                }
+//                    return feedOne.feedGrade == grade
+//                })
+//            })
+//
+//
+//            print("필터정렬한데이터 등급://",filteringData,"//카운트://",filteringData.count)
+//            filteringData = data
+            if filteringDataInfo.isEmpty && !isDataEmpty {
+                for grade in gradeData {
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in feedFilterFilteringData{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값 ==> 중복데이터가 있을수 없기에 변경하고 코드중복 함수로 관리 할 예정
+                        let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if !duplicationCheck && feedOne.feedGrade == grade{
+                            filterData.append(feedOne)
+                        }
+
+                    }
+                }
+                filteringDataInfo = filterData
+                
+            }else{
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for grade in gradeData {
+                    
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in filteringDataInfo{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값
+                        let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if temporaryFeedInfoData.count < 1 && feedOne.feedGrade == grade{
+                            //존재한다면 해당 사료의 값을 확인해보자.
+                            // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+                            print("존재하는 사료 정보 확인1:", feedOne.feedGrade)
+                            temporaryFeedInfoData.append(feedOne)
+                            
+                        }else if !duplicationCheck && feedOne.feedGrade == grade {
+                            print("존재하는 사료 정보 확인2:", feedOne.feedGrade)
+                            temporaryFeedInfoData.append(feedOne)
+                        }
+                        
+                        
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty = true
+                }
+                filteringDataInfo = temporaryFeedInfoData
+            }
+            
+//            }else {
+//                if gradeData.count > 1{
+//                    for grade in gradeData {
+//
+//                        // 2. 전체 사료정보중 사료하나의 값을 할당
+//                        for feedOne in feedFilterFilteringData{
+//                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+//                            // 4. FilterData에 중복 데이터 제거하기위한 값
+//                            let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+//                                return feedInfo.feedKey == feedOne.feedKey
+//                            })
+//
+//                            if filterData.count < 1 && feedOne.feedGrade == grade{
+//                                //존재한다면 해당 사료의 값을 확인해보자.
+//                                // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+//                                print("존재하는 사료 정보 확인1:", feedOne.feedGrade)
+//                                filterData.append(feedOne)
+//
+//                            }else if !duplicationCheck && feedOne.feedGrade == grade {
+//                                print("존재하는 사료 정보 확인2:", feedOne.feedGrade)
+//                                filterData.append(feedOne)
+//                            }
+//
+//
+//                        }
+//                    }
+//
+//                }else{
+//
+//                    for grade in gradeData {
+//
+//                        // 2. 전체 사료정보중 사료하나의 값을 할당
+//                        for feedOne in filteringDataInfo{
+//                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+//                            // 4. FilterData에 중복 데이터 제거하기위한 값
+//                            let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+//                                return feedInfo.feedKey == feedOne.feedKey
+//                            })
+//
+//                            if filterData.count < 1 && feedOne.feedGrade == grade{
+//                                //존재한다면 해당 사료의 값을 확인해보자.
+//                                // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+//                                print("존재하는 사료 정보 확인1:", feedOne.feedGrade)
+//                                filterData.append(feedOne)
+//
+//                            }else if !duplicationCheck && feedOne.feedGrade == grade {
+//                                print("존재하는 사료 정보 확인2:", feedOne.feedGrade)
+//                                filterData.append(feedOne)
+//                            }
+//
+//
+//                        }
+//                    }
+//                }
+//
+//
+//            }
+            
+            print("filteringDataInfo 등급://",filteringDataInfo,"//카운트://",filteringDataInfo.count)
+        }
+        
+        
+        
+        if let ageData = filterItemData.age {
+            if filteringDataInfo.isEmpty && !isDataEmpty {
+                for age in ageData {
+                    
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in feedFilterFilteringData{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값
+                        
+                        let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if !duplicationCheck && feedOne.feedAge == age {
+                            print("존재하는 사료 정보 확인2:", feedOne.feedAge)
+                            filterData.append(feedOne)
+                        }
+                        
+                        
+                    }
+                    
+                    //                let a = self.feedFilteringData.filter{$0.feedGrade == grade}
+                }
+                filteringDataInfo = filterData
+
+            }else {
+                print("연령대 선택 기존에 값 잇지롱://", filteringDataInfo)
+                
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for age in ageData {
+                    
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in filteringDataInfo{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값
+                        let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if !duplicationCheck && feedOne.feedAge == age {
+                            print("존재하는 사료 정보 확인2:", feedOne.feedAge)
+                            temporaryFeedInfoData.append(feedOne)
+                        }
+                        
+                        
+                    }
+                }
+//                if ageData.count > 1{
+//                    for age in ageData {
+//
+//                        // 2. 전체 사료정보중 사료하나의 값을 할당
+//                        for feedOne in feedFilterFilteringData{
+//                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+//                            // 4. FilterData에 중복 데이터 제거하기위한 값
+//                            let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+//                                return feedInfo.feedKey == feedOne.feedKey
+//                            })
+//
+//                            if filterData.count < 1 && feedOne.feedAge == age{
+//                                //존재한다면 해당 사료의 값을 확인해보자.
+//                                // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+//                                print("존재하는 사료 정보 확인1:", feedOne.feedAge)
+//                                filterData.append(feedOne)
+//
+//                            }else if !duplicationCheck && feedOne.feedAge == age {
+//                                print("존재하는 사료 정보 확인2:", feedOne.feedAge)
+//                                filterData.append(feedOne)
+//                            }
+//
+//
+//                        }
+//                    }
+//
+//                }else{
+//
+//                    for age in ageData {
+//
+//                        // 2. 전체 사료정보중 사료하나의 값을 할당
+//                        for feedOne in filteringDataInfo{
+//                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+//                            // 4. FilterData에 중복 데이터 제거하기위한 값
+//                            let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+//                                return feedInfo.feedKey == feedOne.feedKey
+//                            })
+//
+//                            if filterData.count < 1 && feedOne.feedAge == age{
+//                                //존재한다면 해당 사료의 값을 확인해보자.
+//                                // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+//                                print("존재하는 사료 정보 확인1:", feedOne.feedAge)
+//                                filterData.append(feedOne)
+//
+//                            }else if !duplicationCheck && feedOne.feedAge == age {
+//                                print("존재하는 사료 정보 확인2:", feedOne.feedAge)
+//                                filterData.append(feedOne)
+//                            }
+//
+//
+//                        }
+//                    }
+//                }
+                
+                
+                filteringDataInfo = temporaryFeedInfoData
+            }
+            if filteringDataInfo.isEmpty {
+                isDataEmpty = true
+            }
+            print("filterData 연령대1://",filterData,"//연랭대 1카운트://",filterData.count)
+            print("filterData 연령대2://",filteringDataInfo,"//연령대 2카운트://",filteringDataInfo.count)
+            
+        }
+        
+        // 주원료
+        if let ingredientData = filterItemData.ingredient {
+//            let data = feedFilterFilteringData.filter({ (feedOne) -> Bool in
+//                return ingredientData.contains(where: { (ingredient) -> Bool in
+//                    return feedOne.feedIngredient == ingredient
+//                })
+//            })
+//            print("필터정렬한데이터 주원료://",data,"//카운트://",data.count)
+//            feedFilterFilteringData = data
+            print("선택 주원료 정보들://",ingredientData)
+            if filteringDataInfo.isEmpty && !isDataEmpty{
+                for ingrdient in ingredientData {
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in feedFilterFilteringData{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값
+                        let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if !duplicationCheck && feedOne.feedIngredient == ingrdient {
+                            print("존재하는 사료 정보 확인2:", feedOne.feedIngredient)
+                            filterData.append(feedOne)
+                        }
+                        
+                        
+                    }
+                }
+                print(filterData)
+                filteringDataInfo = filterData
+            }else{
+                
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for ingrdient in ingredientData {
+                    
+                    // 2. 전체 사료정보중 사료하나의 값을 할당
+                    for feedOne in filteringDataInfo{
+                        // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                        // 4. FilterData에 중복 데이터 제거하기위한 값
+                        let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                            return feedInfo.feedKey == feedOne.feedKey
+                        })
+                        
+                        if !duplicationCheck && feedOne.feedIngredient == ingrdient {
+                            print("존재하는 사료 정보 확인2:", feedOne.feedIngredient)
+                            temporaryFeedInfoData.append(feedOne)
+                        }
+                        
+                        
+                        
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty = true
+                }
+                filteringDataInfo = temporaryFeedInfoData
+                print("filterData temporaryFeedInfoData://",temporaryFeedInfoData,"//temporaryFeedInfoData 1카운트://",temporaryFeedInfoData.count)
+            }
+            print("filterData temporaryFeedInfoData2://",filteringDataInfo,"//temporaryFeedInfoData 2카운트://",filteringDataInfo.count)
+        }
+        
+        
+        
+
+        // 브랜드
+        if let brandData = filterItemData.brand {
+//            let data = feedFilterFilteringData.filter({ (feedOne) -> Bool in
+//                return brandData.contains(where: { (brand) -> Bool in
+//                    return feedOne.feedBrand == brand
+//                })
+//            })
+//            print("필터정렬한데이터 브랜드://",data,"//카운트://",data.count)
+//            feedFilterFilteringData = data
+
+                if filteringDataInfo.isEmpty && !isDataEmpty{
+                    for brand in brandData {
+                        // 2. 전체 사료정보중 사료하나의 값을 할당
+                        for feedOne in feedFilterFilteringData{
+                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                            // 4. FilterData에 중복 데이터 제거하기위한 값
+                            let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                                return feedInfo.feedKey == feedOne.feedKey
+                            })
+                            
+                            if !duplicationCheck && feedOne.feedBrand == brand {
+                                print("존재하는 사료 정보 확인2:", feedOne.feedIngredient)
+                                filterData.append(feedOne)
+                            }
+                            
+                            
+                        }
+                    }
+                    filteringDataInfo = filterData
+                }else{
+                    
+                    var temporaryFeedInfoData: [FeedInfo] = []
+                    for brand in brandData {
+                        
+                        // 2. 전체 사료정보중 사료하나의 값을 할당
+                        for feedOne in filteringDataInfo{
+                            // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                            // 4. FilterData에 중복 데이터 제거하기위한 값
+                            let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                                return feedInfo.feedKey == feedOne.feedKey
+                            })
+                            
+                            if !duplicationCheck && feedOne.feedBrand == brand {
+                                print("존재하는 사료 정보 확인2:", feedOne.feedBrand)
+                                temporaryFeedInfoData.append(feedOne)
+                            }
+                            
+                            
+                        }
+                    }
+                    if temporaryFeedInfoData.isEmpty {
+                        isDataEmpty =  true
+                    }
+                    print("선택 주원료 정보들 분기카운트://",temporaryFeedInfoData.count,"//",temporaryFeedInfoData)
+                    filteringDataInfo = temporaryFeedInfoData
+                }
+                
+            
+        }
+        
+        // 그레인프리
+        if let grainFreeData = filterItemData.grinfreeFlag {
+//            let data = feedFilterFilteringData.filter({ (feedOne) -> Bool in
+//                return feedOne.grainfreeFlag == grainFreeData
+//            })
+//            print("필터정렬한데이터 그래인프리://",data,"//카운트://",data.count)
+//            feedFilterFilteringData = data
+            
+            if filteringDataInfo.isEmpty && !isDataEmpty{
+                for feedOne in feedFilterFilteringData{
+                    let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.grainfreeFlag == grainFreeData {
+                        filterData.append(feedOne)
+                    }
+                
+                }
+                print(filterData)
+                filteringDataInfo = filterData
+            }else{
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for feedOne in filteringDataInfo{
+                    let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.grainfreeFlag == grainFreeData {
+                        temporaryFeedInfoData.append(feedOne)
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty =  true
+                }
+                
+                filteringDataInfo = temporaryFeedInfoData
+            }
+            
+        }
+    
+        // 유기농/오가닉
+        if let organicData = filterItemData.organicFlag {
+            if filteringDataInfo.isEmpty && !isDataEmpty {
+                for feedOne in feedFilterFilteringData{
+                    let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.organicFlag == organicData {
+                        filterData.append(feedOne)
+                    }
+                    
+                }
+                print(filterData)
+                filteringDataInfo = filterData
+            }else{
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for feedOne in filteringDataInfo{
+                    let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.organicFlag == organicData {
+                        temporaryFeedInfoData.append(feedOne)
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty = true
+                }
+                filteringDataInfo = temporaryFeedInfoData
+            }
+        }
+        
+        // LID
+        if let lidData = filterItemData.lidFlag {
+            if filteringDataInfo.isEmpty && !isDataEmpty {
+                for feedOne in feedFilterFilteringData{
+                    let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.lidFlag == lidData {
+                        filterData.append(feedOne)
+                    }
+                    
+                }
+                print(filterData)
+                filteringDataInfo = filterData
+            }else{
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for feedOne in filteringDataInfo{
+                    let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.lidFlag == lidData {
+                        temporaryFeedInfoData.append(feedOne)
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty = true
+                }
+                filteringDataInfo = temporaryFeedInfoData
+            }
+        }
+        
+        // 대형견/묘
+        if let bitPetData = filterItemData.bigPetFlag {
+            if filteringDataInfo.isEmpty && !isDataEmpty {
+                for feedOne in feedFilterFilteringData{
+                    let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.bigFlag == bitPetData {
+                        filterData.append(feedOne)
+                    }
+                    
+                }
+                
+                print(filterData)
+                filteringDataInfo = filterData
+            }else{
+                var temporaryFeedInfoData: [FeedInfo] = []
+                for feedOne in filteringDataInfo{
+                    let duplicationCheck = temporaryFeedInfoData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
+                    if !duplicationCheck && feedOne.bigFlag == bitPetData {
+                        temporaryFeedInfoData.append(feedOne)
+                    }
+                }
+                if temporaryFeedInfoData.isEmpty {
+                    isDataEmpty = true
+                }
+                filteringDataInfo = temporaryFeedInfoData
+            }
+        }
+        
+        
+//        feedFilterFilteringData = filterData
+        print(filteringDataInfo)
+        feedFilterFilteringData = filteringDataInfo
+        self.filterSelectFlag = selectState
+        print("필터에서 선택완료한 필터링된 총 데이터://",feedFilterFilteringData,"//총카운트://",feedFilterFilteringData.count)
+        print(self.feedFilteringTotalData.count.description)
+        
+        
+        
+    }
+    
     
     func feedAllDataPagination(functionalKey: [String]){
         // 최초 페이지네이션 키 값이 nil일 경우
         var filterData = [FeedInfo]()
-        
-        // 1. 먼저 기능성 키값에 String 값을 할당
-        for key in functionalKey {
-            // key => [String] 배열에 하나의 값
-            // 2. 전체 사료정보중 사료하나의 값을 할당
-            for feedOne in feedAllData{
-                // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
-                // 4. FilterData에 중복 데이터 제거하기위한 값
-                let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
-                    return feedInfo.feedKey == feedOne.feedKey
-                })
-                
-                if filterData.count < 1 && feedOne.feedFunctional.contains(key){
-                    //존재한다면 해당 사료의 값을 확인해보자.
-                    // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
-                    print("존재하는 사료 정보 확인1:", feedOne.feedKey)
-                    filterData.append(feedOne)
+        self.feedMoreInformationLoad()
+        print("선택한 키값에 맞는 사료정보이때 키값://",functionalKey)
+        if functionalKey.count != 0{
+            // 1. 먼저 기능성 키값에 String 값을 할당
+            for key in functionalKey {
+                // key => [String] 배열에 하나의 값
+                // 2. 전체 사료정보중 사료하나의 값을 할당
+                for feedOne in feedAllData{
+                    // 3. 이 키값이 전체데이터의 사료정보중 하나의 사료정보 기능성키에 존재하는지 판단
+                    // 4. FilterData에 중복 데이터 제거하기위한 값
+                    let duplicationCheck = filterData.contains(where: { (feedInfo) -> Bool in
+                        return feedInfo.feedKey == feedOne.feedKey
+                    })
                     
-                }else if !duplicationCheck && feedOne.feedFunctional.contains(key) {
-                    print("존재하는 사료 정보 확인2:", feedOne.feedKey)
-                    filterData.append(feedOne)
+                    if filterData.count < 1 && feedOne.feedFunctional.contains(key){
+                        //존재한다면 해당 사료의 값을 확인해보자.
+                        // 테스트 이유=> ex) ["immune","joint"] 배열에 값이 여러개를 가진 사료를 처리하기위함
+                        print("존재하는 사료 정보 확인1:", feedOne.feedKey)
+                        filterData.append(feedOne)
+                        
+                    }else if !duplicationCheck && feedOne.feedFunctional.contains(key) {
+                        print("존재하는 사료 정보 확인2:", feedOne.feedKey)
+                        filterData.append(feedOne)
+                    }
+                    
                 }
-                
+            }
+            
+            feedFunctionalFilteringData = filterData.sorted(by: { (feedOne, feedTwo) -> Bool in
+                return feedOne.feedName < feedTwo.feedName
+            })
+            
+        }else{
+            feedFunctionalFilteringData = feedAllData
+        }
+        feedFilteringTotalData = feedFunctionalFilteringData
+        
+        if let filterItem = filterItemDataInfo {
+            self.selectFilterItem(filterItemData: filterItem, selectState: filterSelectFlag)
+            
+        }else{
+            DispatchQueue.main.async {
+                self.feedListCountLabel.text = self.feedFunctionalFilteringData.count.description
+                self.feedInfoTableView.reloadData()
             }
         }
+       
         
-        feedFilteringData = filterData.sorted(by: { (feedOne, feedTwo) -> Bool in
-            return feedOne.feedName < feedTwo.feedName
-        })
-        print("정렬://",feedFilteringData)
+        
+        print("정렬기능성://",feedFunctionalFilteringData,"//카운트:",feedFunctionalFilteringData.count)
+        
+        
+        
+        
 //        print("필터데이터://",filterData,"/카운트:", filterData.count)
 //        let reference = Database.database().reference().child("feed_info").child(currentPet).queryOrdered(byChild: "feed_functional").queryEqual(toValue: "immune")
 //        reference.observeSingleEvent(of: .value, with: { (data) in
@@ -218,7 +844,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
 //        }, withCancel: nil)
         if currentPageCount == 0 {
             for index in 0...10 {
-                feedFilteringPaginationData.append(feedFilteringData[index])
+//                feedFilteringPaginationData.append(feedFilteringData[index])
             }
         }else{
             
@@ -279,7 +905,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
                 }
             })
         }
-        
+        feedMoreInformationLoad()
         
 //        ref.child("feed_info").child(currentPet).queryOrderedByKey().queryLimited(toLast: 10).observeSingleEvent(of: .value, with: { (dataSnap) in
 //
@@ -328,39 +954,67 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
             
         }
     }
+    
+    func feedMoreInformationLoad(){
+     Database.database().reference().child("my_favorite").child(userUID).observeSingleEvent(of: .value, with: { (dataSnap) in
+            var isBookMark: Bool = false
+            print("즐겨찾기 data://",dataSnap.value)
+            
+            if let bookMakrValue = dataSnap.children.allObjects as? [DataSnapshot] {
+                var bookMarkData: [String] = []
+                for child in bookMakrValue {
+                    guard let feedKey = child.childSnapshot(forPath: "feed_key").value as? String else {return}
+                    bookMarkData.append(feedKey)
+                }
+                print("내즐찾정보:///", bookMarkData)
+                self.feedBookMarkData = bookMarkData
+            }
+        
+            
+        }) { (error) in
+            print("----bookMakrError://",error.localizedDescription)
+        }
+    }
 }
 extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
     /*************************************************/
     //MARK:-  TableViewDelegate, TableViewDataSource //
     /*************************************************/
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return feedFilteringData.count
+    
+        return feedFilteringTotalData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let feedCell = tableView.dequeueReusableCell(withIdentifier: "FeedMainInfoCell", for: indexPath) as! FeedMainInfoTableViewCell
-        feedCell.feedBrandLabel.text = self.feedFilteringData[indexPath.row].feedBrand
-        feedCell.feedNameLabel.text = self.feedFilteringData[indexPath.row].feedName
-
-        let gradeInt: Int = self.feedFilteringData[indexPath.row].feedGrade
+        print(self.feedFilteringTotalData[indexPath.row].feedBrand)
+        feedCell.feedBrandLabel.text = self.feedFilteringTotalData[indexPath.row].feedBrand
+        feedCell.feedNameLabel.text = self.feedFilteringTotalData[indexPath.row].feedName
+        
+        // 셀의 이벤트후 메인뷰컨트롤러에서 행동을 하기위한 델리게이트 선언
+        feedCell.delegate = self
+        
+        feedCell.feedKey = self.feedFilteringTotalData[indexPath.row].feedKey
+        let gradeInt: Int = self.feedFilteringTotalData[indexPath.row].feedGrade
 //        let gradeText: String = FeedGrade.init(rawValue: gradeInt)?.gardeText() ?? "no-data"
 //        feedCell.feedGradeLabel.text = gradeText
-        
+
         // Enum을 통해 해당 셀의 레이블의 값 할당 과 텍스트 컬러 변경 => 좋은방법일지 생각해보고 좋지않다면 함수로 분리하여 호출하자
-        FeedGrade.init(rawValue: gradeInt)?.gardeText(label: feedCell.feedGradeLabel)
+        FeedGrade.init(rawValue: gradeInt)?.gradeText(label: feedCell.feedGradeLabel)
+
         // Enum을 통한 입소문 이미지 할당 위에 코드와 동일 한 구조
-        FeedMouth.init(rawValue: self.feedFilteringData[indexPath.row].feedMouth)?.mouthImgSetting(mouthImgView: feedCell.feedMouthImgView)
-        
+        FeedMouth.init(rawValue: self.feedFilteringTotalData[indexPath.row].feedMouth)?.mouthImgSetting(mouthImgView: feedCell.feedMouthImgView)
+
         // 포장방식 분기처리
-        if self.feedFilteringData[indexPath.row].feedPackageFlag {
+        if self.feedFilteringTotalData[indexPath.row].feedPackageFlag {
             feedCell.feedPackageLabel.text = "소분포장"
         }else{
             feedCell.feedPackageLabel.text = "전체포장"
         }
-        feedCell.feedIngredientLabel.text = self.feedFilteringData[indexPath.row].feedIngredient
-        
-    
-        if let urlStr = self.feedFilteringData[indexPath.row].feedImg.first, let url = URL(string: urlStr){
+        feedCell.feedIngredientLabel.text = self.feedFilteringTotalData[indexPath.row].feedIngredient
+
+
+        if let urlStr = self.feedFilteringTotalData[indexPath.row].feedImg.first, let url = URL(string: urlStr){
 
             feedCell.feedImgView.kf.setImage(with: url)
 //            DispatchQueue.main.async {
@@ -368,6 +1022,133 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
 //            }
 
         }
+
+        let ref = Database.database().reference()
+        
+        ref.child("feed_review").child(feedFilteringTotalData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
+            // 1. 리뷰의 갯수가 필요하
+//            print(feedDataInfo.feedKey)
+            guard let data = dataSnap.value else {return}
+            
+            let oneReviewData = FeedReview(feedReviewJSON: JSON(data), feedKey: dataSnap.key)
+            feedCell.reviewData = oneReviewData
+            print("리뷰하나의정보://",oneReviewData)
+//            feedCell.feedReviewCount.text = dataSnap.childSnapshot(forPath: "review_info").childrenCount.description
+//            print("사료\(self.feedFilteringTotalData[indexPath.row].feedKey)별점://",dataSnap.value)
+//            let reviewRatingScore = oneReviewData.reviewRating ?? 0
+//            guard let reviewRating = dataSnap.childSnapshot(forPath: "review_rating").value as? Int else {return}
+            
+//            print(reviewRating)
+            // Enum을 사용하여 default 경우 제외
+            
+
+            // 2. 선택한 사료에 대한 자식데이터 분기
+//            if dataSnap.childrenCount > 0 {
+//                guard let reviewData = dataSnap.value else {return}
+//                let reviewDataJSON = JSON(reviewData)
+//                print(reviewDataJSON)
+//                print(dataSnap.childSnapshot(forPath: "review_info").childrenCount)
+//                DispatchQueue.main.async {
+//
+//                    feedCell.feedReviewCount.text = dataSnap.childSnapshot(forPath: "review_info").childrenCount.description
+//                    guard let reviewRating = dataSnap.childSnapshot(forPath: "review_rating").value as? Int else {return}
+//                    print(reviewRating)
+//                    // Enum을 사용하여 default 경우 제외
+//                    switch reviewRating {
+//                    case 1:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                    case 2:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                    case 3:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                    case 4:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                    case 5:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "selectStar")
+//                    default:
+//                        feedCell.firstStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.secontdStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.thirdStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                        feedCell.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
+//                    }
+//
+//                }
+//            }
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    
+       
+        if feedBookMarkData.contains(self.feedFilteringTotalData[indexPath.row].feedKey) {
+//            feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
+            feedCell.isBookMark = true
+        }else{
+//            feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
+            feedCell.isBookMark = false
+        }
+       self.feedBookMarkDic.updateValue(feedCell.isBookMark, forKey: self.feedFilteringTotalData[indexPath.row].feedKey)
+        ref.child("my_favorite").child(userUID).child(self.feedFilteringTotalData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
+            var isBookMark: Bool = false
+            print("즐겨찾기 data://",dataSnap.value)
+//            if dataSnap.hasChildren() {
+//                feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
+//            }else{
+//                feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
+//            }
+//
+//            if let bookMakrValue = dataSnap.children.allObjects as? [DataSnapshot] {
+//
+//                for child in bookMakrValue {
+//                    if self.feedFilteringTotalData[indexPath.row].feedKey == child.childSnapshot(forPath: "feed_key").value as? String {
+//                        print("이때 북마크://", child)
+////                        feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
+//                                                feedCell.isBookMark = true
+//                    }else{
+//                        feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
+//                                                feedCell.isBookMark = false
+//                    }
+//
+//                }
+//
+//            }
+//            print("북마크://",bookMakrValue)
+
+//            if dataSnap.hasChildren() {
+//                feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkAble"), for: .normal)
+//                isBookMark = true
+//            }else{
+//                feedCell.bookMarkBtn.setBackgroundImage(#imageLiteral(resourceName: "bookMarkDisable"), for: .normal)
+//            }
+//            // 내 즐겨찾기 정보 상태 전달을위해 feedBookMarkDic 정보에 값 저장
+//            self.feedBookMarkDic.updateValue(isBookMark, forKey: self.feedFilteringTotalData[indexPath.row].feedKey)
+
+        }) { (error) in
+            print("----bookMakrError://",error.localizedDescription)
+        }
+
+//        feedCell.feedData = self.feedFilteringTotalData[indexPath.row]
         
         return feedCell
     }
@@ -375,17 +1156,21 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
-        let feedDetailData: FeedInfo = feedFilteringData[indexPath.row]
+        let feedDetailData: FeedInfo = feedFilteringTotalData[indexPath.row]
         print("----select FeedData ----",feedDetailData)
-        let feedDeatilView: FeedDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "FeedDetailView") as! FeedDetailViewController
-        feedDeatilView.feedDetailInfo = feedDetailData
+        let feedDetailView: FeedDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "FeedDetailView") as! FeedDetailViewController
+        feedDetailView.feedDetailInfo = feedDetailData
+    
+        feedDetailView.isBookMark = feedBookMarkDic[feedFilteringTotalData[indexPath.row].feedKey] ?? false
         
+        
+        delegate?.loadingIndicatorDisplay()
         DataCenter.shared.feedDetailIngredientDataLoad(feedKey: feedDetailData.feedKey) { (feedDetailIngredientData) in
             print(feedDetailIngredientData)
-            feedDeatilView.ingredientData = feedDetailIngredientData
-            self.parent?.navigationController?.pushViewController(feedDeatilView, animated: true)
+            feedDetailView.ingredientData = feedDetailIngredientData
             DispatchQueue.main.async {
- 
+                self.parent?.navigationController?.pushViewController(feedDetailView, animated: true)
+                self.delegate?.loadingRemoveDisplay()
             }
         }
 //        self.parent?.navigationController?.pushViewController(feedDeatilView, animated: true)
@@ -424,9 +1209,119 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         }
         
     }
+}
+
+extension MainPageViewController: FunctionalProtocol{
+    func filterDataSend(filterData: FilterData, selectState: Bool) {
+        selectFilterItem(filterItemData: filterData, selectState: selectState)
+    }
+    
+    func functionalKeySend(keyArr: [String]) {
+        print(keyArr)
+        feedAllDataPagination(functionalKey: keyArr)
+    }
+
     
     
+}
+extension MainPageViewController: feedMainInfoCellProtocol{
+    
+    func sendBookMarkValue(isBookMark: Bool, feedKey: String) {
+        print("넘어온 즐겨찾기 값//", isBookMark," 사료키값://", feedKey)
+        let bookMarkRef = Database.database().reference().child("my_favorite").child(userUID)
+        // 최초등록
+        if isBookMark {
+            // 즐겨찾기 추가
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            var bookMarkData: [String:Any] = [:]
+            bookMarkData.updateValue(feedKey, forKey: "feed_key")
+            //            let date = Date()
+            //            let calendar = Calendar.current
+            //            let components = calendar.dateComponents([.year, .month, .day], from: date)
+            //
+            //            let year =  components.year
+            //            let month = components.month
+            //            let day = components.day
+            //
+            //            print("날짜1://, ", "\(year).\(d)")
+            //            print(month)
+            //            print(day)
+            
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko")
+            formatter.dateFormat = "yyyy.MM.dd HH:mm"
+            let currentDataString = formatter.string(from: Date())
+            print("날짜2://, ", currentDataString)
+            bookMarkData.updateValue(currentDataString, forKey: "favorites_date")
+            bookMarkRef.childByAutoId().setValue(bookMarkData)
+            print("즐겨찾기 데이터://", bookMarkData)
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
+
+        }
+        else{ // 기존에 데이터 존재시 삭제
+            bookMarkRef.observeSingleEvent(of: .value, with: { (dataSnap) in
+                guard let childrenValue = dataSnap.children.allObjects as? [DataSnapshot] else{return}
+                for bookMark in childrenValue{
+                    if bookMark.childSnapshot(forPath: "feed_key").value as? String == feedKey{
+                        print("즐겨찾기존지하는 키://",bookMark.key)
+                        bookMarkRef.child(bookMark.key).removeValue()
+                    }
+                }
+            })
+        }
         
+                /*
+        if isBookMark{
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            var bookMarkData: [String:Any] = [:]
+            bookMarkData.updateValue(feedKey, forKey: "feed_key")
+//            let date = Date()
+//            let calendar = Calendar.current
+//            let components = calendar.dateComponents([.year, .month, .day], from: date)
+//
+//            let year =  components.year
+//            let month = components.month
+//            let day = components.day
+//
+//            print("날짜1://, ", "\(year).\(d)")
+//            print(month)
+//            print(day)
+           
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko")
+            formatter.dateFormat = "yyyy.MM.dd HH:mm"
+            let currentDataString = formatter.string(from: Date())
+            print("날짜2://, ", currentDataString)
+            bookMarkData.updateValue(currentDataString, forKey: "favorites_date")
+            bookMarkRef.setValue(bookMarkData)
+            print("즐겨찾기 데이터://", bookMarkData)
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+//            self.feedInfoTableView.reloadData()
+        }else{
+            let cancelLikeAlert:UIAlertController = UIAlertController(title: "", message: "좋아요를 취소 하시겠습니까?", preferredStyle: .alert)
+            
+            let okBtn:UIAlertAction = UIAlertAction(title: "네", style: .default){ (action) in
+                
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                FireBaseData.shared.refFavoritesReturn.child(self.userUID).childByAutoId().child(feedKey).removeValue()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.feedInfoTableView.reloadData()
+                
+            }
+            let noBtn:UIAlertAction = UIAlertAction(title: "아니오", style: .cancel, handler: nil)
+            
+            cancelLikeAlert.addAction(okBtn)
+            cancelLikeAlert.addAction(noBtn)
+            
+            self.present(cancelLikeAlert, animated: true, completion: nil)
+        }
+ */
+    }
+    
+    
+    
     
     
 }
@@ -438,7 +1333,7 @@ enum FeedGrade: Int{
     case ratingGroceryBrand = 4
     case ratingNo = 5
     
-    func gardeText(label: UILabel){
+    func gradeText(label: UILabel){
         switch self {
         case .ratingOrganic:
             label.textColor = UIColor.init(hexString: "338FCB")

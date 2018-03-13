@@ -51,21 +51,30 @@ class LeaveMembershipBtnCell: UITableViewCell {
             
             if MyPageDataCenter.shared.leaveMembershipReason == "기타" {
                 if MyPageDataCenter.shared.leaveMembarshipEtcReasonContent == "" { //기타를 누르고 내용이 비었을때
+                    // print 내용 서버로
                     print("기타 내용이 없음")
+                    MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
+                    // 로그아웃 후 처음 화면이동 -> tableViewDisappear() 삭제
+                    tableViewDisappear()
                 }else{
                     print(MyPageDataCenter.shared.leaveMembershipReason)    //기타
                     print(MyPageDataCenter.shared.leaveMembarshipEtcReasonContent) //내용
+                    MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
+                    tableViewDisappear()
                 }
             }else{//여기까지 기타일때
-
-            print(MyPageDataCenter.shared.leaveMembershipReason) // 이 부분에서 탈퇴 이유를 서버로 보낸다
+                
+                print(MyPageDataCenter.shared.leaveMembershipReason) // 이 부분에서 탈퇴 이유를 서버로 보낸다
+                MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
+                tableViewDisappear()
             }
         }else{
+            // Alert 처리
             print("내용 선택이 되지 않았음")
         }
         
-        MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
-        tableViewDisappear()
+        
+        
         //탈퇴완료 확인 취소 알럿 후 회원가입 페이지로 이동
     }
     

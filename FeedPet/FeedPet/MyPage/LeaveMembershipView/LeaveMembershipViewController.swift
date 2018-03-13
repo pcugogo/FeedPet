@@ -162,11 +162,11 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
         tableView.reloadData()
     }
     
-    func keyboardWasShown(_ notification : Notification) {
+    @objc func keyboardWasShown(_ notification : Notification) {
         self.leaveMemberShipScrollView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 230)
     }
     
-    func keyboardWillHide(_ notification : Notification) {
+    @objc func keyboardWillHide(_ notification : Notification) {
         self.leaveMemberShipScrollView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y)
     }
   

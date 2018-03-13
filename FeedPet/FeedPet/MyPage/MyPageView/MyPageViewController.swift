@@ -27,7 +27,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
     let userSystemNameAndVersion = "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)" // 현재 사용자 iOS 버전
     let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
     var profileImg:UIImage?
-    
+    var userData: User?
     var spinerView = UIView()
     
     @IBOutlet weak var tableView: UITableView!
@@ -35,10 +35,22 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
     @IBOutlet weak var loadingImgView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-         print(MyPageDataCenter.shared.favorites)
-
-        //마이페이지 전에 있는 뷰의 뷰디드로드에서 데이터를 로드해야 MyMenuCell의 즐겨찾기 수랑 리뷰 수가 없데이트 된다
+        print(MyPageDataCenter.shared.favorites)
         
+        
+        // 프로필 정보 데이터 통신
+        if let userUID = UserDefaults.standard.string(forKey: "userUID"){
+            spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+            
+            // 통신부분
+            FireBaseData.shared.fireBaseUserInfoLoadData(userUID: userUID, completion: { (userInfo) in
+                self.userData = userInfo
+                DataCenter.shared.removeSpinner(spinner: self.spinerView)
+                
+                self.tableView.reloadData()
+            })
+        }
+
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -82,14 +94,34 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
             
             let profileCell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as! ProfileCell
             profileCell.delegate = self
-            spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
-            if let pickImg = profileImg {
-                profileCell.profileImg.image = pickImg
-                profileCell.profileImg.clipsToBounds = true
+            print("유저data://",userData)
+            if let userInfo = userData {
+                profileCell.userInfo = userInfo
+                
+                print("셀와서 데이터://", userInfo)
+                if let pickImg = self.profileImg {
+                    profileCell.profileImg.image = pickImg
+                    profileCell.profileImg.clipsToBounds = true
+                }
+                
+                
             }
-            DataCenter.shared.removeSpinner(spinner: spinerView)
-            
+//            if let userUID = UserDefaults.standard.string(forKey: "userUID"){
+//                spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+//                FireBaseData.shared.fireBaseUserInfoLoadData(userUID: userUID, completion: { (userInfo) in
+//                    profileCell.userInfo = userInfo
+//                    print("셀와서 데이터://", userInfo)
+//                    if let pickImg = self.profileImg {
+//                        profileCell.profileImg.image = pickImg
+//                        profileCell.profileImg.clipsToBounds = true
+//                    }
+//                    DataCenter.shared.removeSpinner(spinner: self.spinerView)
+//
+//                })
+//            }
             return profileCell
+            
+            
             
         }else if indexPath.section == 1 && indexPath.row == 0 {
             
@@ -186,6 +218,8 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
                 let cencelBtn:UIAlertAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
                 logoutQuestion.addAction(cencelBtn)
                 logoutQuestion.addAction(confirmBtn)
+                
+                // Completion 부분에서 로그아웃 처리 필요
                 self.present(logoutQuestion, animated: true, completion: nil)
             }
             

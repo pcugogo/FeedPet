@@ -11,7 +11,7 @@ import UIKit
 class MainMenuIconCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var menuIconImg: UIImageView!
-    @IBOutlet weak var menuIconLabel: UILabel!
+//    @IBOutlet weak var menuIconLabel: UILabel!
     
     var title: String = ""
     override func awakeFromNib() {

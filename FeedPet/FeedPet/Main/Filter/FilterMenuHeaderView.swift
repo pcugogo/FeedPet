@@ -10,6 +10,7 @@ import UIKit
 
 protocol FilterMenuExpendableHeaderViewDelegate {
     func toggleSection(header: FilterMenuHeaderView, section: Int)
+    
 }
 class FilterMenuHeaderView: UITableViewHeaderFooterView {
     
@@ -29,7 +30,7 @@ class FilterMenuHeaderView: UITableViewHeaderFooterView {
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectHeaderAction(getstureRecognizer:))))
     }
     
-    func selectHeaderAction(getstureRecognizer: UITapGestureRecognizer){
+    @objc func selectHeaderAction(getstureRecognizer: UITapGestureRecognizer){
         let cell = getstureRecognizer.view as! FilterMenuHeaderView
         delegate?.toggleSection(header: cell, section: cell.section)
     }

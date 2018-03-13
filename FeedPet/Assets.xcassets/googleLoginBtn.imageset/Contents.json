@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "googleLoginBtn.png",
+      "filename" : "gogle_login_btn.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "googleLoginBtn@2.png",
+      "filename" : "gogle_login_btn@2.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "googleLoginBtn@3.png",
+      "filename" : "gogle_login_btn@3.png",
       "scale" : "3x"
     }
   ],

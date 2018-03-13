@@ -145,11 +145,11 @@ class MyPageReviewEditViewController: UIViewController {
     
     
     
-    func keyboardWasShown(_ notification : Notification) {
+    @objc func keyboardWasShown(_ notification : Notification) {
         self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y + 140)
     }
     
-    func keyboardWillHide(_ notification : Notification) {
+    @objc func keyboardWillHide(_ notification : Notification) {
         self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y - 140)
     }
     
@@ -165,7 +165,7 @@ class MyPageReviewEditViewController: UIViewController {
         toolbar.items = [flexsibleSpace,complateBtn]
         textView.inputAccessoryView = toolbar
     }
-    func keyboardDisappears(){
+    @objc func keyboardDisappears(){
         self.view.endEditing(true)
     }
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {

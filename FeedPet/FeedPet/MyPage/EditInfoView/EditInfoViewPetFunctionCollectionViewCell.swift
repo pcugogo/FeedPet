@@ -37,5 +37,5 @@ class EditInfoViewPetFunctionCollectionViewCell: UICollectionViewCell {
         }
     }
     
-
+    
 }

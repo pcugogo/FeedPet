@@ -54,8 +54,22 @@ class FeedIngredientProgressChartTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         backgroundViewHeight = phosphorusChartBackgroundView.frame.size.height
-        
+        self.proteinChartBackgroundView.layer.cornerRadius = 12
+        self.proteinProgressBar.layer.cornerRadius = 12
+        self.fatChartBackgroundView.layer.cornerRadius = 12
+        self.fatProgressBar.layer.cornerRadius = 12
+        self.fatChartBackgroundView.layer.cornerRadius = 12
+        self.fatProgressBar.layer.cornerRadius = 12
+        self.fibreChartBackgroundView.layer.cornerRadius = 12
+        self.fibreProgressBar.layer.cornerRadius = 12
+        self.ashChartBackgroundView.layer.cornerRadius = 12
+        self.ashProgressBar.layer.cornerRadius = 12
+        self.calcuimChartBackgroundView.layer.cornerRadius = 12
+        self.calcuimProgressBar.layer.cornerRadius = 12
+        self.phosphorusChartBackgroundView.layer.cornerRadius = 12
+        self.phosphorusProgressBar.layer.cornerRadius = 12
     }
+    
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -69,7 +83,7 @@ class FeedIngredientProgressChartTableViewCell: UITableViewCell {
 //        self.progressBarSetting(proteinValue: CGFloat(ingredientDetailData.crudeProtein), fatValue: CGFloat(ingredientDetailData.crudeFat), fibreValue: CGFloat(ingredientDetailData.crudeFibre), ashValue: CGFloat(ingredientDetailData.crudeAsh), calcuimValue: CGFloat(ingredientDetailData.calcium), phosphorusValue: CGFloat(ingredientDetailData.phosphorus))
         
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: .allowAnimatedContent, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: .allowAnimatedContent, animations: {
             self.progressBarSetting(proteinValue: ingredientDetailData.crudeProtein, fatValue: ingredientDetailData.crudeFat, fibreValue: ingredientDetailData.crudeFibre, ashValue: ingredientDetailData.crudeAsh, calcuimValue: ingredientDetailData.calcium, phosphorusValue: ingredientDetailData.phosphorus)
         }) { (finish) in
             
@@ -80,48 +94,53 @@ class FeedIngredientProgressChartTableViewCell: UITableViewCell {
         return CGFloat(yOffset)
     }
     private func progressBarSetting(proteinValue: Float, fatValue: Float, fibreValue: Float, ashValue: Float, calcuimValue: Float, phosphorusValue: Float){
-        self.protienHeightConstraint.constant = self.proteinChartBackgroundView.frame.size.height - offsetCalculation(value: proteinValue)
-        self.proteinProgressBar.frame.origin.y = offsetCalculation(value: proteinValue)
         
-        self.proteinChartBackgroundView.layer.cornerRadius = 12
-        self.proteinProgressBar.layer.cornerRadius = 12
+        UIView.animate(withDuration: 0.5, delay: 0, options: .allowAnimatedContent, animations: {
+           self.protienHeightConstraint.constant = self.proteinChartBackgroundView.frame.size.height - self.offsetCalculation(value: proteinValue)
+        }) { (finish) in
+            
+        }
+       
+        
+//        self.proteinChartBackgroundView.layer.cornerRadius = 12
+//        self.proteinProgressBar.layer.cornerRadius = 12
         self.proteinValueLabel.text = "\(proteinValue)%"
         print(offsetCalculation(value: proteinValue),"/",proteinValue)
         
         self.fatHeightConstraint.constant = self.fatChartBackgroundView.frame.size.height - offsetCalculation(value: fatValue)
         
-        self.fatProgressBar.frame.origin.y = offsetCalculation(value: fatValue)
-        self.fatChartBackgroundView.layer.cornerRadius = 12
-        self.fatProgressBar.layer.cornerRadius = 12
+//        self.fatProgressBar.frame.origin.y = offsetCalculation(value: fatValue)
+//        self.fatChartBackgroundView.layer.cornerRadius = 12
+//        self.fatProgressBar.layer.cornerRadius = 12
         self.fatValueLabel.text = "\(fatValue)%"
         
         self.fibreHeightConstraint.constant = self.fibreChartBackgroundView.frame.size.height - offsetCalculation(value: fibreValue)
         
         self.fibreProgressBar.frame.origin.y = offsetCalculation(value: fibreValue)
-        self.fibreChartBackgroundView.layer.cornerRadius = 12
-        self.fibreProgressBar.layer.cornerRadius = 12
+//        self.fibreChartBackgroundView.layer.cornerRadius = 12
+//        self.fibreProgressBar.layer.cornerRadius = 12
         self.fibreValueLabel.text = "\(fibreValue)%"
         
         self.ashHeightConstraint.constant = self.ashChartBackgroundView.frame.size.height - offsetCalculation(value: ashValue)
         
         self.ashProgressBar.frame.origin.y = offsetCalculation(value: ashValue)
-        self.ashChartBackgroundView.layer.cornerRadius = 12
-        self.ashProgressBar.layer.cornerRadius = 12
+//        self.ashChartBackgroundView.layer.cornerRadius = 12
+//        self.ashProgressBar.layer.cornerRadius = 12
         self.ashValueLabel.text = "\(ashValue)%"
         
         self.calcuimHeightConstraint.constant = self.calcuimChartBackgroundView.frame.size.height - offsetCalculation(value: calcuimValue)
         print(self.calcuimHeightConstraint.constant)
         
         self.calcuimProgressBar.frame.origin.y = offsetCalculation(value: calcuimValue)
-        self.calcuimChartBackgroundView.layer.cornerRadius = 12
-        self.calcuimProgressBar.layer.cornerRadius = 12
+//        self.calcuimChartBackgroundView.layer.cornerRadius = 12
+//        self.calcuimProgressBar.layer.cornerRadius = 12
         self.calcuimValueLabel.text = "\(calcuimValue)%"
         
         self.phosphorusHeightConstraint.constant = self.phosphorusChartBackgroundView.frame.size.height - offsetCalculation(value: phosphorusValue)
         
         self.phosphorusProgressBar.frame.origin.y = offsetCalculation(value: phosphorusValue)
-        self.phosphorusChartBackgroundView.layer.cornerRadius = 12
-        self.phosphorusProgressBar.layer.cornerRadius = 12
+//        self.phosphorusChartBackgroundView.layer.cornerRadius = 12
+//        self.phosphorusProgressBar.layer.cornerRadius = 12
         self.phosphorusValueLabel.text = "\(phosphorusValue)%"
         
         

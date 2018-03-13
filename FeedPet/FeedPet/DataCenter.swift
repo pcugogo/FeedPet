@@ -10,6 +10,8 @@ import Foundation
 import SwiftyJSON
 import Firebase
 import SwiftyGif
+import GoogleSignIn
+
 class DataCenter {
     // 싱글턴 패턴
     static let shared = DataCenter()
@@ -37,7 +39,18 @@ class DataCenter {
         ["functional":"비뇨기","functionalImg":"catFunctional-Urinary","functionalKey":"urinary"],
         ["functional":"전체","functionalImg":"catFunctional-All", "functionalKey":"all"]
     ]
-    var currentPetKey: String = ""
+    
+
+    var currentPetKey: String = "feed_petkey_d"
+    
+    var loginUserData: [String:Any] = [:]
+    
+    var filterGrade: [IndexPath] = []
+    
+    var filterIndexPathArr: [IndexPath] = []
+    var filterIndexPathDicArr : [Int:[IndexPath]] = [:]
+    var filterDogIndexPathDicArr : [Int:[IndexPath]] = [:]
+    var filterCatIndexPathDicArr : [Int:[IndexPath]] = [:]
     // Login 확인 요청 메서드
     func requestIsLogin() -> Bool {
         if Auth.auth().currentUser == nil {
@@ -46,6 +59,7 @@ class DataCenter {
             isLogin = true
             return true
         }
+       
     }
     func requestUserData(withCompletion comlition: @escaping (_ complition:User)->Void){
         // 로컬에 저장하기 위해 가입 uid를 가지고 리얼타임 디비 조회
@@ -58,19 +72,27 @@ class DataCenter {
         })
         
     }
-    
-    func singOut(){
+    func getUserData()->[String:Any]{
+     
+        return loginUserData
+    }
+    func googleLogOut(){
+        
         do{
             try Auth.auth().signOut()
+            GIDSignIn.sharedInstance().signOut()
         }catch{
             
         }
+        
+       
+        
     }
     
     // 닉네임 중복 체크 메서드
     func nicNameDoubleChek(nickName: String, completion: @escaping (Bool)->Void){
         
-        Database.database().reference().child("user_profiles").queryOrdered(byChild: "nickName").queryEqual(toValue: nickName).observeSingleEvent(of: .value, with: { (snapShot) in
+        Database.database().reference().child("user_info").queryOrdered(byChild: "user_nic").queryEqual(toValue: nickName).observeSingleEvent(of: .value, with: { (snapShot) in
             
             if let snapDict = snapShot.value as? [String:AnyObject]{
                 print(snapDict)
@@ -101,7 +123,9 @@ class DataCenter {
             return catFunctionalData
         }
     }
-    
+    @objc func testto(nofi: Notification) {
+        print(1)
+    }
     func feedDetailIngredientDataLoad(feedKey: String, comlition:@escaping (FeedDetailIngredient)->Void){
         let ref = Database.database().reference().child("feed_detail").child(feedKey)
         ref.observeSingleEvent(of: .value, with: { (dataSnap) in
@@ -174,9 +198,9 @@ class DataCenter {
         let loadingIndicator: UIImageView = {
            let imgView = UIImageView()
             let gifManager = SwiftyGifManager(memoryLimit:30)
-            let gif = UIImage(gifName: "loading_img@3.gif")
+            let gif = UIImage(gifName: "loading_img.gif")
             imgView.setGifImage(gif, manager: gifManager)
-            imgView.contentMode = .scaleAspectFit
+            imgView.contentMode = .scaleToFill
             imgView.clipsToBounds = true
             return imgView
         }()
@@ -194,7 +218,7 @@ class DataCenter {
 //                                          centerY: nil)
 //        loadingIndicator.center = spinner.center
         let gifManager = SwiftyGifManager(memoryLimit:30)
-        let gif = UIImage(gifName: "loading_img@3.gif")
+        let gif = UIImage(gifName: "loading_img@3x2.gif")
         loadingIndicator.setGifImage(gif, manager: gifManager)
         DispatchQueue.main.async {
 //            spinner.addSubview(loadingIndicator)
@@ -248,35 +272,56 @@ class DataCenter {
 // Firebase User 데이터 구조
 struct User {
     // 소셜 로그인 제공 정보
-    var userName: String?
-    var userEmail: String?
+    var userName: String!
+    var userEmail: String!
     
     // 추가 가입정보
-    var userNickname: String?
+    var userNickname: String!
     var userProfileImgUrl: String?
-    var ueerGender: String?
+    var userGender: String!
     
     // 반려동물 가입정보
-    var petAge: Int?
-    var petFunctional: [Int]?
+    var userPet: String!
+    var userPetAge: Int!
+    var userPetFunctional: [String]!
     
-    
+    var userPetFunctionalIndexPathRow: [Int]!
     init() {
         
-        
+       
     }
     init(socialData: [String:Any]) {
-        self.userName = socialData["userName"] as? String ?? "no-name"
-        self.userEmail = socialData["userEmail"] as? String ?? "no-email"
+        self.userName = socialData["user_name"] as? String ?? "no-name"
+        self.userEmail = socialData["user_emial"] as? String ?? "no-email"
         
     }
     
     init(allInfoData: [String:Any]) {
-        self.userName = allInfoData["userName"] as? String ?? "no-name"
-        self.userEmail = allInfoData["userEmail"] as? String ?? "no-email"
-        
+        self.userName = allInfoData["user_name"] as! String
+        self.userEmail = allInfoData["user_email"] as! String
+        self.userNickname = allInfoData["user_nic"] as! String
+        self.userGender = allInfoData["user_gender"] as! String
+        self.userPet = allInfoData["user_pet"] as! String
+        self.userPetAge = allInfoData["user_petage"] as! Int
+        self.userProfileImgUrl = allInfoData["user_img"] as? String
+        self.userPetFunctional = allInfoData["user_pet_functional"] as! [String]
     }
     
+    init(userInfoData: [String:Any]) {
+        
+        self.userName = userInfoData["user_name"] as! String
+        self.userEmail = userInfoData["user_email"] as! String
+        self.userNickname = userInfoData["user_nic"] as! String
+        self.userGender = userInfoData["user_gender"] as! String
+        self.userPet = userInfoData["user_pet"] as! String
+        self.userPetAge = userInfoData["user_petage"] as! Int
+        self.userProfileImgUrl = userInfoData["user_img"] as? String
+        self.userPetFunctional = userInfoData["user_pet_functional"] as! [String]
+        self.userPetFunctionalIndexPathRow = userInfoData["user_pet_functional_indexpath_row"] as! [Int]
+    }
+    init(testDataJson: JSON) {
+        
+    }
     
 }
 
@@ -320,6 +365,7 @@ struct FeedInfo{
         
         
         
+        
     }
     
     init(feedJsonDataTest: JSON) {
@@ -350,7 +396,7 @@ struct FeedInfo{
 // 사료 리스트
 struct FeedInfoList {
     
-    let feed: [FeedInfo]
+    var feed: [FeedInfo]!
     
     init(feedsJsonTest: [JSON]) {
         var feedList: [FeedInfo] = []
@@ -467,5 +513,105 @@ struct FunctionalList {
         }
         self.functional = functionalList
     }
+    
+}
+
+struct FeedReview {
+    var feedKey: String!
+    var reviewInfo: [ReviewInfo]!
+    var reviewRating: Int!
+    
+    init(feedReviewJSON: JSON, feedKey: String) {
+        self.feedKey = feedKey
+        var reviewDataArray: [ReviewInfo] = []
+        
+        for reviewInfo in  feedReviewJSON["review_info"]{
+            let oneReview = ReviewInfo(feedReviewJSON: reviewInfo)
+            reviewDataArray.append(oneReview)
+        }
+        self.reviewInfo = reviewDataArray
+        self.reviewRating = feedReviewJSON["review_rating"].intValue
+        
+    }
+    
+}
+
+struct ReviewInfo {
+    var reviewKey: String!
+    var userKey: String!
+    var feedRating: Int!
+    var feedReviewContent: String!
+    var reviewDate: String!
+    
+    init(feedReviewJSON: (String, JSON)) {
+        self.reviewKey = feedReviewJSON.0
+        self.userKey = feedReviewJSON.1["user_key"].stringValue
+        self.feedRating = feedReviewJSON.1["feed_rating"].intValue
+        self.feedReviewContent = feedReviewJSON.1["feed_review"].stringValue
+        self.reviewDate = feedReviewJSON.1["feed_date"].stringValue
+    }
+    
+}
+
+
+struct FilterData {
+    var grade: [Int]?
+    var age: [Int]?
+    var ingredient: [String]?
+    var brand: [String]?
+    var grinfreeFlag: Bool?
+    var organicFlag: Bool?
+    var lidFlag: Bool?
+    var bigPetFlag: Bool?
+    
+    init(filterDic: [Int:[IndexPath]], filterinMenuSection: [FilterMenuSections]) {
+        
+        for filterOne in filterDic{
+            
+            switch filterOne.key {
+            case 0:
+                
+                self.grade = filterOne.value.map({ (indexPath) -> Int in
+                    filterinMenuSection[indexPath.section].filterMenuKind[indexPath.row].filterValue as! Int
+                })
+            case 1:
+                
+                self.age = filterOne.value.map({ (indexPath) -> Int in
+                    filterinMenuSection[indexPath.section].filterMenuKind[indexPath.row].filterValue as! Int
+                })
+            case 2:
+                
+                self.ingredient = filterOne.value.map({ (indexPath) -> String in
+                    filterinMenuSection[indexPath.section].filterMenuKind[indexPath.row].filterValue as! String
+                })
+            case 3:
+                
+                self.brand = filterOne.value.map({ (indexPath) -> String in
+                    filterinMenuSection[indexPath.section].filterMenuKind[indexPath.row].filterValue as! String
+                })
+            case 4:
+                // 그레인프리의 키값이 존재하면 true 만약 선택값이 없다면 default에서 추가적 처리
+//                if !filterOne.value.isEmpty {
+//                    self.grinfreeFlag = true
+//                }else{
+//                    self.grinfreeFlag = false
+//                }
+                self.grinfreeFlag = true
+//                guard let grainFreeMenu = filterinMenuSection[filterOne.key].filterMenuKind.first else{return}
+//                self.grinfreeFlag = grainFreeMenu.checkState
+            case 5:
+                self.organicFlag = true
+            case 6:
+                self.lidFlag = true
+            case 7:
+                bigPetFlag = true
+            default:
+                print("예외상황 처리 ")
+            }
+            
+        }
+    }
+    
+    
     
 }
