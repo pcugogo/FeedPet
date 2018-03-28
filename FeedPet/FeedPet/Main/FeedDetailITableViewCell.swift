@@ -39,6 +39,10 @@ class FeedDetailITableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         feedImgScrollView.delegate = self
+//        feedGradeLabel.numberOfLines = 0
+//                feedGradeLabel.adjustsFontSizeToFitWidth = true
+//                feedGradeLabel.minimumScaleFactor = 0.5
+//                feedGradeLabel.sizeToFit()
         
     }
     

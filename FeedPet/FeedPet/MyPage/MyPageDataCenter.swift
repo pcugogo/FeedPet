@@ -195,10 +195,12 @@ struct FireBaseData{
         })
     }
     
+    
     func fireBaseFavoritesDataLoad(){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
-        FireBaseData.shared.refFavorites.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in
+        
+        guard let useruid = Auth.auth().currentUser?.uid else {return}
+        FireBaseData.shared.refFavorites.child(useruid).observeSingleEvent(of: .value, with: { (snapshot) in
             if MyPageDataCenter.shared.favorites.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
                 MyPageDataCenter.shared.favorites.removeAll()
             }
@@ -364,7 +366,8 @@ struct FireBaseData{
     func fireBaseMyReviewDataLoad(){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
-        FireBaseData.shared.refMyReviews.child(MyPageDataCenter.shared.testUUID).observeSingleEvent(of: .value, with: { (snapshot) in
+        guard let useruid = Auth.auth().currentUser?.uid else {return}
+        FireBaseData.shared.refMyReviews.child(useruid).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if MyPageDataCenter.shared.myReviewKeyDatas.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
                 MyPageDataCenter.shared.myReviewKeyDatas.removeAll()
@@ -502,6 +505,7 @@ struct FireBaseData{
     //좋은 성분 정보 데이터 불러오기
     func feedGoodIngredientDataLoad(ingredientGoodKey:[String]) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        MyPageDataCenter.shared.feedIngredientGoodDatas = []
         for goodKey in ingredientGoodKey{
             refFeedIngredientGood.child(goodKey).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let ingredientSnapshot = snapshot.value as? [String:AnyObject]{
@@ -517,15 +521,49 @@ struct FireBaseData{
                     }
                     guard let ingredientName = goodIngredientName,let ingredientText = goodIngredientText else {return}
                     let goodIngredientInfo = FeedIngredientGood(ingredientName: ingredientName, ingredientText: ingredientText)
+                   
                     MyPageDataCenter.shared.feedIngredientGoodDatas.append(goodIngredientInfo)
                 }
             })
         }
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
-    //주의 성분 데이터 불러오기
-    func feedWarningIngredientDataLoad(ingredientWarningKey:[String]) {
+    //좋은 성분 정보 데이터 불러오기 -> 수정본
+    func feedGoodIngredientDataOnLoad(ingredientGoodKey:[String], completion:@escaping ([FeedIngredientGood])->Void) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        var goodIngredientData: [FeedIngredientGood] = []
+        
+        for goodKey in ingredientGoodKey{
+            refFeedIngredientGood.child(goodKey).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let ingredientSnapshot = snapshot.value as? [String:AnyObject]{
+                    var goodIngredientName:String?
+                    var goodIngredientText:String?
+                    for ingredientSnap in ingredientSnapshot{
+                        if ingredientSnap.key == "ingredient_name"{
+                            goodIngredientName = ingredientSnap.value as? String
+                        }
+                        if ingredientSnap.key == "ingredient_text"{
+                            goodIngredientText = ingredientSnap.value as? String
+                        }
+                    }
+                    guard let ingredientName = goodIngredientName,let ingredientText = goodIngredientText else {return}
+                    let goodIngredientInfo = FeedIngredientGood(ingredientName: ingredientName, ingredientText: ingredientText)
+                    
+                    goodIngredientData.append(goodIngredientInfo)
+                }
+                if ingredientGoodKey.last == goodKey{
+                    completion(goodIngredientData)
+                }
+            })
+            
+        }
+       
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    //주의 성분 데이터 불러오기
+    func feedWarningIngredientDataOnLoad(ingredientWarningKey:[String], completion:@escaping ([FeedIngredientWarning])->Void){
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        var warningIngredientData: [FeedIngredientWarning] = []
         for warningKey in ingredientWarningKey{
             refFeedIngredientWarning.child(warningKey).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let ingredientSnapshot = snapshot.value as? [String:AnyObject]{
@@ -541,6 +579,35 @@ struct FireBaseData{
                     }
                     guard let ingredientName = warningIngredientName,let ingredientText = warningIngredientText else {return}
                     let warningIngredientInfo = FeedIngredientWarning(ingredientName: ingredientName, ingredientText: ingredientText)
+                    warningIngredientData.append(warningIngredientInfo)
+                }
+                if ingredientWarningKey.last == warningKey{
+                    completion(warningIngredientData)
+                }
+            })
+        }
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    //주의 성분 데이터 불러오기
+    func feedWarningIngredientDataLoad(ingredientWarningKey:[String]) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        MyPageDataCenter.shared.feedIngredientWarningDatas = []
+        for warningKey in ingredientWarningKey{
+            refFeedIngredientWarning.child(warningKey).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let ingredientSnapshot = snapshot.value as? [String:AnyObject]{
+                    var warningIngredientName:String?
+                    var warningIngredientText:String?
+                    for ingredientSnap in ingredientSnapshot{
+                        if ingredientSnap.key == "ingredient_name"{
+                            warningIngredientName = ingredientSnap.value as? String
+                        }
+                        if ingredientSnap.key == "ingredient_text"{
+                            warningIngredientText = ingredientSnap.value as? String
+                        }
+                    }
+                    guard let ingredientName = warningIngredientName,let ingredientText = warningIngredientText else {return}
+                    let warningIngredientInfo = FeedIngredientWarning(ingredientName: ingredientName, ingredientText: ingredientText)
+                    
                     MyPageDataCenter.shared.feedIngredientWarningDatas.append(warningIngredientInfo)
                 }
             })

@@ -91,7 +91,8 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
 
                 let removeFavoriteKey = MyPageDataCenter.shared.favorites[index]
                UIApplication.shared.isNetworkActivityIndicatorVisible = true
-                FireBaseData.shared.refFavoritesReturn.child(MyPageDataCenter.shared.testUUID).child(removeFavoriteKey.favoriteKeyReturn).removeValue()
+                guard let useruid = Auth.auth().currentUser?.uid else {return}
+                FireBaseData.shared.refFavoritesReturn.child(useruid).child(removeFavoriteKey.favoriteKeyReturn).removeValue()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 MyPageDataCenter.shared.favorites.remove(at: index)
                 MyPageDataCenter.shared.favoritesCount -= 1

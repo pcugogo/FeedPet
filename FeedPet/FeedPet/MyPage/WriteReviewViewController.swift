@@ -15,7 +15,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
     var feedKey:String = ""
     var feedBrand:String = ""
     var feedName:String = ""
-    var feedImg:String = ""
+    var feedImg:String?
     //여기까지 상세화면에서 받아야 될 데이터
     
     var totalRating = 0
@@ -53,7 +53,7 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
         
         feedNameLb.text = feedName
         feedBrandLb.text = feedBrand
-        if let url = URL(string:feedImg){
+        if let urlStr = feedImg, let url = URL(string: urlStr){
             feedImgView.kf.setImage(with: url)
         }
         
@@ -161,8 +161,8 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
             blankContents.addAction(okBtn)
             self.present(blankContents, animated: true, completion: nil)
         }else{
-            
-            let feedReviewInfoDic = ["feed_date":dateString,"feed_rating":self.ratingNumberOfStars,"feed_review":reviewContentsTextView.text,"user_key":MyPageDataCenter.shared.testUUID] as [String : Any]
+            guard let userUID = Auth.auth().currentUser?.uid else { return }
+            let feedReviewInfoDic = ["feed_date":dateString,"feed_rating":self.ratingNumberOfStars,"feed_review":reviewContentsTextView.text,"user_key": userUID] as [String : Any]
             
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             FireBaseData.shared.refFeedReviewsReturn.child(feedKey).child("review_rating").observeSingleEvent(of: .value, with: { (snapShot) in

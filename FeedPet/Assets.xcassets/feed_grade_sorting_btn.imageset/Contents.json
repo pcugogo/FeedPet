@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "sortingBtn.png",
+      "filename" : "feed_grade_sorting_btn.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "sortingBtn@2.png",
+      "filename" : "feed_grade_sorting_btn@2.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "sortingBtn@3.png",
+      "filename" : "feed_grade_sorting_btn@3.png",
       "scale" : "3x"
     }
   ],

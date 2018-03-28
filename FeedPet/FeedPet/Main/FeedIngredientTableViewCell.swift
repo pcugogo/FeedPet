@@ -13,7 +13,7 @@ class FeedIngredientTableViewCell: UITableViewCell {
     
     @IBOutlet weak var goodIngredientCountLabel: UILabel!
     
-    @IBOutlet weak var cautionIngredientCountLabel: UILabel!
+    @IBOutlet weak var warningIngredientCountLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

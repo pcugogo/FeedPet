@@ -68,6 +68,8 @@
 		4C8DFB8C200E3ACF00331A5B /* FilterMenuHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C8DFB8B200E3ACF00331A5B /* FilterMenuHeaderView.xib */; };
 		4C8DFB8E200F55A700331A5B /* FeedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8DFB8D200F55A700331A5B /* FeedDetailViewController.swift */; };
 		4C8DFB90200F580900331A5B /* FeedDetailITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8DFB8F200F580900331A5B /* FeedDetailITableViewCell.swift */; };
+		4C8E40AE205BEA9A00EA87B3 /* GodoM.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4C8E40AC205BEA8500EA87B3 /* GodoM.otf */; };
+		4C8E40AF205BEA9D00EA87B3 /* GodoB.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4C8E40AD205BEA8600EA87B3 /* GodoB.otf */; };
 		4C96FA67204E4D08008F4960 /* FeedReviewListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C96FA65204E4D08008F4960 /* FeedReviewListCell.swift */; };
 		4C96FA68204E4D08008F4960 /* FeedReviewListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C96FA66204E4D08008F4960 /* FeedReviewListCell.xib */; };
 		4CAD767E1FED13BF00EDE859 /* loginVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = 4CAD767D1FED13BF00EDE859 /* loginVideo.mov */; };
@@ -158,12 +160,18 @@
 		4C5FBD691FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenuIconCollectionViewCell.xib; sourceTree = "<group>"; };
 		4C5FBD6A1FFEB35F004C66EE /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4C5FBD6B1FFEB35F004C66EE /* PageControllerBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageControllerBaseController.swift; sourceTree = "<group>"; };
+		4C781FCE2060E9C100035F91 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C781FD12060E9F000035F91 /* SwiftyGif.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyGif.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C781FD22060E9F000035F91 /* XLPagerTabStrip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = XLPagerTabStrip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C781FD42060EBB500035F91 /* Kingfisher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Kingfisher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C8DFB83200E297200331A5B /* FilterMenuSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuSection.swift; sourceTree = "<group>"; };
 		4C8DFB85200E355400331A5B /* FilterHeaderMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHeaderMenuTableViewCell.swift; sourceTree = "<group>"; };
 		4C8DFB89200E3A4300331A5B /* FilterMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuHeaderView.swift; sourceTree = "<group>"; };
 		4C8DFB8B200E3ACF00331A5B /* FilterMenuHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterMenuHeaderView.xib; sourceTree = "<group>"; };
 		4C8DFB8D200F55A700331A5B /* FeedDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailViewController.swift; sourceTree = "<group>"; };
 		4C8DFB8F200F580900331A5B /* FeedDetailITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailITableViewCell.swift; sourceTree = "<group>"; };
+		4C8E40AC205BEA8500EA87B3 /* GodoM.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GodoM.otf; sourceTree = "<group>"; };
+		4C8E40AD205BEA8600EA87B3 /* GodoB.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GodoB.otf; sourceTree = "<group>"; };
 		4C96FA65204E4D08008F4960 /* FeedReviewListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReviewListCell.swift; sourceTree = "<group>"; };
 		4C96FA66204E4D08008F4960 /* FeedReviewListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedReviewListCell.xib; sourceTree = "<group>"; };
 		4CAD767D1FED13BF00EDE859 /* loginVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = loginVideo.mov; sourceTree = "<group>"; };
@@ -303,6 +311,10 @@
 		4004771B0EC50C50DB0E50C7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4C781FD42060EBB500035F91 /* Kingfisher.framework */,
+				4C781FD12060E9F000035F91 /* SwiftyGif.framework */,
+				4C781FD22060E9F000035F91 /* XLPagerTabStrip.framework */,
+				4C781FCE2060E9C100035F91 /* SwiftyJSON.framework */,
 				14C19B431FF3DB38001B8229 /* MessageUI.framework */,
 				3219B4369B3766416839B81B /* Pods_FeedPet.framework */,
 			);
@@ -420,6 +432,8 @@
 		4CCDDF542028510C00EF0FD2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				4C8E40AD205BEA8600EA87B3 /* GodoB.otf */,
+				4C8E40AC205BEA8500EA87B3 /* GodoM.otf */,
 				4C25DC4B2031861200C4871D /* loading_img.gif */,
 				4CCDDF572028615300EF0FD2 /* loading_img@2.gif */,
 				4CCDDF582028615300EF0FD2 /* loading_img@3.gif */,
@@ -511,6 +525,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C8DFB8C200E3ACF00331A5B /* FilterMenuHeaderView.xib in Resources */,
+				4C8E40AF205BEA9D00EA87B3 /* GodoB.otf in Resources */,
 				4C1C1BCD202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.xib in Resources */,
 				4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */,
 				4CCDDF5B2028615300EF0FD2 /* loading_img@3.gif in Resources */,
@@ -524,6 +539,7 @@
 				4C1E6DED20151F4800C7EDFC /* Assets.xcassets in Resources */,
 				4CCDDF5A2028615300EF0FD2 /* loading_img@2.gif in Resources */,
 				4CAD767E1FED13BF00EDE859 /* loginVideo.mov in Resources */,
+				4C8E40AE205BEA9A00EA87B3 /* GodoM.otf in Resources */,
 				4C1C1BBF20286469004DE72A /* LoadingIndicatorView.xib in Resources */,
 				4C25DC4C2031861200C4871D /* loading_img.gif in Resources */,
 			);
@@ -835,7 +851,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -855,7 +871,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

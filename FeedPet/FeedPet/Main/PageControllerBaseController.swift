@@ -23,7 +23,7 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     }
     var curretPetKey = String()
     var spinerView = UIView()
-    
+    var loginUerInfo: User?
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
@@ -81,9 +81,17 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         
         // 셀렉트 바 색
 //        settings.style.selectedBarBackgroundColor = UIColor(red: 234/255.0, green: 234/255.0, blue: 234/255.0, alpha: 1.0)
-      
-            
-       
+//        guard let userData = DataCenter.shared.userInfo else {return}
+        
+        
+//        guard let loginUserData = UserDefaults.standard.value(forKey: "loginUserData") as? User else {return}
+//        loginUerInfo = loginUserData
+//        DataCenter.shared.userInfo = loginUserData
+        
+        loginUerInfo = DataCenter.shared.userInfo
+        
+        
+        print(loginUerInfo)
         // 하단의 셀레트 바 높이
         settings.style.selectedBarHeight = 0.0
 //        settings.style.buttonBarMinimumLineSpacing = 0
@@ -109,7 +117,9 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
                 newCell?.menuIconImg.image = #imageLiteral(resourceName: "dogAbleImg")
                 self?.indicatorTitle = "멍"
             }
+        
         }
+        
         super.viewDidLoad()
         
         // XLPagerTabStrip의 탭바 설정입니다.
@@ -131,11 +141,36 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
 //                self.showLoginViewController()
 //            }
 //        }
+//        self.moveToViewController(at: 1, animated: true)
         
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // 로그인한 사용자의 선택한 반려동물 뷰로 이동하기위해 분기처리
+//        guard let userData = loginUerInfo else {return}
+        // 최초의 첫번째 자식뷰는 강이지일 경우이다. 따라서 고양이일 경우에만 처리해준다
+        print("페이지커느톨://", DataCenter.shared.userInfo)
+        // 문제 => 난 강아지를 선택했지만 고양이 사료를 보고싶어서 상세화면을 갔다가오면 사용자의 펫정보의 뷰로이동됨
+        if DataCenter.shared.userInfo.userPet == "feed_petkey_c" {
+       
+//        guard let loginUserData = UserDefaults.standard.value(forKey: "") as? User else {return}
+//        if loginUserData.userPet == "feed_petkey_c" {
+        
+            moveToViewController(at: 1, animated: true)
+            
+//            self.moveToViewController(at: 1, animated: true)
+//            print(childViewControllers)
+        }else{
+            moveToViewController(at: 0, animated: true)
+            
+//             self.moveToViewController(at: 0, animated: true)
+//            print(childViewControllers)
+        }
         
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
 //                self.navigationController?.isNavigationBarHidden = true
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -161,6 +196,7 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         child_2.indicatorTitle = "냥"
         child_2.delegate = self
         
+        
         return [child_1, child_2]
     }
     
@@ -171,6 +207,7 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         cell.title = indicatorInfo.title!
         
     }
+    
     
     /*
     // MARK: - Navigation
@@ -183,8 +220,20 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     */
     @IBAction func mypageShow(_ sender: UIBarButtonItem){
         let nextViewController = UIStoryboard.init(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "MyPageViewController") as! MyPageViewController
-        
-        self.navigationController?.pushViewController(nextViewController, animated: true)
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Database.database().reference().child("user_info").child(uid).observeSingleEvent(of: .value, with: { (dataSnap) in
+            guard let userData = dataSnap.value as? [String:Any] else {return}
+            let userInfo = User(userInfoData: userData)
+            nextViewController.userData = userInfo
+            
+            nextViewController.delegate = self
+            
+            FireBaseData.shared.fireBaseMyReviewDataLoad()
+            FireBaseData.shared.fireBaseFavoritesDataLoad()
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }) { (error) in
+            print(error.localizedDescription)
+        }
     }
     @IBAction func feedSearchBtnTouched(_ sender: UIButton) {
         let nextViewContorller = self.storyboard?.instantiateViewController(withIdentifier: "FeedSearchViewController") as! FeedSearchViewController
@@ -301,8 +350,24 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
             curretPetKey = "feed_petkey_c"
             DataCenter.shared.currentPetKey = curretPetKey
         }
+        print("뷰컨갯슈:",  DataCenter.shared.mainPageLoadCount)
+        // 이미 통신이 완료됬을때 노티를준다.
+        if DataCenter.shared.mainPageLoadCount == 2 {
+//            NotificationCenter.default.post(name: .feedAllDataNoti, object: nil, userInfo: nil)
+//            guard let userInfo = UserDefaults.standard.value(forKey: "loginUserData") as? [String:Any] else {return}
+//            let userData = User(userInfoData: userInfo)
+//            if userData.userPet == curretPetKey {
+//
+//            }else{
+//
+//            }
+        }
         
     }
+//    override func moveToViewController(at index: Int, animated: Bool) {
+////        print("오버라이드 무브투")
+//
+//    }
 }
 
 extension PageControllerBaseController: UISearchControllerDelegate{
@@ -313,6 +378,7 @@ extension PageControllerBaseController: UISearchControllerDelegate{
 
 
 }
+
 extension PageControllerBaseController: SelectedCellProtocol{
     func didSelectedCell(view: FeedDetailViewController) {
         self.navigationController?.pushViewController(view, animated: true)
@@ -320,14 +386,45 @@ extension PageControllerBaseController: SelectedCellProtocol{
 }
 
 extension PageControllerBaseController: LoadingIndicatorProtocol{
+    func loadingRemoveDisplay(spinerView: UIView?) {
+        
+        guard let lodinView = spinerView else { return}
+        DataCenter.shared.removeSpinner(spinner: lodinView)
+    }
     
     func loadingIndicatorDisplay() {
-        spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+        DispatchQueue.main.async {
+            
+            self.spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+            DataCenter.shared.loadingView = self.spinerView
+        }
     }
     
     func loadingRemoveDisplay() {
         DataCenter.shared.removeSpinner(spinner: spinerView)
     }
     
+}
+
+extension PageControllerBaseController: MyPageViewProtocol {
+    func logoutNavigationPop() {
+//        print(Auth.auth().currentUser?.uid)
+        
+
+        self.dismiss(animated: true) {
+            
+        }
+//        self.dismiss(animated: true, completion: nil)
+    }
+    
     
 }
+protocol MyPageViewProtocol {
+    func logoutNavigationPop()
+}
+
+
+
+
+
+

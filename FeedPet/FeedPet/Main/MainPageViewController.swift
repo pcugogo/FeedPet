@@ -16,10 +16,11 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
 
     var indicatorTitle: String = ""{
         didSet{
+            
             currentPetCheck()
         }
     }
-   
+    
     var delegate: LoadingIndicatorProtocol?
     
 //    var feedData: [FeedInfo] = []
@@ -33,7 +34,21 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     // 사료키값을 담을 데이터
     var feedInfoStartKey: String!
     
-    var feedAllData = [FeedInfo]()
+    var feedAllData = [FeedInfo]() {
+        didSet{
+            // 사용자의 선택 반려동물과 현재 선택된 반려동물이 같을경우에는 노티
+            print("피드올포://", DataCenter.shared.userInfo)
+//            guard let loginUser = UserDefaults.standard.value(forKey: "loginUserData") as? User else {return}
+//            if loginUser.userPet == currentPet {
+            if DataCenter.shared.userInfo.userPet == currentPet {
+            
+                NotificationCenter.default.post(name: .feedAllDataNoti, object: nil, userInfo: nil)
+            }else{
+//                feedAllDataPagination(functionalKey: [])
+                NotificationCenter.default.post(name: .userPetTest, object: nil, userInfo: nil)
+            }
+        }
+    }
     var feedInfoKey: String!
     // 기능성 선택에 따른 총 데이터
     var feedFunctionalFilteringData = [FeedInfo]()
@@ -46,12 +61,21 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     
     // 즐겨찾기 정보
     var feedBookMarkData: [String] = []
-    
+//    {
+//        didSet{
+//            self.feedInfoTableView.reloadData()
+//        }
+//    }
+
     var filterSelectFlag: Bool = false {
         didSet{
             print(filterSelectFlag)
             print(feedFilterFilteringData.count)
             print(feedFunctionalFilteringData.count)
+//            if currentPet == DataCenter.shared.currentPetKey{
+//
+//            }
+//            print(indicatorTitle,"//", currentPet,"//",DataCenter.shared.currentPetKey )
             if filterSelectFlag {
                 feedFilteringTotalData = feedFilterFilteringData
             }else{
@@ -90,7 +114,6 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     @IBOutlet weak var feedInfoTableView: UITableView!
     @IBOutlet weak var feedListCountLabel: UILabel!
     
-    @IBOutlet weak var loadingIndicatorImgView: LoadingIndicatorImgView!
     /*******************************************/
     //MARK:-        LifeCycle                  //
     /*******************************************/
@@ -101,8 +124,9 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         feedInfoTableView.delegate = self
         print(self.navigationController?.topViewController)
         print(self.parent?.navigationController)
-        
-//        기존 테이블 전체 데이터 호출
+        print(indicatorTitle)
+
+        //        기존 테이블 전체 데이터 호출
         feedDataCountLoad()
         
         // 페이지네이션 데이터 - 최초 가입시 선택한 기능성에
@@ -118,14 +142,36 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         // Do any additional setup after loading the view.
 //        DataCenter.shared.fromNib(toViewController: self)
 //        DataCenter.shared.showActivityIndicatory(uiView: (self.parent?.view)! ,animating: true)
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.userDataUpdate(notification:)), name: .userDataUpdateNoti, object: nil)
           
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+//        feedDataCountLoad()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // 사용자의 정보 수정시 변경된 정보 있을경우 화면이동및 데이터 조회를 위한 분기처리
+        if DataCenter.shared.userDataUpdate && DataCenter.shared.userUpdateCount < 3 {
+            self.viewDidLoad()
+            
+        }
+        // 데이터센터에 userUdpateCount라는 변수를 선언하여 뷰디드로드시 호출되는 feedDataCountLoad()
+        // 카운트가 3이됬을 경우 userDataUpdate값과 count값을 초기화
+        if DataCenter.shared.userUpdateCount > 2 {
+            DataCenter.shared.userDataUpdate = false
+            DataCenter.shared.userUpdateCount = 0
+        }
+        
+        DispatchQueue.main.async {
+            
+            self.feedInfoTableView.reloadData()
+        }
+//        if DataCenter.shared.userUpdateCount > 3{
+//             DataCenter.shared.userUpdateCount = 0
+//        }
+//         feedDataCountLoad()
 //        self.navigationController?.isNavigationBarHidden = true
 //        setupAnimationForNavigationBar(caseOfFunction: true)
     }
@@ -150,11 +196,17 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
             functionalView.functionalData = DataCenter.shared.functionalSettingData(currentPet: currentPet)
             functionalView.sendFunctionalDelegate = self
             
+            functionalView.withMainPageView = self
+            
             // Now you have a pointer to the child view controller.
             // You can save the reference to it, or pass data to it.
             
         }
+        
     }
+    
+    
+    
     /*
     // MARK: - Navigation
 
@@ -191,7 +243,23 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     // MARK: 전체 데이터 카운트 호출
     func feedDataCountLoad(){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        delegate?.loadingIndicatorDisplay()
+//        guard let loginUserData = UserDefaults.standard.value(forKey: "loginUserData") as? User else {return}
+        // 사용자 반려동물이 고양이일 경우 강아지데이터 호출시에는 로딩뷰 호출하지 않는다.
+        // 이 외의 경우호출
+        if currentPet == "feed_petkey_d" && DataCenter.shared.userInfo.userPet == "feed_petkey_c"{
+            if let loadingview = DataCenter.shared.loadingView {
+                delegate?.loadingRemoveDisplay(spinerView: loadingview)
+//                delegate?.loadingIndicatorDisplay()
+            }
+        }else{
+            if let loadingview = DataCenter.shared.loadingView {
+                delegate?.loadingRemoveDisplay(spinerView: loadingview)
+                delegate?.loadingIndicatorDisplay()
+            }else{
+                delegate?.loadingIndicatorDisplay()
+            }
+        }
+       
 //        let indi = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
         print("@@선택 반려동물://",currentPet)
         testReference.child("feed_info").child(currentPet).observeSingleEvent(of: .value, with: { (dataSnap) in
@@ -207,8 +275,23 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
                     feedData.append(feedOne)
                     
                 }
-                self.feedAllData = feedData
+                switch DataCenter.shared.sortingState{
+                case .grade:
+                    self.feedAllData = feedData.sorted(by: { (feedOne, feedTwo) -> Bool in
+                        return feedOne.feedGrade < feedTwo.feedGrade
+                    })
+                    
+                case .mouth:
+                    self.feedAllData = feedData.sorted(by: { (feedOne, feedTwo) -> Bool in
+                        return feedOne.feedName < feedTwo.feedName
+                    })
+                    
+                }
+//                self.feedAllData = feedData
+                self.delegate?.loadingRemoveDisplay()
+
                 self.feedMoreInformationLoad()
+                
 //                guard let uid = Auth.auth().currentUser?.uid  else {return}
 //
 //                Database.database().reference().child("user_info").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -234,20 +317,32 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
 //
 //                    // 필터링 테스트
 //                    self.feedAllDataPagination(functionalKey: [])
-                    self.feedInfoTableView.reloadData()
-                NotificationCenter.default.post(name: .feedAllDataNoti, object: nil, userInfo: nil)
+//                    self.feedInfoTableView.reloadData()
+                
 //                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
 ////                    DataCenter.shared.removeSpinner(spinner: indi)
 //
 //                }
+                print(DataCenter.shared.mainPageLoadCount)
+                DataCenter.shared.mainPageLoadCount += 1
+                print(DataCenter.shared.mainPageLoadCount)
                 print(self.feedInfoStartKey)
                 print(self.feedPagenationData)
+                
+                // 리로드 되는 카운트 증가를 위해 분기처리-사용자가 수정했을경우
+                if DataCenter.shared.userDataUpdate {
+                    // 카운트증가
+                    DataCenter.shared.userUpdateCount += 1
+                }
+                print("호요요요요://", DataCenter.shared.userDataUpdate, "//",DataCenter.shared.userUpdateCount)
                 
             }
             DispatchQueue.main.async {
 //                self.feedListCountLabel.text = dataSnap.childrenCount.description
 //                DataCenter.shared.nibRemove(toViewController: self)
-                self.delegate?.loadingRemoveDisplay()
+//                self.delegate?.loadingRemoveDisplay()
+//                let lodingView = DataCenter.shared.loadingOnView
+//                self.delegate?.loadingRemoveDisplay(spinerView: lodingView)
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }) { (error) in
@@ -256,6 +351,7 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         
     }
     func selectFilterItem(filterItemData: FilterData, selectState: Bool){
+        print(self.indicatorTitle)
         print("필터 값존재 여부://",selectState)
         let functionalKey =  [1,2]
         // 최초 페이지네이션 키 값이 nil일 경우
@@ -781,10 +877,20 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     
     
     func feedAllDataPagination(functionalKey: [String]){
+        
+        if let loadingview = DataCenter.shared.loadingView {
+            delegate?.loadingRemoveDisplay(spinerView: loadingview)
+            delegate?.loadingIndicatorDisplay()
+
+        }else{
+            delegate?.loadingIndicatorDisplay()
+        }
         // 최초 페이지네이션 키 값이 nil일 경우
         var filterData = [FeedInfo]()
         self.feedMoreInformationLoad()
+        print(indicatorTitle)
         print("선택한 키값에 맞는 사료정보이때 키값://",functionalKey)
+        
         if functionalKey.count != 0{
             // 1. 먼저 기능성 키값에 String 값을 할당
             for key in functionalKey {
@@ -810,10 +916,21 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
                     
                 }
             }
-            
-            feedFunctionalFilteringData = filterData.sorted(by: { (feedOne, feedTwo) -> Bool in
-                return feedOne.feedName < feedTwo.feedName
-            })
+            switch DataCenter.shared.sortingState{
+            case .grade:
+                feedFunctionalFilteringData = filterData.sorted(by: { (feedOne, feedTwo) -> Bool in
+                    return feedOne.feedGrade < feedTwo.feedGrade
+                })
+                
+            case .mouth:
+                feedFunctionalFilteringData = filterData.sorted(by: { (feedOne, feedTwo) -> Bool in
+                    return feedOne.feedName < feedTwo.feedName
+                })
+                
+            }
+//            feedFunctionalFilteringData = filterData.sorted(by: { (feedOne, feedTwo) -> Bool in
+//                return feedOne.feedName < feedTwo.feedName
+//            })
             
         }else{
             feedFunctionalFilteringData = feedAllData
@@ -826,7 +943,10 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
         }else{
             DispatchQueue.main.async {
                 self.feedListCountLabel.text = self.feedFunctionalFilteringData.count.description
+                print("리로드하는 데이터의 타이틀://",self.indicatorTitle)
+               
                 self.feedInfoTableView.reloadData()
+                self.delegate?.loadingRemoveDisplay()
             }
         }
        
@@ -956,6 +1076,10 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
     }
     
     func feedMoreInformationLoad(){
+        DispatchQueue.main.async {
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        }
      Database.database().reference().child("my_favorite").child(userUID).observeSingleEvent(of: .value, with: { (dataSnap) in
             var isBookMark: Bool = false
             print("즐겨찾기 data://",dataSnap.value)
@@ -969,11 +1093,58 @@ class MainPageViewController: UIViewController,IndicatorInfoProvider {
                 print("내즐찾정보:///", bookMarkData)
                 self.feedBookMarkData = bookMarkData
             }
-        
-            
+             UIApplication.shared.isNetworkActivityIndicatorVisible = false
+//            self.delegate?.loadingRemoveDisplay()
         }) { (error) in
             print("----bookMakrError://",error.localizedDescription)
         }
+    }
+    func bookMarkSet(isBookMark: Bool, feedKey: String){
+        print("넘어온 즐겨찾기 값//", isBookMark," 사료키값://", feedKey)
+        let bookMarkRef = Database.database().reference().child("my_favorite").child(userUID)
+        // 최초등록
+        if isBookMark {
+            // 즐겨찾기 추가
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            var bookMarkData: [String:Any] = [:]
+            bookMarkData.updateValue(feedKey, forKey: "feed_key")
+            
+            
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko")
+            formatter.dateFormat = "yyyy.MM.dd HH:mm"
+            let currentDataString = formatter.string(from: Date())
+            print("날짜2://, ", currentDataString)
+            bookMarkData.updateValue(currentDataString, forKey: "favorites_date")
+            bookMarkRef.childByAutoId().setValue(bookMarkData)
+            print("즐겨찾기 데이터://", bookMarkData)
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
+            
+        }
+        else{ // 기존에 데이터 존재시 삭제
+            bookMarkRef.observeSingleEvent(of: .value, with: { (dataSnap) in
+                guard let childrenValue = dataSnap.children.allObjects as? [DataSnapshot] else{return}
+                for bookMark in childrenValue{
+                    if bookMark.childSnapshot(forPath: "feed_key").value as? String == feedKey{
+                        print("즐겨찾기존지하는 키://",bookMark.key)
+                        bookMarkRef.child(bookMark.key).removeValue()
+                    }
+                }
+            })
+        }
+        DispatchQueue.main.async {
+            self.feedMoreInformationLoad()
+            self.feedInfoTableView.reloadData()
+        }
+        
+        
+    }
+   
+        
+    @objc func userDataUpdate(notification: Notification){
+       self.viewDidLoad()
     }
 }
 extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
@@ -1159,8 +1330,9 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         let feedDetailData: FeedInfo = feedFilteringTotalData[indexPath.row]
         print("----select FeedData ----",feedDetailData)
         let feedDetailView: FeedDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "FeedDetailView") as! FeedDetailViewController
+        feedDetailView.delegate = self
         feedDetailView.feedDetailInfo = feedDetailData
-    
+        
         feedDetailView.isBookMark = feedBookMarkDic[feedFilteringTotalData[indexPath.row].feedKey] ?? false
         
         
@@ -1168,11 +1340,41 @@ extension MainPageViewController: UITableViewDelegate, UITableViewDataSource{
         DataCenter.shared.feedDetailIngredientDataLoad(feedKey: feedDetailData.feedKey) { (feedDetailIngredientData) in
             print(feedDetailIngredientData)
             feedDetailView.ingredientData = feedDetailIngredientData
+            
+            feedDetailView.navigationItem.title = feedDetailData.feedName
+            feedDetailView.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
             DispatchQueue.main.async {
+                
                 self.parent?.navigationController?.pushViewController(feedDetailView, animated: true)
                 self.delegate?.loadingRemoveDisplay()
             }
         }
+        
+//        Database.database().reference().child("feed_review").child(feedFilteringTotalData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
+//            // 1. 리뷰의 갯수가 필요하
+//            //            print(feedDataInfo.feedKey)
+//            guard let data = dataSnap.value else {return}
+//
+//            let oneReviewData = FeedReview(feedReviewJSON: JSON(data), feedKey: dataSnap.key)
+//            feedDetailView.reviewInfo = oneReviewData
+//            print("리뷰하나의정보://",oneReviewData)
+//            feedDetailView.navigationItem.title = feedDetailData.feedName
+//            feedDetailView.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+//
+////            print(feedDetailView.navigationItem.backBarButtonItem)
+//            DispatchQueue.main.async {
+//
+//
+//                self.parent?.navigationController?.pushViewController(feedDetailView, animated: true)
+//                self.delegate?.loadingRemoveDisplay()
+//            }
+//        }) { (error) in
+//            print(error.localizedDescription)
+//        }
+//
+//
+        
+        
 //        self.parent?.navigationController?.pushViewController(feedDeatilView, animated: true)
 
 //        self.parent?.navigationController?.pushViewController(feedDeatilView, animated: true)
@@ -1218,7 +1420,18 @@ extension MainPageViewController: FunctionalProtocol{
     
     func functionalKeySend(keyArr: [String]) {
         print(keyArr)
-        feedAllDataPagination(functionalKey: keyArr)
+        if currentPet == DataCenter.shared.currentPetKey{
+            
+        }
+        print("테스트중:///",indicatorTitle,"//", currentPet,"//",DataCenter.shared.currentPetKey )
+        //로그인하나 사용자의 반려동물 자식뷰로 이동후 선택한 기능성 인덱스 값 선택시 호출이 될대
+        //현재 선택된 반려동물의 값에 따라 호출 값 분기처리
+        
+        if currentPet == DataCenter.shared.currentPetKey {
+            feedAllDataPagination(functionalKey: keyArr)
+        }else{
+            feedAllDataPagination(functionalKey: [])
+        }
     }
 
     
@@ -1256,8 +1469,12 @@ extension MainPageViewController: feedMainInfoCellProtocol{
             bookMarkData.updateValue(currentDataString, forKey: "favorites_date")
             bookMarkRef.childByAutoId().setValue(bookMarkData)
             print("즐겨찾기 데이터://", bookMarkData)
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            DispatchQueue.main.async {
+                self.feedMoreInformationLoad()
+//                self.feedInfoTableView.reloadData()
+            }
 
         }
         else{ // 기존에 데이터 존재시 삭제
@@ -1269,8 +1486,13 @@ extension MainPageViewController: feedMainInfoCellProtocol{
                         bookMarkRef.child(bookMark.key).removeValue()
                     }
                 }
+                DispatchQueue.main.async {
+                    self.feedMoreInformationLoad()
+//                    self.feedInfoTableView.reloadData()
+                }
             })
         }
+        
         
                 /*
         if isBookMark{
@@ -1398,9 +1620,12 @@ enum FeedMouth: String{
 }
 
 
+
 // SwiftyGif 활용한 인데케이터 사용을 위한 프로토콜
 protocol LoadingIndicatorProtocol {
     func loadingIndicatorDisplay()
     func loadingRemoveDisplay()
+    func loadingRemoveDisplay(spinerView: UIView?)
 }
+
 

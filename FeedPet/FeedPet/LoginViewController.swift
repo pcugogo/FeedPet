@@ -127,7 +127,7 @@ class LoginViewController: UIViewController{
     @IBAction func googleSingInButtonTouched(_ sender: UIButton){
         
         GIDSignIn.sharedInstance().signIn()
-        
+        print("b009090909")
         
     }
     
@@ -308,6 +308,7 @@ class LoginViewController: UIViewController{
     //    }
     
     func socialLogin(credential: AuthCredential, social: String){
+        self.spiner = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
         // Auth 에 사용자 등록 및 Database에 데이터 저장- 데이터베이스 저장은 추가 정보 입력후 저장되도록
         Auth.auth().signIn(with: credential) {[unowned self] (user, error) in
             
@@ -315,7 +316,8 @@ class LoginViewController: UIViewController{
             self.reference = Database.database().reference()
             guard let loginUser = user else{return}
             print("## 로그인 uid 확인: ", loginUser.uid)
-            self.spiner = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+        
+            
             UserDefaults.standard.setValue(loginUser.uid, forKey: "userUID")
             UserDefaults.standard.setValue(social, forKey: "loginSocial")
             // 최초 로그인시에만 Firebase데이터에 저장
@@ -368,8 +370,35 @@ class LoginViewController: UIViewController{
                     print("현재 루트뷰컨://",appDelegate.window?.rootViewController)
                     let mainHome = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PageControllerBase")
                     let navi = UINavigationController(rootViewController: mainHome)
+                   
+                        
+                        Database.database().reference().child("user_info").child(loginUser.uid).observeSingleEvent(of: .value, with: { (dataSnap) in
+                            if let userInfoSnapshot = dataSnap.value as? [String:Any]{
+                                
+                                let userInfo = User(userInfoData: userInfoSnapshot)
+                                print("조회한 유저데이터 로그인뷰://,",userInfo)
+                                DataCenter.shared.userInfo = userInfo
+//                                UserDefaults.standard.set(userInfo, forKey: "loginUserData")
+                                //                            var userFunctionalIndexPath: [IndexPath] = []
+                                //                            for indexRow in userInfo.userPetFunctionalIndexPathRow {
+                                //                                userFunctionalIndexPath.append(IndexPath(row: indexRow, section: 0))
+                                //                            }
+                                //                            print("조회해온 유저정보의 기능성 인덱스 패스://", userFunctionalIndexPath)
+                                //                        self.userSelectFunctionalIndexPath = userFunctionalIndexPath
+                                //                        self.functionalCollectionView.reloadData()
+//                                appDelegate.window?.rootViewController? = navi
+//                                appDelegate.window!.makeKeyAndVisible()
+                                
+                                
+                                self.present(navi, animated: false, completion: nil)
+                            }
+                        }, withCancel: { (error) in
+                            print(error)
+                        })
+
                     
-                    appDelegate.window?.rootViewController? = navi
+                   
+                    // 사용자 정보를 받아 저장
                     
                 }
 //                Database.database().reference().child("user_info").child(loginUser.uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -433,17 +462,17 @@ extension LoginViewController: GIDSignInDelegate, GIDSignInUIDelegate{
         print("User signed into google 2")
         
         guard let authentication = user.authentication else { return }
-        spiner = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+//        spiner = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                        accessToken: authentication.accessToken)
         print(credential)
-        
+        self.socialLogin(credential: credential, social: "google")
         // AddUserInfo뷰 이동전에 딜레이 부분을 위해 체크를 해주는데 메인큐에서 할경우 AddUserInfo뷰에서 사용할필요가있다.
         //        if let _ = spiner {
         //            spiner = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
         //
         //        }
-        
+/*
         // Auth 에 사용자 등록 및 Database에 데이터 저장- 데이터베이스 저장은 추가 정보 입력후 저장되도록
         Auth.auth().signIn(with: credential) {[unowned self] (user, error) in
             
@@ -544,6 +573,7 @@ extension LoginViewController: GIDSignInDelegate, GIDSignInUIDelegate{
             
             
         }
+        */
     }
     
     
@@ -564,11 +594,18 @@ extension LoginViewController: GIDSignInDelegate, GIDSignInUIDelegate{
     //사용자에게 Google과 로그인하라는 메시지를 표시하는 뷰
     func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!) {
         print("구글 로그인 버튼 메시지")
+        self.dismiss(animated: true) {
+            
+        }
         
         
     }
     //"SignintheGooglewithGoogle"보기를 해제합니다.
     func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!) {
+        
+        self.present(viewController, animated: true) {
+            
+        }
         print("구글 로그인 버튼 창 닫기")
                 guard let spinerView = spiner else {return}
                 print(spinerView)
@@ -586,8 +623,10 @@ extension LoginViewController: ViewDismissProtocol {
         //        print(spinerView)
         
         // 루트뷰를 가지 않기 위해 처리
-        appDelegate.window?.rootViewController = nextNavi
-        //        self.dismiss(animated: false, completion: nil)
+//        appDelegate.window?.rootViewController = nextNavi
+        
+        
+                self.dismiss(animated: false, completion: nil)
         
     }
     

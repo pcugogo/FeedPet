@@ -211,6 +211,7 @@ class FeedSearchViewController: UIViewController {
         placeholderLabel?.font = UIFont.systemFont(ofSize: 12.0)
         textFieldInsideUISearchBar?.font = UIFont.systemFont(ofSize: 12.0)
         
+        
 //        self.navigationController?.navigationItem.titleView = searchBar
         self.navigationItem.titleView = searchBar
 
@@ -241,9 +242,9 @@ class FeedSearchViewController: UIViewController {
 //        searchBar.searchBarStyle = .default
         let textFieldInsideUISearchBar =  searchController.searchBar.value(forKey: "searchField") as? UITextField
         let placeholderLabel = textFieldInsideUISearchBar?.value(forKey: "placeholderLabel") as? UILabel
-        placeholderLabel?.font = UIFont.systemFont(ofSize: 12.0)
+        placeholderLabel?.font = UIFont(name: "GodoM", size: 12)
 //        placeholderLabel?.textColor = .orange
-        textFieldInsideUISearchBar?.font = UIFont.systemFont(ofSize: 12.0)
+        textFieldInsideUISearchBar?.font = UIFont(name: "GodoM", size: 12)
 //        let clearButton = textFieldInsideUISearchBar?.value(forKey: "clearButton") as? UIButton
 //
 //        clearButton?.tintColor = .white
@@ -256,6 +257,7 @@ class FeedSearchViewController: UIViewController {
         }else{
             searchController.searchBar.placeholder = "고양이사료 상품명이나 브랜드명을 검색해주세요."
         }
+        
         
 
     
@@ -312,8 +314,9 @@ extension FeedSearchViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let resultCell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath)
-        
+        resultCell.textLabel?.font = UIFont(name: "GodoM", size:17)
         resultCell.textLabel?.text = searchFeedData[indexPath.row].feedName
+        
         
         // 내 즐겨찾기 정보 상태 전달을위해 feedBookMarkDic 정보에 값 저장
         //            self.feedBookMarkDic.updateValue(isBookMark, forKey: self.feedFilteringTotalData[indexPath.row].feedKey)
@@ -340,10 +343,34 @@ extension FeedSearchViewController: UITableViewDelegate, UITableViewDataSource{
 //            DispatchQueue.main.async {
                 //self.delegate?.didSelectedCell(view: feedDetailView)
 //            print(self.navigationController)
-                self.navigationController?.pushViewController(feedDetailView, animated: true)
+            
 //            }
+            DispatchQueue.main.async {
+                
+                self.navigationController?.pushViewController(feedDetailView, animated: true)
+                
+                //                self.delegate?.loadingRemoveDisplay()
+            }
         }
         
+//        Database.database().reference().child("feed_review").child(searchFeedData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
+//            // 1. 리뷰의 갯수가 필요하
+//            //            print(feedDataInfo.feedKey)
+//            guard let data = dataSnap.value else {return}
+//            
+//            let oneReviewData = FeedReview(feedReviewJSON: JSON(data), feedKey: dataSnap.key)
+//            feedDetailView.reviewInfo = oneReviewData
+//            print("리뷰하나의정보://",oneReviewData)
+//            
+//            DispatchQueue.main.async {
+//                
+//                self.navigationController?.pushViewController(feedDetailView, animated: true)
+//                
+////                self.delegate?.loadingRemoveDisplay()
+//            }
+//        }) { (error) in
+//            print(error.localizedDescription)
+//        }
         //       delegate?.didSelectedCell(view: feedDetailView)
         
         

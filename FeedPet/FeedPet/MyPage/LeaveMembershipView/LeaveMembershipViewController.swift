@@ -83,6 +83,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
             return leaveMembershipBtnCell
         }else{
             let leaveMembershipReasonCell:LeaveMembershipReasonCell = tableView.dequeueReusableCell(withIdentifier: "LeaveMembershipReasonCell", for: indexPath) as! LeaveMembershipReasonCell
+            leaveMembershipReasonCell.textLabel?.font = UIFont(name:"GodoM", size:15)
             leaveMembershipReasonCell.textLabel?.text = leaveMembershipReasonText[indexPath.row - 1]
             
             if MyPageDataCenter.shared.leaveMembershipReason == leaveMembershipReasonText[indexPath.row - 1]{

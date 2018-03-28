@@ -29,13 +29,14 @@ class FeedMainInfoTableViewCell: UITableViewCell {
     
     @IBOutlet weak var bookMarkBtn: UIButton!
     
+    
     var feedData: FeedInfo?
     var feedKey: String = String()
-    var reviewData: FeedReview? {
+    var reviewData: FeedReview = FeedReview() {
         didSet{
-            guard let review = reviewData else {return}
+            
             // 리뷰정보를 받아와 리뷰갯수와 별점을 그려준다.
-            reviewSetting(ratingScore: review.reviewRating, reviewCount: review.reviewInfo.count)
+            reviewSetting(ratingScore: reviewData.reviewRating, reviewCount: reviewData.reviewInfo.count)
             
         }
     }
@@ -55,10 +56,22 @@ class FeedMainInfoTableViewCell: UITableViewCell {
         // Initialization code
         
     }
-    
-    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+//        feedGradeLabel.numberOfLines = 0
+//        feedGradeLabel.adjustsFontSizeToFitWidth = true
+//
+//        feedGradeLabel.sizeToFit()
+//
+//        feedPackageLabel.numberOfLines = 0
+//        feedPackageLabel.adjustsFontSizeToFitWidth = true
+//        feedPackageLabel.minimumScaleFactor = 0.5
+//        feedPackageLabel.sizeToFit()
+    }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+       
+       
         // Configure the view for the selected state
         /*
          guard let feedDataInfo = feedData else {return}
@@ -220,6 +233,7 @@ class FeedMainInfoTableViewCell: UITableViewCell {
 }
 
 protocol feedMainInfoCellProtocol {
+    // 메인화면 셀과 디테일화면에서 좋아요 버튼 클릭시 델리게이트 메서드
     func sendBookMarkValue(isBookMark: Bool, feedKey: String)
     
 }
