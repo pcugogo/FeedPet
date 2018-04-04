@@ -27,6 +27,8 @@ class FeedReviewListCell: UITableViewCell {
     @IBOutlet weak var reviewUnLikeLabel: UILabel!
     
 
+    
+    
     var reviewData: ReviewInfo?{
         didSet{
             guard let userRiviewData = reviewData else {return}
@@ -65,12 +67,12 @@ class FeedReviewListCell: UITableViewCell {
                         
                     }
                 }else{
-                    print("없는 유저잇다.")
-                    DispatchQueue.main.async {
-                        
-                        self.reviewUserNicName.text = "탈퇴한유저"
-                        self.reviewUserProfileImg.image = #imageLiteral(resourceName: "MyPageProfile")
-                    }
+//                    print("없는 유저잇다.")
+//                    DispatchQueue.main.async {
+//
+//                        self.reviewUserNicName.text = "탈퇴한유저"
+//                        self.reviewUserProfileImg.image = #imageLiteral(resourceName: "MyPageProfile")
+//                    }
                 }
                 
                 
@@ -144,18 +146,18 @@ class FeedReviewListCell: UITableViewCell {
         Database.database().reference().child("review_thumb").child(reviewKey).observeSingleEvent(of: .value) { (dataSnap) in
 //            guard let thumbData = dataSnap.value as? [String:Any] else {return}
             
-            guard let like = dataSnap.childSnapshot(forPath: "review_like").childSnapshot(forPath: "like_count").value as? Int else { return }
-            
-            guard let unlike = dataSnap.childSnapshot(forPath: "review_unlike").childSnapshot(forPath: "unlike_count").value as? Int else { return }
-//            let likeData = thumbData["review_like"] as? [String:Any] ?? [:]
-//            let unlikeData = thumbData["review_unlike"] as? [String:Any] ?? [:]
+//            guard let like = dataSnap.childSnapshot(forPath: "review_like").childSnapshot(forPath: "like_count").value as? Int else { return }
+//
+//            guard let unlike = dataSnap.childSnapshot(forPath: "review_unlike").childSnapshot(forPath: "unlike_count").value as? Int else { return }
+            let likeData = dataSnap.childSnapshot(forPath: "review_like").childSnapshot(forPath: "like_count").value as? Int ?? 0
+            let unlikeData = dataSnap.childSnapshot(forPath: "review_unlike").childSnapshot(forPath: "unlike_count").value as? Int ?? 0
             
             DispatchQueue.main.async {
-//                print("조아요://",like["like_count"], "실어요://",unlike["like_count"])
-                print("조아요://",like, "실어요://",unlike)
-                self.reviewLikeLabel.text = like.description
+                print("리뷰키@://",reviewKey," 조아요://",likeData, "실어요://",unlikeData)
                 
-                self.reviewUnLikeLabel.text = unlike.description
+                self.reviewLikeLabel.text = likeData.description
+                
+                self.reviewUnLikeLabel.text = unlikeData.description
                 
                 
             }
@@ -299,3 +301,5 @@ class FeedReviewListCell: UITableViewCell {
     }
     
 }
+
+

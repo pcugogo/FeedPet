@@ -14,6 +14,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
 
     let leaveMembershipReasonText = ["사용하기 불편해요","정보가 부족해요","다른앱을 사용하고 싶어요","기타"] //탈퇴 이유 텍스트들
     
+    var delegate: LeaveMembershipViewProtocol?
     @IBOutlet weak var leaveMemberShipScrollView: UIScrollView!
     
     @IBOutlet weak var scrollContentView: UIView!
@@ -33,11 +34,17 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil) //키보드 사라지는 것을 옵저브
     }
     
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    deinit {
+        // 옵저버 해제
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -103,6 +110,7 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
         //leaveMembershipTableView
         if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3{
           
+            print(leaveMembershipReasonText[indexPath.row - 1])
             MyPageDataCenter.shared.leaveMembershipReason = leaveMembershipReasonText[indexPath.row - 1]
             tableView.reloadData()
             
@@ -156,6 +164,8 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
         tableView.reloadData()
         self.view.endEditing(true)
         self.view.removeFromSuperview()
+        delegate?.logoutNavigationPoptoMyPage()
+        
         
     }
     
@@ -187,4 +197,8 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
      }
      */
     
+}
+
+protocol LeaveMembershipViewProtocol {
+    func logoutNavigationPoptoMyPage()
 }

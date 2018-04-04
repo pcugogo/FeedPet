@@ -48,7 +48,7 @@ class LeaveMembershipBtnCell: UITableViewCell {
         tableViewDisappear()
     }
     @IBAction func confirmBtnAction(_ sender: UIButton) {
-        
+        print(MyPageDataCenter.shared.leaveMembershipReason)
         if MyPageDataCenter.shared.leaveMembershipReason != "" { //reloadData가 되기때문에 초기 색상을 지정해준다
             
             if MyPageDataCenter.shared.leaveMembershipReason == "기타" {
@@ -57,18 +57,19 @@ class LeaveMembershipBtnCell: UITableViewCell {
                     print("기타 내용이 없음")
                     MyPageDataCenter.shared.leaveMembershipReason = "기타 내용이 없음" //기타 내용이 없음
                     // 로그아웃 후 처음 화면이동 -> tableViewDisappear() 삭제
-                    tableViewDisappear()
+//                    tableViewDisappear()
                 }else{
                     print(MyPageDataCenter.shared.leaveMembershipReason)    //기타
                     print(MyPageDataCenter.shared.leaveMembarshipEtcReasonContent) //내용
+                    MyPageDataCenter.shared.leaveMembershipReason = MyPageDataCenter.shared.leaveMembarshipEtcReasonContent
 //                    MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
-                    tableViewDisappear()
+//                    tableViewDisappear()
                 }
             }else{//여기까지 기타일때
                 
                 print(MyPageDataCenter.shared.leaveMembershipReason) // 이 부분에서 탈퇴 이유를 서버로 보낸다
 //                MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
-                tableViewDisappear()
+//                tableViewDisappear()
             }
             
             // 탈퇴데이터에 정보를 쌓고  유저정보에서 탈퇴정보를 추가해준다. 플래그로 분리
@@ -87,6 +88,7 @@ class LeaveMembershipBtnCell: UITableViewCell {
                 formatter.dateFormat = "yyyy.MM.dd HH:mm"
                 let currentDataString = formatter.string(from: Date())
                 
+                print("탈뢰이유://.",MyPageDataCenter.shared.leaveMembershipReason,"/")
                 leaveUserData.updateValue(MyPageDataCenter.shared.leaveMembershipReason, forKey: "leave_reason")
                 leaveUserData.updateValue(currentDataString, forKey: "leave_date")
                 var newBoard: [String:Any] = [:]
@@ -114,6 +116,7 @@ class LeaveMembershipBtnCell: UITableViewCell {
 //                    DispatchQueue.main.async {
 //                        self.reviewUnLikeLabel.text = unlikeCount.description
 //                    }
+//               MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
                     return TransactionResult.success(withValue: currentData)
                 
                 
@@ -124,7 +127,33 @@ class LeaveMembershipBtnCell: UITableViewCell {
                 
                 // 탈퇴정보 등록후 로그아웃 처리 및 Auth에 계정삭제
                 if committed {
-                     MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
+                    
+    
+//                    guard let leaveUserUid = Auth.auth().currentUser?.uid else { return}
+                    let user = Auth.auth().currentUser
+                    user?.delete { error in
+                        if let error = error {
+                            print("--user delete error://",error.localizedDescription)
+                        } else {
+                            
+                            guard let leaveUserUid = user?.uid else { return }
+                            Database.database().reference().child("user_info").child(leaveUserUid).updateChildValues(["user_leave": true])
+                            DataCenter.shared.socialLogOut(completion: { (result) in
+                                
+                                if result {
+                                    self.tableViewDisappear()
+                                }else{
+                                    
+                                }
+                                
+                                MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
+                                
+                            })
+                            
+                        }
+                    }
+                    
+                    
                 }
             }
 

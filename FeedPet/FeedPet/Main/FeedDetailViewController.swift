@@ -12,6 +12,8 @@ import SwiftyJSON
 class FeedDetailViewController: UIViewController {
 
     @IBOutlet weak var feedDetailTableView: UITableView!
+    @IBOutlet weak var feedDetailHeaderView: FeedDetailHeaderView!
+    @IBOutlet weak var detailFooterView: UITableViewHeaderFooterView!
     @IBOutlet weak var feedBookMarkBtn: UIBarButtonItem!
     var feedDetailInfo: FeedInfo?
     var ingredientData: FeedDetailIngredient?
@@ -41,6 +43,7 @@ class FeedDetailViewController: UIViewController {
         feedDetailTableView.delegate = self
         feedDetailTableView.dataSource = self
         
+        feedDetailHeaderView.feedInfo = feedDetailInfo
 //        self.navigationController?.isNavigationBarHidden = false
 //        self.navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "navigation_backBtn")
 //        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "navigation_backBtn")
@@ -80,7 +83,7 @@ class FeedDetailViewController: UIViewController {
 //            print("리뷰하나의정보://",oneReviewData)
 //
 //            D
-
+        DataCenter.shared.isMove = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,6 +113,13 @@ class FeedDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func reviewMoreBtnTouched(_ sender: UIButton){
+        print("리뷰더보기")
+        let reviewMoreView = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FeedReviewMoreView") as! FeedReviewMoreViewController
+        reviewMoreView.sortingReviewData = self.sortingReviewData
+        
+        self.navigationController?.pushViewController(reviewMoreView, animated: true)
+    }
     @IBAction func bookMarkBtnTouched(_ sender: UIBarButtonItem){
         guard let sendFeedKey = feedDetailInfo?.feedKey else { return }
         var bookMarkState: Bool = false
@@ -209,15 +219,22 @@ class FeedDetailViewController: UIViewController {
 }
 extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return 4
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if section == 4{
+        if section == 3{
             var reviewInfoCount = 0
             if let feedReview = feedReviewData {
                 print(feedReview.reviewInfo.count)
                  reviewInfoCount = feedReview.reviewInfo.count
+                
+                if reviewInfoCount > 5 {
+                    reviewInfoCount = 5
+                    detailFooterView.isHidden = false
+                }else{
+                    detailFooterView.isHidden = true
+                }
             }
             
             return reviewInfoCount
@@ -245,6 +262,7 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
 //            return cell
 //        }
         switch indexPath.section {
+        /*
         case 0:
             let detailCell = tableView.dequeueReusableCell(withIdentifier: "FeedDetailCell", for: indexPath) as! FeedDetailITableViewCell
             detailCell.feedInfo = feedDetailInfo
@@ -275,10 +293,23 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
             var count: CGFloat = 0
             let imgDataCount = feedDetailInfo?.feedImg.count ?? 0
             for imgCount in 0..<imgDataCount{
+                print("이미지 카운트://", imgCount)
+                print(detailCell.feedImgScrollContentView.bounds.width,"/",detailCell.feedImgScrollContentView.bounds.size.width,"/",detailCell.feedImgScrollContentView.bounds.width * CGFloat(imgCount))
+                
+                var img = UIImageView(frame: CGRect(x: detailCell.feedImgScrollContentView.bounds.size.width*CGFloat(imgCount) + 10, y: 0, width: detailCell.feedImgScrollContentView.bounds.size.width, height: detailCell.feedImgScrollContentView.bounds.size.height))
+                img.clipsToBounds = true
+                img.contentMode = .scaleAspectFit
+                if let url = URL(string: (feedDetailInfo?.feedImg[imgCount])!){
+                    
+                    
+                    img.kf.setImage(with: url)
+                    
+                }
+                /*
                 var imageView: UIImageView{
                     let imgViews = UIImageView(frame: CGRect(x: detailCell.feedImgScrollContentView.bounds.size.width*CGFloat(imgCount) + 10, y: 0, width: detailCell.feedImgScrollContentView.bounds.size.width, height: detailCell.feedImgScrollContentView.bounds.size.height))
                     imgViews.contentMode = .scaleAspectFit
-                    imgViews.layer.cornerRadius = 5
+//                    imgViews.layer.cornerRadius = 5
                     imgViews.clipsToBounds = true
                     if let url = URL(string: (feedDetailInfo?.feedImg[imgCount])!){
 
@@ -289,7 +320,11 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
                     return imgViews
                 }
-                detailCell.feedImgScrollContentView.addSubview(imageView)
+                DispatchQueue.main.async {
+                    
+                }
+                */
+                detailCell.feedImgScrollContentView.addSubview(img)
             }
             detailCell.feedImgScrollPageControl.numberOfPages = imgDataCount
             
@@ -301,7 +336,8 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
             detailCell.feedImgScrollView.isPagingEnabled = true
             detailCell.feedImgScrollView.showsHorizontalScrollIndicator = false
             return detailCell
-        case 1:
+        */
+        case 0:
             let ingredientCell = tableView.dequeueReusableCell(withIdentifier: "FeedIngredientCell", for: indexPath) as! FeedIngredientTableViewCell
             
 //            let good = ingredientData?.feedIngredientGood ?? []
@@ -321,11 +357,11 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
             ingredientCell.goodIngredientCountLabel.text = goodStrArray.count.description
             ingredientCell.warningIngredientCountLabel.text = warningStrArray.count.description
             return ingredientCell
-        case 2:
+        case 1:
             let chartProgressCell = tableView.dequeueReusableCell(withIdentifier: "FeedIngredientProgressChartCell", for: indexPath) as! FeedIngredientProgressChartTableViewCell
             chartProgressCell.ingredeintDataSetting(ingredient: ingredientData)
             return chartProgressCell
-        case 3:
+        case 2:
             let reviewInfoCell = tableView.dequeueReusableCell(withIdentifier: "FeedReviewInfoCell", for: indexPath) as! FeedReviewInfoTableViewCell
             reviewInfoCell.delegate = self
             
@@ -335,10 +371,11 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
             
             return reviewInfoCell
          
-        case 4:
+        case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: "FeedReviewListCell", for: indexPath) as! FeedReviewListCell
             print("디테일에서 리뷰정보\(indexPath.row))://",sortingReviewData[indexPath.row])
             
+
             cell.reviewData = sortingReviewData[indexPath.row]
         return cell
         default:
@@ -375,6 +412,8 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
             print("")
         }
     }
+    
+    
 }
 extension FeedDetailViewController: FeedDetailCellProtoCol{
     
@@ -437,6 +476,7 @@ extension FeedDetailViewController: ReviewInfoCellProtocol{
     
     
 }
+
 enum FeedPetAge: Int {
     case all = 0
     case puppyAndJunior = 1
@@ -483,8 +523,10 @@ enum FeedPetAge: Int {
     }
 }
 
+
 protocol FeedDetailViewProtocol {
     
     func sendBookMarkValue(isBookMark: Bool, feedKey: String)
     
 }
+

@@ -151,21 +151,24 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         // 최초의 첫번째 자식뷰는 강이지일 경우이다. 따라서 고양이일 경우에만 처리해준다
         print("페이지커느톨://", DataCenter.shared.userInfo)
         // 문제 => 난 강아지를 선택했지만 고양이 사료를 보고싶어서 상세화면을 갔다가오면 사용자의 펫정보의 뷰로이동됨
-        if DataCenter.shared.userInfo.userPet == "feed_petkey_c" {
-       
-//        guard let loginUserData = UserDefaults.standard.value(forKey: "") as? User else {return}
-//        if loginUserData.userPet == "feed_petkey_c" {
-        
-            moveToViewController(at: 1, animated: true)
-            
-//            self.moveToViewController(at: 1, animated: true)
-//            print(childViewControllers)
-        }else{
-            moveToViewController(at: 0, animated: true)
-            
-//             self.moveToViewController(at: 0, animated: true)
-//            print(childViewControllers)
+        if DataCenter.shared.isMove {
+            if DataCenter.shared.userInfo.userPet == "feed_petkey_c" {
+                
+                //        guard let loginUserData = UserDefaults.standard.value(forKey: "") as? User else {return}
+                //        if loginUserData.userPet == "feed_petkey_c" {
+                
+                moveToViewController(at: 1, animated: true)
+                
+                //            self.moveToViewController(at: 1, animated: true)
+                //            print(childViewControllers)
+            }else{
+                moveToViewController(at: 0, animated: true)
+                
+                //             self.moveToViewController(at: 0, animated: true)
+                //            print(childViewControllers)
+            }
         }
+        
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -220,17 +223,28 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     */
     @IBAction func mypageShow(_ sender: UIBarButtonItem){
         let nextViewController = UIStoryboard.init(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "MyPageViewController") as! MyPageViewController
+        nextViewController.delegate = self
+        
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Database.database().reference().child("user_info").child(uid).observeSingleEvent(of: .value, with: { (dataSnap) in
             guard let userData = dataSnap.value as? [String:Any] else {return}
             let userInfo = User(userInfoData: userData)
             nextViewController.userData = userInfo
             
-            nextViewController.delegate = self
+//            nextViewController.delegate = self
             
-            FireBaseData.shared.fireBaseMyReviewDataLoad()
-            FireBaseData.shared.fireBaseFavoritesDataLoad()
-            self.navigationController?.pushViewController(nextViewController, animated: true)
+//            FireBaseData.shared.fireBaseMyReviewDataLoad()
+//            FireBaseData.shared.fireBaseFavoritesDataLoad()
+            FireBaseData.shared.fireBaseMyReviewDataOnLoad(completion: { (result) in
+                
+                if result {
+                     self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                }else{
+                    
+                }
+            })
+           
         }) { (error) in
             print(error.localizedDescription)
         }
@@ -390,6 +404,11 @@ extension PageControllerBaseController: LoadingIndicatorProtocol{
         
         guard let lodinView = spinerView else { return}
         DataCenter.shared.removeSpinner(spinner: lodinView)
+//        DataCenter.shared.loadingView = nil
+        //
+//        self.spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+//        DataCenter.shared.loadingView = self.spinerView
+        
     }
     
     func loadingIndicatorDisplay() {
@@ -401,6 +420,7 @@ extension PageControllerBaseController: LoadingIndicatorProtocol{
     }
     
     func loadingRemoveDisplay() {
+        
         DataCenter.shared.removeSpinner(spinner: spinerView)
     }
     

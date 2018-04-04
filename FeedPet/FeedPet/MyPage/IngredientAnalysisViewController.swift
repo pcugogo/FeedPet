@@ -79,11 +79,11 @@ class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UIT
                     ingredientAnalysisDetailView.ingredientName = feedIngredientGoodDatas[indexPath.row].ingredientNameReturn
                     ingredientAnalysisDetailView.ingredientContent = feedIngredientGoodDatas[indexPath.row].ingredientTextReturn
                     ingredientAnalysisDetailView.selectedSegmentIndex = ingredientSCOut.selectedSegmentIndex
-                    
-                    self.addChildViewController(ingredientAnalysisDetailView)
-                    ingredientAnalysisDetailView.view.frame = self.view.frame
-                    self.view.addSubview(ingredientAnalysisDetailView.view)
-                    ingredientAnalysisDetailView.didMove(toParentViewController: self)
+                    self.present(ingredientAnalysisDetailView, animated: true, completion: nil)
+//                    self.addChildViewController(ingredientAnalysisDetailView)
+//                    ingredientAnalysisDetailView.view.frame = self.view.frame
+//                    self.view.addSubview(ingredientAnalysisDetailView.view)
+//                    ingredientAnalysisDetailView.didMove(toParentViewController: self)
                 }
             }
             
@@ -96,11 +96,12 @@ class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UIT
                     ingredientAnalysisDetailView.ingredientName = feedIngredientWarningDatas[indexPath.row].ingredientNameReturn
                           ingredientAnalysisDetailView.ingredientContent = feedIngredientWarningDatas[indexPath.row].ingredientTextReturn
                     ingredientAnalysisDetailView.selectedSegmentIndex = ingredientSCOut.selectedSegmentIndex
-                    
-                    self.addChildViewController(ingredientAnalysisDetailView)
-                    ingredientAnalysisDetailView.view.frame = self.view.frame
-                    self.view.addSubview(ingredientAnalysisDetailView.view)
-                    ingredientAnalysisDetailView.didMove(toParentViewController: self)
+                    self.present(ingredientAnalysisDetailView, animated: true, completion: nil)
+//
+//                    self.addChildViewController(ingredientAnalysisDetailView)
+//                    ingredientAnalysisDetailView.view.frame = self.view.frame
+//                    self.view.addSubview(ingredientAnalysisDetailView.view)
+//                    ingredientAnalysisDetailView.didMove(toParentViewController: self)
                 }
             }
             

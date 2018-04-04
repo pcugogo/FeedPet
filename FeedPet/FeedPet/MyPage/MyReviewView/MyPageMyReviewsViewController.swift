@@ -92,7 +92,7 @@ class MyPageMyReviewsViewController: UIViewController,UITableViewDataSource,UITa
                 
                 print("removeFeedData",removeFeedData)
                 MyPageDataCenter.shared.myReviewDatas.remove(at: index)
-
+                
                 self.tableView.reloadData()
                UIApplication.shared.isNetworkActivityIndicatorVisible = true
                 FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(removeFeedData.feedKeyReturn).removeValue()

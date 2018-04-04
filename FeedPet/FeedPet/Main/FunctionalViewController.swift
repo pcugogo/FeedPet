@@ -15,42 +15,45 @@ class FunctionalViewController: UIViewController {
 
     var functionalData = [[String:String]]()
     var functionalList = [Functional]()
+    var sortingState: SortingState = DataCenter.shared.sortingState {
+        didSet{
+            
+        }
+    }
+    // 사용자의 반려동물과 현재 cuurentPetkey값이 동일하지 않을때 사용할 기능성 인덱스패스 데이터
     var userDataLoad: Bool = false
     var userIndexPath: [IndexPath] = [] {
         didSet{
             
+            
             DispatchQueue.global(qos: .userInteractive).async {
                 
                 self.functionalChangeToString()
                 
             }
             
+            
+            
         }
     }
     
+    // 사용자의 반려동물과 현재 cuurentPetkey값이 동일할때 사용할 기능성 인덱스패스 데이터
     var functionalIndexPath: [IndexPath] = [] {
-//        willSet{
-//            let userInfo = DataCenter.shared.userInfo
-//            print("")
-//            if userInfo.userPet != DataCenter.shared.currentPetKey {
-//                print("다를경우")
-////                self.functionalIndexPath = []
-////                self.functionalCollectionView.reloadData()
-//            }
-//        }
+
         didSet{
             
             DispatchQueue.global(qos: .userInteractive).async {
                 
                 self.functionalChangeToString()
-                
+
             }
             
         }
     }
     
-    
+    // 실제 기능성의 String값을 담을 배열
     var functionalKeyString: [String] = []
+    
     // 델리게이트 패턴을 사용하기 위해 FunctionalKeySend 프로토콜 타입의 변수 선언
     var sendFunctionalDelegate: FunctionalProtocol?
     var filterDelegate: FilterProtocol?
@@ -67,13 +70,7 @@ class FunctionalViewController: UIViewController {
         functionalCollectionView.delegate = self
         functionalCollectionView.dataSource = self
         
-        let userInfo = DataCenter.shared.userInfo
-        print("조회한 유저데이터 datasignal://,",userInfo)
-       
-        if userInfo.userPet != DataCenter.shared.currentPetKey {
-//            functionalIndexPath = []
-//            self.functionalCollectionView.reloadData()
-        }
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.dataLoadSignal(notification:)), name: .feedAllDataNoti, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(self.test(notification:)), name: .userPetTest, object: nil)
@@ -84,13 +81,14 @@ class FunctionalViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 // self.functionalCollectionView.reloadData()
-        let userInfo = DataCenter.shared.userInfo
-        print("조회한 유저데이터 datasignal://,",userInfo)
-        if userInfo.userPet != DataCenter.shared.currentPetKey {
-             
-           self.functionalCollectionView.reloadData()
-        }
-
+//        let userInfo = DataCenter.shared.userInfo
+//        print("조회한 유저데이터 datasignal://,",userInfo)
+//        if userInfo.userPet != DataCenter.shared.currentPetKey {
+//            functionalIndexPath = []
+////           self.functionalCollectionView.reloadData()
+//        }
+        print(self.functionalIndexPath)
+        print("메인에 기능 값보내기전 유저반려동물://",DataCenter.shared.userInfo.userPet ,"//현화면 반려동물://", DataCenter.shared.currentPetKey)
         if DataCenter.shared.userDataUpdate && DataCenter.shared.userUpdateCount < 3 {
             print(self.functionalIndexPath)
             self.functionalCollectionView.reloadData()
@@ -101,6 +99,11 @@ class FunctionalViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    deinit {
+        // 옵저버 등록 해제
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.feedAllDataNoti, object: nil)
+        
     }
     @IBAction func dataSortingFilterBtnTouched(_ sender: UIButton){
         let actionSheet = UIAlertController(title: nil, message: "정렬", preferredStyle: .actionSheet)
@@ -214,6 +217,7 @@ class FunctionalViewController: UIViewController {
 //            })
 //        }
         var sendIndexPath:[IndexPath] = []
+        print("메인에 기능 값보내기전 유저반려동물://",DataCenter.shared.userInfo.userPet ,"//현화면 반려동물://", DataCenter.shared.currentPetKey)
         if DataCenter.shared.userInfo.userPet != DataCenter.shared.currentPetKey {
             sendIndexPath = userIndexPath
         }else{
@@ -236,12 +240,15 @@ class FunctionalViewController: UIViewController {
 //    @objc func test(notification: Notification){
 //        let userInfo = DataCenter.shared.userInfo
 //        print("조회한 유저데이터 datasignal://,",userInfo)
+////        self.userIndexPath = []
+////        self.functionalCollectionView.reloadData()
 //
-//        if userInfo.userPet != DataCenter.shared.currentPetKey {
-//            self.userIndexPath = []
-//            self.functionalCollectionView.reloadData()
-//        }
+////        if userInfo.userPet != DataCenter.shared.currentPetKey {
+////            self.userIndexPath = []
+////            self.functionalCollectionView.reloadData()
+////        }
 //    }
+//
     
     // NotificationCenter 옵저버를 사용하여 MainPageViewController에서 선행되어야할 데이터 작업후 노티게시
     @objc func dataLoadSignal(notification: Notification){
@@ -391,6 +398,16 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
         let userInfo = DataCenter.shared.userInfo
         print("기능성에서 유저정보\(indexPath)://", userInfo.userPet,"//데이터센터 선택키://",DataCenter.shared.currentPetKey)
         
+//        if functionalIndexPath.contains(indexPath) {
+//            functionCell.isSelected = true
+//            //            functionCell.functionalSelectInt = 1
+//            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+//            //            functionalIndexPath.append(indexPath)
+//        }else{
+//            functionCell.isSelected = false
+//            //            functionCell.functionalSelectInt = 0
+//            collectionView.deselectItem(at: indexPath, animated: true)
+//        }
         
         if userInfo.userPet == DataCenter.shared.currentPetKey {
             if functionalIndexPath.contains(indexPath) {
@@ -415,6 +432,7 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
             }
 
         }
+ 
         
 //        if userInfo.userPet == DataCenter.shared.currentPetKey && functionalIndexPath.contains(indexPath) {
 //            functionCell.isSelected = true
@@ -437,10 +455,11 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
             if DataCenter.shared.userInfo.userPet != DataCenter.shared.currentPetKey {
                 userIndexPath = collectionView.selectAll(animated: true)
             }else{
-                
+
                 functionalIndexPath = collectionView.selectAll(animated: true)
             }
             
+//            functionalIndexPath = collectionView.selectAll(animated: true)
             
      
             //                functionalIndexPath.append(indexPath)
@@ -451,6 +470,29 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
             //            }
             
         }else{
+//            if functionalIndexPath.contains(indexPath){
+//                let indexInt = functionalIndexPath.index(of: indexPath)
+//                print("기능성 선택한 값이 존재할경우 String:/",indexInt)
+//                functionalIndexPath.remove(at: indexInt!)
+//                print("------기능성 선택한 값이 존재할경우 slect 인덱스패스------: ",functionalIndexPath)
+//            }
+//            else{
+//                functionalIndexPath.append(indexPath)
+//                print("------기능성 선택한 값이 존재하지 않을경우 slect 인덱스패스------: ",functionalIndexPath)
+//            }
+//
+//            let pathtest = IndexPath(item: collectionView.numberOfItems(inSection: 0)-1, section: 0)
+//            print("PATHTEST://",pathtest)
+//            if functionalIndexPath.count == 8{
+//                let indexInt = functionalIndexPath.index(of: pathtest)
+//                collectionView.selectItem(at: pathtest, animated: true, scrollPosition: .centeredVertically)
+//
+//                // 8개가되면 실제로 all이라는 키값은 할당하지 않고 UI만 표시해준다.
+//                //                functionalIndexPath.append(pathtest)
+//                //                functionalIndexPath = [pathtest]
+//
+//            }
+            
             if DataCenter.shared.userInfo.userPet != DataCenter.shared.currentPetKey {
                 if userIndexPath.contains(indexPath){
                     let indexInt = userIndexPath.index(of: indexPath)
@@ -515,13 +557,16 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
         
         
         if indexPath.item == collectionView.numberOfItems(inSection: 0)-1 {
+            
+//            functionalIndexPath = []
+            
             if DataCenter.shared.userInfo.userPet != DataCenter.shared.currentPetKey {
                 userIndexPath = []
             }
             else{
                 functionalIndexPath = []
             }
-            
+ 
             collectionView.deselectAll(animated: true)
         }else{
             collectionView.deselectItem(at: IndexPath(item:  collectionView.numberOfItems(inSection: 0)-1, section: 0), animated: true)
@@ -529,6 +574,17 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
             // 전체 선택인지 확인을 위한 인덱스 패스 [0,8]
             let pathtest = IndexPath(item: collectionView.numberOfItems(inSection: 0)-1, section: 0)
             print(pathtest)
+//            if functionalIndexPath.contains(pathtest){
+//                let indexInt = functionalIndexPath.index(of: pathtest)
+//                functionalIndexPath.remove(at: indexInt!)
+//            }
+//            if functionalIndexPath.contains(indexPath){
+//                let indexInt = functionalIndexPath.index(of: indexPath)
+//                print("기능성 didDeslect String:/",indexInt)
+//                functionalIndexPath.remove(at: indexInt!)
+//                print("------기능성 didDeslect 인덱스패스------: ",functionalIndexPath)
+//            }
+            
             if DataCenter.shared.userInfo.userPet != DataCenter.shared.currentPetKey {
                 if userIndexPath.contains(pathtest){
                     let indexInt = userIndexPath.index(of: pathtest)
@@ -554,6 +610,7 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
                 }
                 
             }
+ 
         }
 //        if functionalIndexPath.contains(indexPath){
 //            let indexInt = functionalIndexPath.index(of: indexPath)

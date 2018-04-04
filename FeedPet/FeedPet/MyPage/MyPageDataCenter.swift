@@ -362,6 +362,41 @@ struct FireBaseData{
         }
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
+    // 마이페이지 데이터 클로져 작업중 --2018.04.03
+    func fireBaseMyReviewDataOnLoad(completion: @escaping (Bool)->Void){
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        //나중에 밑에 차일드 유아이디 값에 로그인한 유저 값을 넣어야된다
+        guard let useruid = Auth.auth().currentUser?.uid else {return}
+        FireBaseData.shared.refMyReviews.child(useruid).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if MyPageDataCenter.shared.myReviewKeyDatas.isEmpty == false{ //서버에서 데이터를 불러오기전 데이터를 초기화
+                MyPageDataCenter.shared.myReviewKeyDatas.removeAll()
+            }
+            
+            MyPageDataCenter.shared.reviewsCount = Int(snapshot.childrenCount)
+            
+            if let snapShot = snapshot.children.allObjects as? [DataSnapshot]{
+                
+                for snap in snapShot{
+                    
+                    if let reviewKeyDic = snap.value as? [String:AnyObject]{
+                        let feedKey = (snap.key)
+                        let reviewData = MyReviewKey(feedKey: feedKey, reviewKeyDic: reviewKeyDic)
+                        MyPageDataCenter.shared.myReviewKeyDatas.append(reviewData)
+                        
+                    }
+                    
+                }
+                completion(true)
+                self.fireBaseFeedReviewsDataLoad()
+                self.fireBaseReviewThumbDataLoad()
+            }
+            else{
+                completion(false)
+            }
+        })
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
     
     func fireBaseMyReviewDataLoad(){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
@@ -388,7 +423,7 @@ struct FireBaseData{
                     
                 }
                 self.fireBaseFeedReviewsDataLoad()
-                self.FireBaseReviewThumbDataLoad()
+                self.fireBaseReviewThumbDataLoad()
             }
         })
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -471,12 +506,35 @@ struct FireBaseData{
         
     }
     
-    func FireBaseReviewThumbDataLoad(){
+    
+    func fireBaseReviewThumbDataLoad(){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         for reviewKeyData in MyPageDataCenter.shared.myReviewKeyDatas{
             var reviewLike = 0
             var reviewUnLike = 0
-            FireBaseData.shared.refReviewThumb.child(reviewKeyData.reviewKeyReturn).runTransactionBlock({ (reviewThumbSnapshot) -> TransactionResult in
+            Database.database().reference().child("review_thumb").child(reviewKeyData.reviewKeyReturn).observeSingleEvent(of: .value) { (dataSnap) in
+                //            guard let thumbData = dataSnap.value as? [String:Any] else {return}
+                
+                //            guard let like = dataSnap.childSnapshot(forPath: "review_like").childSnapshot(forPath: "like_count").value as? Int else { return }
+                //
+                //            guard let unlike = dataSnap.childSnapshot(forPath: "review_unlike").childSnapshot(forPath: "unlike_count").value as? Int else { return }
+                let likeData = dataSnap.childSnapshot(forPath: "review_like").childSnapshot(forPath: "like_count").value as? Int ?? 0
+                let unlikeData = dataSnap.childSnapshot(forPath: "review_unlike").childSnapshot(forPath: "unlike_count").value as? Int ?? 0
+                
+                DispatchQueue.main.async {
+                    print("리뷰키@://",reviewKeyData.reviewKeyReturn," 조아요://",likeData, "실어요://",unlikeData)
+                    let thumbData = ReviewThumb(reviewKey: reviewKeyData.reviewKeyReturn, numberOfLike: likeData, numberOfUnLike: unlikeData)
+                    print(thumbData)
+                    MyPageDataCenter.shared.reviewThumbDatas.append(thumbData)
+//                    self.reviewLikeLabel.text = likeData.description
+                    
+//                    self.reviewUnLikeLabel.text = unlikeData.description
+                    
+                    
+                }
+            }
+
+           /* FireBaseData.shared.refReviewThumb.child(reviewKeyData.reviewKeyReturn).runTransactionBlock({ (reviewThumbSnapshot) -> TransactionResult in
                 if let reviewThumbSnap = reviewThumbSnapshot.value as? [String:AnyObject]{
                     for thumbSnap in reviewThumbSnap{
                         if thumbSnap.key == "review_like"{
@@ -498,6 +556,8 @@ struct FireBaseData{
                 
                 return TransactionResult.success(withValue: reviewThumbSnapshot)
             })
+            
+            */
         }
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }

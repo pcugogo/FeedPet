@@ -48,6 +48,9 @@ class DataCenter {
     var userInfo: User = User()
     var userDataUpdate: Bool = false
     var userUpdateCount: Int = 0
+    
+    // 사용자의 반려동물에따른 화면이동을 위한 flag => 디테일 화면으로 이동시에는 불필요하여 필요
+    var isMove: Bool = true
     var filterGrade: [IndexPath] = []
     
     var filterIndexPathArr: [IndexPath] = []
@@ -65,11 +68,23 @@ class DataCenter {
     // Login 확인 요청 메서드
     func requestIsLogin() -> Bool {
         if Auth.auth().currentUser == nil {
+            isLogin = false
             return false
         }else{
             isLogin = true
-            
-            return true
+            // 실제 Auth에는 로그인이 되어있지만 데이터가 쌓이지 않은상태--> 회원가입치 추가작업을 수행하지 않은경우 대비
+            if let _ = UserDefaults.standard.value(forKey: "login_State") {
+                return true
+            }else{
+                do {
+                    try Auth.auth().signOut()
+                } catch (let error) {
+                    print(error.localizedDescription)
+                }
+                
+                return false
+            }
+//            return true
         }
        
     }
@@ -112,6 +127,8 @@ class DataCenter {
             }
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             logOutFlag = true
+            
+            UserDefaults.standard.removeObject(forKey: "login_State")
         }catch{
             logOutFlag = false
         }
@@ -291,13 +308,16 @@ class DataCenter {
     // gif인디케이터 삭제 메서드
     // 사용법 - 상위 메서드에서 생성한 spiner를 파라미터로 전달
     // ex) DataCenter.shard.removeSpiner(spiner: spiner)
-    func removeSpinner(spinner :UIView) {
+    func removeSpinner(spinner :UIView?) {
+        guard let loadingSpinerView = spinner else {
+            return
+        }
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.3, animations: {
-                spinner.alpha = 0
+                loadingSpinerView.alpha = 0
             }, completion: { (finish) in
                 
-                spinner.removeFromSuperview()
+                loadingSpinerView.removeFromSuperview()
             })
         }
     }

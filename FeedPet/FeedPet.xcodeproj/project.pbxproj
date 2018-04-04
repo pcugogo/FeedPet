@@ -58,6 +58,8 @@
 		4C229C8E200CB2DF004FFD07 /* FilterDetailGradeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C8D200CB2DF004FFD07 /* FilterDetailGradeTableViewCell.swift */; };
 		4C25DC4C2031861200C4871D /* loading_img.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4C25DC4B2031861200C4871D /* loading_img.gif */; };
 		4C5DB82D20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5DB82C20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift */; };
+		4C5F6E982072450100CCB2F7 /* FeedReviewMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F6E972072450100CCB2F7 /* FeedReviewMoreViewController.swift */; };
+		4C5F6E9A2073907600CCB2F7 /* FeedDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F6E992073907600CCB2F7 /* FeedDetailHeaderView.swift */; };
 		4C5FBD6C1FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD681FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift */; };
 		4C5FBD6D1FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C5FBD691FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib */; };
 		4C5FBD6E1FFEB35F004C66EE /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5FBD6A1FFEB35F004C66EE /* MainViewController.swift */; };
@@ -156,6 +158,8 @@
 		4C229C8D200CB2DF004FFD07 /* FilterDetailGradeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterDetailGradeTableViewCell.swift; sourceTree = "<group>"; };
 		4C25DC4B2031861200C4871D /* loading_img.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading_img.gif; sourceTree = "<group>"; };
 		4C5DB82C20052CD600AB4DE9 /* FeedMainInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMainInfoTableViewCell.swift; sourceTree = "<group>"; };
+		4C5F6E972072450100CCB2F7 /* FeedReviewMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReviewMoreViewController.swift; sourceTree = "<group>"; };
+		4C5F6E992073907600CCB2F7 /* FeedDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailHeaderView.swift; sourceTree = "<group>"; };
 		4C5FBD681FFEB35F004C66EE /* MainMenuIconCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuIconCollectionViewCell.swift; sourceTree = "<group>"; };
 		4C5FBD691FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenuIconCollectionViewCell.xib; sourceTree = "<group>"; };
 		4C5FBD6A1FFEB35F004C66EE /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -409,8 +413,10 @@
 				4CF7C4522003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift */,
 				4CF7C45420040DE400AF8E35 /* FunctionalViewController.swift */,
 				4C8DFB8D200F55A700331A5B /* FeedDetailViewController.swift */,
+				4C5F6E992073907600CCB2F7 /* FeedDetailHeaderView.swift */,
 				4C8DFB8F200F580900331A5B /* FeedDetailITableViewCell.swift */,
 				4C1E6DDA2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift */,
+				4C5F6E972072450100CCB2F7 /* FeedReviewMoreViewController.swift */,
 				4C1E6DDC20130DD500C7EDFC /* FeedReviewListTableViewCell.swift */,
 				4C96FA65204E4D08008F4960 /* FeedReviewListCell.swift */,
 				4C96FA66204E4D08008F4960 /* FeedReviewListCell.xib */,
@@ -680,6 +686,7 @@
 				14035C1C1FF24E95005ABAE0 /* EditInfoViewController.swift in Sources */,
 				14BF2FD31FF4111E00E5D2BE /* AlarmMealTimePickerViewController.swift in Sources */,
 				FC709DAA201A4CA2005AF023 /* MyPageReviewEditViewController.swift in Sources */,
+				4C5F6E982072450100CCB2F7 /* FeedReviewMoreViewController.swift in Sources */,
 				4CE4F5DA1FFEAD2B0047E9F9 /* Extension.swift in Sources */,
 				FC75AC3E2022596A0041283E /* EditInfoViewPetFunctionCollectionViewCell.swift in Sources */,
 				4C1C1BCC202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.swift in Sources */,
@@ -696,6 +703,7 @@
 				4C229C82200B9E50004FFD07 /* FilterViewController.swift in Sources */,
 				14417CB11FF2DC5D00EA77B3 /* FAQViewController.swift in Sources */,
 				4CF7C44B2003A57100AF8E35 /* MainCustomNavigationBar.swift in Sources */,
+				4C5F6E9A2073907600CCB2F7 /* FeedDetailHeaderView.swift in Sources */,
 				4C8DFB90200F580900331A5B /* FeedDetailITableViewCell.swift in Sources */,
 				4CF7C4532003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift in Sources */,
 				4C229C88200CB21B004FFD07 /* FilterTableViewCell.swift in Sources */,
@@ -844,7 +852,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PV38XQ6LPC;
 				INFOPLIST_FILE = FeedPet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gisuhwang.FeedPet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -864,7 +872,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PV38XQ6LPC;
 				INFOPLIST_FILE = FeedPet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gisuhwang.FeedPet;
 				PRODUCT_NAME = "$(TARGET_NAME)";

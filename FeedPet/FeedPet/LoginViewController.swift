@@ -92,6 +92,9 @@ class LoginViewController: UIViewController{
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    deinit {
+        
+    }
     
     @objc func appDidBecomeActive() {
         introPlayer?.play()
@@ -142,7 +145,7 @@ class LoginViewController: UIViewController{
             }else{
                 self.getFBUserData()
                 let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-                self.socialLogin(credential: credential, social: "facebook")
+                self.socialLogin(credential: credential, social: "facebook.com")
                 //                Auth.auth().signIn(with: credential) { (user, error) in
                 //
                 //
@@ -311,15 +314,15 @@ class LoginViewController: UIViewController{
         self.spiner = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
         // Auth 에 사용자 등록 및 Database에 데이터 저장- 데이터베이스 저장은 추가 정보 입력후 저장되도록
         Auth.auth().signIn(with: credential) {[unowned self] (user, error) in
-            
+            print(credential)
             print("User Signed Into Firebase")
             self.reference = Database.database().reference()
             guard let loginUser = user else{return}
             print("## 로그인 uid 확인: ", loginUser.uid)
         
             
-            UserDefaults.standard.setValue(loginUser.uid, forKey: "userUID")
-            UserDefaults.standard.setValue(social, forKey: "loginSocial")
+//            UserDefaults.standard.setValue(loginUser.uid, forKey: "userUID")
+//            UserDefaults.standard.setValue(social, forKey: "loginSocial")
             // 최초 로그인시에만 Firebase데이터에 저장
             // 그렇지않을 경우 Firebase데이터에 저장하지 않고 Auth에만 등록
             
@@ -389,7 +392,12 @@ class LoginViewController: UIViewController{
 //                                appDelegate.window?.rootViewController? = navi
 //                                appDelegate.window!.makeKeyAndVisible()
                                 
-                                
+                                if let login = UserDefaults.standard.value(forKey: "login_State") {
+//                                    UserDefaults.standard.set(social, forKey: "login_social")
+                                }else{
+                                    UserDefaults.standard.set(true, forKey: "login_State")
+                                    
+                                }
                                 self.present(navi, animated: false, completion: nil)
                             }
                         }, withCancel: { (error) in
@@ -466,7 +474,7 @@ extension LoginViewController: GIDSignInDelegate, GIDSignInUIDelegate{
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                        accessToken: authentication.accessToken)
         print(credential)
-        self.socialLogin(credential: credential, social: "google")
+        self.socialLogin(credential: credential, social: "google.com")
         // AddUserInfo뷰 이동전에 딜레이 부분을 위해 체크를 해주는데 메인큐에서 할경우 AddUserInfo뷰에서 사용할필요가있다.
         //        if let _ = spiner {
         //            spiner = DataCenter.shared.displsyLoadingIndicator(onView: self.view)

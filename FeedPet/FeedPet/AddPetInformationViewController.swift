@@ -44,16 +44,16 @@ class AddPetInformationViewController: UIViewController {
         didSet{
             
             if petBtnTag == 0{
-                dogBtnOutlet.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-                catBtnOutlet.setImage(#imageLiteral(resourceName: "catDisable"), for: .normal)
+                dogBtnOutlet.setImage(#imageLiteral(resourceName: "dogAbleImg"), for: .normal)
+                catBtnOutlet.setImage(#imageLiteral(resourceName: "catDisableImg"), for: .normal)
                 ageArray = dogAgeAray
 //                functionalArray = dogFunctionalArray
                 functionalDicArray = dogDicArray
                 petKey = "functional_petkey_d"
                 userPet = "feed_petkey_d"
             }else{
-                dogBtnOutlet.setImage(#imageLiteral(resourceName: "dogDisable"), for: .normal)
-                catBtnOutlet.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
+                dogBtnOutlet.setImage(#imageLiteral(resourceName: "dogDisableImg"), for: .normal)
+                catBtnOutlet.setImage(#imageLiteral(resourceName: "catAbleImg"), for: .normal)
                 ageArray = catAgeArray
 //                functionalArray = catFunctionalArray
                 functionalDicArray = catDicArray
@@ -143,7 +143,7 @@ class AddPetInformationViewController: UIViewController {
             print("회원최동데이터://",userData)
             let userInfo = User(userInfoData: userData)
             DataCenter.shared.userInfo = userInfo
-            UserDefaults.standard.set(userInfo, forKey: "loginUserData")
+//            UserDefaults.standard.set(userInfo, forKey: "loginUserData")
             print( UserDefaults.standard.string(forKey: "userUID"))
             
 //            guard let userUID = UserDefaults.standard.string(forKey: "userUID") else {return}
@@ -156,7 +156,8 @@ class AddPetInformationViewController: UIViewController {
             ref.setValue(userData)
             DispatchQueue.main.async {
                 self.dismiss(animated: true) {
-                    
+                    UserDefaults.standard.set(true, forKey: "login_State")
+                    print(Auth.auth().currentUser?.providerData.first?.providerID)
                     self.delegate?.currentViewDismiss()
                 }
             }

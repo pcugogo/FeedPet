@@ -40,9 +40,10 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         print(MyPageDataCenter.shared.favorites)
-        
+        DataCenter.shared.isMove = true
         //마이페이지 전에 있는 뷰의 뷰디드로드에서 데이터를 로드해야 MyMenuCell의 즐겨찾기 수랑 리뷰 수가 없데이트 된다
-       
+        FireBaseData.shared.fireBaseMyReviewDataLoad()
+        FireBaseData.shared.fireBaseFavoritesDataLoad()
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -223,6 +224,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
             
         }else if indexPath.section == 2 && indexPath.row == 8 {     //탈퇴하기
             let leaveMembershipView:LeaveMembershipViewController = storyboard?.instantiateViewController(withIdentifier: "LeaveMembershipViewController") as! LeaveMembershipViewController
+            leaveMembershipView.delegate = self
             
             self.addChildViewController(leaveMembershipView) //alarmMealTimePickerView에 있는 피커뷰를 addsubview
             self.navigationController?.isNavigationBarHidden = true
@@ -363,3 +365,24 @@ extension MyPageViewController:UIImagePickerControllerDelegate{
         
     }
 }
+
+extension MyPageViewController: LeaveMembershipViewProtocol{
+    func logoutNavigationPoptoMyPage() {
+//        DataCenter.shared.socialLogOut(completion: { (result) in
+//            if result {
+//                self.navigationController?.popViewController(animated: true)
+//                self.delegate?.logoutNavigationPop()
+//            }
+//        })
+        self.navigationController?.popViewController(animated: true)
+        self.delegate?.logoutNavigationPop()
+    }
+    
+    
+}
+
+
+
+
+
+
