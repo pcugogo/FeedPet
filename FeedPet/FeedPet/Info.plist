@@ -83,5 +83,11 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string></string>
+		<string>GodoB.otf</string>
+		<string>GodoM.otf</string>
+	</array>
 </dict>
 </plist>

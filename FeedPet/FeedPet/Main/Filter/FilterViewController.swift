@@ -90,7 +90,7 @@ class FilterViewController: UIViewController {
                                                        checkState: false,
                                                        gradeImg: nil,
                                                        textLabel: "오가다이어트",
-                                                       filterValue: "오다가디어트"),
+                                                       filterValue: "오가다이어트"),
                                        FilterMenuInner(cellType: "Detail",
                                                        checkState: false,
                                                        gradeImg: nil,
@@ -732,9 +732,9 @@ extension FilterViewController: UITableViewDataSource, UITableViewDelegate, Filt
         print(testFilterMenuSection[section].menu)
         header.customInint(title: testFilterMenuSection[section].menu, section: section, delegate: self)
         if testFilterMenuSection[section].expanded {
-            header.expendedImg.image = UIImage(imageLiteralResourceName: "foldBtn")
+            header.expendedImg.image = #imageLiteral(resourceName: "foldBtn")
         }else{
-            header.expendedImg.image = UIImage(imageLiteralResourceName: "unfoldBtn")
+            header.expendedImg.image = #imageLiteral(resourceName: "unfoldBtn")
         }
         return header
     }
@@ -855,8 +855,8 @@ extension FilterViewController: UITableViewDataSource, UITableViewDelegate, Filt
 //            filterMenuTableView.reloadRows(at: [IndexPath(row: i, section: section)], with: .automatic)
 //        }
  
-        
-//        filterMenuTableView.reloadSections([section], with: .automatic)
+        // 헤더메뉴클릭값에 따라 변화되는정보를 리로드(이미지포함)
+        filterMenuTableView.reloadSections([section], with: .automatic)
         
         filterMenuTableView.endUpdates()
         

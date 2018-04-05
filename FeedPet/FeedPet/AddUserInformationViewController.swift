@@ -58,8 +58,6 @@ class AddUserInformationViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // 옵저버 등록 해제
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
         
         
     }
@@ -68,7 +66,11 @@ class AddUserInformationViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    deinit {
+        // 옵저버 등록 해제
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
+        
+    }
     //    override func performSegue(withIdentifier identifier: String, sender: Any?) {
     //        print("Segue 이동전")
     //    }

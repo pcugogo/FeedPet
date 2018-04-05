@@ -37,8 +37,8 @@ class IngredientAnalysisDetailViewController: UIViewController {
         
         contentView.layer.cornerRadius = 5
         okBtnOut.layer.cornerRadius = 5
-        
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+//        self.view.backgroundColor = nil
+//        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.8)
         
     }
     
@@ -48,7 +48,8 @@ class IngredientAnalysisDetailViewController: UIViewController {
     }
     
     @IBAction func okBtnAction(_ sender: UIButton) {
-        self.view.removeFromSuperview()
+//        self.view.removeFromSuperview()
+        self.dismiss(animated: true, completion: nil)
     }
     
     /*

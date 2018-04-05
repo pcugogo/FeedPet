@@ -27,6 +27,8 @@ class AddPetInformationViewController: UIViewController {
     var catFunctionalArray: [String] = ["피부","알러지","관절","다이어트","인도어","장&면역","헤어볼","비뇨기","전체"]
     var dogDicArray: [[String:String]] = [["key":"skin","text":"피부"],["key":"allergy","text":"알러지"],["key":"joint","text":"관절"],["key":"diet","text":"다이어트"],["key":"indoor","text":"인도어"],
                                           ["key":"immune","text":"장&면역"],["key":"performance","text":"퍼포먼스"],["key":"urinary","text":"비뇨기"],["key":"all","text":"전체"]]
+    var catDicArray: [[String:String]] = [["key":"skin","text":"피부"],["key":"allergy","text":"알러지"],["key":"joint","text":"관절"],["key":"diet","text":"다이어트"],["key":"indoor","text":"인도어"],
+                                          ["key":"immune","text":"장&면역"],["key":"hairball","text":"헤어볼"],["key":"urinary","text":"비뇨기"],["key":"all","text":"전체"]]
     var functionalArray: [String] = []
     var functionalDicArray: [[String:String]] = [[:]]
     
@@ -42,23 +44,24 @@ class AddPetInformationViewController: UIViewController {
         didSet{
             
             if petBtnTag == 0{
-                dogBtnOutlet.setImage(#imageLiteral(resourceName: "dogAble"), for: .normal)
-                catBtnOutlet.setImage(#imageLiteral(resourceName: "catDisable"), for: .normal)
+                dogBtnOutlet.setImage(#imageLiteral(resourceName: "dogAbleImg"), for: .normal)
+                catBtnOutlet.setImage(#imageLiteral(resourceName: "catDisableImg"), for: .normal)
                 ageArray = dogAgeAray
 //                functionalArray = dogFunctionalArray
                 functionalDicArray = dogDicArray
                 petKey = "functional_petkey_d"
                 userPet = "feed_petkey_d"
             }else{
-                dogBtnOutlet.setImage(#imageLiteral(resourceName: "dogDisable"), for: .normal)
-                catBtnOutlet.setImage(#imageLiteral(resourceName: "catAble"), for: .normal)
+                dogBtnOutlet.setImage(#imageLiteral(resourceName: "dogDisableImg"), for: .normal)
+                catBtnOutlet.setImage(#imageLiteral(resourceName: "catAbleImg"), for: .normal)
                 ageArray = catAgeArray
 //                functionalArray = catFunctionalArray
-                functionalDicArray = dogDicArray
+                functionalDicArray = catDicArray
                 petKey = "functional_petkey_c"
                 userPet = "feed_petkey_c"
             }
             functionalKeyLoad()
+            functionalIndexPath = []
             petAgeCollectionView.reloadData()
             petFunctionalCollectionView.reloadData()
         }
@@ -138,8 +141,9 @@ class AddPetInformationViewController: UIViewController {
             userData.updateValue(functionalKeyIndexPathRow, forKey: "user_pet_functional_indexpath_row")
             
             print("회원최동데이터://",userData)
-            
-            UserDefaults.standard.set(userData, forKey: "loginUserData")
+            let userInfo = User(userInfoData: userData)
+            DataCenter.shared.userInfo = userInfo
+//            UserDefaults.standard.set(userInfo, forKey: "loginUserData")
             print( UserDefaults.standard.string(forKey: "userUID"))
             
 //            guard let userUID = UserDefaults.standard.string(forKey: "userUID") else {return}
@@ -152,11 +156,13 @@ class AddPetInformationViewController: UIViewController {
             ref.setValue(userData)
             DispatchQueue.main.async {
                 self.dismiss(animated: true) {
-                    
+                    UserDefaults.standard.set(true, forKey: "login_State")
+                    print(Auth.auth().currentUser?.providerData.first?.providerID)
                     self.delegate?.currentViewDismiss()
                 }
             }
            
+            
             
         }else{
 //            let pathTest = IndexPath(item: 8, section: 0)

@@ -38,6 +38,7 @@ class FunctionalCollectionViewCell: UICollectionViewCell {
         didSet{
             if isSelected{
                 functionalChangeCheck()
+//                self.selectCheckImg.isHidden = false
             }else {
 //                self.backgroundColor = .gray //.clear
                 self.selectCheckImg.isHidden = true

@@ -11,6 +11,7 @@ import SwiftyJSON
 import Firebase
 import SwiftyGif
 import GoogleSignIn
+import FBSDKLoginKit
 
 class DataCenter {
     // 싱글턴 패턴
@@ -44,31 +45,63 @@ class DataCenter {
     var currentPetKey: String = "feed_petkey_d"
     
     var loginUserData: [String:Any] = [:]
+    var userInfo: User = User()
+    var userDataUpdate: Bool = false
+    var userUpdateCount: Int = 0
     
+    // 사용자의 반려동물에따른 화면이동을 위한 flag => 디테일 화면으로 이동시에는 불필요하여 필요
+    var isMove: Bool = true
     var filterGrade: [IndexPath] = []
     
     var filterIndexPathArr: [IndexPath] = []
     var filterIndexPathDicArr : [Int:[IndexPath]] = [:]
     var filterDogIndexPathDicArr : [Int:[IndexPath]] = [:]
     var filterCatIndexPathDicArr : [Int:[IndexPath]] = [:]
+    
+    // 정렬 선택 값
+    var sortingState: SortingState = .grade
+    
+    var mainPageLoadCount: Int = 0
+    
+    var loadingView: UIView?
+    var loadingOnView: UIView = UIView()
     // Login 확인 요청 메서드
     func requestIsLogin() -> Bool {
         if Auth.auth().currentUser == nil {
+            isLogin = false
             return false
         }else{
             isLogin = true
-            return true
+            // 실제 Auth에는 로그인이 되어있지만 데이터가 쌓이지 않은상태--> 회원가입치 추가작업을 수행하지 않은경우 대비
+            if let _ = UserDefaults.standard.value(forKey: "login_State") {
+                return true
+            }else{
+                do {
+                    try Auth.auth().signOut()
+                } catch (let error) {
+                    print(error.localizedDescription)
+                }
+                
+                return false
+            }
+//            return true
         }
        
     }
+    
+    
     func requestUserData(withCompletion comlition: @escaping (_ complition:User)->Void){
         // 로컬에 저장하기 위해 가입 uid를 가지고 리얼타임 디비 조회
         guard let uid = Auth.auth().currentUser?.uid else {return}
         print(uid)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         Database.database().reference().child(uid).child("UserInfo").observeSingleEvent(of: .value, with: { (snapshot) in
             //            print(snapshot.value)
             let dict = snapshot.value as! [String:Any]
             comlition(User(socialData: dict))
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
         })
         
     }
@@ -76,21 +109,37 @@ class DataCenter {
      
         return loginUserData
     }
-    func googleLogOut(){
-        
+    func socialLogOut(completion: @escaping (Bool)->Void){
+        guard let proviederID = Auth.auth().currentUser?.providerData.first?.providerID else { return }
+        var logOutFlag: Bool = false
         do{
-            try Auth.auth().signOut()
-            GIDSignIn.sharedInstance().signOut()
-        }catch{
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
+            try Auth.auth().signOut()
+           
+            if proviederID == "google.com" {
+                
+                GIDSignIn.sharedInstance().signOut()
+            }else{
+                
+                let fbLoginManager = FBSDKLoginManager()
+                fbLoginManager.logOut()
+            }
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            logOutFlag = true
+            
+            UserDefaults.standard.removeObject(forKey: "login_State")
+        }catch{
+            logOutFlag = false
         }
-        
+        completion(logOutFlag)
        
         
     }
     
     // 닉네임 중복 체크 메서드
     func nicNameDoubleChek(nickName: String, completion: @escaping (Bool)->Void){
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
         Database.database().reference().child("user_info").queryOrdered(byChild: "user_nic").queryEqual(toValue: nickName).observeSingleEvent(of: .value, with: { (snapShot) in
             
@@ -106,6 +155,8 @@ class DataCenter {
             }else{
                 completion(false)
             }
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
         }, withCancel: {(Err) in
             
             print(Err.localizedDescription)
@@ -123,10 +174,9 @@ class DataCenter {
             return catFunctionalData
         }
     }
-    @objc func testto(nofi: Notification) {
-        print(1)
-    }
+    
     func feedDetailIngredientDataLoad(feedKey: String, comlition:@escaping (FeedDetailIngredient)->Void){
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let ref = Database.database().reference().child("feed_detail").child(feedKey)
         ref.observeSingleEvent(of: .value, with: { (dataSnap) in
             guard let data = dataSnap.value else {return}
@@ -134,7 +184,7 @@ class DataCenter {
             let feedDetailIngredientData = FeedDetailIngredient(ingredientData: jsonData)
             print("###상세 성분데이터##://",feedDetailIngredientData)
             comlition(feedDetailIngredientData)
-            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
         }) { (error) in
             print(error.localizedDescription)
         }
@@ -181,6 +231,7 @@ class DataCenter {
     // 사용법: 데이터센턴 싱글턴 패턴으로 함수 호출 하여 사용
     // ex) let spiner = DataCenter.shard.displayLoadingIndicator(onView: 현재사용할 뷰컨의 뷰)
     func displsyLoadingIndicator(onView: UIView)->UIView {
+        
         let spinner = UIView(frame: onView.bounds)
 //        spinner.autoLayoutAnchor(top: onView.topAnchor,
 //                                  left: onView.leftAnchor,
@@ -257,13 +308,16 @@ class DataCenter {
     // gif인디케이터 삭제 메서드
     // 사용법 - 상위 메서드에서 생성한 spiner를 파라미터로 전달
     // ex) DataCenter.shard.removeSpiner(spiner: spiner)
-    func removeSpinner(spinner :UIView) {
+    func removeSpinner(spinner :UIView?) {
+        guard let loadingSpinerView = spinner else {
+            return
+        }
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.3, animations: {
-                spinner.alpha = 0
+                loadingSpinerView.alpha = 0
             }, completion: { (finish) in
                 
-                spinner.removeFromSuperview()
+                loadingSpinerView.removeFromSuperview()
             })
         }
     }
@@ -279,6 +333,7 @@ struct User {
     var userNickname: String!
     var userProfileImgUrl: String?
     var userGender: String!
+    
     
     // 반려동물 가입정보
     var userPet: String!
@@ -521,6 +576,9 @@ struct FeedReview {
     var reviewInfo: [ReviewInfo]!
     var reviewRating: Int!
     
+    init() {
+        
+    }
     init(feedReviewJSON: JSON, feedKey: String) {
         self.feedKey = feedKey
         var reviewDataArray: [ReviewInfo] = []
@@ -549,11 +607,12 @@ struct ReviewInfo {
         self.feedRating = feedReviewJSON.1["feed_rating"].intValue
         self.feedReviewContent = feedReviewJSON.1["feed_review"].stringValue
         self.reviewDate = feedReviewJSON.1["feed_date"].stringValue
+        
     }
     
+   
+    
 }
-
-
 struct FilterData {
     var grade: [Int]?
     var age: [Int]?
@@ -613,5 +672,12 @@ struct FilterData {
     }
     
     
+    
+}
+
+enum SortingState: Int {
+    
+    case grade = 0
+    case mouth = 1
     
 }

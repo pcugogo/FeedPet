@@ -19,12 +19,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        // 프로젝트 내의 모든 세그먼트 컨트롤의 폰트 및 사이즈를 지정
+        let attr = NSDictionary(object: UIFont(name: "GodoM", size: 16.0)!, forKey: NSAttributedStringKey.font as NSCopying)
+        UISegmentedControl.appearance().setTitleTextAttributes(attr as [NSObject : AnyObject] , for: .normal)
+        
         // 네비게이션 컨트롤러
         let navigationBarAppearance = UINavigationBar.appearance()
 
         navigationBarAppearance.barTintColor = UIColor.init(hexString: "#FF6600")
         navigationBarAppearance.tintColor = .white
-        navigationBarAppearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
+        let attrs = [
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: UIFont(name: "GodoM", size: 17)!
+        ]
+        
+        navigationBarAppearance.titleTextAttributes = attrs
         navigationBarAppearance.isTranslucent = false
 //        let _ = PageControllerBaseController(nibName: nil, bundle: nil)
         // Firebase 초기화 코드
@@ -78,9 +87,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
       
         let rootBaseController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RootBaseController") as! RootBaseViewController
         
+        self.window?.makeKeyAndVisible()
         self.window?.rootViewController = rootBaseController//navigationController//pageController
         
-        self.window?.makeKeyAndVisible()
         // Status bar 부분의 색변경을 위한 코드-UIApplication을 extension하여 코드 구현
         UIApplication.shared.statusBarView?.backgroundColor = UIColor.init(hexString: "#FF6600")
         
@@ -147,7 +156,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     // 이 메소드는 GIDSignIn 인스턴스의 handleURL 메소드를 호출하며 이 메소드는 애플리케이션이 인증 절차가 끝나고 받는 URL를 적절히 처리합니다.
     @available(iOS 9.0, *)
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        let googleHandled = GIDSignIn.sharedInstance().handle(url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String, annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+        let googleHandled = GIDSignIn.sharedInstance().handle(url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String, annotation: [options[UIApplicationOpenURLOptionsKey.annotation]])
         
         let facebookHandled = FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String, annotation: options[UIApplicationOpenURLOptionsKey.annotation])
         
@@ -157,7 +166,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         let googleHandled = GIDSignIn.sharedInstance().handle(url,
                                                               sourceApplication: sourceApplication,
                                                               annotation: annotation)
-         
+
         return googleHandled
     }
 
@@ -166,6 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         print("Appdelegate SignIn Button1")
     }
+    
 }
 // 좋지 못한 코드인것 같다..좀더찾아보자.
 extension UIApplication {
