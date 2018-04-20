@@ -151,3 +151,5 @@ playground.xcworkspace
 # End of https://www.gitignore.io/api/xcode,swift,macos,cocoapods,objective-c
 
 GoogleService-Info.plist
+FeedPet/Pods
+FeedPet/Podfile.lock
