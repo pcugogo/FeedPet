@@ -34,8 +34,15 @@ class LoadingIndicatorImgView: UIImageView {
         //        self.isHidden = false
         
     }
+    class func instanceFromNib() -> UIView {
+        return UINib(nibName: "LoadingIndicatorImgView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! UIView
+    }
+    
+    
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        
         
         let gifManager = SwiftyGifManager(memoryLimit:30)
         let gif = UIImage(gifName: "loading_img.gif")

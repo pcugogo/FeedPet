@@ -133,6 +133,18 @@ class EditInfoViewController: UIViewController {
     var tempfunctionalIndexPath: [IndexPath] = []
     var userPetAgeIndexPath: IndexPath = IndexPath(item: 0, section: 0)
     
+    var delegate: EditInfoViewProtocol?
+    // 닉네임 중복 체크 결과 플래그
+    var nickNameFlag: Bool = false
+    var nick = "" {
+        didSet{
+            print(nick.count,"/", nickNameTextField.text?.count)
+        }
+    }
+    var isNickNameChange: Bool = false
+    fileprivate let MAX_LENGTH = 10
+    fileprivate let MIN_LENGTH = 2
+    
     // ########################################
     // MARK: View LifeCycle
     // ########################################
@@ -155,7 +167,7 @@ class EditInfoViewController: UIViewController {
         nickNameTextField.text = userInfo.userNickname
         petAge = userInfo.userPetAge
         userPet = userInfo.userPet
-        
+        self.nick = userInfo.userNickname
         loadPetFunctionKey = MyPageDataCenter.shared.loadPetFunctionKey
         for loadKey in loadPetFunctionKey{
             if let funcLoadKey  = petFunctionTotalKeyDic[loadKey]{
@@ -209,6 +221,8 @@ class EditInfoViewController: UIViewController {
         ageArray = dogAgeAray
         //        functionalArray = dogFunctionalArray
         functionalDicArray = dogDicArray
+        
+        nickNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         // Do any additional setup after loading the view.
     }
     override func viewDidAppear(_ animated: Bool) { //화면에 보여지고 나서 호출이 된다 //뷰가 나타났다
@@ -232,102 +246,285 @@ class EditInfoViewController: UIViewController {
     
     @IBAction func saveBtnAction(_ sender: UIBarButtonItem) {
         guard let useruid = Auth.auth().currentUser?.uid else {return}
-        if nickNameTextField.text?.isEmpty == false && nickNameDuplicate == true{
-            var petFunctionalIndexPathRow: [Int] = []
-            petFunctionKey = []
-            for i in functionalIndexPath{
-                print(i)
-                petFunctionKey.append(petFunctionTotalKey[i[1]])
-                petFunctionalIndexPathRow.append(i.row)
-                print(petFunctionKey)
+        // 기존 닉네임과 다를경우에는 중복체크 확인후 저장
+        // 같을경우에는 중복체크하지않더라도 저장
+        print(isNickNameChange)
+        if isNickNameChange {
+            print(nickNameFlag)
+            if nickNameTextField.text?.isEmpty == false && nickNameFlag == true{
+                var petFunctionalIndexPathRow: [Int] = []
+                petFunctionKey = []
+                for i in functionalIndexPath{
+                    print(i)
+                    petFunctionKey.append(petFunctionTotalKey[i[1]])
+                    petFunctionalIndexPathRow.append(i.row)
+                    print(petFunctionKey)
+                }
+                print(petType,"type")
+                print(petAge,"age")
+                print(petFunctionKey,"petFunctionKey")
+                print("기능성 인덱스패스 로우://", petFunctionalIndexPathRow)
+                //싱글옵저브이다 마이페이지데이터센터에 각각 유저정보값을 업데이트해줘야된다
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                FireBaseData.shared.refUserInfoReturn.child(useruid).child("user_pet_functional").removeValue()//펑셔널이 어레이로 되있어서 값이 바뀌지않고 계속 추가되기떄문에 지운다음에 추가해준다
+                
+                var userDatas = DataCenter.shared.userInfo
+                if let nickName = nickNameTextField.text{
+                   print(nickName)
+                    FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_nic":nickName])
+                    userDatas.userNickname = nickName
+                }
+                
+                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet":petType])
+                
+                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_age":petAge])
+                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_functional":petFunctionKey])
+                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_functional_indexpath_row":petFunctionalIndexPathRow])
+               
+                
+                
+                
+                userDatas.userPet = petType
+                userDatas.userPetAge = petAge
+                userDatas.userPetFunctional = petFunctionKey
+                userDatas.userPetFunctionalIndexPathRow = petFunctionalIndexPathRow
+                print(userDatas)
+                //            UserDefaults.standard.set(userData, forKey: "loginUserData")
+                DataCenter.shared.userInfo = userDatas
+                
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                let nickNameNilAlert = UIAlertController(title: "", message: "저장되었습니다", preferredStyle: .alert)
+                let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_) in
+                    DataCenter.shared.userDataUpdate = true
+                    self.delegate?.editingSuccess()
+                    self.navigationController?.popViewController(animated: true)
+                })
+                nickNameNilAlert.addAction(okBtn)
+                self.present(nickNameNilAlert, animated: true, completion: nil)
+                
+            }else{
+                
+                let nickNameNilAlert = UIAlertController(title: "", message: "닉네임 중복확인을 해주세요", preferredStyle: .alert)
+                let okBtn = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                nickNameNilAlert.addAction(okBtn)
+                self.present(nickNameNilAlert, animated: true, completion: nil)
+                
             }
-            print(petType,"type")
-            print(petAge,"age")
-            print(petFunctionKey,"petFunctionKey")
-            print("기능성 인덱스패스 로우://", petFunctionalIndexPathRow)
-            //싱글옵저브이다 마이페이지데이터센터에 각각 유저정보값을 업데이트해줘야된다
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            FireBaseData.shared.refUserInfoReturn.child(useruid).child("user_pet_functional").removeValue()//펑셔널이 어레이로 되있어서 값이 바뀌지않고 계속 추가되기떄문에 지운다음에 추가해준다
-            
-            
-            if let nickName = nickNameTextField.text{
-                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_nic":nickName])
-            }
-            
-            FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet":petType])
-            
-            FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_age":petAge])
-            FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_functional":petFunctionKey])
-            FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_functional_indexpath_row":petFunctionalIndexPathRow])
-//            guard let userInfo = UserDefaults.standard.value(forKey: "loginUserData") as? [String:Any] else {return}
-//
-//            var userData: [String:Any] = userInfo
-//
-//
-//            userData.updateValue(petType, forKey: "user_pet")
-//            userData.updateValue(petAge, forKey: "user_petage")
-//            userData.updateValue(petFunctionKey, forKey: "user_pet_functional")
-//            userData.updateValue(petFunctionalIndexPathRow, forKey: "user_pet_functional_indexpath_row")
-//            print("회원최동데이터://",userData)
-            
-            var userDatas = DataCenter.shared.userInfo
-            userDatas.userPet = petType
-            userDatas.userPetAge = petAge
-            userDatas.userPetFunctional = petFunctionKey
-            userDatas.userPetFunctionalIndexPathRow = petFunctionalIndexPathRow
-            print(userDatas)
-//            UserDefaults.standard.set(userData, forKey: "loginUserData")
-            DataCenter.shared.userInfo = userDatas
-            DataCenter.shared.userDataUpdate = true
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            let nickNameNilAlert = UIAlertController(title: "", message: "저장되었습니다", preferredStyle: .alert)
-            let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_) in
-                self.navigationController?.popViewController(animated: true)
-            })
-            nickNameNilAlert.addAction(okBtn)
-            self.present(nickNameNilAlert, animated: true, completion: nil)
-            
         }else{
-            
-            let nickNameNilAlert = UIAlertController(title: "", message: "닉네임 중복확인을 해주세요", preferredStyle: .alert)
-            let okBtn = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            nickNameNilAlert.addAction(okBtn)
-            self.present(nickNameNilAlert, animated: true, completion: nil)
-            
+            if nickNameTextField.text?.isEmpty == false {
+                var petFunctionalIndexPathRow: [Int] = []
+                petFunctionKey = []
+                for i in functionalIndexPath{
+                    print(i)
+                    petFunctionKey.append(petFunctionTotalKey[i[1]])
+                    petFunctionalIndexPathRow.append(i.row)
+                    print(petFunctionKey)
+                }
+                print(petType,"type")
+                print(petAge,"age")
+                print(petFunctionKey,"petFunctionKey")
+                print("기능성 인덱스패스 로우://", petFunctionalIndexPathRow)
+                //싱글옵저브이다 마이페이지데이터센터에 각각 유저정보값을 업데이트해줘야된다
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                FireBaseData.shared.refUserInfoReturn.child(useruid).child("user_pet_functional").removeValue()//펑셔널이 어레이로 되있어서 값이 바뀌지않고 계속 추가되기떄문에 지운다음에 추가해준다
+                
+              FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet":petType])
+                
+                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_age":petAge])
+                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_functional":petFunctionKey])
+                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_functional_indexpath_row":petFunctionalIndexPathRow])
+                
+                
+                var userDatas = DataCenter.shared.userInfo
+                userDatas.userPet = petType
+                userDatas.userPetAge = petAge
+                userDatas.userPetFunctional = petFunctionKey
+                userDatas.userPetFunctionalIndexPathRow = petFunctionalIndexPathRow
+                print(userDatas)
+                //            UserDefaults.standard.set(userData, forKey: "loginUserData")
+                DataCenter.shared.userInfo = userDatas
+                
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                let nickNameNilAlert = UIAlertController(title: "", message: "저장되었습니다", preferredStyle: .alert)
+                let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_) in
+                    DataCenter.shared.userDataUpdate = true
+                    self.delegate?.editingSuccess()
+                    self.navigationController?.popViewController(animated: true)
+                })
+                nickNameNilAlert.addAction(okBtn)
+                self.present(nickNameNilAlert, animated: true, completion: nil)
+                
+            }else{
+                
+            }
         }
+//            if nickNameTextField.text?.isEmpty == false && nickNameDuplicate == true{
+//                var petFunctionalIndexPathRow: [Int] = []
+//                petFunctionKey = []
+//                for i in functionalIndexPath{
+//                    print(i)
+//                    petFunctionKey.append(petFunctionTotalKey[i[1]])
+//                    petFunctionalIndexPathRow.append(i.row)
+//                    print(petFunctionKey)
+//                }
+//                print(petType,"type")
+//                print(petAge,"age")
+//                print(petFunctionKey,"petFunctionKey")
+//                print("기능성 인덱스패스 로우://", petFunctionalIndexPathRow)
+//                //싱글옵저브이다 마이페이지데이터센터에 각각 유저정보값을 업데이트해줘야된다
+//                UIApplication.shared.isNetworkActivityIndicatorVisible = true
+//                FireBaseData.shared.refUserInfoReturn.child(useruid).child("user_pet_functional").removeValue()//펑셔널이 어레이로 되있어서 값이 바뀌지않고 계속 추가되기떄문에 지운다음에 추가해준다
+//
+//
+//                if let nickName = nickNameTextField.text{
+//                    FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_nic":nickName])
+//                }
+//
+//                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet":petType])
+//
+//                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_age":petAge])
+//                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_functional":petFunctionKey])
+//                FireBaseData.shared.refUserInfoReturn.child(useruid).updateChildValues(["user_pet_functional_indexpath_row":petFunctionalIndexPathRow])
+//                //            guard let userInfo = UserDefaults.standard.value(forKey: "loginUserData") as? [String:Any] else {return}
+//                //
+//                //            var userData: [String:Any] = userInfo
+//                //
+//                //
+//                //            userData.updateValue(petType, forKey: "user_pet")
+//                //            userData.updateValue(petAge, forKey: "user_petage")
+//                //            userData.updateValue(petFunctionKey, forKey: "user_pet_functional")
+//                //            userData.updateValue(petFunctionalIndexPathRow, forKey: "user_pet_functional_indexpath_row")
+//                //            print("회원최동데이터://",userData)
+//
+//                var userDatas = DataCenter.shared.userInfo
+//                userDatas.userPet = petType
+//                userDatas.userPetAge = petAge
+//                userDatas.userPetFunctional = petFunctionKey
+//                userDatas.userPetFunctionalIndexPathRow = petFunctionalIndexPathRow
+//                print(userDatas)
+//                //            UserDefaults.standard.set(userData, forKey: "loginUserData")
+//                DataCenter.shared.userInfo = userDatas
+//
+//                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+//                let nickNameNilAlert = UIAlertController(title: "", message: "저장되었습니다", preferredStyle: .alert)
+//                let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_) in
+//                    DataCenter.shared.userDataUpdate = true
+//                    self.delegate?.editingSuccess()
+//                    self.navigationController?.popViewController(animated: true)
+//                })
+//                nickNameNilAlert.addAction(okBtn)
+//                self.present(nickNameNilAlert, animated: true, completion: nil)
+//
+//            }else{
+//
+//                let nickNameNilAlert = UIAlertController(title: "", message: "닉네임 중복확인을 해주세요", preferredStyle: .alert)
+//                let okBtn = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//                nickNameNilAlert.addAction(okBtn)
+//                self.present(nickNameNilAlert, animated: true, completion: nil)
+//
+//            }
+        
+        
     }
     @IBAction func nickDuplicateBtnAction(_ sender: UIButton) {
-        if let nickName = nickNameTextField.text {
-            FireBaseData.shared.nicNameDoubleChek(nickName: nickName, completion: { (isDuplicate) in
-                if isDuplicate {
-                    
-                    let duplicateAlert:UIAlertController = UIAlertController(title: "", message: "이미 사용중인 닉네임입니다", preferredStyle: .alert)
-                    let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_) in
-                        self.nickNameDuplicate = false
-                        self.nickNameDuplicateTextLb.isHidden = false
-                    })
-                    
-                    duplicateAlert.addAction(okBtn)
-                    self.present(duplicateAlert, animated: true, completion: nil)
-                }else{
-                    self.view.endEditing(true)
-                    let possibleAlert:UIAlertController = UIAlertController(title: "", message: "사용 가능한 닉네임입니다", preferredStyle: .alert)
-                    let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_) in
-                        self.nickNameDuplicate = true
-                        self.nickNameDuplicateTextLb.isHidden = true
-                        
-                    })
-                    
-                    possibleAlert.addAction(okBtn)
-                    self.present(possibleAlert, animated: true, completion: nil)
-                }
-            })
+        guard let userNickName = nickNameTextField.text else {return}
+        
+        
+        //        if userNickNameTextField.text != nil && !(userNickNameTextField.text?.isEmpty)! {
+        // 네트워크 인디케이터
+        if userNickName.count < MIN_LENGTH || userNickName.isEmpty {
+            self.nickNameDuplicateTextLb.text = "닉네임은 2~10자리로 입력하세요."
+            self.nickNameDuplicateTextLb.textColor = UIColor.init(hexString: "#FF6600")
+            self.nickNameDuplicateTextLb.isHidden = false
+            self.nickDuplicateBtnOut.isEnabled = true
+            self.nickNameFlag = false
         }else{
-            let nickNameNilAlert = UIAlertController(title: "", message: "닉네임을 입력해주세요", preferredStyle: .alert)
-            let okBtn = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            nickNameNilAlert.addAction(okBtn)
-            self.present(nickNameNilAlert, animated: true, completion: nil)
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            
+            nickDuplicateBtnOut.isEnabled = false
+            
+            DataCenter.shared.nicNameDoubleChek(nickName: userNickName) {(result) in
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                if result {
+                    print("잇어!!")
+                    DispatchQueue.main.async {
+                        self.nickNameDuplicateTextLb.text = "이미 존재하는 닉네임 입니다 :("
+                        self.nickNameDuplicateTextLb.textColor = UIColor.init(hexString: "#FF6600")
+                        self.nickNameDuplicateTextLb.isHidden = false
+                        self.nickDuplicateBtnOut.isEnabled = true
+                        self.nickNameFlag = false
+                    }
+                }else{
+                    print("없어!!")
+                    DispatchQueue.main.async {
+                        self.nickNameDuplicateTextLb.text = "사용 가능한 닉네임 입니다!:)"
+                        self.nickNameDuplicateTextLb.textColor = UIColor.init(hexString: "#555555")
+                        self.nickNameDuplicateTextLb.isHidden = false
+                        self.nickDuplicateBtnOut.isEnabled = true
+                        self.nickNameFlag = true
+//                        self.user?.updateValue(userNickName, forKey: "user_nic")
+                    }
+                }
+                
+            }
         }
+        
+//        if let nickName = nickNameTextField.text {
+//
+////            FireBaseData.shared.nicNameDoubleChek(nickName: nickName, completion: { (isDuplicate) in
+////                if isDuplicate {
+////
+////                    let duplicateAlert:UIAlertController = UIAlertController(title: "", message: "이미 사용중인 닉네임입니다", preferredStyle: .alert)
+////                    let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_) in
+////                        self.nickNameDuplicate = false
+////                        self.nickNameDuplicateTextLb.isHidden = false
+////                    })
+////
+////                    duplicateAlert.addAction(okBtn)
+////                    self.present(duplicateAlert, animated: true, completion: nil)
+////                }else{
+////                    self.view.endEditing(true)
+////                    let possibleAlert:UIAlertController = UIAlertController(title: "", message: "사용 가능한 닉네임입니다", preferredStyle: .alert)
+////                    let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_) in
+////                        self.nickNameDuplicate = true
+////                        self.nickNameDuplicateTextLb.isHidden = true
+////
+////                    })
+////
+////                    possibleAlert.addAction(okBtn)
+////                    self.present(possibleAlert, animated: true, completion: nil)
+////                }
+////            })
+//            DataCenter.shared.nicNameDoubleChek(nickName: nickName, completion: { (isDuplicate) in
+//                if isDuplicate {
+//
+//                    let duplicateAlert:UIAlertController = UIAlertController(title: "", message: "이미 사용중인 닉네임입니다.", preferredStyle: .alert)
+//                    let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_) in
+//                        self.nickNameDuplicate = false
+//                        self.nickNameDuplicateTextLb.isHidden = false
+//                    })
+//
+//                    duplicateAlert.addAction(okBtn)
+//                    self.present(duplicateAlert, animated: true, completion: nil)
+//                }else{
+//                    self.view.endEditing(true)
+//                    let possibleAlert:UIAlertController = UIAlertController(title: "", message: "사용 가능한 닉네임입니다.", preferredStyle: .alert)
+//                    let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_) in
+//                        self.nickNameDuplicate = true
+//                        self.nickNameDuplicateTextLb.isHidden = true
+//
+//                    })
+//
+//                    possibleAlert.addAction(okBtn)
+//                    self.present(possibleAlert, animated: true, completion: nil)
+//                }
+//            })
+//        }else{
+//            let nickNameNilAlert = UIAlertController(title: "", message: "닉네임을 입력해주세요", preferredStyle: .alert)
+//            let okBtn = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//            nickNameNilAlert.addAction(okBtn)
+//            self.present(nickNameNilAlert, animated: true, completion: nil)
+//        }
     }
     
     @IBAction func petSlectBtnTouched(_ sender: UIButton) {
@@ -360,6 +557,30 @@ class EditInfoViewController: UIViewController {
             isSamePet = true
             
         }
+    }
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        
+        guard let newText = textField.text else {return}
+        
+        
+        if let currentNicName = userInfo.userNickname {
+            print(currentNicName,"/", newText)
+            print(currentNicName.count,"/", newText.count)
+            if  currentNicName != newText {
+                if currentNicName.count != newText.count{
+                    
+                    
+                    print("기존닉이랑 틀려")
+                    isNickNameChange = true
+                }
+                
+            }else{
+                isNickNameChange = false
+                nickNameDuplicateTextLb.text = ""
+                nickNameDuplicateTextLb.isHidden = true
+            }
+        }
+//        self.nick = newText
     }
 }
 
@@ -616,6 +837,37 @@ extension EditInfoViewController: UICollectionViewDelegate, UICollectionViewData
 }
 
 extension EditInfoViewController:UITextFieldDelegate{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // 글자수 제한을 위한 길이체크 => // Swift 4에서는 String.count로 API변경됨
+        let newLength = (textField.text?.count)! + string.count - range.length
+        
+//        let newText = (textField.text)!
+//
+//        if let currentNicName = userInfo.userNickname {
+//             print(currentNicName.count,"/",newLength,"/",textField.text?.count)
+//            print(currentNicName,"/",textField.text!)
+//            print(textField.text)
+//            print(newText,"/",newText.count)
+//            print(currentNicName.hashValue,"/",newText.hashValue)
+//            if  currentNicName != newText {
+//                if currentNicName.count != newLength{
+//                    print(currentNicName.count,"/",textField.text?.count)
+//                    print(textField.text)
+//                    print("기존닉이랑 틀려")
+//                    isNickNameChange = true
+//                }
+//
+//            }else{
+//                isNickNameChange = false
+//                nickNameDuplicateTextLb.text = ""
+//                nickNameDuplicateTextLb.isHidden = true
+//            }
+//        }
+//        self.nick = newText
+        
+        return !(newLength > MAX_LENGTH)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
@@ -623,4 +875,9 @@ extension EditInfoViewController:UITextFieldDelegate{
         self.view.endEditing(true)
         return true
     }
+    
+}
+
+protocol EditInfoViewProtocol{
+    func editingSuccess()
 }

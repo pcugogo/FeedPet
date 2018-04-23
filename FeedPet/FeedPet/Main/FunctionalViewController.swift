@@ -23,14 +23,24 @@ class FunctionalViewController: UIViewController {
     // 사용자의 반려동물과 현재 cuurentPetkey값이 동일하지 않을때 사용할 기능성 인덱스패스 데이터
     var userDataLoad: Bool = false
     var userIndexPath: [IndexPath] = [] {
+        willSet{
+            
+            print(userIndexPath)
+        }
         didSet{
+            print(userIndexPath)
+//            if DataCenter.shared.userDataUpdate {
+//
+//            }else{
+//
+//                DispatchQueue.global(qos: .userInteractive).async {
+//
+//                    self.functionalChangeToString()
+//
+//                }
+//            }
             
-            
-            DispatchQueue.global(qos: .userInteractive).async {
-                
-                self.functionalChangeToString()
-                
-            }
+            self.functionalChangeToString()
             
             
             
@@ -61,6 +71,7 @@ class FunctionalViewController: UIViewController {
     
     @IBOutlet weak var functionalCollectionView: UICollectionView!
     @IBOutlet weak var filterMenuView: UIView!
+    @IBOutlet weak var filterBtnOutlet: UIButton!
     @IBOutlet weak var sortingBtnOutlet: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,6 +91,13 @@ class FunctionalViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+//        switch DataCenter.shared.sortingState {
+//        case .grade:
+//            self.sortingBtnOutlet.setBackgroundImage(#imageLiteral(resourceName: "feed_grade_sorting_btn"), for: .normal)
+//        case .mouth:
+//            self.sortingBtnOutlet.setBackgroundImage(#imageLiteral(resourceName: "mouth_grade_sorting_btn"), for: .normal)
+//        }
+        
 // self.functionalCollectionView.reloadData()
 //        let userInfo = DataCenter.shared.userInfo
 //        print("조회한 유저데이터 datasignal://,",userInfo)
@@ -90,9 +108,12 @@ class FunctionalViewController: UIViewController {
         print(self.functionalIndexPath)
         print("메인에 기능 값보내기전 유저반려동물://",DataCenter.shared.userInfo.userPet ,"//현화면 반려동물://", DataCenter.shared.currentPetKey)
         if DataCenter.shared.userDataUpdate && DataCenter.shared.userUpdateCount < 3 {
-            print(self.functionalIndexPath)
-            self.functionalCollectionView.reloadData()
+            print(self.functionalIndexPath, self.userIndexPath)
+            self.userIndexPath = []
+            
+//            self.functionalCollectionView.reloadData()
         }
+        self.functionalCollectionView.reloadData()
 //        self.functionalCollectionView.deselectAll(animated: true)
     }
 
@@ -111,11 +132,20 @@ class FunctionalViewController: UIViewController {
 //
 //        }
         let gradeAction = UIAlertAction(title: "등급순", style: .default) { (action) in
-            
+            DataCenter.shared.sortingState = .grade
+            DispatchQueue.main.async {
+                self.sortingBtnOutlet.setBackgroundImage(#imageLiteral(resourceName: "feed_grade_sorting_btn"), for: .normal)
+            }
+            self.functionalChangeToString()
         }
         let mouthAction = UIAlertAction(title: "입소문순", style: .default) { (action) in
-            
+            DataCenter.shared.sortingState = .mouth
+            DispatchQueue.main.async {
+                self.sortingBtnOutlet.setBackgroundImage(#imageLiteral(resourceName: "mouth_grade_sorting_btn"), for: .normal)
+            }
+            self.functionalChangeToString()
         }
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
             
         }
@@ -217,7 +247,7 @@ class FunctionalViewController: UIViewController {
 //            })
 //        }
         var sendIndexPath:[IndexPath] = []
-        print("메인에 기능 값보내기전 유저반려동물://",DataCenter.shared.userInfo.userPet ,"//현화면 반려동물://", DataCenter.shared.currentPetKey)
+        print("메인에 기능 값보내기전 유저반려동물://",DataCenter.shared.userInfo.userPet ,"//현화면 반려동물://", DataCenter.shared.currentPetKey,"//", userIndexPath,"/", functionalIndexPath)
         if DataCenter.shared.userInfo.userPet != DataCenter.shared.currentPetKey {
             sendIndexPath = userIndexPath
         }else{
@@ -625,6 +655,11 @@ extension FunctionalViewController: UICollectionViewDataSource, UICollectionView
 extension FunctionalViewController: FilterProtocol{
     func selectFilterData(filterData: FilterData, selectState: Bool) {
         self.sendFunctionalDelegate?.filterDataSend(filterData: filterData, selectState: selectState)
+        if selectState{
+            self.filterBtnOutlet.setBackgroundImage(#imageLiteral(resourceName: "filter_btn_check"), for: .normal)
+        }else{
+            self.filterBtnOutlet.setBackgroundImage(#imageLiteral(resourceName: "filterBtn"), for: .normal)
+        }
     }
     
     

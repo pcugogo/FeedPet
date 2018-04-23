@@ -50,7 +50,7 @@ class FeedMainInfoTableViewCell: UITableViewCell {
             }
         }
     }
-    var delegate: feedMainInfoCellProtocol?
+    var delegate: FeedMainInfoCellProtocol?
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -232,7 +232,7 @@ class FeedMainInfoTableViewCell: UITableViewCell {
     
 }
 
-protocol feedMainInfoCellProtocol {
+protocol FeedMainInfoCellProtocol {
     // 메인화면 셀과 디테일화면에서 좋아요 버튼 클릭시 델리게이트 메서드
     func sendBookMarkValue(isBookMark: Bool, feedKey: String)
     

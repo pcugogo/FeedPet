@@ -54,14 +54,16 @@ class FeedReviewListCell: UITableViewCell {
                     self.reviewUserNicName.text = userInfo.userNickname
                     
                     
-                    
-                    if let urlStr = userInfo.userProfileImgUrl, let userProfileImgURL = URL(string: urlStr) {
-                        DispatchQueue.main.async {
-                            self.reviewUserProfileImg.clipsToBounds = true
-                            self.reviewUserProfileImg.layer.cornerRadius =   self.reviewUserProfileImg.frame.height/2
-                            self.reviewUserProfileImg.kf.setImage(with: userProfileImgURL)
-                            self.reviewUserProfileImg.layoutIfNeeded()
+                    DispatchQueue.global(qos: .userInteractive).async {
+                        if let urlStr = userInfo.userProfileImgUrl, let userProfileImgURL = URL(string: urlStr) {
+                            DispatchQueue.main.async {
+                                self.reviewUserProfileImg.clipsToBounds = true
+                                self.reviewUserProfileImg.layer.cornerRadius =   self.reviewUserProfileImg.frame.height/2
+                                self.reviewUserProfileImg.kf.setImage(with: userProfileImgURL)
+                                self.reviewUserProfileImg.layoutIfNeeded()
+                            }
                         }
+                        
                         
                         
                         

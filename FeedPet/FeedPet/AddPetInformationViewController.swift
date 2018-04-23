@@ -118,10 +118,7 @@ class AddPetInformationViewController: UIViewController {
         var functionalKeyArr: [String] = []
         var functionalKeyIndexPathRow: [Int] = []
         if !functionalIndexPath.isEmpty {
-            if functionalIndexPath.count == 9 {
-                functionalKeyArr.append("all")
-                print(functionalKeyArr)
-            }else{
+            
                 for functionIndexpath in functionalIndexPath {
                     guard let functionKey = functionalDicArray[functionIndexpath.item]["key"] else {return}
                     functionalKeyArr.append(functionKey)
@@ -134,16 +131,16 @@ class AddPetInformationViewController: UIViewController {
                 //                self.functionalDicArray[indexpath.item]["key"] as? String ?? "all"
                 //            }
                 //            print(functionalKeyArr)
-            }
+            
             userData.updateValue(userPet, forKey: "user_pet")
-            userData.updateValue(ageIntValue, forKey: "user_petage")
+            userData.updateValue(ageIntValue, forKey: "user_pet_age")
             userData.updateValue(functionalKeyArr, forKey: "user_pet_functional")
             userData.updateValue(functionalKeyIndexPathRow, forKey: "user_pet_functional_indexpath_row")
             
             print("회원최동데이터://",userData)
             let userInfo = User(userInfoData: userData)
             DataCenter.shared.userInfo = userInfo
-//            UserDefaults.standard.set(userInfo, forKey: "loginUserData")
+//            UserDefaults.standard.set(true, forKey: "loginUserState")
             print( UserDefaults.standard.string(forKey: "userUID"))
             
 //            guard let userUID = UserDefaults.standard.string(forKey: "userUID") else {return}
@@ -263,8 +260,9 @@ extension AddPetInformationViewController: UICollectionViewDelegate, UICollectio
             if indexPath.item == collectionView.numberOfItems(inSection: 0)-1 {
                 // 확장한 코드
                 
-                functionalIndexPath = collectionView.selectAll(animated: true)
+                functionalIndexPath = collectionView.selectAllPath(animated: true)
                 //                functionalIndexPath.append(indexPath)
+                
                 print(functionalIndexPath)
                 // 초기 구현함수
                 //                for item in 0..<collectionView.numberOfItems(inSection: 0) {
@@ -394,6 +392,21 @@ extension UICollectionView {
         var inpathArr: [IndexPath] = []
         (0..<numberOfSections).flatMap { (section) -> [IndexPath]? in
             return (0..<numberOfItems(inSection: section)-1).flatMap({ (item) -> IndexPath? in
+                return IndexPath(item: item, section: section)
+                
+            })
+            }.flatMap { $0 }.forEach { (indexPath) in
+                selectItem(at: indexPath, animated: true, scrollPosition: [])
+                inpathArr.append(indexPath)
+        }
+        
+        
+        return inpathArr
+    }
+    func selectAllPath(animated: Bool) -> [IndexPath]{
+        var inpathArr: [IndexPath] = []
+        (0..<numberOfSections).flatMap { (section) -> [IndexPath]? in
+            return (0...numberOfItems(inSection: section)-1).flatMap({ (item) -> IndexPath? in
                 return IndexPath(item: item, section: section)
                 
             })

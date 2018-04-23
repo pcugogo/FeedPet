@@ -320,14 +320,15 @@ extension FeedSearchViewController: UITableViewDelegate, UITableViewDataSource{
         
         // 내 즐겨찾기 정보 상태 전달을위해 feedBookMarkDic 정보에 값 저장
         //            self.feedBookMarkDic.updateValue(isBookMark, forKey: self.feedFilteringTotalData[indexPath.row].feedKey)
-    Database.database().reference().child("my_favorite").child(userUID).childByAutoId().child(searchFeedData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
-        var isBookMark: Bool = false
-        if dataSnap.hasChildren() {
-            isBookMark = true
-        }
-        self.feedBookMarkDic.updateValue(isBookMark, forKey: self.searchFeedData[indexPath.row].feedKey)
-        })
-        
+//    Database.database().reference().child("my_favorite").child(userUID).childByAutoId().child(searchFeedData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
+//            var isBookMark: Bool = false
+//            if dataSnap.hasChildren() {
+//                isBookMark = true
+//
+//            }
+//            self.feedBookMarkDic.updateValue(isBookMark, forKey: self.searchFeedData[indexPath.row].feedKey)
+//        })
+//
         return resultCell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -335,24 +336,67 @@ extension FeedSearchViewController: UITableViewDelegate, UITableViewDataSource{
         let selectFeedKey = searchFeedData[indexPath.row].feedKey
         let feedDetailView = self.storyboard?.instantiateViewController(withIdentifier: "FeedDetailView") as! FeedDetailViewController
         feedDetailView.feedDetailInfo = searchFeedData[indexPath.row]
-        feedDetailView.isBookMark = feedBookMarkDic[searchFeedData[indexPath.row].feedKey] ?? false
         
-        DataCenter.shared.feedDetailIngredientDataLoad(feedKey: searchFeedData[indexPath.row].feedKey) { (feedDetailIngredientData) in
-            print(feedDetailIngredientData)
-            feedDetailView.ingredientData = feedDetailIngredientData
-//            DispatchQueue.main.async {
-                //self.delegate?.didSelectedCell(view: feedDetailView)
-//            print(self.navigationController)
-            
-//            }
-            DispatchQueue.main.async {
-                
-                self.navigationController?.pushViewController(feedDetailView, animated: true)
-                
-                //                self.delegate?.loadingRemoveDisplay()
+        feedDetailView.delegate = self
+        
+//        feedDetailView.isBookMark = self.feedBookMarkDic[self.searchFeedData[indexPath.row].feedKey] ?? false
+   
+       UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        Database.database().reference().child("my_favorite").child(self.userUID).queryOrdered(byChild: "feed_key").queryEqual(toValue: self.searchFeedData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
+        
+            print(dataSnap.value)
+            var isBookMark: Bool = false
+            if dataSnap.hasChildren() {
+                isBookMark = true
+
             }
-        }
+            self.feedBookMarkDic.updateValue(isBookMark, forKey: self.searchFeedData[indexPath.row].feedKey)
+            feedDetailView.isBookMark = self.feedBookMarkDic[self.searchFeedData[indexPath.row].feedKey] ?? false
+            DataCenter.shared.feedDetailIngredientDataLoad(feedKey: self.searchFeedData[indexPath.row].feedKey) { (feedDetailIngredientData) in
+                print(feedDetailIngredientData)
+                feedDetailView.ingredientData = feedDetailIngredientData
+//                feedDetailView.feedBookMarkLoadData(userUID: self.userUID, feedKey: self.searchFeedData[indexPath.row].feedKey)
+                //            DispatchQueue.main.async {
+                //self.delegate?.didSelectedCell(view: feedDetailView)
+                //            print(self.navigationController)
+                
+                //            }
+                //            self.navigationController?.pushViewController(feedDetailView, animated: true)
+                
+                
+                DispatchQueue.main.async {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    self.navigationController?.pushViewController(feedDetailView, animated: true)
+                    
+                    //                self.navigationController?.pushViewController(feedDetailView, animated: true)
+                    
+                    //                self.delegate?.loadingRemoveDisplay()
+                }
+            }
+        })
         
+        
+//        DataCenter.shared.feedDetailIngredientDataLoad(feedKey: searchFeedData[indexPath.row].feedKey) { (feedDetailIngredientData) in
+//            print(feedDetailIngredientData)
+//            feedDetailView.ingredientData = feedDetailIngredientData
+//            feedDetailView.feedBookMarkLoadData(userUID: self.userUID, feedKey: self.searchFeedData[indexPath.row].feedKey)
+////            DispatchQueue.main.async {
+//                //self.delegate?.didSelectedCell(view: feedDetailView)
+////            print(self.navigationController)
+//
+////            }
+////            self.navigationController?.pushViewController(feedDetailView, animated: true)
+//
+//
+//            DispatchQueue.main.async {
+//                self.navigationController?.pushViewController(feedDetailView, animated: true)
+//
+////                self.navigationController?.pushViewController(feedDetailView, animated: true)
+//
+//                //                self.delegate?.loadingRemoveDisplay()
+//            }
+//        }
+//
 //        Database.database().reference().child("feed_review").child(searchFeedData[indexPath.row].feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
 //            // 1. 리뷰의 갯수가 필요하
 //            //            print(feedDataInfo.feedKey)
@@ -425,4 +469,55 @@ extension FeedSearchViewController: UISearchBarDelegate {
         self.searchResultTableView.reloadData()
     }
         
+}
+extension FeedSearchViewController: FeedMainInfoCellProtocol{
+    func sendBookMarkValue(isBookMark: Bool, feedKey: String) {
+        print("넘어온 즐겨찾기 값//", isBookMark," 사료키값://", feedKey)
+        let bookMarkRef = Database.database().reference().child("my_favorite").child(userUID)
+        // 최초등록
+        if isBookMark {
+            // 즐겨찾기 추가
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            var bookMarkData: [String:Any] = [:]
+            bookMarkData.updateValue(feedKey, forKey: "feed_key")
+            
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko")
+            formatter.dateFormat = "yyyy.MM.dd HH:mm"
+            let currentDataString = formatter.string(from: Date())
+            print("날짜2://, ", currentDataString)
+            bookMarkData.updateValue(currentDataString, forKey: "favorites_date")
+            bookMarkRef.childByAutoId().setValue(bookMarkData)
+            print("즐겨찾기 데이터://", bookMarkData)
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            DispatchQueue.main.async {
+                //노티혹은 델리게이트를 사용해야할것같다.
+                //                self.feedMoreInformationLoad()
+                //                self.feedInfoTableView.reloadData()
+            }
+            
+        }
+        else{ // 기존에 데이터 존재시 삭제
+            bookMarkRef.observeSingleEvent(of: .value, with: { (dataSnap) in
+                guard let childrenValue = dataSnap.children.allObjects as? [DataSnapshot] else{return}
+                for bookMark in childrenValue{
+                    if bookMark.childSnapshot(forPath: "feed_key").value as? String == feedKey{
+                        print("즐겨찾기존지하는 키://",bookMark.key)
+                        bookMarkRef.child(bookMark.key).removeValue()
+                    }
+                }
+                DispatchQueue.main.async {
+                    //                    self.feedMoreInformationLoad()
+                    //                    self.feedInfoTableView.reloadData()
+                }
+            })
+        }
+        
+
+    }
+    
+    
+    
 }

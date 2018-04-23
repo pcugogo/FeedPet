@@ -60,28 +60,29 @@ class MyPageFeedContentsCell: UITableViewCell {
     func configureCell(favorites:FavoritesData){
         self.favorites = favorites
         
-        //0:유기농 / 1:홀리스틱 / 2:슈퍼프리미엄 / 3:프리미엄 / 4:마트용
-        switch favorites.feedGradeReturn {
-        case 0:
-            feedGradeLb.text = "유기농"
-            feedGradeLb.textColor = UIColor.blue
-        case 1:
-            feedGradeLb.text = "홀리스틱"
-            feedGradeLb.textColor = UIColor.green
-        case 2:
-            feedGradeLb.text = "슈퍼프리미엄"
-            feedGradeLb.textColor = UIColor.blue
-            
-        case 3:
-            feedGradeLb.text = "프리미엄"
-            feedGradeLb.textColor = UIColor.blue
-        case 4:
-            feedGradeLb.text = "마트용"
-            feedGradeLb.textColor = UIColor.blue
-        default:
-            print("error")
-        }
-        
+        FeedGrade(rawValue: self.favorites.feedGradeReturn)?.gradeText(label: self.feedGradeLb)
+        //0:오가닉 / 1:홀리스틱 / 2:슈퍼프리미엄 / 3:프리미엄 / 4:마트용
+//        switch favorites.feedGradeReturn {
+//        case 0:
+//            feedGradeLb.text = "오가닉"
+//            feedGradeLb.textColor = UIColor.init(hexString: "338FCB")
+//        case 1:
+//            feedGradeLb.text = "홀리스틱"
+//            feedGradeLb.textColor = UIColor.green
+//        case 2:
+//            feedGradeLb.text = "슈퍼프리미엄"
+//            feedGradeLb.textColor = UIColor.blue
+//
+//        case 3:
+//            feedGradeLb.text = "프리미엄"
+//            feedGradeLb.textColor = UIColor.blue
+//        case 4:
+//            feedGradeLb.text = "마트용"
+//            feedGradeLb.textColor = UIColor.blue
+//        default:
+//            print("error")
+//        }
+        print(MyPageDataCenter.shared.favoriteReviewInfoDatas)
         for favoriteReviewInfoData in MyPageDataCenter.shared.favoriteReviewInfoDatas{
             if favorites.feedKeyReturn == favoriteReviewInfoData.feedKeyReturn{
                 let rating = favoriteReviewInfoData.feedRatingReturn
@@ -121,26 +122,36 @@ class MyPageFeedContentsCell: UITableViewCell {
                     fourthStarImgView.image = #imageLiteral(resourceName: "selectStar")
                     fifthStarImgView.image = #imageLiteral(resourceName: "selectStar")
                 default:
-                    print("error")
+                    firstStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                    secondStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                    thirdStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                    fourthStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                    fifthStarImgView.image = #imageLiteral(resourceName: "normalStar")
+                    print("star error://")
                 }
             }
         }
         
        
-        switch favorites.feedMouthReturn {    // MOUTH_G : GOOD / MOUTH_S : SOSO /  MOUTH_B : BAD
-        case "MOUTH_G":
+        switch favorites.feedMouthReturn {    // MOUTH_G : GOOD->0 / MOUTH_S : SOSO->1 /  MOUTH_B : BAD->2
+        case 0:
             wordOfMouthImgView.image = #imageLiteral(resourceName: "good")
-        case "MOUTH_S":
+        case 1:
             wordOfMouthImgView.image = #imageLiteral(resourceName: "soso")
-        case "MOUTH_B":
+        case 2:
             wordOfMouthImgView.image = #imageLiteral(resourceName: "bad")
         default:
             print("error")
         }
+        // 수정중
+//        if let url = URL(string:favorites.feedImgReturn){
+//            feedImgView.kf.setImage(with: url)
+//        }
+//
         if let url = URL(string:favorites.feedImgReturn){
             feedImgView.kf.setImage(with: url)
         }
-       
+        
         brandNameLb.text = favorites.feedBrandReturn
         feedNameLb.text = favorites.feedNameReturn
         mainIngredientNameLb.text = favorites.feedIngredientReturn

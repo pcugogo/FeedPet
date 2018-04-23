@@ -47,8 +47,15 @@ class DataCenter {
     var loginUserData: [String:Any] = [:]
     var userInfo: User = User()
     var userDataUpdate: Bool = false
-    var userUpdateCount: Int = 0
-    
+    var userUpdateCount: Int = 0 {
+        didSet{
+            if userUpdateCount > 2 {
+                DataCenter.shared.userDataUpdate = false
+                DataCenter.shared.userUpdateCount = 0
+
+            }
+        }
+    }
     // 사용자의 반려동물에따른 화면이동을 위한 flag => 디테일 화면으로 이동시에는 불필요하여 필요
     var isMove: Bool = true
     var filterGrade: [IndexPath] = []
@@ -127,12 +134,13 @@ class DataCenter {
             }
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             logOutFlag = true
-            
+            completion(logOutFlag)
             UserDefaults.standard.removeObject(forKey: "login_State")
         }catch{
             logOutFlag = false
+            completion(logOutFlag)
         }
-        completion(logOutFlag)
+//        completion(logOutFlag)
        
         
     }
@@ -157,9 +165,9 @@ class DataCenter {
             }
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
-        }, withCancel: {(Err) in
+        }, withCancel: {(error) in
             
-            print(Err.localizedDescription)
+            print(error.localizedDescription)
             
         })
     }
@@ -231,20 +239,12 @@ class DataCenter {
     // 사용법: 데이터센턴 싱글턴 패턴으로 함수 호출 하여 사용
     // ex) let spiner = DataCenter.shard.displayLoadingIndicator(onView: 현재사용할 뷰컨의 뷰)
     func displsyLoadingIndicator(onView: UIView)->UIView {
-        
+        for subview in onView.subviews{
+            print(subview.accessibilityIdentifier)
+        }
+        print(onView.subviews,"/", onView.subviews.count)
         let spinner = UIView(frame: onView.bounds)
-//        spinner.autoLayoutAnchor(top: onView.topAnchor,
-//                                  left: onView.leftAnchor,
-//                                  right: onView.rightAnchor,
-//                                  bottom: onView.bottomAnchor,
-//                                  topConstant: 0,
-//                                  leftConstant: 0,
-//                                  rigthConstant: 0,
-//                                  bottomConstant: 0,
-//                                  width: 0,
-//                                  height: 0,
-//                                  centerX: nil,
-//                                  centerY: nil)
+
         spinner.backgroundColor = UIColor.init(hexString: "#333333", alpha: 0.5)
         let loadingIndicator: UIImageView = {
            let imgView = UIImageView()
@@ -268,9 +268,9 @@ class DataCenter {
 //                                          centerX: onView.centerXAnchor,
 //                                          centerY: nil)
 //        loadingIndicator.center = spinner.center
-        let gifManager = SwiftyGifManager(memoryLimit:30)
-        let gif = UIImage(gifName: "loading_img@3x2.gif")
-        loadingIndicator.setGifImage(gif, manager: gifManager)
+//        let gifManager = SwiftyGifManager(memoryLimit:30)
+//        let gif = UIImage(gifName: "loading_img@3x2.gif")
+//        loadingIndicator.setGifImage(gif, manager: gifManager)
         DispatchQueue.main.async {
 //            spinner.addSubview(loadingIndicator)
             
@@ -288,6 +288,7 @@ class DataCenter {
                                      centerX: nil,
                                      centerY: nil)
             spinner.addSubview(loadingIndicator)
+//            spinner.bringSubview(toFront: loadingIndicator)
             loadingIndicator.autoLayoutAnchor(top: nil,
                                               left: nil,
                                               right: nil,
@@ -320,6 +321,31 @@ class DataCenter {
                 loadingSpinerView.removeFromSuperview()
             })
         }
+    }
+    func removeSpinnerTo(spinner :UIView?, comletion: @escaping (Bool)->Void) {
+        guard let loadingSpinerView = spinner else {
+            return
+        }
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3, animations: {
+                loadingSpinerView.alpha = 0
+            }, completion: { (finish) in
+                
+                loadingSpinerView.removeFromSuperview()
+                comletion(true)
+            })
+        }
+    }
+    
+    func loadingOnViewDisplay(onViewController: UIViewController){
+        let loadinView = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoadingIndicatorViewController") as! LoadingIndicatorViewController
+        onViewController.present(loadinView, animated: true, completion: nil)
+        
+    }
+    func loadingOnViewRemove(onView: UIView?) {
+//        if let view = onView{
+//            view.removeFromSuperview()
+//        }
     }
 }
 
@@ -357,7 +383,7 @@ struct User {
         self.userNickname = allInfoData["user_nic"] as! String
         self.userGender = allInfoData["user_gender"] as! String
         self.userPet = allInfoData["user_pet"] as! String
-        self.userPetAge = allInfoData["user_petage"] as! Int
+        self.userPetAge = allInfoData["user_pet_age"] as! Int
         self.userProfileImgUrl = allInfoData["user_img"] as? String
         self.userPetFunctional = allInfoData["user_pet_functional"] as! [String]
     }
@@ -369,7 +395,7 @@ struct User {
         self.userNickname = userInfoData["user_nic"] as! String
         self.userGender = userInfoData["user_gender"] as! String
         self.userPet = userInfoData["user_pet"] as! String
-        self.userPetAge = userInfoData["user_petage"] as! Int
+        self.userPetAge = userInfoData["user_pet_age"] as! Int
         self.userProfileImgUrl = userInfoData["user_img"] as? String
         self.userPetFunctional = userInfoData["user_pet_functional"] as! [String]
         self.userPetFunctionalIndexPathRow = userInfoData["user_pet_functional_indexpath_row"] as! [Int]
@@ -391,7 +417,7 @@ struct FeedInfo{
     var feedWeight: [Double]!
     var feedFunctional: [String]!
     var feedImg: [String]!
-    var feedMouth: String!
+    var feedMouth: Int!
     var feedGrade: Int!
     var feedCountry: String!
     var feedPackageFlag: Bool!
@@ -409,7 +435,7 @@ struct FeedInfo{
         self.feedWeight = feedJsonData.1["feed_weight"].arrayObject as! [Double]
         self.feedFunctional = feedJsonData.1["feed_functional"].arrayObject as! [String]
         self.feedImg = feedJsonData.1["feed_img"].arrayObject as! [String]
-        self.feedMouth = feedJsonData.1["feed_mouth"].stringValue
+        self.feedMouth = feedJsonData.1["feed_mouth"].intValue
         self.feedGrade = feedJsonData.1["feed_grade"].intValue
         self.feedCountry = feedJsonData.1["feed_country"].stringValue
         self.feedPackageFlag = feedJsonData.1["feed_package_flag"].boolValue
@@ -432,7 +458,7 @@ struct FeedInfo{
         self.feedWeight = feedJsonDataTest["feed_weight"].arrayObject as! [Double]
         self.feedFunctional = feedJsonDataTest["feed_functional"].arrayObject as! [String]
         self.feedImg = feedJsonDataTest["feed_img"].arrayObject as! [String]
-        self.feedMouth = feedJsonDataTest["feed_mouth"].stringValue
+        self.feedMouth = feedJsonDataTest["feed_mouth"].intValue
         self.feedGrade = feedJsonDataTest["feed_grade"].intValue
         self.feedCountry = feedJsonDataTest["feed_country"].stringValue
         self.feedPackageFlag = feedJsonDataTest["feed_package_flag"].boolValue
@@ -442,6 +468,31 @@ struct FeedInfo{
         self.bigFlag = feedJsonDataTest["big_flag"].boolValue
         
         
+        
+    }
+    
+    init(myBookMarkData: FavoritesData) {
+        self.feedKey = myBookMarkData.feedKeyReturn
+        self.feedBrand = myBookMarkData.feedBrandReturn
+        self.feedName = myBookMarkData.feedNameReturn
+        self.feedIngredient = myBookMarkData.feedIngredientReturn
+
+        self.feedAge = myBookMarkData.feedAgeReturn
+        self.feedImg = myBookMarkData.feedImgArrReturn
+        self.feedWeight = myBookMarkData.feedWeightReturn // 중량 필요
+        self.feedFunctional = myBookMarkData.feedFunctionalReturn //기능성필요
+        self.feedCountry = myBookMarkData.feedCountryReturn //제조국
+        self.grainfreeFlag = myBookMarkData.grainfreeFlagReturn //그레인프리
+        self.organicFlag = myBookMarkData.organicFlagReturn //오가닉
+        self.lidFlag = myBookMarkData.lidFlagReturn // lid
+        self.bigFlag = myBookMarkData.bigFlagReturn // big
+        self.feedAge = myBookMarkData.feedAgeReturn
+        self.feedImg = myBookMarkData.feedImgArrReturn
+        
+        self.feedMouth = myBookMarkData.feedMouthReturn
+        self.feedGrade = myBookMarkData.feedGradeReturn
+        self.feedPackageFlag = myBookMarkData.feedPackageFlagReturn
+
         
     }
     init() {
@@ -675,6 +726,31 @@ struct FilterData {
     
 }
 
+struct BookMarkDataList{
+    var userKey: String
+    var bookMarkDatas: [BookMarkData]
+    
+    init(bookMarkDataJSON: JSON, userKey: String) {
+        self.userKey = userKey
+        var bookMarkData: [BookMarkData] = []
+        for bookMark in bookMarkDataJSON {
+            let oneBookMark = BookMarkData(bookMarkJSON: bookMark)
+            bookMarkData.append(oneBookMark)
+        }
+        self.bookMarkDatas = bookMarkData
+    }
+}
+struct BookMarkData {
+    var bookMarkKey: String
+    var bookMarkDate: String
+    var feedKey: String
+    
+    init(bookMarkJSON: (String,JSON)) {
+        self.bookMarkKey = bookMarkJSON.0
+        self.bookMarkDate = bookMarkJSON.1["favorites_date"].stringValue
+        self.feedKey = bookMarkJSON.1["feed_key"].stringValue
+    }
+}
 enum SortingState: Int {
     
     case grade = 0

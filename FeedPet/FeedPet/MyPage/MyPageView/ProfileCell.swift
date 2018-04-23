@@ -20,16 +20,39 @@ class ProfileCell: UITableViewCell,UIImagePickerControllerDelegate {
             
             userIdLb.text = userInfo.userEmail
             nickNameLb.text = userInfo.userNickname
-            
+//            if let userImg = userInfo.userProfileImgUrl, let userProfileImgURL = URL(string: userImg) {
+//                profileImg.kf.setImage(with: userProfileImgURL)
+//
+//            }else{
+//                profileImg.image = #imageLiteral(resourceName: "MyPageProfile")
+//
+//            }
             guard let userImg = userInfo.userProfileImgUrl else {return}
+//            DispatchQueue.global(qos: .userInteractive).async {
+//                if let userProfileImgURL = URL(string: userImg) {
+//                    DispatchQueue.main.async {
+//
+//                        self.profileImg.kf.setImage(with: userProfileImgURL)
+//                        self.profileImg.layer.cornerRadius = 40
+//                        self.profileImg.clipsToBounds = true
+//                    }
+//                }
+//
+//            }
             
             if let userProfileImgURL = URL(string: userImg) {
-                profileImg.kf.setImage(with: userProfileImgURL)
-                profileImg.layer.cornerRadius = 40
-                profileImg.clipsToBounds = true
+                DispatchQueue.main.async {
+                    
+                    self.profileImg.kf.setImage(with: userProfileImgURL)
+                    self.profileImg.layer.cornerRadius = 40
+                    self.profileImg.clipsToBounds = true
+                }
             }
+            
             if userInfo.userPet == "feed_petkey_d"{
                 petTypeLb.text = "#멍"
+                petTypeLb.backgroundColor = UIColor.init(hexString: "#1ABC9C")
+                petAgeLb.backgroundColor = UIColor.init(hexString: "#1ABC9C")
                 switch userInfo.userPetAge{
                 case 0:
                     petAgeLb.text = "#퍼피"
@@ -42,6 +65,8 @@ class ProfileCell: UITableViewCell,UIImagePickerControllerDelegate {
                 }
             }else{
                 petTypeLb.text = "#냥"
+                petTypeLb.backgroundColor = UIColor.init(hexString: "#F1C40F")
+                petAgeLb.backgroundColor = UIColor.init(hexString: "#F1C40F")
                 switch userInfo.userPetAge {
                 case 0:
                     petAgeLb.text = "#키튼"
@@ -69,8 +94,11 @@ class ProfileCell: UITableViewCell,UIImagePickerControllerDelegate {
      
         // 그려질때 데이터 없이 UI부분이라 상관없이 사용가능
         profileImg.layer.cornerRadius = 40
+        profileImg.clipsToBounds = true
+        
         petTypeLb.layer.masksToBounds = true
         petTypeLb.layer.cornerRadius = 5
+        
         petAgeLb.layer.masksToBounds = true
         petAgeLb.layer.cornerRadius = 5
         

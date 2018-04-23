@@ -11,6 +11,8 @@ import UIKit
 
 
 class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,LeaveMembershipCustomCellDelegate {
+    
+    
 
     let leaveMembershipReasonText = ["사용하기 불편해요","정보가 부족해요","다른앱을 사용하고 싶어요","기타"] //탈퇴 이유 텍스트들
     
@@ -80,10 +82,11 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
             leaveMembershipBtnCell.cencelBtnOut.layer.cornerRadius = 5
             
             if MyPageDataCenter.shared.leaveMembershipReason != "" { //reloadData가 되기때문에 초기 색상을 지정해준다
-                
+                leaveMembershipBtnCell.confirmBtnOut.isEnabled = true
                 leaveMembershipBtnCell.confirmBtnOut.backgroundColor = UIColor(red: 236/255, green: 97/255, blue: 0/255, alpha: 1.0)     //탈퇴 이유 데이터가 들어왔을때 확인버튼 색상을 바꿔준다
                 
             }else{
+                leaveMembershipBtnCell.confirmBtnOut.isEnabled = false
                 leaveMembershipBtnCell.confirmBtnOut.backgroundColor = UIColor(red: 158/255, green: 158/255, blue: 161/255, alpha: 1.0)    //rgbColor를 사용할때 /255를 표시해줘야 색상이 제대로 나온다
             }
             
@@ -160,12 +163,29 @@ class LeaveMembershipViewController: UIViewController,UITableViewDataSource,UITa
         MyPageDataCenter.shared.leaveMembarshipEtcReasonContent = ""
         
 //        self.tableView.frame = CGRect(x: self.tableView.frame.minX, y: self.view.center.y - 140 , width: self.tableView.frame.width, height: 300)
-        
+        /*
         tableView.reloadData()
         self.view.endEditing(true)
         self.view.removeFromSuperview()
         delegate?.logoutNavigationPoptoMyPage()
+        */
+        self.dismiss(animated: true) {
+            self.delegate?.logoutNavigationPoptoMyPage()
+        }
         
+    }
+    func cancleBtnTouchTableViewDisappear() {
+        MyPageDataCenter.shared.leaveMembershipReason = ""
+        MyPageDataCenter.shared.leaveMembarshipEtcReasonContent = ""
+        
+        //        self.tableView.frame = CGRect(x: self.tableView.frame.minX, y: self.view.center.y - 140 , width: self.tableView.frame.width, height: 300)
+        
+//        tableView.reloadData()
+//        self.view.endEditing(true)
+//        self.view.removeFromSuperview()
+        self.dismiss(animated: true) {
+            
+        }
         
     }
     

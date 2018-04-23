@@ -32,6 +32,20 @@ class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UIT
             self.feedIngredientWarningDatas = warningIngredientData
             self.tableView.reloadData()
         }
+//        ingredientSCOut.backgroundColor = .clear
+//        ingredientSCOut.tintColor = .gray
+//        ingredientSCOut.setTitleTextAttributes([
+//            NSAttributedStringKey.font : UIFont(name: "GodoM", size: 18)!,
+//            NSAttributedStringKey.foregroundColor: UIColor.lightGray
+//            ], for: .normal)
+//
+//        ingredientSCOut.setTitleTextAttributes([
+//            NSAttributedStringKey.font : UIFont(name: "GodoM", size: 18)!,
+//            NSAttributedStringKey.foregroundColor: UIColor.white
+//            ], for: .selected)
+        
+//        let font: [AnyHashable : Any] = [NSAttributedStringKey.font : UIFont(name: "GodoM", size: 16)!]
+//        ingredientSCOut.setTitleTextAttributes(font, for: .normal)
         
     }
     
@@ -53,7 +67,7 @@ class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UIT
         let reuseIdentifier = "IngredientNameCell"
         
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-        
+        cell.textLabel?.font = UIFont(name: "GodoM", size: 15)
         if ingredientSCOut.selectedSegmentIndex == 0{ //좋은 성분
             cell.textLabel?.text = feedIngredientGoodDatas[indexPath.row].ingredientNameReturn
             cell.textLabel?.textColor = UIColor(red: 52/255, green: 152/255, blue: 219/255, alpha: 1.0)
@@ -122,7 +136,15 @@ class IngredientAnalysisViewController: UIViewController,UITableViewDelegate,UIT
     @IBAction func ingredientSCAction(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0{
             tableView.reloadData()
+//
+//            sender.setImage(#imageLiteral(resourceName: "good_ingredient_btn_activity"), forSegmentAt: 0)
+//            sender.setImage(#imageLiteral(resourceName: "attentional_ingredient_btn_inactivity"), forSegmentAt: 1)
+//
+            
         }else{
+//            sender.setImage(#imageLiteral(resourceName: "good_ingredient_btn_inactivity"), forSegmentAt: 0)
+//            sender.setImage(#imageLiteral(resourceName: "attentional_ingredient_btn_activity"), forSegmentAt: 1)
+//
             tableView.reloadData()
         }
     }

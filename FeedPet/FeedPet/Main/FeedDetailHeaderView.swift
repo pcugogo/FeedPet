@@ -32,7 +32,7 @@ class FeedDetailHeaderView: UIView {
     
     // 슬라이드 들어갈 이미지 컨텐츠뷰의 넓이 제약사항
     @IBOutlet weak var feedImgContentViewWidthConstraints: NSLayoutConstraint!
-    var detailCellDelegate: FeedDetailCellProtoCol?
+    var detailDelegate: FeedDetailCellProtoCol?
     var feedInfo: FeedInfo? {
         didSet{
             
@@ -45,7 +45,7 @@ class FeedDetailHeaderView: UIView {
             feedCountryOriginLabel.text = feedDetailInfo.feedCountry
             
             FeedGrade(rawValue: feedDetailInfo.feedGrade)?.gradeText(label: feedGradeLabel)
-            FeedMouth(rawValue: feedDetailInfo.feedMouth)?.mouthImgSetting(mouthImgView: feedPetEvaluationRatingImgView)
+            FeedMouthGrade(rawValue: feedDetailInfo.feedMouth)?.mouthImgSetting(mouthImgView: feedPetEvaluationRatingImgView)
             
             // 해당 사료의반려동물을 확인=> 현재 currentPet으로 확인
             if DataCenter.shared.currentPetKey == "feed_petkey_d" {
@@ -60,7 +60,7 @@ class FeedDetailHeaderView: UIView {
             }
             
             FeedGrade(rawValue: (feedDetailInfo.feedGrade)!)?.gradeText(label: feedGradeLabel)
-            FeedMouth(rawValue: (feedDetailInfo.feedMouth)!)?.mouthImgSetting(mouthImgView: feedPetEvaluationRatingImgView)
+            FeedMouthGrade(rawValue: (feedDetailInfo.feedMouth)!)?.mouthImgSetting(mouthImgView: feedPetEvaluationRatingImgView)
             
             var count: CGFloat = 0
             var countLoad: Int = 0
@@ -85,7 +85,8 @@ class FeedDetailHeaderView: UIView {
                 
                 if let url = URL(string: (feedDetailInfo.feedImg[imgCount])){
                     
-                    
+//                    imgViews.contentMode = .scaleAspectFit
+//                    imgViews.clipsToBounds = true
                     imgViews.kf.setImage(with: url)
                     
                 }
@@ -142,6 +143,7 @@ class FeedDetailHeaderView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         feedImgScrollView.delegate = self
+        
 //        feedImgScrollView.backgroundColor = .red
 //        feedImgScrollContentView.backgroundColor = .blue
         
@@ -162,7 +164,7 @@ class FeedDetailHeaderView: UIView {
     }
     */
     @IBAction func mouthInfoBtnTouched(_ sender: UIButton){
-        detailCellDelegate?.viewOnMouthInfoImg(mouthInfoBtnFrame: feedEvaluationRatingHelpBtn.frame, cellHeight: self.bounds.height)
+        detailDelegate?.viewOnMouthInfoImg(mouthInfoBtnFrame: feedEvaluationRatingHelpBtn.frame, cellHeight: self.bounds.height)
         print("1/",feedEvaluationRatingHelpBtn.bounds)
         print("2/",feedEvaluationRatingHelpBtn.bounds.origin)
         print("3/",feedEvaluationRatingHelpBtn.frame)

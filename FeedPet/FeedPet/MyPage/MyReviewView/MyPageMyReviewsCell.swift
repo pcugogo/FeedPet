@@ -119,7 +119,7 @@ class MyPageMyReviewsCell: UITableViewCell {
         editViewPresentModally()
     }
     @IBAction func removeBtnAction(_ sender: UIButton) {
-        print("QWE",MyPageDataCenter.shared.myReviewDatas[1],"@$@#$#@%")
+//        print("QWE",MyPageDataCenter.shared.myReviewDatas[1],"@$@#$#@%")
         MyPageDataCenter.shared.myPageMyReviewsCellRemoveBtnTagValue = sender.tag
         removeAlertAction()
     }

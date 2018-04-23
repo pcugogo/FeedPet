@@ -46,12 +46,12 @@
 		4C1C1BC12028719B004DE72A /* LoadingIndicatorImgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1C1BC02028719B004DE72A /* LoadingIndicatorImgView.swift */; };
 		4C1C1BCC202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1C1BCA202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.swift */; };
 		4C1C1BCD202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C1C1BCB202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.xib */; };
-		4C1C1BCF202AC75C004DE72A /* loading_img@3x2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4C1C1BCE202AC75C004DE72A /* loading_img@3x2.gif */; };
 		4C1C1BD9202C6214004DE72A /* RootBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1C1BD8202C6214004DE72A /* RootBaseViewController.swift */; };
 		4C1E6DDB2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDA2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift */; };
 		4C1E6DDD20130DD500C7EDFC /* FeedReviewListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDC20130DD500C7EDFC /* FeedReviewListTableViewCell.swift */; };
 		4C1E6DDF20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E6DDE20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift */; };
 		4C1E6DED20151F4800C7EDFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C1E6DEC20151F4800C7EDFC /* Assets.xcassets */; };
+		4C203D0A20764F9400523667 /* LoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C203D0920764F9400523667 /* LoadingIndicatorView.swift */; };
 		4C229C82200B9E50004FFD07 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C81200B9E50004FFD07 /* FilterViewController.swift */; };
 		4C229C88200CB21B004FFD07 /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C87200CB21B004FFD07 /* FilterTableViewCell.swift */; };
 		4C229C8A200CB22F004FFD07 /* FilterDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C229C89200CB22F004FFD07 /* FilterDetailTableViewCell.swift */; };
@@ -78,8 +78,7 @@
 		4CAD76801FED142E00EDE859 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD767F1FED142E00EDE859 /* LoginViewController.swift */; };
 		4CAD76821FED3B8D00EDE859 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD76811FED3B8D00EDE859 /* DataCenter.swift */; };
 		4CBD557D1FED043300D37FE8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4CBD557C1FED043300D37FE8 /* GoogleService-Info.plist */; };
-		4CCDDF5A2028615300EF0FD2 /* loading_img@2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4CCDDF572028615300EF0FD2 /* loading_img@2.gif */; };
-		4CCDDF5B2028615300EF0FD2 /* loading_img@3.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4CCDDF582028615300EF0FD2 /* loading_img@3.gif */; };
+		4CD905ED207F65E1001FB8CC /* LoadingIndicatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD905EC207F65E1001FB8CC /* LoadingIndicatorViewController.swift */; };
 		4CE4F5D71FFEAC410047E9F9 /* AddPetInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5D51FFEAC410047E9F9 /* AddPetInformationViewController.swift */; };
 		4CE4F5D81FFEAC410047E9F9 /* AddUserInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5D61FFEAC410047E9F9 /* AddUserInformationViewController.swift */; };
 		4CE4F5DA1FFEAD2B0047E9F9 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */; };
@@ -98,7 +97,6 @@
 		FC709DB0201A4E3E005AF023 /* MyPageMyReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC709DAF201A4E3E005AF023 /* MyPageMyReviewsCell.swift */; };
 		FC75AC3C202259230041283E /* EditInfoViewAgeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC75AC3B202259230041283E /* EditInfoViewAgeCollectionViewCell.swift */; };
 		FC75AC3E2022596A0041283E /* EditInfoViewPetFunctionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC75AC3D2022596A0041283E /* EditInfoViewPetFunctionCollectionViewCell.swift */; };
-		FCA26EE420139BC5000D8BAF /* MyPageTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA26EE320139BC5000D8BAF /* MyPageTestViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -146,12 +144,12 @@
 		4C1C1BC02028719B004DE72A /* LoadingIndicatorImgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicatorImgView.swift; sourceTree = "<group>"; };
 		4C1C1BCA202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedIngredientProgressChartTableViewCell.swift; sourceTree = "<group>"; };
 		4C1C1BCB202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedIngredientProgressChartTableViewCell.xib; sourceTree = "<group>"; };
-		4C1C1BCE202AC75C004DE72A /* loading_img@3x2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "loading_img@3x2.gif"; sourceTree = "<group>"; };
 		4C1C1BD8202C6214004DE72A /* RootBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootBaseViewController.swift; sourceTree = "<group>"; };
 		4C1E6DDA2012FFD000C7EDFC /* FeedIngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedIngredientTableViewCell.swift; sourceTree = "<group>"; };
 		4C1E6DDC20130DD500C7EDFC /* FeedReviewListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReviewListTableViewCell.swift; sourceTree = "<group>"; };
 		4C1E6DDE20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReviewInfoTableViewCell.swift; sourceTree = "<group>"; };
 		4C1E6DEC20151F4800C7EDFC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4C203D0920764F9400523667 /* LoadingIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicatorView.swift; sourceTree = "<group>"; };
 		4C229C81200B9E50004FFD07 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		4C229C87200CB21B004FFD07 /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
 		4C229C89200CB22F004FFD07 /* FilterDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterDetailTableViewCell.swift; sourceTree = "<group>"; };
@@ -182,8 +180,8 @@
 		4CAD767F1FED142E00EDE859 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4CAD76811FED3B8D00EDE859 /* DataCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
 		4CBD557C1FED043300D37FE8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		4CCDDF572028615300EF0FD2 /* loading_img@2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "loading_img@2.gif"; sourceTree = "<group>"; };
-		4CCDDF582028615300EF0FD2 /* loading_img@3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "loading_img@3.gif"; sourceTree = "<group>"; };
+		4CD905EC207F65E1001FB8CC /* LoadingIndicatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicatorViewController.swift; sourceTree = "<group>"; };
+		4CD905EE2080D71C001FB8CC /* FeedPet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FeedPet.entitlements; sourceTree = "<group>"; };
 		4CE4F5D51FFEAC410047E9F9 /* AddPetInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPetInformationViewController.swift; sourceTree = "<group>"; };
 		4CE4F5D61FFEAC410047E9F9 /* AddUserInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddUserInformationViewController.swift; sourceTree = "<group>"; };
 		4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
@@ -201,7 +199,6 @@
 		FC709DAF201A4E3E005AF023 /* MyPageMyReviewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageMyReviewsCell.swift; path = FeedPet/MyPage/MyReviewView/MyPageMyReviewsCell.swift; sourceTree = SOURCE_ROOT; };
 		FC75AC3B202259230041283E /* EditInfoViewAgeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInfoViewAgeCollectionViewCell.swift; sourceTree = "<group>"; };
 		FC75AC3D2022596A0041283E /* EditInfoViewPetFunctionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInfoViewPetFunctionCollectionViewCell.swift; sourceTree = "<group>"; };
-		FCA26EE320139BC5000D8BAF /* MyPageTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,7 +219,6 @@
 			children = (
 				14035C101FF24E95005ABAE0 /* MyPage.storyboard */,
 				14DA009C1FF671D200819A96 /* MyPageDataCenter.swift */,
-				FCA26EE320139BC5000D8BAF /* MyPageTestViewController.swift */,
 				14035C111FF24E95005ABAE0 /* MyPageView */,
 				14035C0C1FF24E95005ABAE0 /* EditInfoView */,
 				FC598EB22010D7AD008914EB /* MyPageFavoritesView */,
@@ -356,6 +352,7 @@
 		4C01C85C1FEB886B0016E674 /* FeedPet */ = {
 			isa = PBXGroup;
 			children = (
+				4CD905EE2080D71C001FB8CC /* FeedPet.entitlements */,
 				4C01C8661FEB886B0016E674 /* LaunchScreen.storyboard */,
 				4C01C8611FEB886B0016E674 /* Main.storyboard */,
 				4C01C85D1FEB886B0016E674 /* AppDelegate.swift */,
@@ -368,6 +365,8 @@
 				4CE4F5D91FFEAD2B0047E9F9 /* Extension.swift */,
 				4CE4F5DB1FFEAD5A0047E9F9 /* PetAgeCollectionViewCell.swift */,
 				4C1C1BC02028719B004DE72A /* LoadingIndicatorImgView.swift */,
+				4CD905EC207F65E1001FB8CC /* LoadingIndicatorViewController.swift */,
+				4C203D0920764F9400523667 /* LoadingIndicatorView.swift */,
 				4C1C1BBE20286469004DE72A /* LoadingIndicatorView.xib */,
 				4CF7C44A2003A57100AF8E35 /* MainCustomNavigationBar.swift */,
 				4C173187201E165800D97F32 /* FeedSearchBar.swift */,
@@ -441,9 +440,6 @@
 				4C8E40AD205BEA8600EA87B3 /* GodoB.otf */,
 				4C8E40AC205BEA8500EA87B3 /* GodoM.otf */,
 				4C25DC4B2031861200C4871D /* loading_img.gif */,
-				4CCDDF572028615300EF0FD2 /* loading_img@2.gif */,
-				4CCDDF582028615300EF0FD2 /* loading_img@3.gif */,
-				4C1C1BCE202AC75C004DE72A /* loading_img@3x2.gif */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -504,6 +500,11 @@
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -534,16 +535,13 @@
 				4C8E40AF205BEA9D00EA87B3 /* GodoB.otf in Resources */,
 				4C1C1BCD202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.xib in Resources */,
 				4C01C8681FEB886B0016E674 /* LaunchScreen.storyboard in Resources */,
-				4CCDDF5B2028615300EF0FD2 /* loading_img@3.gif in Resources */,
 				4CBD557D1FED043300D37FE8 /* GoogleService-Info.plist in Resources */,
 				4C5FBD6D1FFEB35F004C66EE /* MainMenuIconCollectionViewCell.xib in Resources */,
-				4C1C1BCF202AC75C004DE72A /* loading_img@3x2.gif in Resources */,
 				14035C1F1FF24E95005ABAE0 /* MyPage.storyboard in Resources */,
 				4C96FA68204E4D08008F4960 /* FeedReviewListCell.xib in Resources */,
 				4C01C8631FEB886B0016E674 /* Main.storyboard in Resources */,
 				4C1AED33204FF31B00364C8A /* login_video360.mov in Resources */,
 				4C1E6DED20151F4800C7EDFC /* Assets.xcassets in Resources */,
-				4CCDDF5A2028615300EF0FD2 /* loading_img@2.gif in Resources */,
 				4CAD767E1FED13BF00EDE859 /* loginVideo.mov in Resources */,
 				4C8E40AE205BEA9A00EA87B3 /* GodoM.otf in Resources */,
 				4C1C1BBF20286469004DE72A /* LoadingIndicatorView.xib in Resources */,
@@ -655,6 +653,7 @@
 				14035C1A1FF24E95005ABAE0 /* TotalAlarmSwitchCell.swift in Sources */,
 				14035C181FF24E95005ABAE0 /* AlarmSettingViewController.swift in Sources */,
 				14417CB61FF2F06500EA77B3 /* TermsOfUseViewController.swift in Sources */,
+				4C203D0A20764F9400523667 /* LoadingIndicatorView.swift in Sources */,
 				4C229C8A200CB22F004FFD07 /* FilterDetailTableViewCell.swift in Sources */,
 				4C01C85E1FEB886B0016E674 /* AppDelegate.swift in Sources */,
 				14DA00901FF598E700819A96 /* TeamLbCell.swift in Sources */,
@@ -692,6 +691,7 @@
 				4C1C1BCC202900D9004DE72A /* FeedIngredientProgressChartTableViewCell.swift in Sources */,
 				14E193711FFCF7170064C95E /* LeaveMembershipEtcReasonCell.swift in Sources */,
 				FC75AC3C202259230041283E /* EditInfoViewAgeCollectionViewCell.swift in Sources */,
+				4CD905ED207F65E1001FB8CC /* LoadingIndicatorViewController.swift in Sources */,
 				4CE87A7F201E770800AC2E7F /* FeedSearchResultViewController.swift in Sources */,
 				4C1E6DDF20130DE600C7EDFC /* FeedReviewInfoTableViewCell.swift in Sources */,
 				148F3F781FF51BB500E83B6B /* TeamIntroductionViewController.swift in Sources */,
@@ -708,7 +708,6 @@
 				4CF7C4532003FB0B00AF8E35 /* FunctionalCollectionViewCell.swift in Sources */,
 				4C229C88200CB21B004FFD07 /* FilterTableViewCell.swift in Sources */,
 				4C173186201C678700D97F32 /* FeedSearchViewController.swift in Sources */,
-				FCA26EE420139BC5000D8BAF /* MyPageTestViewController.swift in Sources */,
 				14035C191FF24E95005ABAE0 /* AlarmSwitchCell.swift in Sources */,
 				4C8DFB84200E297200331A5B /* FilterMenuSection.swift in Sources */,
 			);
@@ -784,7 +783,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -835,7 +834,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -848,6 +847,7 @@
 			baseConfigurationReference = 155F8EE9A3FF90944F5A4F83 /* Pods-FeedPet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FeedPet/FeedPet.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PV38XQ6LPC;
@@ -868,6 +868,7 @@
 			baseConfigurationReference = 3A3C22C8F7964B2242907916 /* Pods-FeedPet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FeedPet/FeedPet.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PV38XQ6LPC;

@@ -11,6 +11,7 @@ import Firebase
 import SwiftyJSON
 class FeedDetailViewController: UIViewController {
 
+
     @IBOutlet weak var feedDetailTableView: UITableView!
     @IBOutlet weak var feedDetailHeaderView: FeedDetailHeaderView!
     @IBOutlet weak var detailFooterView: UITableViewHeaderFooterView!
@@ -23,7 +24,7 @@ class FeedDetailViewController: UIViewController {
         }
     }
     var feedReviewData: FeedReview?
-    var delegate: feedMainInfoCellProtocol?
+    var delegate: FeedMainInfoCellProtocol?
     var isBookMark: Bool = false {
         didSet{
             if isBookMark {
@@ -44,6 +45,8 @@ class FeedDetailViewController: UIViewController {
         feedDetailTableView.dataSource = self
         
         feedDetailHeaderView.feedInfo = feedDetailInfo
+        feedDetailHeaderView.detailDelegate = self
+        
 //        self.navigationController?.isNavigationBarHidden = false
 //        self.navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "navigation_backBtn")
 //        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "navigation_backBtn")
@@ -121,7 +124,9 @@ class FeedDetailViewController: UIViewController {
         self.navigationController?.pushViewController(reviewMoreView, animated: true)
     }
     @IBAction func bookMarkBtnTouched(_ sender: UIBarButtonItem){
+        
         guard let sendFeedKey = feedDetailInfo?.feedKey else { return }
+        print(sendFeedKey)
         var bookMarkState: Bool = false
         // 현재 즐겨찾기되있는경우
         if isBookMark {
@@ -152,14 +157,44 @@ class FeedDetailViewController: UIViewController {
     }
     
     func feedBookMarkLoadData(userUID: String, feedKey: String){
-        Database.database().reference().child("my_favorite").child(userUID).child(feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
-            
+        print(userUID,"/",feedKey)
+        self.isBookMark = false
+        Database.database().reference().child("my_favorite").child(userUID).observeSingleEvent(of: .value, with: { (dataSnap) in
+            print(dataSnap.value)
+            guard let dataValue = dataSnap.value as? [String:Any] else {return}
+            let jsonData = JSON(dataValue)
+            print(jsonData)
+            let bookMarkList = BookMarkDataList(bookMarkDataJSON: jsonData, userKey: userUID)
+            print(bookMarkList)
             if dataSnap.hasChildren() {
-                self.feedBookMarkBtn.image = #imageLiteral(resourceName: "bookMarkAble")
-                self.isBookMark = true
+                
+                print(bookMarkList.bookMarkDatas.contains(where: { (oneBookMark) -> Bool in
+                    print(oneBookMark.feedKey,"/", feedKey)
+                    return oneBookMark.feedKey == feedKey
+                }))
+                print(bookMarkList.bookMarkDatas)
+                for one in bookMarkList.bookMarkDatas {
+                    if one.feedKey == feedKey {
+                        self.isBookMark = true
+                    }else{
+                        self.isBookMark = false
+                    }
+                }
+                
+//                if bookMarkList.bookMarkDatas.contains(where: { (oneBookMark) -> Bool in
+//                    return oneBookMark.feedKey == feedKey
+//                }){
+//
+//                    self.isBookMark = true
+//                }else{
+//                    self.isBookMark = false
+//                }
+//
+//                self.feedBookMarkBtn.image = #imageLiteral(resourceName: "bookMarkAble")
             }else{
-                self.feedBookMarkBtn.image = #imageLiteral(resourceName: "bookMarkDisable")
-                self.isBookMark = false
+//                self.feedBookMarkBtn.image = #imageLiteral(resourceName: "bookMarkDisable")
+//                self.isBookMark = false
+               
             }
 
         })
@@ -368,6 +403,27 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
             reviewInfoCell.reviewCountLabel.text = feedReviewData?.reviewInfo.count.description
             reviewInfoCell.reviewScoreLabel.text = feedReviewData?.reviewRating.description
             reviewInfoCell.reviewSetting(ratingScore: feedReviewData?.reviewRating)
+           
+            if let userUID = Auth.auth().currentUser?.uid {
+                if let reviewDatas = feedReviewData?.reviewInfo {
+                    if reviewDatas.contains(where: { (onReview) -> Bool in
+                        return onReview.userKey == userUID
+                    }){
+                        reviewInfoCell.containCheck = false
+                    }else{
+                        reviewInfoCell.containCheck = true
+                    }
+                }
+//                if (feedReviewData?.reviewInfo.contains(where: { (reviewInfo) -> Bool in
+//                    return reviewInfo.userKey == userUID
+//                }))!{
+//                    reviewInfoCell.containCheck = false
+//                }else{
+//                    reviewInfoCell.containCheck = true
+//                }
+            }
+            
+            
             
             return reviewInfoCell
          
@@ -389,12 +445,6 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
         let selectCell = indexPath.section
         switch selectCell {
         case 0:
-            print("")
-        case 1:
-            
-//            FireBaseData.shared.feedGoodIngredientDataLoad(ingredientGoodKey: goodStrArray)
-            
-//            FireBaseData.shared.feedWarningIngredientDataLoad(ingredientWarningKey: badStrArray)
             
             //화면 이동
             let storyBoard: UIStoryboard = UIStoryboard(name: "MyPage", bundle: nil)
@@ -402,6 +452,19 @@ extension FeedDetailViewController: UITableViewDelegate, UITableViewDataSource{
             ingredientView.ingredientGoodStrArray = goodStrArray
             ingredientView.ingredientWarningStrArray = warningStrArray
             self.navigationController?.pushViewController(ingredientView, animated: true)
+
+        case 1:
+            print("")
+//            FireBaseData.shared.feedGoodIngredientDataLoad(ingredientGoodKey: goodStrArray)
+            
+//            FireBaseData.shared.feedWarningIngredientDataLoad(ingredientWarningKey: badStrArray)
+            
+//            //화면 이동
+//            let storyBoard: UIStoryboard = UIStoryboard(name: "MyPage", bundle: nil)
+//            let ingredientView:IngredientAnalysisViewController = storyBoard.instantiateViewController(withIdentifier: "IngredientAnalysisViewController") as! IngredientAnalysisViewController
+//            ingredientView.ingredientGoodStrArray = goodStrArray
+//            ingredientView.ingredientWarningStrArray = warningStrArray
+//            self.navigationController?.pushViewController(ingredientView, animated: true)
         case 2:
             print("")
         case 3:

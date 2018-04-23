@@ -11,8 +11,26 @@ import UIKit
 class TeamIntroductionViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
     let teamMenberName = ["서지현","황기수","김수현","서경호","박찬욱","홍종민"]
-    let position = ["기획·개발","IOS개발","기획·디자인","디자인","IOS개발","Android개발"]
-    
+    let position = ["기획·개발","iOS개발","기획·디자인","디자인","iOS개발","Android개발"]
+    let teamMember = [["name":"서지현",
+                       "position":"기획·개발",
+                       "profile":"jihyeon_img"],
+                      ["name":"황기수",
+                       "position":"iOS개발",
+                       "profile":"gisu_img"],
+                      ["name":"김수현",
+                       "position":"기획·디자인",
+                       "profile":"suhyeon_img"],
+                      ["name":"서경호",
+                       "position":"UI 디자인",
+                       "profile":"kyeongho_img"],
+                      ["name":"박찬욱",
+                       "position":"iOS개발",
+                       "profile":#imageLiteral(resourceName: "MyPageProfile")],
+                      ["name":"홍종민",
+                       "position":"Android개발",
+                       "profile":"jongmin_img"]
+                     ]
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -52,10 +70,12 @@ class TeamIntroductionViewController: UIViewController,UITableViewDelegate,UITab
                 return teamLbCell
             }else{
                 let teamMemberIntroductionCell = tableView.dequeueReusableCell(withIdentifier: "teamMemberIntroductionCell", for: indexPath) as! TeamMemberIntroductionCell
-                //                teamMemberIntroductionCell.imgView.image = 이미지 설정해야됨
-                teamMemberIntroductionCell.teamMenberNameLb.text = teamMenberName[indexPath.row - 1]
-                teamMemberIntroductionCell.positionLb.text = position[indexPath.row - 1]
+                teamMemberIntroductionCell.imgView.image = UIImage(imageLiteralResourceName: teamMember[indexPath.row - 1]["profile"] as? String ?? "MyPageProfile" )
+                teamMemberIntroductionCell.teamMenberNameLb.text = teamMember[indexPath.row - 1]["name"] as? String ?? "no-data"
+                teamMemberIntroductionCell.positionLb.text = teamMember[indexPath.row - 1]["position"] as? String ?? "no-data"
                 return teamMemberIntroductionCell
+
+
             }
         }
         

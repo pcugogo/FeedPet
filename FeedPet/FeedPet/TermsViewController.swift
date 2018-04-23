@@ -12,7 +12,7 @@ class TermsViewController: UIViewController, UIWebViewDelegate {
 
     @IBOutlet weak var termsWebView: UIWebView!
     @IBOutlet weak var lodingIndicator: UIActivityIndicatorView!
-    
+    @IBOutlet weak var lodingIndicatorBackGroundView: UIView!
     var termURL = "http://feedpet.co.kr/termsofservicetermsofuse/"
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,10 +47,12 @@ class TermsViewController: UIViewController, UIWebViewDelegate {
      */
     func webViewDidStartLoad(_ webView: UIWebView) {
         lodingIndicator.startAnimating()
+        lodingIndicatorBackGroundView.isHidden = false
     }
     func webViewDidFinishLoad(_ webView: UIWebView) {
         lodingIndicator.stopAnimating()
         lodingIndicator.isHidden = true
+        lodingIndicatorBackGroundView.isHidden = true
     }
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         let errorAlert = UIAlertController(title: "", message: "네트워크가 원활하지 않습니다", preferredStyle: .alert)

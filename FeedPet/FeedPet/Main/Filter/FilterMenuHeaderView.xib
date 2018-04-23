@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,13 +26,17 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="38"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IFI-ki-JjG">
-                            <rect key="frame" x="18" y="9.5" width="40" height="19"/>
-                            <fontDescription key="fontDescription" name="GodoM" family="Godo" pointSize="16"/>
+                            <rect key="frame" x="18" y="10.5" width="37.5" height="17"/>
+                            <fontDescription key="fontDescription" name="GodoM" family="Godo" pointSize="15"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unfoldBtn" translatesAutoresizingMaskIntoConstraints="NO" id="4vP-7V-nSW">
-                            <rect key="frame" x="340" y="9.5" width="20" height="20"/>
+                            <rect key="frame" x="345" y="12" width="15" height="15"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="4vP-7V-nSW" secondAttribute="height" multiplier="1:1" id="OE6-2R-sxt"/>
+                                <constraint firstAttribute="height" constant="15" id="hqr-cB-FdP"/>
+                            </constraints>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>

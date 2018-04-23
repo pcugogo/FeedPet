@@ -23,6 +23,7 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     }
     var curretPetKey = String()
     var spinerView = UIView()
+    var sideView: UIView?
     var loginUerInfo: User?
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -39,6 +40,8 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         
         
     }
+    
+    
     
     override func viewDidLoad() {
 //        let backgroundView = UIView(frame: self.view.frame)
@@ -222,6 +225,7 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
     }
     */
     @IBAction func mypageShow(_ sender: UIBarButtonItem){
+        /*
         let nextViewController = UIStoryboard.init(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "MyPageViewController") as! MyPageViewController
         nextViewController.delegate = self
         
@@ -248,6 +252,32 @@ class PageControllerBaseController: BaseButtonBarPagerTabStripViewController<Mai
         }) { (error) in
             print(error.localizedDescription)
         }
+ */
+        let nextViewController = UIStoryboard.init(name: "MyPage", bundle: nil).instantiateViewController(withIdentifier: "MyPageViewController") as! MyPageViewController
+        nextViewController.delegate = self
+        
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Database.database().reference().child("user_info").child(uid).observeSingleEvent(of: .value, with: { (dataSnap) in
+            guard let userData = dataSnap.value as? [String:Any] else {return}
+            let userInfo = User(userInfoData: userData)
+            print(userInfo)
+            nextViewController.userData = userInfo
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+
+//            FireBaseData.shared.fireBaseFavoritesDataLoad(completion: { success in
+//                self.navigationController?.pushViewController(nextViewController, animated: true)
+//                FireBaseData.shared.fireBaseMyReviewDataOnLoad(completion: { (result) in
+//                    if result {
+//                        self.navigationController?.pushViewController(nextViewController, animated: true)
+//                    }
+//                })
+//            })
+            
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+
     }
     @IBAction func feedSearchBtnTouched(_ sender: UIButton) {
         let nextViewContorller = self.storyboard?.instantiateViewController(withIdentifier: "FeedSearchViewController") as! FeedSearchViewController
@@ -400,11 +430,61 @@ extension PageControllerBaseController: SelectedCellProtocol{
 }
 
 extension PageControllerBaseController: LoadingIndicatorProtocol{
+    //다시------지울아이
+    func loadingDisplay() {
+        
+        
+    }
+    
+    func loadingRemove() {
+        
+        
+    }
+    
+    ///---------
+    func loadingIndicatorSubView() {
+        if let view = self.sideView {
+            self.loadingIndicatorRemovView()
+        }else{
+//            let sideView = LoadingIndicatorView.instanceFromNib()
+            let sideView = LoadingIndicatorView()
+            sideView.frame = self.view.frame
+            self.sideView = sideView
+            self.view.addSubview(sideView)
+        }
+        
+        
+    }
+    
+    func loadingIndicatorRemovView() {
+        if let view = self.sideView{
+            DispatchQueue.main.async {
+                self.sideView = nil
+                view.removeFromSuperview()
+            }
+        }
+    }
+    
+    func loadingRemoveToDisplay(spinerView: UIView?) {
+        guard let lodinView = spinerView else { return}
+//        DataCenter.shared.removeSpinner(spinner: lodinView)
+        DataCenter.shared.removeSpinnerTo(spinner: lodinView) { (result) in
+            if result {
+                DataCenter.shared.loadingView = nil
+            }
+        }
+    }
+    
     func loadingRemoveDisplay(spinerView: UIView?) {
         
         guard let lodinView = spinerView else { return}
         DataCenter.shared.removeSpinner(spinner: lodinView)
-//        DataCenter.shared.loadingView = nil
+//        DataCenter.shared.removeSpinnerTo(spinner: lodinView) { (result) in
+//            if result {
+//              self.loadingIndicatorDisplay()
+//            }
+//        }
+        
         //
 //        self.spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
 //        DataCenter.shared.loadingView = self.spinerView
@@ -412,8 +492,10 @@ extension PageControllerBaseController: LoadingIndicatorProtocol{
     }
     
     func loadingIndicatorDisplay() {
+        print(self.spinerView)
+//         DataCenter.shared.loadingView = self.spinerView
         DispatchQueue.main.async {
-            
+           
             self.spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
             DataCenter.shared.loadingView = self.spinerView
         }
@@ -421,7 +503,9 @@ extension PageControllerBaseController: LoadingIndicatorProtocol{
     
     func loadingRemoveDisplay() {
         
-        DataCenter.shared.removeSpinner(spinner: spinerView)
+        DataCenter.shared.removeSpinner(spinner: DataCenter.shared.loadingView)
+        DataCenter.shared.loadingView = nil
+        
     }
     
 }

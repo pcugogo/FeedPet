@@ -205,7 +205,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 
                 notificationDateComponents.minute = MyPageDataCenter.shared.mealTimeMinute["morning"]
                 //분 세팅해준 포메터에 피커뷰에서 받은 분을 세팅
-                notificationContent.body = "아침 식사 시간입니다!"
+                notificationContent.body = "아이들 아침을 챙겨주세요!"
                 
                 // 02. UNTimeIntervalNotificationTrigger
                 //여기서 시간과 매칭하는 트리거를 사용할 수도 있고 TimeIntervald을 체크하는 트리거를 사용할 수도 있습니다 반복여부도 설정가능
@@ -223,7 +223,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 notificationDateComponents.hour = MyPageDataCenter.shared.mealTimeHour["lunch"]
                 notificationDateComponents.minute = MyPageDataCenter.shared.mealTimeMinute["lunch"]
                 
-                notificationContent.body = "점심 식사 시간입니다!"
+                notificationContent.body = "아이들 점심을 챙겨주세요!"
                 
                 // 02. UNTimeIntervalNotificationTrigger
                 let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: notificationDateComponents, repeats: true)
@@ -236,7 +236,7 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
                 UNUserNotificationCenter.current().add(lunchRequest, withCompletionHandler: nil)
             }
             if MyPageDataCenter.shared.switchOnOff["dinner"] == true{
-                notificationContent.body = "저녁 식사 시간입니다!"
+                notificationContent.body = "아이들 저녁을 챙겨주세요!"
                 
                 notificationDateComponents.hour = MyPageDataCenter.shared.mealTimeHour["dinner"]
                 notificationDateComponents.minute = MyPageDataCenter.shared.mealTimeMinute["dinner"]
@@ -318,9 +318,9 @@ class AlarmSettingViewController: UIViewController,UITableViewDataSource,UITable
     @IBAction func alarmResetBtnAction(_ sender: UIBarButtonItem) {
         
         MyPageDataCenter.shared.switchOnOff = ["total":false,"morning":false,"lunch":false,"dinner":false]
-        MyPageDataCenter.shared.mealTime = ["morning":"오전 00:00","lunch":"오후 00:00","dinner":"오후 00:00"]
-        MyPageDataCenter.shared.mealTimeHour = ["morning":00,"lunch":00,"dinner":00]
-        MyPageDataCenter.shared.mealTimeMinute = ["morning":00,"lunch":00,"dinner":00]
+        MyPageDataCenter.shared.mealTime = ["morning":"오전 08:00","lunch":"오후 12:30","dinner":"오후 07:00"]
+        MyPageDataCenter.shared.mealTimeHour = ["morning":08,"lunch":12,"dinner":19]
+        MyPageDataCenter.shared.mealTimeMinute = ["morning":00,"lunch":30,"dinner":00]
         MyPageDataCenter.shared.mealTimeAMPM = ["morning":"nil","lunch":"nil","dinner":"nil"]
         UserDefaults.standard.removeObject(forKey: userDefaultsName.mealTime)
         UserDefaults.standard.removeObject(forKey: userDefaultsName.mealTimeHour)

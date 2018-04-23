@@ -27,10 +27,30 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
     let userSystemNameAndVersion = "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)" // 현재 사용자 iOS 버전
     let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
     var profileImg:UIImage?
-    
+    var imgFlag = false
     var spinerView = UIView()
     
-    var userData: User = User()
+    var userData: User = User() {
+        didSet{
+            spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+            // 내 즐겨찾기 정보 데이터조회
+            FireBaseData.shared.fireBaseFavoritesDataLoad { (result) in
+                
+                if result{
+                    self.tableView.reloadData()
+                }
+            }
+            // 내 리뷰 정보 데이터 조회
+            FireBaseData.shared.fireBaseMyReviewDataOnLoad { (result) in
+                if result{
+                    self.tableView.reloadData()
+                }
+            }
+            
+            DataCenter.shared.removeSpinner(spinner: spinerView)
+            
+        }
+    }
     
     var delegate: MyPageViewProtocol?
     
@@ -40,17 +60,22 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         print(MyPageDataCenter.shared.favorites)
-        DataCenter.shared.isMove = true
+//        DataCenter.shared.isMove = true
+        
         //마이페이지 전에 있는 뷰의 뷰디드로드에서 데이터를 로드해야 MyMenuCell의 즐겨찾기 수랑 리뷰 수가 없데이트 된다
-        FireBaseData.shared.fireBaseMyReviewDataLoad()
-        FireBaseData.shared.fireBaseFavoritesDataLoad()
+//        FireBaseData.shared.fireBaseMyReviewDataLoad()
+//        FireBaseData.shared.fireBaseFavoritesDataLoad()
         
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        if DataCenter.shared.userDataUpdate {
+            DataCenter.shared.isMove = true
+        }else{
+            DataCenter.shared.isMove = false
+        }
         tableView.reloadData()
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -82,6 +107,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
         
         
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 0 && indexPath.row == 0{
@@ -89,7 +115,7 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
             let profileCell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as! ProfileCell
             profileCell.delegate = self
             profileCell.userInfo = userData
-            spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
+//            spinerView = DataCenter.shared.displsyLoadingIndicator(onView: self.view)
             //            if let pickImg = profileImg {
             //                profileCell.profileImg.image = pickImg
             //                profileCell.profileImg.clipsToBounds = true
@@ -100,10 +126,12 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
                     
                     profileCell.profileImg.kf.setImage(with: userProfileImgURL)
                     profileCell.profileImg.clipsToBounds = true
+                    self.imgFlag = true
                     
                 }
             }
-            DataCenter.shared.removeSpinner(spinner: spinerView)
+            
+//            DataCenter.shared.removeSpinner(spinner: spinerView)
             
             return profileCell
             
@@ -138,19 +166,34 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
         if indexPath.section == 0 && indexPath.row == 0{              //프로필 수정
             let editInfoView:EditInfoViewController = self.storyboard?.instantiateViewController(withIdentifier: "EditInfoViewController") as! EditInfoViewController
             editInfoView.dataIsLoaded = true
+            editInfoView.delegate = self
             editInfoView.userData = userData
             self.navigationController?.pushViewController(editInfoView, animated: true)
             
         }else if indexPath.section == 2 && indexPath.row == 1{        //버전
             DispatchQueue.main.async{
+                
+                // 현재 내 앱 버전
                 guard let appVersion = self.userAppVersion else{
                     return
                 }
                 
-                let versionAlert:UIAlertController = UIAlertController(title: "ver \(appVersion)", message: "최신 ver 1.1.0", preferredStyle: .alert)
+                let versionAlert:UIAlertController = UIAlertController(title: "Version \(appVersion)", message: nil, preferredStyle: .alert)
                 
-                let okBtn:UIAlertAction = UIAlertAction(title: "업데이트 하러가기", style: .default, handler: nil)
-                versionAlert.addAction(okBtn)
+                // 앱스토어 앱과 내앱의 버전 분기처리
+                // 다를경우
+                if self.isAppUpdateAvailable(){
+                    let updateBtn:UIAlertAction = UIAlertAction(title: "업데이트 하러가기", style: .default, handler: { (action) in
+                        
+                    })
+                    versionAlert.addAction(updateBtn)
+                }else{
+                    versionAlert.message = "현재 최신버전입니다."
+                    let okBtn: UIAlertAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+                    versionAlert.addAction(okBtn)
+                }
+                // 같을경우
+                
                 
                 self.present(versionAlert, animated: true, completion: nil)
             }
@@ -176,9 +219,10 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
             if MFMailComposeViewController.canSendMail() {
                 let mail = MFMailComposeViewController()
                 mail.navigationBar.isTranslucent = false
+                mail.navigationBar.tintColor = .white
                 mail.mailComposeDelegate = self
                 mail.setToRecipients(["feedpet2018@gmail.com"])
-                mail.navigationBar.isTranslucent = false
+//                mail.navigationBar.isTranslucent = false
                 mail.setSubject("Feedpet Support")
                 
                 guard let appVersion = userAppVersion else{
@@ -225,12 +269,16 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
         }else if indexPath.section == 2 && indexPath.row == 8 {     //탈퇴하기
             let leaveMembershipView:LeaveMembershipViewController = storyboard?.instantiateViewController(withIdentifier: "LeaveMembershipViewController") as! LeaveMembershipViewController
             leaveMembershipView.delegate = self
-            
+            //기존에 addSubview를 통해 뷰컨트롤러 자체를 addSuview 하는 부분을 present를 통해 효과처리
+            self.present(leaveMembershipView, animated: true, completion: nil)
+            /*
             self.addChildViewController(leaveMembershipView) //alarmMealTimePickerView에 있는 피커뷰를 addsubview
-            self.navigationController?.isNavigationBarHidden = true
+//            self.navigationController?.isNavigationBarHidden = true
             leaveMembershipView.view.frame = self.view.frame //참고 사이트 https://www.youtube.com/watch?v=FgCIRMz_3dE
             self.view.addSubview(leaveMembershipView.view)
             leaveMembershipView.didMove(toParentViewController: self)
+            */
+            
         }
         
         
@@ -292,6 +340,37 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
         
     }
     
+    // 앱버전 체크메서드
+    func isAppUpdateAvailable() -> Bool {
+        
+        // 옵셔널 바인딩
+//        guard
+//            let version = self.userAppVersion,
+//            // 한국앱스토어에만 올릴경우 파라미터로 country값을 추가해줘야함
+//            let url = URL(string: "http://itunes.apple.com/lookup?bundleId=gisuhwang.FeedPet&country=kr"),
+//            let data = try? Data(contentsOf: url),
+//            //version 값만 가져오기에 JSONSerialization을 사용하여 구현
+//            let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
+//            let results = json?["results"] as? [[String: Any]],
+//            results.count > 0,
+//            let appStoreVersion = results[0]["version"] as? String
+//            else { return false }
+//
+//
+//
+//        if !(version == appStoreVersion) {
+//            return true
+//
+//        }else{
+//            return false
+//
+//        }
+        
+        
+        
+        return true
+        
+    }
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {
         self.navigationController?.popViewController(animated: true)
         
@@ -328,6 +407,8 @@ extension MyPageViewController:UIImagePickerControllerDelegate{
             return
         }
         
+        
+        
         pickImg.withRenderingMode(.alwaysOriginal) // 색상이 파란색으로 나오는 경우의 이유는 시스템 버튼을 쓰게 되면 자동 랜더링을 쓰게 되는 경우가 있는데 이렇게 모드를 바꿔주면 내가 고른 이미지를 띄워줘라는 뜻이다
         //        profileImg = pickImg
         
@@ -349,11 +430,13 @@ extension MyPageViewController:UIImagePickerControllerDelegate{
             DispatchQueue.main.async {
                 
                 self.userData.userProfileImgUrl = urlStr
-                self.tableView.reloadData()
+//                self.tableView.reloadData()
+                self.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
             }
 //            MyPageDataCenter.shared.userImg = urlStr
             
             FireBaseData.shared.refUserInfoReturn.child(uid).updateChildValues(["user_img":urlStr])
+            DataCenter.shared.userInfo.userProfileImgUrl = urlStr
             
             self.dismiss(animated: true, completion: {
                 DataCenter.shared.removeSpinner(spinner: spinnerView)
@@ -376,6 +459,17 @@ extension MyPageViewController: LeaveMembershipViewProtocol{
 //        })
         self.navigationController?.popViewController(animated: true)
         self.delegate?.logoutNavigationPop()
+    }
+    
+    
+}
+extension MyPageViewController: EditInfoViewProtocol{
+    func editingSuccess() {
+        
+        print(DataCenter.shared.userInfo)
+        
+       userData = DataCenter.shared.userInfo
+//        self.tableView.reloadData()
     }
     
     

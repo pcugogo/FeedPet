@@ -516,10 +516,16 @@ class FilterViewController: UIViewController {
             
             if curretPetKey == "feed_petkey_d" {
                 DataCenter.shared.filterDogIndexPathDicArr = filterIndexPathDicArr
-                
+//                if filterIndexPathDicArr.isEmpty {
+//                    DataCenter.shared.filterDogIndexPathDicArr = [:]
+//                    filterMenuTableView.reloadData()
+//                }
             }else{
                 DataCenter.shared.filterCatIndexPathDicArr = filterIndexPathDicArr
-                
+//                if filterIndexPathDicArr.isEmpty {
+//                    DataCenter.shared.filterCatIndexPathDicArr = [:]
+//                    filterMenuTableView.reloadData()
+//                }
             }
 //            DataCenter.shared.filterIndexPathDicArr = filterIndexPathDicArr
             self.filterDataChangeToValue()
@@ -639,6 +645,11 @@ class FilterViewController: UIViewController {
     }
     
 
+    @IBAction func initBtnTouched(_ sender: UIButton){
+        filterDataLoadFlag = true
+        filterIndexPathDicArr.removeAll()
+        filterMenuTableView.reloadData()
+    }
     @IBAction func tapGesture(_ sender: UITapGestureRecognizer) {
         self.dismiss(animated: true) {
             
@@ -681,10 +692,12 @@ class FilterViewController: UIViewController {
     }
     func filterDataChangeToValue(){
         let data: FilterData = FilterData.init(filterDic: filterIndexPathDicArr, filterinMenuSection: testFilterMenuSection)
-        print(data)
+        print(filterIndexPathDicArr.count,"//", filterIndexPathDicArr.isEmpty)
         var filterSelectFlag = false
         if !filterIndexPathDicArr.isEmpty {
             filterSelectFlag = true
+        }else{
+//            filterSelectFlag = false
         }
         print(filterDataLoadFlag)
         if filterDataLoadFlag {
@@ -752,6 +765,16 @@ extension FilterViewController: UITableViewDataSource, UITableViewDelegate, Filt
         }else{
             let detailCell = tableView.dequeueReusableCell(withIdentifier: "FilterDetailTableViewCell", for: indexPath) as! FilterDetailTableViewCell
             detailCell.detailLabel.text = testFilterMenuSection[indexPath.section].filterMenuKind[indexPath.row].textLabel
+            // 기존에 선택한 필터 값이 있을 경우 메뉴헤더뷰 클릭시 메뉴의 reloadSection을 함으로써 기존값들이 선택되지않아 분기처리
+            if let selectIndexPathArr = filterIndexPathDicArr[indexPath.section] {
+                for path in selectIndexPathArr{
+                    if path == indexPath {
+                        tableView.selectRow(at: path, animated: true, scrollPosition: .none)
+                    }
+                }
+            }
+//            tableView.selectRow(at: filterIndexPathDicArr[indexPath.sec], animated: true, scrollPosition: .none)
+           
             return detailCell
         }
     }
@@ -857,7 +880,7 @@ extension FilterViewController: UITableViewDataSource, UITableViewDelegate, Filt
  
         // 헤더메뉴클릭값에 따라 변화되는정보를 리로드(이미지포함)
         filterMenuTableView.reloadSections([section], with: .automatic)
-        
+
         filterMenuTableView.endUpdates()
         
         

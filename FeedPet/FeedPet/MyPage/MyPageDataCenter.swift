@@ -14,9 +14,9 @@ class MyPageDataCenter {
     
     //펫 식사 시간 알림 데이터
     var switchOnOff:[String:Bool] = ["total":false,"morning":false,"lunch":false,"dinner":false]
-    var mealTime:[String:String] = ["morning":"오전 00:00","lunch":"오후 00:00","dinner":"오후 00:00"]
-    var mealTimeHour:[String:Int] = ["morning":00,"lunch":00,"dinner":00]
-    var mealTimeMinute:[String:Int] = ["morning":00,"lunch":00,"dinner":00]
+    var mealTime:[String:String] = ["morning":"오전 08:00","lunch":"오후 12:30","dinner":"오후 07:00"]
+    var mealTimeHour:[String:Int] = ["morning":08,"lunch":12,"dinner":19]
+    var mealTimeMinute:[String:Int] = ["morning":00,"lunch":30,"dinner":00]
     var mealTimeAMPM:[String:String] = ["morning":"nil","lunch":"nil","dinner":"nil"]
     
     //테스트 유저 정보
@@ -27,6 +27,8 @@ class MyPageDataCenter {
     var petAge = 0
     var petType = "functional_petkey_d"
     var loadPetFunctionKey = ["indoor","immune","performance"]
+    
+    
     //즐겨찾기 데이터
     var favorites = [FavoritesData]()
     var favoritesCount = 0
@@ -180,8 +182,9 @@ struct FireBaseData{
     // 닉네임 중복 체크 메서드
     func nicNameDoubleChek(nickName: String, completion: @escaping (Bool)->Void){
         
-        Database.database().reference().child("user_profiles").queryOrdered(byChild: "nickName").queryEqual(toValue: nickName).observeSingleEvent(of: .value, with: { (snapShot) in
-            
+        Database.database().reference().child("user_info").queryOrdered(byChild: "user_nic").queryEqual(toValue: nickName).observeSingleEvent(of: .value, with: { (snapShot) in
+            print(nickName)
+            print(snapShot.value)
             if let snapDict = snapShot.value as? [String:AnyObject]{
                 print(snapDict)
                 completion(true)
@@ -196,7 +199,7 @@ struct FireBaseData{
     }
     
     
-    func fireBaseFavoritesDataLoad(){
+    func fireBaseFavoritesDataLoad(completion: @escaping (Bool)->Void){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
         guard let useruid = Auth.auth().currentUser?.uid else {return}
@@ -208,7 +211,7 @@ struct FireBaseData{
             MyPageDataCenter.shared.favoritesCount = Int(snapshot.childrenCount)
             
             if let snapShot = snapshot.children.allObjects as? [DataSnapshot]{
-                
+                print(snapShot)
                 
                 for snap in snapShot{
                     
@@ -218,18 +221,35 @@ struct FireBaseData{
                     var feedImg:[String]!
                     var feedBrand:String!
                     var feedName:String!
-                    var feedMouth:String!
+                    var feedMouth:Int!
                     var feedIngredient:String!
                     var feedGrade:Int!
                     var feedPackageFlag:Bool!
                     var addToFavoritesDate:String!
                     
+                    var feedAge: Int!
+                    var feedWeight: [Double]!
+                    var feedFunctional: [String]!
+                    var feedCountry: String!
+                    var grainfreeFlag: Bool!
+                    var organicFlag: Bool!
+                    var lidFlag: Bool!
+                    var bigFlag: Bool!
+                    print(snap.key)
                     if let favoriteDatas = snap.value as? [String:AnyObject] {
-                       
+                        print(favoriteDatas)
+                        print(favoriteDatas["feed_key"])
+                        if let feedKeyData = favoriteDatas["feed_key"] as? String{
+                            feedKey = feedKeyData
+                        }
+                        if let faviritesDate = favoriteDatas["favorites_date"] as? String {
+                            addToFavoritesDate = faviritesDate
+                        }
+                        /*
                         for favoriteData in favoriteDatas{
                             if favoriteData.key == "feed_key"{
                                 if let feedKeyData = favoriteData.value as? String{
-                                    feedKey = feedKeyData 
+                                    feedKey = feedKeyData
                                 }
                             }
                             if favoriteData.key == "favorites_date"{
@@ -238,6 +258,7 @@ struct FireBaseData{
                                 }
                             }
                         }
+ */
                         
                         
                         
@@ -255,7 +276,7 @@ struct FireBaseData{
                                         feedName = feedSnap.value as! String
                                     }
                                     if feedSnap.key == "feed_mouth"{
-                                        feedMouth = feedSnap.value as! String
+                                        feedMouth = feedSnap.value as! Int
                                     }
                                     if feedSnap.key == "feed_ingredient"{
                                         feedIngredient = feedSnap.value as! String
@@ -266,8 +287,36 @@ struct FireBaseData{
                                     if feedSnap.key == "feed_package_flag"{
                                         feedPackageFlag = feedSnap.value as! Bool
                                     }
+                                    
+                                    if feedSnap.key == "feed_age"{
+                                        feedAge = feedSnap.value as! Int
+                                    }
+                                    
+                                    if feedSnap.key == "feed_weight"{
+                                        feedWeight = feedSnap.value as! [Double]
+                                    }
+                                    
+                                    if feedSnap.key == "feed_functional"{
+                                        feedFunctional = feedSnap.value as! [String]
+                                    }
+                                    if feedSnap.key == "feed_country"{
+                                        feedCountry = feedSnap.value as! String
+                                    }
+                                    if feedSnap.key == "grainfree_flag"{
+                                        grainfreeFlag = feedSnap.value as! Bool
+                                    }
+                                    if feedSnap.key == "organic_flag"{
+                                        organicFlag = feedSnap.value as! Bool
+                                    }
+                                    if feedSnap.key == "lid_flag"{
+                                        lidFlag = feedSnap.value as! Bool
+                                    }
+                                    if feedSnap.key == "big_flag"{
+                                        bigFlag = feedSnap.value as! Bool
+                                    }
+                                    
                                 }
-                        
+                                
                             }
                             
                         })//여기까지 강아지일때 피드값
@@ -288,7 +337,7 @@ struct FireBaseData{
                                         feedName = feedSnap.value as! String
                                     }
                                     if feedSnap.key == "feed_mouth"{
-                                        feedMouth = feedSnap.value as! String
+                                        feedMouth = feedSnap.value as! Int
                                     }
                                     if feedSnap.key == "feed_ingredient"{
                                         feedIngredient = feedSnap.value as! String
@@ -299,27 +348,76 @@ struct FireBaseData{
                                     if feedSnap.key == "feed_package_flag"{
                                         feedPackageFlag = feedSnap.value as! Bool
                                     }
+                                    
+                                    if feedSnap.key == "feed_age"{
+                                        feedAge = feedSnap.value as! Int
+                                    }
+                                    
+                                    if feedSnap.key == "feed_weight"{
+                                        feedWeight = feedSnap.value as! [Double]
+                                    }
+                                    
+                                    if feedSnap.key == "feed_functional"{
+                                        feedFunctional = feedSnap.value as! [String]
+                                    }
+                                    if feedSnap.key == "feed_country"{
+                                        feedCountry = feedSnap.value as! String
+                                    }
+                                    if feedSnap.key == "grainfree_flag"{
+                                        grainfreeFlag = feedSnap.value as! Bool
+                                    }
+                                    if feedSnap.key == "organic_flag"{
+                                        organicFlag = feedSnap.value as! Bool
+                                    }
+                                    if feedSnap.key == "lid_flag"{
+                                        lidFlag = feedSnap.value as! Bool
+                                    }
+                                    if feedSnap.key == "big_flag"{
+                                        bigFlag = feedSnap.value as! Bool
+                                    }
                                 }
-                                guard let notEmptyFeedKey = feedKey,let notEmptyFeedImg = feedImg,let notEmptyFeedBrand = feedBrand,let notEmptyFeedName = feedName,let notEmptyFeedMouth = feedMouth,let notEmptyFeedIngredient = feedIngredient, let notEmptyFeedGrade = feedGrade,let notEmptyFeedPackageFlag = feedPackageFlag,let notEmptyAddToFavoritesDate = addToFavoritesDate  else{return}
                                 
-                                let favorites = FavoritesData(favoriteKey: favoriteKey, feedKey: notEmptyFeedKey, feedImg: notEmptyFeedImg, feedBrand: notEmptyFeedBrand, feedName: notEmptyFeedName, feedMouth: notEmptyFeedMouth, feedIngredient: notEmptyFeedIngredient, feedGrade: notEmptyFeedGrade, feedPackageFlag: notEmptyFeedPackageFlag,addToFavoritesDate: notEmptyAddToFavoritesDate)
+                                // 왜 옵셔널 바인딩을 하고 다시하는걸까?
+                                guard let notEmptyFeedKey = feedKey,let notEmptyFeedImg = feedImg,let notEmptyFeedBrand = feedBrand,let notEmptyFeedName = feedName,let notEmptyFeedMouth = feedMouth,let notEmptyFeedIngredient = feedIngredient, let notEmptyFeedGrade = feedGrade,let notEmptyFeedPackageFlag = feedPackageFlag,let notEmptyAddToFavoritesDate = addToFavoritesDate, let notEmptyFeedAge = feedAge, let notEmptyFeedWeight = feedWeight, let notEmptyFeedFunctional = feedFunctional, let notEmptyFeedCuntry = feedCountry, let notEmptyGrainfreeFlag = grainfreeFlag, let notEmptyOrganicFlag = organicFlag, let notEmptylidFlag = lidFlag, let notEmptyBigFlag = bigFlag
+                                else{return}
                                 
-                                MyPageDataCenter.shared.favorites.append(favorites)
+                                // 기존
+//                                let favorites = FavoritesData(favoriteKey: favoriteKey, feedKey: notEmptyFeedKey, feedImg: notEmptyFeedImg, feedBrand: notEmptyFeedBrand, feedName: notEmptyFeedName, feedMouth: notEmptyFeedMouth, feedIngredient: notEmptyFeedIngredient, feedGrade: notEmptyFeedGrade, feedPackageFlag: notEmptyFeedPackageFlag,addToFavoritesDate: notEmptyAddToFavoritesDate)
+                                //  첫 수정
+//                                let favoritesDataa = FavoritesData(favoriteKey: favoriteKey, feedKey: notEmptyFeedKey, feedImg: notEmptyFeedImg, feedImgArr: notEmptyFeedImg, feedBrand: notEmptyFeedBrand, feedName: notEmptyFeedName, feedMouth: notEmptyFeedMouth, feedIngredient: notEmptyFeedIngredient, feedGrade: notEmptyFeedGrade, feedPackageFlag: notEmptyFeedPackageFlag, addToFavoritesDate: notEmptyAddToFavoritesDate, feedAge: notEmptyFeedAge)
+//
+                                let favoritesData = FavoritesData(favoriteKey: favoriteKey, feedKey: notEmptyFeedKey, feedImg: notEmptyFeedImg, feedImgArr: notEmptyFeedImg, feedBrand: notEmptyFeedBrand, feedName: notEmptyFeedName, feedMouth: notEmptyFeedMouth, feedIngredient: notEmptyFeedIngredient, feedGrade: notEmptyFeedGrade, feedPackageFlag: notEmptyFeedPackageFlag, addToFavoritesDate: notEmptyAddToFavoritesDate, feedAge: notEmptyFeedAge, feedWeight: notEmptyFeedWeight, feedFunctional: notEmptyFeedFunctional, feedCountry: notEmptyFeedCuntry, grainfreeFlag: notEmptyGrainfreeFlag, organicFlag: notEmptyOrganicFlag, lidFlag: notEmptylidFlag, bigFlag: notEmptyBigFlag)
                                 
+//                                MyPageDataCenter.shared.favorites.append(favorites)
+                                MyPageDataCenter.shared.favorites.append(favoritesData)
                                 MyPageDataCenter.shared.favorites.sort { (data: FavoritesData, data2: FavoritesData) -> Bool in
                                     return data.addToFavoritesDateReturn > data2.addToFavoritesDateReturn
                                 }
-                                
+                                completion(true)
+//                                FireBaseData.shared.fireBaseMyReviewDataOnLoad(completion: { (result) in
+//                                    completion(true)
+//                                })
                             }
-                            
+                            // 즐겨찾기의 리뷰정보 데이터
                             self.favoriteReviewData()
                             
                         })//여기 까지 고양이일때 피드값
                         
+                    }else{
+//                        completion(true)
+//                        FireBaseData.shared.fireBaseMyReviewDataOnLoad(completion: { (result) in
+//                            completion(true)
+//                        })
+//                        self.favoriteReviewData()
                     }
                     
                 }
                 
+            }else{
+//                completion(true)
+//                FireBaseData.shared.fireBaseMyReviewDataOnLoad(completion: { (result) in
+//                    completion(true)
+//                })
             }
             
         })
@@ -335,7 +433,7 @@ struct FireBaseData{
             FireBaseData.shared.refFeedReviews.child(favorite.feedKeyReturn).observeSingleEvent(of: .value, with: { (reviewSnapshot) in
                 print(reviewSnapshot,"ssamdlas,")
                 let feedKey = favorite.feedKeyReturn
-                var feedRating = 5
+                var feedRating = 0
                 var numberOfReview = 0
                 if let reviewSnaps = reviewSnapshot.value as? [String:AnyObject]{
                     for reviewSnap in reviewSnaps{
@@ -346,16 +444,18 @@ struct FireBaseData{
                             }
                         }
                         if reviewSnap.key == "review_info"{
-                             print(reviewSnap.value,"ccccount1")
+                            print(reviewSnap.value,"ccccount1")
                             if let reviewInfo = reviewSnap.value as? [String:AnyObject]{
                                 numberOfReview = reviewInfo.keys.count
                                 print(reviewInfo.keys.count,"ccccount")
                             }
                         }
                     }
-                    let reviewInfoData = FavoriteReviewInfoData(feedKey: feedKey, feedRating: feedRating, numberOfReview: numberOfReview)
-                    MyPageDataCenter.shared.favoriteReviewInfoDatas.append(reviewInfoData)
                 }
+                
+                print(feedKey,"//",feedRating,"//", numberOfReview)
+                let reviewInfoData = FavoriteReviewInfoData(feedKey: feedKey, feedRating: feedRating, numberOfReview: numberOfReview)
+                MyPageDataCenter.shared.favoriteReviewInfoDatas.append(reviewInfoData)
                 
                 
             })
@@ -391,9 +491,9 @@ struct FireBaseData{
                 self.fireBaseFeedReviewsDataLoad()
                 self.fireBaseReviewThumbDataLoad()
             }
-            else{
-                completion(false)
-            }
+//            else{
+//                completion(true)
+//            }
         })
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
@@ -526,38 +626,38 @@ struct FireBaseData{
                     let thumbData = ReviewThumb(reviewKey: reviewKeyData.reviewKeyReturn, numberOfLike: likeData, numberOfUnLike: unlikeData)
                     print(thumbData)
                     MyPageDataCenter.shared.reviewThumbDatas.append(thumbData)
-//                    self.reviewLikeLabel.text = likeData.description
+                    //                    self.reviewLikeLabel.text = likeData.description
                     
-//                    self.reviewUnLikeLabel.text = unlikeData.description
+                    //                    self.reviewUnLikeLabel.text = unlikeData.description
                     
                     
                 }
             }
-
-           /* FireBaseData.shared.refReviewThumb.child(reviewKeyData.reviewKeyReturn).runTransactionBlock({ (reviewThumbSnapshot) -> TransactionResult in
-                if let reviewThumbSnap = reviewThumbSnapshot.value as? [String:AnyObject]{
-                    for thumbSnap in reviewThumbSnap{
-                        if thumbSnap.key == "review_like"{
-                            if let likeSnap = thumbSnap.value as? [String:AnyObject]{
-                                reviewLike = likeSnap.keys.count
-                            }
-                        }
-                        if thumbSnap.key == "review_unlike"{
-                            if let unLikeSnap = thumbSnap.value as? [String:AnyObject]{
-                                reviewUnLike = unLikeSnap.keys.count
-                            }
-                        }
-                        
-                    }
-                    let thumbData = ReviewThumb(reviewKey: reviewKeyData.reviewKeyReturn, numberOfLike: reviewLike, numberOfUnLike: reviewUnLike)
-                    MyPageDataCenter.shared.reviewThumbDatas.append(thumbData)
-                }
-                
-                
-                return TransactionResult.success(withValue: reviewThumbSnapshot)
-            })
             
-            */
+            /* FireBaseData.shared.refReviewThumb.child(reviewKeyData.reviewKeyReturn).runTransactionBlock({ (reviewThumbSnapshot) -> TransactionResult in
+             if let reviewThumbSnap = reviewThumbSnapshot.value as? [String:AnyObject]{
+             for thumbSnap in reviewThumbSnap{
+             if thumbSnap.key == "review_like"{
+             if let likeSnap = thumbSnap.value as? [String:AnyObject]{
+             reviewLike = likeSnap.keys.count
+             }
+             }
+             if thumbSnap.key == "review_unlike"{
+             if let unLikeSnap = thumbSnap.value as? [String:AnyObject]{
+             reviewUnLike = unLikeSnap.keys.count
+             }
+             }
+             
+             }
+             let thumbData = ReviewThumb(reviewKey: reviewKeyData.reviewKeyReturn, numberOfLike: reviewLike, numberOfUnLike: reviewUnLike)
+             MyPageDataCenter.shared.reviewThumbDatas.append(thumbData)
+             }
+             
+             
+             return TransactionResult.success(withValue: reviewThumbSnapshot)
+             })
+             
+             */
         }
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
@@ -581,7 +681,7 @@ struct FireBaseData{
                     }
                     guard let ingredientName = goodIngredientName,let ingredientText = goodIngredientText else {return}
                     let goodIngredientInfo = FeedIngredientGood(ingredientName: ingredientName, ingredientText: ingredientText)
-                   
+                    
                     MyPageDataCenter.shared.feedIngredientGoodDatas.append(goodIngredientInfo)
                 }
             })
@@ -617,7 +717,7 @@ struct FireBaseData{
             })
             
         }
-       
+        
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     //주의 성분 데이터 불러오기
@@ -686,10 +786,24 @@ struct FavoritesData {
     private var feedBrand:String!
     private var feedName:String!
     private var feedImg:String!
-    private var feedMouth:String! //MOUTH_G : GOOD / MOUTH_S : SOSO /  MOUTH_B : BAD
+    private var feedMouth:Int! //MOUTH_G : GOOD ->0 / MOUTH_S : SOSO ->1/  MOUTH_B : BAD->2
     private var feedIngredient:String!
     private var feedGrade:Int! //0:유기농 / 1:홀리스틱 / 2:슈퍼프리미엄 / 3:프리미엄 / 4:마트용
     private var feedPackageFlag:Bool!
+    
+    // 작업중 2018.04.17--------
+    private var feedAge: Int!
+    private var feedImgArr: [String]!
+    private var feedWeight: [Double]!
+    private var feedFunctional: [String]!
+    private var feedCountry: String!
+    private var grainfreeFlag: Bool!
+    private var organicFlag: Bool!
+    private var lidFlag: Bool!
+    private var bigFlag: Bool!
+    
+    //---------
+    
     //    private var rating:Int! // 별 1~5개까지
     //    private var numberOfReview:Int!
     private var addToFavoritesDate:String!
@@ -709,7 +823,7 @@ struct FavoritesData {
     var feedImgReturn:String{
         return feedImg
     }
-    var feedMouthReturn:String{
+    var feedMouthReturn:Int{
         return feedMouth
     }
     var feedIngredientReturn:String{
@@ -725,7 +839,36 @@ struct FavoritesData {
         return addToFavoritesDate
     }
     
-    init(favoriteKey:String,feedKey:String,feedImg:[String],feedBrand:String,feedName:String,feedMouth:String,feedIngredient:String,feedGrade:Int,feedPackageFlag:Bool!,addToFavoritesDate:String){
+    var feedImgArrReturn: [String]{
+        return feedImgArr
+    }
+    var feedAgeReturn: Int{
+        return feedAge
+    }
+    var feedWeightReturn: [Double]{
+        return feedWeight
+    }
+    var feedFunctionalReturn: [String]{
+        return feedFunctional
+    }
+    var feedCountryReturn: String{
+        return feedCountry
+    }
+    var grainfreeFlagReturn: Bool{
+        return grainfreeFlag
+    }
+    var organicFlagReturn: Bool{
+        return organicFlag
+    }
+    var lidFlagReturn: Bool{
+        return lidFlag
+    }
+    var bigFlagReturn: Bool{
+        return bigFlag
+    }
+    
+    
+    init(favoriteKey:String,feedKey:String,feedImg:[String],feedBrand:String,feedName:String,feedMouth:Int,feedIngredient:String,feedGrade:Int,feedPackageFlag:Bool!,addToFavoritesDate:String){
         self.favoriteKey = favoriteKey
         self.feedKey = feedKey
         self.feedBrand = feedBrand
@@ -736,6 +879,44 @@ struct FavoritesData {
         self.feedGrade = feedGrade
         self.feedPackageFlag = feedPackageFlag
         self.addToFavoritesDate = addToFavoritesDate
+    }
+    
+    init(favoriteKey:String,feedKey:String,feedImg:[String], feedImgArr:[String],feedBrand:String,feedName:String,feedMouth:Int,feedIngredient:String,feedGrade:Int,feedPackageFlag:Bool!,addToFavoritesDate:String, feedAge: Int?){
+        self.favoriteKey = favoriteKey
+        self.feedKey = feedKey
+        self.feedBrand = feedBrand
+        self.feedImg = feedImg[0]
+        self.feedImgArr = feedImgArr
+        self.feedName = feedName
+        self.feedMouth = feedMouth
+        self.feedIngredient = feedIngredient
+        self.feedGrade = feedGrade
+        self.feedPackageFlag = feedPackageFlag
+        self.addToFavoritesDate = addToFavoritesDate
+        self.feedAge = feedAge
+    }
+    
+    init(favoriteKey:String,feedKey:String,feedImg:[String], feedImgArr:[String],feedBrand:String,feedName:String,feedMouth:Int,feedIngredient:String,feedGrade:Int,feedPackageFlag:Bool,addToFavoritesDate:String, feedAge: Int, feedWeight: [Double], feedFunctional: [String], feedCountry: String, grainfreeFlag: Bool, organicFlag: Bool, lidFlag: Bool, bigFlag: Bool){
+        self.favoriteKey = favoriteKey
+        self.feedKey = feedKey
+        self.feedBrand = feedBrand
+        self.feedImg = feedImg[0]
+        self.feedImgArr = feedImgArr
+        self.feedName = feedName
+        self.feedMouth = feedMouth
+        self.feedIngredient = feedIngredient
+        self.feedGrade = feedGrade
+        self.feedPackageFlag = feedPackageFlag
+        self.addToFavoritesDate = addToFavoritesDate
+        self.feedAge = feedAge
+        
+        self.feedWeight = feedWeight
+        self.feedFunctional = feedFunctional
+        self.feedCountry = feedCountry
+        self.grainfreeFlag = grainfreeFlag
+        self.organicFlag = organicFlag
+        self.lidFlag = lidFlag
+        self.bigFlag = bigFlag
     }
     
 }

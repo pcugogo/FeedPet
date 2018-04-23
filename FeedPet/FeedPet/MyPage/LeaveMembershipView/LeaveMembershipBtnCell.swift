@@ -15,6 +15,7 @@ protocol LeaveMembershipCustomCellDelegate {
     func leaveMembershipTableViewReloadData()
     func leaveMembershipTableViewDisappear()
     func navigationbarHiddeFalse()
+    func cancleBtnTouchTableViewDisappear()
 }
 
 
@@ -39,13 +40,15 @@ class LeaveMembershipBtnCell: UITableViewCell {
     }
     
     func tableViewDisappear(){
-        delegate?.navigationbarHiddeFalse()
+//        delegate?.navigationbarHiddeFalse()
         delegate?.leaveMembershipTableViewDisappear()
     }
     
     
     @IBAction func cencelBtnAction(_ sender: UIButton) {
-        tableViewDisappear()
+//        tableViewDisappear()
+//        delegate?.navigationbarHiddeFalse()
+        delegate?.cancleBtnTouchTableViewDisappear()
     }
     @IBAction func confirmBtnAction(_ sender: UIButton) {
         print(MyPageDataCenter.shared.leaveMembershipReason)
@@ -75,6 +78,7 @@ class LeaveMembershipBtnCell: UITableViewCell {
             // 탈퇴데이터에 정보를 쌓고  유저정보에서 탈퇴정보를 추가해준다. 플래그로 분리
             
             
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             Database.database().reference().child("leave_user").childByAutoId().runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
                 
 //                var currentLeaveData = currentData.value as? [String:Any] ?? [:]
@@ -129,93 +133,75 @@ class LeaveMembershipBtnCell: UITableViewCell {
                 if committed {
                     
     
-//                    guard let leaveUserUid = Auth.auth().currentUser?.uid else { return}
-                    let user = Auth.auth().currentUser
-                    user?.delete { error in
-                        if let error = error {
-                            print("--user delete error://",error.localizedDescription)
-                        } else {
-                            
-                            guard let leaveUserUid = user?.uid else { return }
+                    // 탈퇴하려는 현재 로그인된 사용자 정보
+                    guard let user = Auth.auth().currentUser else {return}
+                    // 탈퇴하려는 로그인 UID
+                    let leaveUserUid = user.uid
+                    print("탈퇴정보등록후:1//",user)
+                    // 소셜로그아웃 진행
+                    DataCenter.shared.socialLogOut(completion: { (result) in
+                        
+                        print("로그아웃결과안오네://",result)
+                        // 로그아웃후 결과값 처리->true일 경우
+                        if result {
+                       //사용자 정보를 지우지 않고 탈퇴여부 flag값 할당=> "user_leave"
                             Database.database().reference().child("user_info").child(leaveUserUid).updateChildValues(["user_leave": true])
-                            DataCenter.shared.socialLogOut(completion: { (result) in
-                                
-                                if result {
-                                    self.tableViewDisappear()
-                                }else{
+                            // 사용자 정보 변경후 Authentication에서 로그인한 사용자 정보 제거
+                            
+                            user.delete { error in
+                                if let error = error {
+                                    print("--user delete error://",error.localizedDescription)
                                     
-                                }
-                                
-                                MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
-                                
-                            })
-                            
-                        }
-                    }
-                    
-                    
-                }
-            }
-
-            // 탈퇴 데이터구조는 탈퇴한 이유, 탈퇴일 기록
-            
-            let user = Auth.auth().currentUser
-//            guard let proviederID = Auth.auth().currentUser?.providerData.first?.providerID else { return }
-//            var credential: AuthCredential
-//            if proviederID == "google.com" {
-////                let authentication = user.authentication
-//                
-////                credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-//            }else{
-//                credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-//            }
-
-            
-//            user?.delete(completion: { (error) in
-//                if let error = error {
-//                    // An error happened
-//                    print(error.localizedDescription)
-//                } else {
-//                    // Account deleted.
+                                } else { // 사용자 정보 제거 완료후
+                                    // 탈퇴 tableview dismiss 처리
+                                    self.tableViewDisappear()
+                                    // 탈퇴이유 초기화
+                                    MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
+//                                    let leaveUserUid = user.uid
+//                                    print("탈퇴정보등록후:2//",leaveUserUid)
+                                    
+                                    //                            Database.database().reference().child("user_info").child(leaveUserUid).updateChildValues(["user_leave": true])
+//                                    DataCenter.shared.socialLogOut(completion: { (result) in
 //
-//                }
-//            })
-            
-            
-            // Prompt the user to re-provide their sign-in credentials
-            
-//            user?.reauthenticate(with: credential) { error in
-//                if let error = error {
-//                    // An error happened.
-//                } else {
-//                    // User re-authenticated.
-//                }
-//            }
-            /*
-            user?.reauthenticate(with:credential) { error in
-                if let error = error {
-                    // An error happened.
-                    showAlertWithErrorMessage(message: error.localizedDescription)
-                } else {
-                    // User re-authenticated.
-                    user?.delete { error in
-                        if let error = error {
-                            // An error happened.
-                            showAlertWithErrorMessage(message: error.localizedDescription)
-                        } else {
-                            // Account deleted.
-                            let userID = HelperFunction.helper.FetchFromUserDefault(name: kUID)
-                            Database.database().reference(fromURL: kFirebaseLink).child(kUser).child(userID).removeValue()
+//                                        print("로그아웃결과안오네://",result)
+//                                        if result {
+//
+//
+//                                            self.tableViewDisappear()
+//                                        }else{
+//
+//                                        }
+//
+//                                        MyPageDataCenter.shared.leaveMembershipReason = "" //초기화
+//
+//                                    })
+                                    guard let userProfile = DataCenter.shared.userInfo.userProfileImgUrl else {return}
+                                    // Storage에 저장된 사용자 파일 제거==> 이미지가 있을경우 분기처리해한다.
+                                    let storageRef = Storage.storage().reference().child("UserProfile/").child(leaveUserUid)
+//                                    storageRef.delete(completion: nil)
+                                    storageRef.delete(completion: { (error) in
+                                        if let error = error{
+
+                                        }else{
+                                            
+                                        }
+                                        
+                                    })
+                                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                                }
+                            }
+
+                           
                             
-                            try!  Auth.auth().signOut()
-                            showAlertWithErrorMessage(message: "Your account deleted successfully...")
-                            return
+                        }else{
+                            print("--user logout error--")
                         }
-                    }
-                    
+                        
+                    })
                 }
             }
-            */
+
+    
         }else{
             // Alert 처리
             print("내용 선택이 되지 않았음")

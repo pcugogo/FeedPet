@@ -20,8 +20,19 @@ class FeedReviewInfoTableViewCell: UITableViewCell {
     
     
     @IBOutlet weak var reviewCountLabel: UILabel!
+    @IBOutlet weak var reviewPostBtn: UIButton!
     var delegate: ReviewInfoCellProtocol?
-    
+    // 기존에 리뷰작성유무에 따른 버튼 hidden처리
+    var containCheck: Bool = false {
+        didSet{
+            if containCheck {
+                reviewPostBtn.isHidden = false
+            }else{
+                reviewPostBtn.isHidden = true
+            }
+            reviewPostBtn.layoutIfNeeded()
+        }
+    }
 //    var reviewInfoData:
     
     override func awakeFromNib() {
@@ -29,7 +40,6 @@ class FeedReviewInfoTableViewCell: UITableViewCell {
         // Initialization code
     }
 
-    @IBOutlet weak var reviewPostBtn: UIButton!
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -83,6 +93,8 @@ class FeedReviewInfoTableViewCell: UITableViewCell {
             self.fourthStarImg.image = #imageLiteral(resourceName: "normalStar")
             self.fifthStarImg.image = #imageLiteral(resourceName: "normalStar")
         }
+        
+        
         self.layoutIfNeeded()
     }
     

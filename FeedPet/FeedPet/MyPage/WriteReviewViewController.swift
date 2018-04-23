@@ -114,12 +114,13 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
         textView.inputAccessoryView = toolbar
     }
     @objc func keyboardWasShown(_ notification : Notification) {
+        //self.writeReviewScrollView.contentOffset.y + 160
         
-        self.writeReviewScrollView.contentOffset = CGPoint(x: 0, y: self.writeReviewScrollView.contentOffset.y + 140)
+        self.writeReviewScrollView.contentOffset = CGPoint(x: 0, y:160)
     }
     
     @objc func keyboardWillHide(_ notification : Notification) {
-        self.writeReviewScrollView.contentOffset = CGPoint(x: 0, y: self.writeReviewScrollView.contentOffset.y - 140)
+        self.writeReviewScrollView.contentOffset = CGPoint(x: 0, y:0)
     }
     
     
@@ -165,25 +166,111 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
             let feedReviewInfoDic = ["feed_date":dateString,"feed_rating":self.ratingNumberOfStars,"feed_review":reviewContentsTextView.text,"user_key": userUID] as [String : Any]
             
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            FireBaseData.shared.refFeedReviewsReturn.child(feedKey).child("review_rating").observeSingleEvent(of: .value, with: { (snapShot) in
-                if let feedTotalRating = snapShot.value as? Int{ //리뷰데이터에 "review_rating"가있으면 평균내고 없으면 그냥 값을 넣는다
-                    self.totalRating = feedTotalRating
+            //나중에 피드키 부분 옵셔널 되면 옵셔널바인딩 해줘야된다
+            let reviewAutoKey = FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).child("review_info").childByAutoId()
+            print(reviewAutoKey.key)
+           //트랜젝션처리 필요
+            FireBaseData.shared.refFeedReviewsReturn.child(feedKey).runTransactionBlock({ (currentData) -> TransactionResult in
+                
+                // 리뷰정보가 존재할경우
+                if var post = currentData.value as? [String : Any] {
+                    print("있던 없던://",post)
+                    var reviewInfo = post["review_info"] as? [String:Any] ?? [:]
+                    var reviewRating = post["review_rating"] as? Int ?? 0
+                    var reviewTotalRating = post["total_rating"] as? Int ?? 0
                     
-                    self.totalRating += self.ratingNumberOfStars
-                    self.totalRating /= 2
+                    // 현재 사료정보에 작성된 리뷰가 없을경우
+                    print(!reviewInfo.contains(where: { (key, value) -> Bool in
+                        return value as? String == userUID
+                    }))
+                    if !reviewInfo.contains(where: { (key, value) -> Bool in
+                        return value as? String == userUID
+                    }) {
+                        reviewInfo.updateValue(feedReviewInfoDic, forKey: reviewAutoKey.key)
+                        reviewTotalRating += feedReviewInfoDic["feed_rating"] as! Int
+                        reviewRating = reviewTotalRating / reviewInfo.count
                     
+                        post["review_info"] = reviewInfo
+                        post["review_rating"] = reviewRating
+                        post["total_rating"] = reviewTotalRating
+                        print(post)
+                    }
+                    currentData.value = post
+                    // 현재 리뷰 좋아요 정보에 사용자가 존재시 좋아요 취소
+//                    if let _ = reviewInfo["currentUserUID"] {
+//                        reviewRating -= 1
+//                        reviewInfo.removeValue(forKey: "currentUserUID")
+//
+//                    }else{ // 존재하지 않을 경우 좋아요 추가
+//                        reviewRating += 1
+//                        reviewInfo["currentUserUID"] = true
+//                    }
+//                    post["data"] = reviewInfo
+//                    post["like_count"] = reviewRating
+//
+////                    currentData.value = post
+//                    DispatchQueue.main.async {
+//
+//                    }
+                    return TransactionResult.success(withValue: currentData)
                 }else{
-                    self.totalRating = self.ratingNumberOfStars
+                    
+                    var post: [String : Any] = [:]
+                    var reviewInfo: [String:Any] = [:]
+                    var reviewRating = 0
+                    var reviewTotalRating = 0
+                    
+                    reviewInfo.updateValue(feedReviewInfoDic, forKey: reviewAutoKey.key)
+                    reviewTotalRating += feedReviewInfoDic["feed_rating"] as! Int
+                    reviewRating = reviewTotalRating
+                    
+                    post["review_info"] = reviewInfo
+                    post["review_rating"] = reviewRating
+                    post["total_rating"] = reviewTotalRating
+                    
+                    print(post)
+                    currentData.value = post
+//
+//                    var post: [String : Any] = [:]
+//                    var likes: [String:Bool] = [:]
+//                    let likeCount = 1
+//                    likes["currentUserUID"] = true
+//                    post["data"] = likes
+//                    post["like_count"] = likeCount
+//                    currentData.value = post
+//                    DispatchQueue.main.async {
+//                        
+//                    }
+                    return TransactionResult.success(withValue: currentData)
                 }
+            
                 
-                //나중에 피드키 부분 옵셔널 되면 옵셔널바인딩 해줘야된다
-                let reviewAutoKey = FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).child("review_info").childByAutoId()
-                FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).child("review_info").child(reviewAutoKey.key).updateChildValues(feedReviewInfoDic)
-                FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).updateChildValues(["review_rating":self.totalRating])
-               
-                
-                FireBaseData.shared.refMyReviewsReturn.child(userUID).child(self.feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
+//                return TransactionResult.success(withValue: currentData)
+            }, andCompletionBlock: { (error, result, dataSnap) in
+                if result {
+
+                    FireBaseData.shared.refMyReviewsReturn.child(userUID).child(self.feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
+                }
             })
+            
+//            FireBaseData.shared.refFeedReviewsReturn.child(feedKey).child("review_rating").observeSingleEvent(of: .value, with: { (snapShot) in
+//                if let feedTotalRating = snapShot.value as? Int{ //리뷰데이터에 "review_rating"가있으면 평균내고 없으면 그냥 값을 넣는다
+//                    self.totalRating = feedTotalRating
+//
+//                    self.totalRating += self.ratingNumberOfStars
+//                    self.totalRating /= 2
+//
+//                }else{
+//                    self.totalRating = self.ratingNumberOfStars
+//                }
+//
+//
+//            FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).child("review_info").child(reviewAutoKey.key).updateChildValues(feedReviewInfoDic)
+//            FireBaseData.shared.refFeedReviewsReturn.child(self.feedKey).updateChildValues(["review_rating":self.totalRating])
+//
+//
+            FireBaseData.shared.refMyReviewsReturn.child(userUID).child(self.feedKey).updateChildValues(["review_key" :reviewAutoKey.key])
+            
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
             let completedReview:UIAlertController = UIAlertController(title: "리뷰 등록 완료!", message: "소중한 리뷰 감사합니다:)", preferredStyle: .alert)

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class MyPageReviewEditViewController: UIViewController {
     
@@ -58,7 +59,7 @@ class MyPageReviewEditViewController: UIViewController {
         let reviewRemoveAlert:UIAlertController = UIAlertController(title: "", message: "선택하신 리뷰를 삭제하시겠습니까?", preferredStyle: .alert)
         
         let okBtn:UIAlertAction = UIAlertAction(title: "네", style: .default){ (action) in
-            
+            guard let userUid = Auth.auth().currentUser?.uid else {return}
             if let index = MyPageDataCenter.shared.myPageMyReviewsCellEditBtnTagValue {
                 print("index",index)
                 print("myReviewDatas",MyPageDataCenter.shared.myReviewDatas)
@@ -68,7 +69,9 @@ class MyPageReviewEditViewController: UIViewController {
                 MyPageDataCenter.shared.myReviewDatas.remove(at: index)
                
                 UIApplication.shared.isNetworkActivityIndicatorVisible = true
-                FireBaseData.shared.refMyReviewsReturn.child(MyPageDataCenter.shared.testUUID).child(removeFeedData.feedKeyReturn).removeValue()
+                FireBaseData.shared.refMyReviewsReturn.child(userUid).child(removeFeedData.feedKeyReturn).removeValue()
+                
+                print(removeFeedData.feedKeyReturn)
                 FireBaseData.shared.refFeedReviewsReturn.child(removeFeedData.feedKeyReturn).child("review_info").child(removeFeedData.reviewKeyReturn).removeValue()
                 
                     FireBaseData.shared.refReviewThumbReturn.child(removeFeedData.reviewKeyReturn).removeValue()
@@ -146,11 +149,12 @@ class MyPageReviewEditViewController: UIViewController {
     
     
     @objc func keyboardWasShown(_ notification : Notification) {
-        self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y + 140)
+        
+        self.myReviewScrollView.contentOffset = CGPoint(x: 0, y:140)
     }
     
     @objc func keyboardWillHide(_ notification : Notification) {
-        self.myReviewScrollView.contentOffset = CGPoint(x: 0, y: self.myReviewScrollView.contentOffset.y - 140)
+        self.myReviewScrollView.contentOffset = CGPoint(x: 0, y:0)
     }
     
     
