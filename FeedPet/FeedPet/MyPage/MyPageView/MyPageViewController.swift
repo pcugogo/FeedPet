@@ -344,31 +344,31 @@ class MyPageViewController: UIViewController, UITableViewDelegate,UITableViewDat
     func isAppUpdateAvailable() -> Bool {
         
         // 옵셔널 바인딩
-//        guard
-//            let version = self.userAppVersion,
-//            // 한국앱스토어에만 올릴경우 파라미터로 country값을 추가해줘야함
-//            let url = URL(string: "http://itunes.apple.com/lookup?bundleId=gisuhwang.FeedPet&country=kr"),
-//            let data = try? Data(contentsOf: url),
-//            //version 값만 가져오기에 JSONSerialization을 사용하여 구현
-//            let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
-//            let results = json?["results"] as? [[String: Any]],
-//            results.count > 0,
-//            let appStoreVersion = results[0]["version"] as? String
-//            else { return false }
-//
-//
-//
-//        if !(version == appStoreVersion) {
-//            return true
-//
-//        }else{
-//            return false
-//
-//        }
+        guard
+            let version = self.userAppVersion,
+            // 한국앱스토어에만 올릴경우 파라미터로 country값을 추가해줘야함
+            let url = URL(string: "http://itunes.apple.com/lookup?bundleId=gisuhwang.FeedPet&country=kr"),
+            let data = try? Data(contentsOf: url),
+            //version 값만 가져오기에 JSONSerialization을 사용하여 구현
+            let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
+            let results = json?["results"] as? [[String: Any]],
+            results.count > 0,
+            let appStoreVersion = results[0]["version"] as? String
+            else { return false }
+
+
+
+        if !(version == appStoreVersion) {
+            return true
+
+        }else{
+            return false
+
+        }
         
         
         
-        return true
+//        return true
         
     }
     @IBAction func backBtnAction(_ sender: UIBarButtonItem) {

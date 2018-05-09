@@ -11,8 +11,10 @@
 
 ## Concept
 
+* 
+
 ## Update
-- v1.0.1: 앱스토어 등록 (-)
+- v1.0 : 앱스토어 등록 (-)
 
 ## Team
 ### 기획
@@ -23,11 +25,11 @@
 ### iOS 개발
 
 * [황기수](https://github.com/GisuHwang) : kisu9838@gmail.com
-* [박찬욱](https://github.com/pcugogo) : 
+* [박찬욱](https://github.com/pcugogo) : pcugogo@github.com
 
 ### Android 개발
 
-* 홍종민
+* 홍종민 : a01082488862@gmail.com
 
 ### UI 디자인
 

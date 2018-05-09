@@ -98,7 +98,7 @@ class MyPageFavoritesViewController: UIViewController,UITableViewDelegate,UITabl
         
         
 //        feedDetailView.feedDetailInfo = searchFeedData[indexPath.row]
-        
+        MyPageDataCenter.shared.myPageFeedContentsCellLikeBtnTagValue = indexPath.row
         feedDetailView.delegate = self
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         Database.database().reference().child("my_favorite").child(self.userUID).queryOrdered(byChild: "feed_key").queryEqual(toValue: feedDetailInfo.feedKey).observeSingleEvent(of: .value, with: { (dataSnap) in
@@ -277,7 +277,7 @@ extension MyPageFavoritesViewController: FeedMainInfoCellProtocol{
             bookMarkRef.childByAutoId().setValue(bookMarkData)
             print("즐겨찾기 데이터://", bookMarkData)
             
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
             DispatchQueue.main.async {
                 //노티혹은 델리게이트를 사용해야할것같다.
                 //                self.feedMoreInformationLoad()
@@ -291,15 +291,37 @@ extension MyPageFavoritesViewController: FeedMainInfoCellProtocol{
                 for bookMark in childrenValue{
                     if bookMark.childSnapshot(forPath: "feed_key").value as? String == feedKey{
                         print("즐겨찾기존지하는 키://",bookMark.key)
+//                        let bookMarkKey = bookMark.key
                         bookMarkRef.child(bookMark.key).removeValue()
+                        
+                        guard let clickBtnTagValue = MyPageDataCenter.shared.myPageFeedContentsCellLikeBtnTagValue else {return}
+                        MyPageDataCenter.shared.favorites.remove(at: clickBtnTagValue)
+                        MyPageDataCenter.shared.favoritesCount -= 1
+
+                        MyPageDataCenter.shared.myPageFeedContentsCellLikeBtnTagValue = 0
+//                        for bookMarkIndex in 0..<MyPageDataCenter.shared.favorites.count{
+//                            print(bookMarkKey,"/",MyPageDataCenter.shared.favorites[bookMarkIndex].favoriteKeyReturn, bookMarkIndex)
+//                            if MyPageDataCenter.shared.favorites[bookMarkIndex].favoriteKeyReturn == bookMarkKey{
+//                                print(bookMarkKey,"/",MyPageDataCenter.shared.favorites[bookMarkIndex].favoriteKeyReturn, bookMarkIndex)
+////                                let index = bookMarkIndex
+//
+//                                MyPageDataCenter.shared.favorites.remove(at: bookMarkIndex)
+//
+//                            }
+//                        }
+//                        MyPageDataCenter.shared.favoritesCount -= 1
+
+                       
                     }
                 }
                 DispatchQueue.main.async {
+                    self.tableView.reloadData()
                     //                    self.feedMoreInformationLoad()
                     //                    self.feedInfoTableView.reloadData()
                 }
             })
         }
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
     

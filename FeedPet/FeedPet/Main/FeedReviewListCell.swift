@@ -172,13 +172,14 @@ class FeedReviewListCell: UITableViewCell {
         guard let reviewKey = self.reviewData?.reviewKey else { return }
         // 사용자 uid
         guard let currentUserUID = Auth.auth().currentUser?.uid else { return}
-        Database.database().reference().child("review_thumb").child(reviewKey).observeSingleEvent(of: .value) { (dataSnap) in
-            
-        }
+//        Database.database().reference().child("review_thumb").child(reviewKey).observeSingleEvent(of: .value) { (dataSnap) in
+//
+//        }
         // 좋아요 버튼클릭
         if sender.tag == 0 {
             Database.database().reference().child("review_thumb").child(reviewKey).child("review_like").runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
-                
+                var count = 0
+                 print(currentData.value)
                 if var post = currentData.value as? [String : Any] {
                     print("있던 없던")
                     var likes = post["data"] as? [String:Bool] ?? [:]
@@ -195,26 +196,14 @@ class FeedReviewListCell: UITableViewCell {
                     }
                     post["data"] = likes
                     post["like_count"] = likeCount
-                    
+                    count = likeCount
                     currentData.value = post
                     DispatchQueue.main.async {
-                        self.reviewLikeLabel.text = likeCount.description
-                    }
-                    return TransactionResult.success(withValue: currentData)
-                }else{
-                    var post: [String : Any] = [:]
-                    var likes: [String:Bool] = [:]
-                    let likeCount = 1
-                    likes[currentUserUID] = true
-                    post["data"] = likes
-                    post["like_count"] = likeCount
-                    currentData.value = post
-                    DispatchQueue.main.async {
-                        self.reviewLikeLabel.text = likeCount.description
+                        self.reviewLikeLabel.text = count.description
                     }
                     return TransactionResult.success(withValue: currentData)
                 }
-//                return TransactionResult.success(withValue: currentData)
+                return TransactionResult.success(withValue: currentData)
 
                 
                 /*
@@ -248,6 +237,8 @@ class FeedReviewListCell: UITableViewCell {
                 return TransactionResult.success(withValue: currentData)
                 
                 */
+                
+               
             }) { (error, committed, snapshot) in
                 if let error = error {
                     print("///// error 4632: \n", error.localizedDescription)
@@ -277,20 +268,10 @@ class FeedReviewListCell: UITableViewCell {
                         self.reviewUnLikeLabel.text = unlikeCount.description
                     }
                     return TransactionResult.success(withValue: currentData)
-                }else{
-                    var post: [String : Any] = [:]
-                    var unlikes: [String:Bool] = [:]
-                    let unlikeCount = 1
-                    unlikes[currentUserUID] = true
-                    post["data"] = unlikes
-                    post["unlike_count"] = unlikeCount
-                    currentData.value = post
-                    DispatchQueue.main.async {
-                        self.reviewUnLikeLabel.text = unlikeCount.description
-                    }
-                    return TransactionResult.success(withValue: currentData)
                 }
-            
+
+                return TransactionResult.success(withValue: currentData)
+
             }) { (error, committed, snapshot) in
                 if let error = error {
                     print("///// error 4632: \n", error.localizedDescription)

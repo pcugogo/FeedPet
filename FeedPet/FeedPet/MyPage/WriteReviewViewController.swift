@@ -213,39 +213,40 @@ class WriteReviewViewController: UIViewController,UITextViewDelegate {
 //
 //                    }
                     return TransactionResult.success(withValue: currentData)
-                }else{
-                    
-                    var post: [String : Any] = [:]
-                    var reviewInfo: [String:Any] = [:]
-                    var reviewRating = 0
-                    var reviewTotalRating = 0
-                    
-                    reviewInfo.updateValue(feedReviewInfoDic, forKey: reviewAutoKey.key)
-                    reviewTotalRating += feedReviewInfoDic["feed_rating"] as! Int
-                    reviewRating = reviewTotalRating
-                    
-                    post["review_info"] = reviewInfo
-                    post["review_rating"] = reviewRating
-                    post["total_rating"] = reviewTotalRating
-                    
-                    print(post)
-                    currentData.value = post
+                }
+//                else{
 //
 //                    var post: [String : Any] = [:]
-//                    var likes: [String:Bool] = [:]
-//                    let likeCount = 1
-//                    likes["currentUserUID"] = true
-//                    post["data"] = likes
-//                    post["like_count"] = likeCount
+//                    var reviewInfo: [String:Any] = [:]
+//                    var reviewRating = 0
+//                    var reviewTotalRating = 0
+//
+//                    reviewInfo.updateValue(feedReviewInfoDic, forKey: reviewAutoKey.key)
+//                    reviewTotalRating += feedReviewInfoDic["feed_rating"] as! Int
+//                    reviewRating = reviewTotalRating
+//
+//                    post["review_info"] = reviewInfo
+//                    post["review_rating"] = reviewRating
+//                    post["total_rating"] = reviewTotalRating
+//
+//                    print(post)
 //                    currentData.value = post
-//                    DispatchQueue.main.async {
-//                        
-//                    }
-                    return TransactionResult.success(withValue: currentData)
-                }
+////
+////                    var post: [String : Any] = [:]
+////                    var likes: [String:Bool] = [:]
+////                    let likeCount = 1
+////                    likes["currentUserUID"] = true
+////                    post["data"] = likes
+////                    post["like_count"] = likeCount
+////                    currentData.value = post
+////                    DispatchQueue.main.async {
+////
+////                    }
+//                    return TransactionResult.success(withValue: currentData)
+//                }
             
                 
-//                return TransactionResult.success(withValue: currentData)
+                return TransactionResult.success(withValue: currentData)
             }, andCompletionBlock: { (error, result, dataSnap) in
                 if result {
 

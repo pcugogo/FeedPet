@@ -18,8 +18,8 @@ class LoadingIndicatorViewController: UIViewController {
         let gif = UIImage(gifName: "loading_img@3x2.gif")
         self.indicatorImgView.setGifImage(gif, manager: gifManager, loopCount: 10)
         
-    
         
+        indicatorImgView.delegate = self
         // Do any additional setup after loading the view.
     }
 
@@ -48,4 +48,7 @@ class LoadingIndicatorViewController: UIViewController {
     }
     */
 
+}
+extension LoadingIndicatorViewController: SwiftyGifDelegate{
+    
 }
